@@ -19,7 +19,7 @@ AC_PREREQ(2.59)
 AC_INIT(axis2_util-src, 2.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([tar-ustar subdir-objects foreign])
 AC_PREFIX_DEFAULT(/usr/local/axis2_util)
 
 dnl Checks for programs.
@@ -349,6 +349,10 @@ AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 AC_SUBST(GTEST_DIR)
 AC_SUBST(GTEST)
+
+dnl Set GTEST_AVAILABLE conditional based on whether gtest is configured
+dnl For util subproject, just check if GTEST is set (--with-gtest was provided)
+AM_CONDITIONAL(GTEST_AVAILABLE, test -n "$GTEST" && test -n "$GTEST_DIR")
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \

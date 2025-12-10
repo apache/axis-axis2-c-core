@@ -207,8 +207,15 @@ axutil_linked_list_check_bounds_inclusive(
     const axutil_env_t *env,
     int index)
 {
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "🎯 LINKED LIST BOUNDS CHECK (INCLUSIVE): linked_list=%p, index=%d, list_size=%d",
+        (void*)linked_list, index, linked_list ? linked_list->size : -1);
+
     if(index < 0 || index > linked_list->size)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "❌ LINKED LIST BOUNDS ERROR (INCLUSIVE): linked_list=%p, index=%d, size=%d - BOUNDS CHECK FAILED!",
+            (void*)linked_list, index, linked_list ? linked_list->size : -1);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
@@ -221,8 +228,15 @@ axutil_linked_list_check_bounds_exclusive(
     const axutil_env_t *env,
     int index)
 {
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "🎯 LINKED LIST BOUNDS CHECK (EXCLUSIVE): linked_list=%p, index=%d, list_size=%d",
+        (void*)linked_list, index, linked_list ? linked_list->size : -1);
+
     if(index < 0 || index >= linked_list->size)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "❌ LINKED LIST BOUNDS ERROR (EXCLUSIVE): linked_list=%p, index=%d, size=%d - BOUNDS CHECK FAILED!",
+            (void*)linked_list, index, linked_list ? linked_list->size : -1);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }

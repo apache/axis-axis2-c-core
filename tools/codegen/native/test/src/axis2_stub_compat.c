@@ -30,7 +30,9 @@ int axis2_stub_set_svc(void *stub, const void *env, void *svc)
      * code to compile successfully.
      */
 
-    /* Suppress unused parameter warnings */
+    /* Parameters maintain compatibility with full Axis2/C service stubs
+     * In full build: env used for error handling, stub/svc for service binding
+     * In standalone: unused but preserves identical stub interface for testing */
     (void)stub;
     (void)env;
     (void)svc;

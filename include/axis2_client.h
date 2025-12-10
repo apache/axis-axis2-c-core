@@ -28,7 +28,7 @@
 #include <axis2_callback.h>
 #include <axis2_op_client.h>
 #include <axis2_options.h>
-#include <axis2_stub.h>
+/* HTTP/2 Pure JSON Architecture - axis2_stub.h removed (SOAP header) */
 #include <axis2_svc_client.h>
 
 #ifdef __cplusplus

@@ -18,9 +18,11 @@
   The Latest Version
   ------------------
 
-  You can get the latest svn checkout of Apache Axis2/C util module from
+  You can get the latest Git checkout of Apache Axis2/C util module from
 
-  https://svn.apache.org/repos/asf/webservices/axis2/trunk/c/util
+  https://github.com/apache/axis2-c
+
+  The util module is included as part of the main Axis2/C repository.
 
   Installation
   ------------

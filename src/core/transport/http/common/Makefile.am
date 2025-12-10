@@ -14,8 +14,15 @@
 # limitations under the License.
 lib_LTLIBRARIES = libaxis2_http_common.la
 
+# REVOLUTIONARY HTTP/2 JSON: Add context and addr dependencies for msg functions
+# Add AXIOM dependency to resolve axiom_element_set_node and other AXIOM symbols needed for SOAP envelope creation
+# Add engine dependency to resolve service provider implementation symbols at runtime (circular dependency eliminated)
 libaxis2_http_common_la_LIBADD=$(top_builddir)/util/src/libaxutil.la\
-                                 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la
+                                 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la\
+                                 $(top_builddir)/src/core/context/libaxis2_context.la\
+                                 $(top_builddir)/src/core/addr/libaxis2_addr.la\
+                                 $(top_builddir)/axiom/src/om/libaxis2_axiom.la\
+                                 $(top_builddir)/src/core/engine/libaxis2_engine.la
 
 libaxis2_http_common_la_SOURCES = http_header.c\
                                   http_out_transport_info.c\
@@ -42,3 +49,15 @@ libaxis2_http_common_la_CPPFLAGS = -I$(top_srcdir)/include \
 								   -I$(top_srcdir)/src/core/deployment \
 								   -I$(top_srcdir)/util/include \
 								   -I$(top_srcdir)/axiom/include
+
+# Ensure proper cleanup of libtool artifacts
+CLEANFILES = *.o *.lo *.la
+DISTCLEANFILES = *.o *.lo *.la
+MAINTAINERCLEANFILES = Makefile.in
+
+# Force removal of libtool .libs directory and all contents
+clean-local:
+	rm -rf .libs
+
+distclean-local: clean-local
+	rm -f *.o *.lo *.la

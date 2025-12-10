@@ -113,6 +113,8 @@ typedef struct axutil_array_list {
 axutil_array_list_t* axutil_array_list_create(const axutil_env_t *env, int initial_capacity);
 axis2_status_t axutil_array_list_add(axutil_array_list_t *list, const axutil_env_t *env, void *element);
 void axutil_array_list_free(axutil_array_list_t *list, const axutil_env_t *env);
+int axutil_array_list_size(axutil_array_list_t *list, const axutil_env_t *env);
+void* axutil_array_list_get(axutil_array_list_t *list, const axutil_env_t *env, int index);
 #endif
 
 /**

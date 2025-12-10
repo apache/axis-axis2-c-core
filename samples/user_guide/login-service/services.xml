@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HTTP/2 Pure JSON Login Service Configuration (No SOAP/XML dependencies) -->
+<serviceGroup>
+    <service name="LoginService">
+        <description>
+            Apache Axis2/C HTTP/2 User Authentication Service
+            Port of Axis2/Java Spring Boot LoginService
+            Uses pure json-c library (no XML/SOAP dependencies)
+        </description>
+
+        <serviceClass>login_service</serviceClass>
+        <parameter name="ServiceClass">liblogin_service</parameter>
+
+        <!-- HTTP/2 transport configuration -->
+        <parameter name="transport.h2">
+            <parameter name="enableHTTP2">true</parameter>
+            <parameter name="enableStreaming">true</parameter>
+            <parameter name="enableMemoryOptimization">true</parameter>
+            <parameter name="maxFrameSize">16384</parameter>
+            <parameter name="maxConcurrentStreams">50</parameter>
+        </parameter>
+
+        <!-- JSON processing configuration - Pure json-c library (no XML/SOAP deps) -->
+        <parameter name="maxJSONPayloadSize">1048576</parameter>
+        <parameter name="jsonProcessingMode">pure-jsonc</parameter>
+
+        <!-- Security settings -->
+        <parameter name="enableSecurityChecks">true</parameter>
+        <parameter name="sessionTimeoutMinutes">30</parameter>
+
+        <!-- HTTP/2 JSON Operation: authenticate -->
+        <operation name="authenticate">
+            <description>
+                User authentication with JSON credentials.
+                Returns JWT token on successful authentication.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/authenticate</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: validateToken -->
+        <operation name="validateToken">
+            <description>
+                Validate JWT token and return user information.
+                Returns user details if token is valid.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/validateToken</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: logout -->
+        <operation name="logout">
+            <description>
+                User logout and token invalidation.
+                Returns logout confirmation.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/logout</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+    </service>
+</serviceGroup>

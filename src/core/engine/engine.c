@@ -23,10 +23,13 @@
 #include <axiom_soap_body.h>
 #include <axiom_soap_fault.h>
 #include <axiom_soap_header.h>
+#include <axis2_http_transport.h>
 #include <axiom_soap_header_block.h>
 #include <axis2_transport_sender.h>
 #include <axis2_addr.h>
 #include <axutil_uuid_gen.h>
+/* REVOLUTIONARY: Service provider interface for architectural decoupling */
+#include <axis2_http_service_provider.h>
 
 struct axis2_engine
 {
@@ -63,6 +66,14 @@ axis2_engine_create(
         engine->conf_ctx = conf_ctx;
     }
 
+    /* REVOLUTIONARY: Register HTTP service provider implementation to eliminate circular dependency */
+    {
+        axis2_http_service_provider_t* service_provider = axis2_engine_service_provider_create(env);
+        if (service_provider) {
+            axis2_http_service_provider_set_impl(env, service_provider);
+        }
+    }
+
     return engine;
 }
 
@@ -71,6 +82,13 @@ axis2_engine_free(
     axis2_engine_t * engine,
     const axutil_env_t * env)
 {
+    /* REVOLUTIONARY: Clean up HTTP service provider */
+    axis2_http_service_provider_t* service_provider = axis2_http_service_provider_get_impl(env);
+    if (service_provider) {
+        service_provider->free(service_provider, env);
+        axis2_http_service_provider_set_impl(env, NULL);
+    }
+
     AXIS2_FREE(env->allocator, engine);
     return;
 }
@@ -601,14 +619,34 @@ axis2_engine_create_fault_msg_ctx(
 
     if(!envelope)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "🚨 SOAP FAULT GENERATION: Creating SOAP fault - code_value: '%s', reason_text: '%s'",
+            code_value ? code_value : "NULL", reason_text ? reason_text : "NULL");
+
+        /* Check if this is a JSON request that should return JSON error instead */
+        axutil_property_t *content_type_prop = axis2_msg_ctx_get_property(processing_context, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
+        if (content_type_prop) {
+            const axis2_char_t *content_type = (axis2_char_t*)axutil_property_get_value(content_type_prop, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "🚨 JSON ERROR VIOLATION: Creating SOAP fault for Content-Type: '%s' - should return JSON if application/json!",
+                content_type ? content_type : "NULL");
+
+            if (content_type && strstr(content_type, "application/json")) {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "❌ CRITICAL: JSON request returning SOAP fault instead of JSON error response!");
+            }
+        }
+
         if(axis2_msg_ctx_get_is_soap_11(processing_context, env))
         {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating SOAP 1.1 fault envelope");
             envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env, code_value,
                 reason_text, AXIOM_SOAP11, NULL, NULL);
 
         }
         else
         {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating SOAP 1.2 fault envelope");
             envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env, code_value,
                 reason_text, AXIOM_SOAP12, NULL, NULL);
         }
@@ -651,9 +689,28 @@ axis2_engine_invoke_phases(
 
     if(phases)
         count = axutil_array_list_size(phases, env);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "Engine: Invoking phases - phases: %p, count: %d", (void*)phases, count);
+
     for(i = 0; (i < count && !(axis2_msg_ctx_is_paused(msg_ctx, env))); i++)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "Engine: Processing phase %d of %d", i, count);
+
+        if (!phases) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ERROR: phases array is NULL but count was %d", count);
+            break;
+        }
+
         axis2_phase_t *phase = (axis2_phase_t *)axutil_array_list_get(phases, env, i);
+
+        if (!phase) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ERROR: Array bounds error at phase index %d - phase is NULL", i);
+            continue;
+        }
 
         status = axis2_phase_invoke(phase, env, msg_ctx);
 

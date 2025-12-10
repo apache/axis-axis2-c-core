@@ -12,8 +12,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS=http $(TCP_DIR) $(AMQP_DIR)
-DIST_SUBDIRS=http tcp amqp
+
+# HTTP/2 transport module (conditional on --enable-http2)
+if AXIS2_HTTP2_ENABLED
+H2_DIR = h2
+else
+H2_DIR =
+endif
+
+SUBDIRS=http $(H2_DIR) $(TCP_DIR) $(AMQP_DIR)
+DIST_SUBDIRS=http h2 tcp amqp
 EXTRA_DIST=Makefile.am amqp/server/axis2_amqp_server/axis2_amqp_server.h \
 amqp/receiver/axis2_amqp_receiver.h amqp/receiver/qpid_receiver/axis2_qpid_receiver.h \
 amqp/receiver/qpid_receiver/axis2_qpid_receiver_interface.h amqp/receiver/qpid_receiver/request_processor/axis2_amqp_request_processor.h \

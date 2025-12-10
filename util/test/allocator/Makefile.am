@@ -12,9 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# Only build tests if gtest is available from source
+if GTEST_AVAILABLE
 TESTS = allocator_test
 check_PROGRAMS = allocator_test
 noinst_PROGRAMS = allocator_test
+
 allocator_test_SOURCES = allocator_test.cc
 
 allocator_test_LDADD   =   \
@@ -22,10 +26,13 @@ allocator_test_LDADD   =   \
 					$(top_builddir)/$(GTEST)/libgtest.a \
 					$(top_builddir)/$(GTEST)/libgtest_main.a
 
-
 allocator_test_CPPFLAGS = -I$(top_srcdir)/include \
 						  -I ../../../axiom/include \
 						  -I ../../../include \
 						  -I $(GTEST_DIR)/include
-
-
+else
+# Skip tests when gtest is not available
+TESTS =
+check_PROGRAMS =
+noinst_PROGRAMS =
+endif

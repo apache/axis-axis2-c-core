@@ -40,8 +40,7 @@
 #include <axutil_array_list.h>
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
-#include <axiom_node.h>
-#include <axiom_attribute.h>
+/* HTTP/2 Pure JSON Architecture - axiom forward declarations removed */
 
 #ifdef __cplusplus
 extern "C"
@@ -194,78 +193,7 @@ extern "C"
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
 
-    /**
-     * Adds a reference parameter in the form of an AXIOM node. 
-     * @param endpoint_ref pointer to endpoint reference struct
-     * @param env pointer to environment struct
-     * @param ref_param_node pointer to AXIOM node representing reference 
-     * parameter, endpoint reference does not assume the ownership of 
-     * the node 
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_endpoint_ref_add_ref_param(
-        axis2_endpoint_ref_t * endpoint_ref,
-        const axutil_env_t * env,
-        axiom_node_t * ref_param_node);
-
-    /**
-     * Adds metadata in the form of an AXIOM node. An endpoint can have 
-     * different associated metadata such as WSDL, XML Schema and 
-     * WS-Policy policies.
-     * @param endpoint_ref pointer to endpoint reference struct
-     * @param env pointer to environment struct
-     * @param metadata_node AXIOM node representing metadata, 
-     * endpoint reference does not assume the ownership of the node 
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_endpoint_ref_add_metadata(
-        axis2_endpoint_ref_t * endpoint_ref,
-        const axutil_env_t * env,
-        axiom_node_t * metadata_node);
-
-    /**
-     * Adds a reference attribute in the form of an AXIOM attribute.
-     * @param endpoint_ref pointer to endpoint reference struct
-     * @param env pointer to environment struct
-     * @param attr AXIOM attribute representing reference attribute,
-     * endpoint reference does not assume the ownership of the attribute
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_endpoint_ref_add_ref_attribute(
-        axis2_endpoint_ref_t * endpoint_ref,
-        const axutil_env_t * env,
-        axiom_attribute_t * attr);
-
-    /**
-     * Adds a meta attribute in the form of an AXIOM attribute.
-     * @param endpoint_ref pointer to endpoint reference struct
-     * @param env pointer to environment struct
-     * @param attr AXIOM attribute representing meta attribute,
-     * endpoint reference does not assume the ownership of the attribute
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_endpoint_ref_add_metadata_attribute(
-        axis2_endpoint_ref_t * endpoint_ref,
-        const axutil_env_t * env,
-        axiom_attribute_t * attr);
-
-    /**
-     * Adds an extension in the form of an AXIOM node.
-     * @param endpoint_ref pointer to endpoint reference struct
-     * @param env pointer to environment struct
-     * @param extension_node pointer to AXIOM node representing extension,
-     * endpoint reference does not assume the ownership of the node
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_endpoint_ref_add_extension(
-        axis2_endpoint_ref_t * endpoint_ref,
-        const axutil_env_t * env,
-        axiom_node_t * extension_node);
+/* HTTP/2 Pure JSON Architecture - SOAP axiom functions removed */
 
     /**
      * Gets service name. An endpoint in WS-Addressing has a QName 

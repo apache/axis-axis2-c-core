@@ -43,7 +43,7 @@ do
 	rm $i
 done
 
-for i in `find . -type d -name ".svn"`
+for i in `find . -type d -name ".git"`
 do
         rm -rf $i
 done

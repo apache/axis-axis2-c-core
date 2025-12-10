@@ -220,57 +220,15 @@ axis2_endpoint_ref_get_metadata_list(
     return endpoint_ref->metadata_list;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_endpoint_ref_add_ref_param(
-    axis2_endpoint_ref_t * endpoint_ref,
-    const axutil_env_t * env,
-    axiom_node_t * ref_param_node)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+/* HTTP/2 Pure JSON Architecture - SOAP axiom function removed
+ * axis2_endpoint_ref_add_ref_param() removed as part of SOAP elimination.
+ * Function used axiom_node_t which is incompatible with pure JSON design.
+ */
 
-    if(!(endpoint_ref->ref_param_list))
-    {
-        endpoint_ref->ref_param_list = axutil_array_list_create(env, 0);
-        if(!(endpoint_ref->ref_param_list))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
-
-    if(endpoint_ref->ref_param_list && ref_param_node)
-    {
-        return axutil_array_list_add(endpoint_ref->ref_param_list, env, ref_param_node);
-    }
-
-    return AXIS2_FAILURE;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_endpoint_ref_add_metadata(
-    axis2_endpoint_ref_t * endpoint_ref,
-    const axutil_env_t * env,
-    axiom_node_t * meta_data_node)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    if(!(endpoint_ref->metadata_list))
-    {
-        endpoint_ref->metadata_list = axutil_array_list_create(env, 0);
-        if(!(endpoint_ref->metadata_list))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
-
-    if(endpoint_ref->metadata_list && meta_data_node)
-    {
-        return axutil_array_list_add(endpoint_ref->metadata_list, env, meta_data_node);
-    }
-
-    return AXIS2_FAILURE;
-}
+/* HTTP/2 Pure JSON Architecture - SOAP axiom function removed
+ * axis2_endpoint_ref_add_metadata() removed as part of SOAP elimination.
+ * Function used axiom_node_t which is incompatible with pure JSON design.
+ */
 
 axutil_array_list_t *AXIS2_CALL
 axis2_endpoint_ref_get_ref_attribute_list(
@@ -296,80 +254,17 @@ axis2_endpoint_ref_get_extension_list(
     return endpoint_ref->extension_list;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_endpoint_ref_add_ref_attribute(
-    axis2_endpoint_ref_t * endpoint_ref,
-    const axutil_env_t * env,
-    axiom_attribute_t * attr)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+/* HTTP/2 Pure JSON Architecture - SOAP axiom function removed
+ * axis2_endpoint_ref_add_ref_attribute() removed as part of SOAP elimination.
+ * Function used axiom_attribute_t which is incompatible with pure JSON design.
+ */
 
-    if(!(endpoint_ref->ref_attribute_list))
-    {
-        endpoint_ref->ref_attribute_list = axutil_array_list_create(env, 0);
-        if(!(endpoint_ref->ref_attribute_list))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
+/* HTTP/2 Pure JSON Architecture - SOAP axiom function removed
+ * axis2_endpoint_ref_add_metadata_attribute() removed as part of SOAP elimination.
+ * Function used axiom_attribute_t which is incompatible with pure JSON design.
+ */
 
-    if(endpoint_ref->ref_attribute_list && attr)
-    {
-        return axutil_array_list_add(endpoint_ref->ref_attribute_list, env, attr);
-    }
-
-    return AXIS2_FAILURE;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_endpoint_ref_add_metadata_attribute(
-    axis2_endpoint_ref_t * endpoint_ref,
-    const axutil_env_t * env,
-    axiom_attribute_t * attr)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    if(!(endpoint_ref->meta_attribute_list))
-    {
-        endpoint_ref->meta_attribute_list = axutil_array_list_create(env, 0);
-        if(!(endpoint_ref->meta_attribute_list))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
-
-    if(endpoint_ref->meta_attribute_list && attr)
-    {
-        return axutil_array_list_add(endpoint_ref->meta_attribute_list, env, attr);
-    }
-
-    return AXIS2_FAILURE;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_endpoint_ref_add_extension(
-    axis2_endpoint_ref_t * endpoint_ref,
-    const axutil_env_t * env,
-    axiom_node_t * extension_node)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    if(!(endpoint_ref->extension_list))
-    {
-        endpoint_ref->extension_list = axutil_array_list_create(env, 0);
-        if(!(endpoint_ref->extension_list))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
-
-    if(endpoint_ref->extension_list && extension_node)
-    {
-        return axutil_array_list_add(endpoint_ref->extension_list, env, extension_node);
-    }
-
-    return AXIS2_FAILURE;
-}
+/* HTTP/2 Pure JSON Architecture - SOAP axiom function removed
+ * axis2_endpoint_ref_add_extension() removed as part of SOAP elimination.
+ * Function used axiom_node_t which is incompatible with pure JSON design.
+ */

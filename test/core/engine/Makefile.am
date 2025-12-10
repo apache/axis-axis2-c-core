@@ -12,12 +12,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Only build tests when Google Test is available
+if GTEST_AVAILABLE
+
+# Conditional HTTP/2 tests - only build when HTTP/2 is enabled
+if WITH_NGHTTP2
+TESTS = test_engine test_http_service_provider_interface
+check_PROGRAMS = test_engine test_http_service_provider_interface
+noinst_PROGRAMS = test_engine test_http_service_provider_interface
+else
+# HTTP/1.1 SOAP mode - skip HTTP/2 tests gracefully
 TESTS = test_engine
 check_PROGRAMS = test_engine
 noinst_PROGRAMS = test_engine
+endif
+
 SUBDIRS =
 AM_CFLAGS = -g
 test_engine_SOURCES = test_engine.cc
+
+# Revolutionary HTTP Service Provider Interface Pattern Test (HTTP/2 only)
+if WITH_NGHTTP2
+test_http_service_provider_interface_SOURCES = test_http_service_provider_interface.cc
+endif
 
 
 test_engine_LDADD   =   \
@@ -30,6 +47,15 @@ test_engine_LDADD   =   \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
 
+# Revolutionary Interface Pattern Test Dependencies (HTTP/2 only)
+if WITH_NGHTTP2
+test_http_service_provider_interface_LDADD = \
+				../../../util/src/libaxutil.la \
+				$(top_builddir)/src/core/engine/libaxis2_engine.la \
+				$(top_builddir)/$(GTEST)/libgtest.a \
+				$(top_builddir)/$(GTEST)/libgtest_main.a
+endif
+
 AM_CPPFLAGS =	-I$(top_builddir)/src/xml/guththila \
             -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/description \
@@ -39,4 +65,16 @@ AM_CPPFLAGS =	-I$(top_builddir)/src/xml/guththila \
             -I ../../../axiom/include \
             -I ../../../neethi/include \
 			-I $(GTEST_DIR)/include
+
+# Revolutionary Interface Pattern Test Include Paths (HTTP/2 only)
+if WITH_NGHTTP2
+test_http_service_provider_interface_CPPFLAGS = \
+			-I$(top_builddir)/include \
+			-I$(top_builddir)/src/core/engine \
+			-I$(top_builddir)/src/core/transport/http/common \
+			-I ../../../util/include \
+			-I ../../../axiom/include \
+			-I $(GTEST_DIR)/include
+endif
+endif
 

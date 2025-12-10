@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HTTP/2 Pure JSON Test Web Service Configuration (No SOAP/XML dependencies) -->
+<serviceGroup>
+    <service name="TestwsService">
+        <description>
+            Apache Axis2/C HTTP/2 Test Web Service
+            Port of Axis2/Java Spring Boot TestwsService
+            Uses pure json-c library (no XML/SOAP dependencies)
+        </description>
+
+        <serviceClass>testws_service</serviceClass>
+        <parameter name="ServiceClass">libtestws_service</parameter>
+
+        <!-- HTTP/2 transport configuration -->
+        <parameter name="transport.h2">
+            <parameter name="enableHTTP2">true</parameter>
+            <parameter name="enableStreaming">true</parameter>
+            <parameter name="enableMemoryOptimization">true</parameter>
+            <parameter name="maxFrameSize">16384</parameter>
+            <parameter name="maxConcurrentStreams">25</parameter>
+        </parameter>
+
+        <!-- JSON processing configuration - Pure json-c library (no XML/SOAP deps) -->
+        <parameter name="maxJSONPayloadSize">1048576</parameter>
+        <parameter name="jsonProcessingMode">pure-jsonc</parameter>
+
+        <!-- Testing and XSS protection settings -->
+        <parameter name="enableXSSProtection">true</parameter>
+        <parameter name="enableSQLInjectionProtection">true</parameter>
+
+        <!-- HTTP/2 JSON Operation: testXSSProtection -->
+        <operation name="testXSSProtection">
+            <description>
+                Test XSS protection mechanisms.
+                Returns sanitized output and protection status.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/testXSS</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: testSQLInjection -->
+        <operation name="testSQLInjection">
+            <description>
+                Test SQL injection protection mechanisms.
+                Returns sanitized query and protection status.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/testSQL</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: performanceTest -->
+        <operation name="performanceTest">
+            <description>
+                Performance testing with various payload sizes.
+                Returns performance metrics and processing times.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/performanceTest</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: getTestStatus -->
+        <operation name="getTestStatus">
+            <description>
+                Get service testing status and capabilities.
+                Returns testing framework information.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">GET</parameter>
+            <parameter name="httpPath">/status</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+    </service>
+</serviceGroup>

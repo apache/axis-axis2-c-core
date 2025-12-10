@@ -19,8 +19,7 @@ url_test_SOURCES = url_test.cc
 
 url_test_LDADD   =   \
 				$(top_builddir)/src/libaxutil.la \
-				$(top_builddir)/$(GTEST)/libgtest.a \
-				$(top_builddir)/$(GTEST)/libgtest_main.a
+				-lgtest -lgtest_main -lpthread
 
 AM_CPPFLAGS = -I$(top_srcdir)/include \
 			-I ../../../axiom/include \

@@ -13,6 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 noinst_LTLIBRARIES = libaxis2_clientapi.la
+# HTTP/2 Pure JSON Architecture - Conditional SOAP stub inclusion
+# stub.c contains SOAP client stub infrastructure, excluded when HTTP/2 is enabled
+if WITH_NGHTTP2
+libaxis2_clientapi_la_SOURCES = async_result.c \
+								callback.c \
+								listener_manager.c \
+								callback_recv.c \
+								options.c \
+								op_client.c \
+								svc_client.c
+else
 libaxis2_clientapi_la_SOURCES = async_result.c \
 								callback.c \
 								listener_manager.c \
@@ -21,6 +32,7 @@ libaxis2_clientapi_la_SOURCES = async_result.c \
 								options.c \
 								op_client.c \
 								svc_client.c
+endif
 
 libaxis2_clientapi_la_CPPFLAGS = -I$(top_srcdir)/include \
 								 -I$(top_srcdir)/src/core/engine \

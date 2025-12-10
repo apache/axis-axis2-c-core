@@ -1,0 +1,40 @@
+# Apache2 Request Processor Interface Pattern Unit Tests
+
+check_PROGRAMS = test_apache2_request_processor_interface
+
+test_apache2_request_processor_interface_SOURCES = \
+    test_apache2_request_processor_interface.cpp
+
+test_apache2_request_processor_interface_CPPFLAGS = \
+    -I$(top_srcdir)/include \
+    -I$(top_srcdir)/src/core/transport/http/server/apache2 \
+    -I$(top_srcdir)/util/include \
+    -I$(top_srcdir)/axiom/include \
+    @APACHE2INC@ \
+    @APRINC@
+
+test_apache2_request_processor_interface_LDADD = \
+    $(top_builddir)/src/core/transport/http/server/apache2/libaxis2_apache2_request_processor_json_impl.la \
+    $(top_builddir)/src/core/transport/http/server/apache2/libaxis2_apache2_request_processor_soap_impl.la \
+    $(top_builddir)/src/core/transport/http/server/apache2/libaxis2_apache2_request_processor_factory.la \
+    $(top_builddir)/src/libaxis2_engine.la \
+    $(top_builddir)/util/src/libaxutil.la \
+    $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
+    @APACHELIB@ \
+    @APRLIB@ \
+    -lgtest \
+    -lgtest_main \
+    -lpthread
+
+test_apache2_request_processor_interface_LDFLAGS = \
+    -L/usr/local/lib
+
+TESTS = test_apache2_request_processor_interface
+
+# Test data files
+EXTRA_DIST = \
+    test_apache2_request_processor_interface.cpp
+
+# Clean up test outputs
+CLEANFILES = \
+    test_apache2_request_processor.log

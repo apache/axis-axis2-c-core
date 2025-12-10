@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HTTP/2 Pure JSON BigData Service Configuration (No SOAP/XML dependencies) -->
+<serviceGroup>
+    <service name="BigDataH2Service">
+        <description>
+            Apache Axis2/C HTTP/2 Big Data Processing Service
+            Port of Axis2/Java Spring Boot BigDataH2Service
+            Uses pure json-c library (no XML/SOAP dependencies)
+        </description>
+
+        <serviceClass>bigdata_h2_service</serviceClass>
+        <parameter name="ServiceClass">libbigdata_h2_service</parameter>
+
+        <!-- HTTP/2 transport configuration -->
+        <parameter name="transport.h2">
+            <parameter name="enableHTTP2">true</parameter>
+            <parameter name="enableStreaming">true</parameter>
+            <parameter name="enableMemoryOptimization">true</parameter>
+            <parameter name="maxFrameSize">16384</parameter>
+            <parameter name="maxConcurrentStreams">100</parameter>
+        </parameter>
+
+        <!-- JSON processing configuration - Pure json-c library (no XML/SOAP deps) -->
+        <parameter name="maxJSONPayloadSize">104857600</parameter>
+        <parameter name="jsonProcessingMode">pure-jsonc</parameter>
+
+        <!-- Performance settings -->
+        <parameter name="memoryConstraintMB">2048</parameter>
+        <parameter name="timeoutSeconds">300</parameter>
+
+        <!-- HTTP/2 JSON Operation: processBigDataSet -->
+        <operation name="processBigDataSet">
+            <description>
+                Process big data set with HTTP/2 optimization.
+                Accepts pure JSON requests, returns JSON responses.
+                Automatically selects optimal processing mode.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/processBigDataSet</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: getServiceMetadata -->
+        <operation name="getServiceMetadata">
+            <description>
+                Get service metadata and capabilities information.
+                Returns JSON description of service operations.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">GET</parameter>
+            <parameter name="httpPath">/metadata</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+    </service>
+</serviceGroup>

@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Only build tests when Google Test is available
+if GTEST_AVAILABLE
 TESTS = test_description
 noinst_PROGRAMS = test_description
 SUBDIRS =
@@ -24,6 +26,8 @@ test_description_LDADD   =  \
 			../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			$(top_builddir)/neethi/src/libneethi.la \
 			$(top_builddir)/src/core/engine/libaxis2_engine.la \
+			$(top_builddir)/src/core/addr/libaxis2_addr.la \
+			$(top_builddir)/src/core/receivers/libaxis2_receivers.la \
 			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
 			$(top_builddir)/$(GTEST)/libgtest.a \
 			$(top_builddir)/$(GTEST)/libgtest_main.a
@@ -39,4 +43,5 @@ AM_CPPFLAGS =  -I$(top_builddir)/include \
 			-I ../../../util/include \
 			-I ../../../axiom/include \
 			-I $(GTEST_DIR)/include
+endif
 

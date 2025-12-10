@@ -12,14 +12,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-NSUBDIRS = 
-noinst_LTLIBRARIES = libaxis2_http_util.la
+NSUBDIRS =
+lib_LTLIBRARIES = libaxis2_http_util.la
 
-libaxis2_http_util_la_SOURCES = http_transport_utils.c
+libaxis2_http_util_la_SOURCES = http_transport_utils.c axis2_http_service_provider.c
 
 libaxis2_http_util_la_LIBADD=$(top_builddir)/util/src/libaxutil.la \
 			$(top_builddir)/axiom/src/parser/${WRAPPER_DIR}/libaxis2_parser.la\
-			$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
+			$(top_builddir)/axiom/src/om/libaxis2_axiom.la
+
+# REVOLUTIONARY: Service provider pattern eliminates circular dependency with engine 
 
 
 libaxis2_http_util_la_CPPFLAGS = -I$(top_srcdir)/include \
@@ -32,3 +34,21 @@ libaxis2_http_util_la_SOURCES += axis2_json_reader.c
 libaxis2_http_util_la_LIBADD += $(JSON_LIBS)
 libaxis2_http_util_la_CPPFLAGS += $(JSON_CFLAGS)
 endif
+
+# HTTP/2 Pure JSON Architecture - Add HTTP/2-specific transport utilities
+if WITH_NGHTTP2
+libaxis2_http_util_la_SOURCES += axis2_h2_transport_utils.c
+libaxis2_http_util_la_CPPFLAGS += $(NGHTTP2_CFLAGS) $(JSON_CFLAGS)
+endif
+
+# Ensure proper cleanup of libtool artifacts
+CLEANFILES = *.o *.lo *.la
+DISTCLEANFILES = *.o *.lo *.la
+MAINTAINERCLEANFILES = Makefile.in
+
+# Force removal of libtool .libs directory and all contents
+clean-local:
+	rm -rf .libs
+
+distclean-local: clean-local
+	rm -f *.o *.lo *.la

@@ -15,7 +15,7 @@
 SUBDIRS = server client user_guide mtom_caching_callback mtom_sending_callback
 
 dist-hook:
-	rm -rf `find $(distdir)/ -type d -name .svn`
+	rm -rf `find $(distdir)/ -type d -name .git`
 	rm -rf `find $(distdir)/ -type d -name .deps`
 	rm -rf `find $(distdir)/ -type d -name .libs`
 

@@ -412,7 +412,7 @@ TEST_F(TestHTTPTransport, test_json)
             return;
         }
 
-        root_node = axis2_json_reader_get_root_node(json_reader, m_env);
+        root_node = (axiom_node_t *)axis2_json_reader_get_root_node(json_reader, m_env);
         if (!root_node)
         {
             printf("Failed to get root_node");

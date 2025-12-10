@@ -4,19 +4,24 @@
 # The ASF licenses this file to You under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with
 # the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+SUBDIRS =
+
+# Only build tests if gtest is available from source
+if GTEST_AVAILABLE
 TESTS = test_soap
 noinst_PROGRAMS = test_soap
 check_PROGRAMS = test_soap
-SUBDIRS =
 AM_CFLAGS = -g -O2
+
 test_soap_SOURCES = test_soap.cc
 
 test_soap_LDADD   =	$(top_builddir)/../util/src/libaxutil.la \
@@ -29,4 +34,9 @@ AM_CPPFLAGS = -I$(top_srcdir)/include \
             -I$(top_srcdir)/src/parser \
 			-I $(top_srcdir)/../util/include \
 			-I $(GTEST_DIR)/include
-
+else
+# Skip tests when gtest is not available
+TESTS =
+noinst_PROGRAMS =
+check_PROGRAMS =
+endif

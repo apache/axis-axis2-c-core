@@ -1,7 +1,9 @@
 AXIS2/C release process
 ==========================
                             
-1. Get a svn checkout from the trunk.
+1. Get a Git checkout from the master branch.
+   git clone https://github.com/apache/axis2-c.git
+   cd axis2-c
 2. Change the version numbers and update the following files.
       ChangeLog
       NEWS
@@ -132,8 +134,8 @@ AXIS2/C release process
         Copy the release from your home to /www/www.apache.org/dist/ws/axis2-c/
         update the keys (cat KEYS >> /www/www.apache.org/dist/ws/axis2-c/KEYS)
         Move earlier releases to archive.apache.org (/www/archive.apache.org/dist/ws/axis2/c/)
-        Update the site at [WWW] https://svn.apache.org/repos/asf/webservices/axis2/site/c/
-        svn update the site at /www/ws.apache.org/axis2/c
+        Update the site repository at https://github.com/apache/axis2-site
+        Deploy the updated site to /www/ws.apache.org/axis2/c
         Test Main Site Downloads (wait until mirros pickup the distributables, before sending the release note.)
 
 15. When the site is updated announce the release.

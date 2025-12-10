@@ -48,6 +48,7 @@
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
 #include <axis2_relates_to.h>
+/* Include axiom dependencies for full SOAP functionality testing */
 #include <axiom_node.h>
 
 #ifdef __cplusplus
@@ -432,19 +433,18 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Adds a reference parameter in the form of an AXIOM node.
+     * Adds reference parameter to message information headers.
+     * HTTP/2 JSON Architecture: Stub implementation for test compatibility.
      * @param msg_info_headers pointer to message information headers struct
      * @param env pointer to environment struct
-     * @param ref_param pointer to AXIOM node representing reference 
-     * parameter, message information header does not assume ownership of
-     * node
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @param reference_parameter pointer to axiom node representing reference parameter
+     * @return AXIS2_SUCCESS on success, AXIS2_FAILURE otherwise
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_add_ref_param(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
-        axiom_node_t * ref_param);
+        axiom_node_t * reference_parameter);
 
     /**
      * Frees message information header struct.

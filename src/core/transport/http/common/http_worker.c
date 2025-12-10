@@ -108,6 +108,9 @@ axis2_http_worker_process_request(
     axis2_simple_http_svr_conn_t * svr_conn,
     axis2_http_simple_request_t * simple_request)
 {
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "DEBUG: http_worker_process_request ENTRY - simple_request: %p", simple_request);
+
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axutil_stream_t *request_body = NULL;
@@ -777,9 +780,11 @@ axis2_http_worker_process_request(
             }
             axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANPORT_IS_APPLICATION_CLIENT_SIDE, 
                     property);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "🚨 HTTP_WORKER DEBUG: About to call http_transport_utils_process_http_post_request - TIMESTAMP_17:01 🚨");
             status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action_str,
                 url_ext_form);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "🚨 HTTP_WORKER DEBUG: Returned from http_transport_utils_process_http_post_request with status=%d - TIMESTAMP_17:01 🚨", status);
 
         }
         

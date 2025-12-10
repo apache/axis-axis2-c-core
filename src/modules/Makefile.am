@@ -12,4 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS = mod_addr mod_log
+# REVOLUTIONARY HTTP/2 JSON: Skip all SOAP-only modules
+# HTTP/2 JSON bypasses all SOAP modules - direct response from mod_axis2
+# SUBDIRS = mod_addr mod_log
+
+# REVOLUTIONARY: All modules skipped for HTTP/2 JSON ultra-minimal build
+# - mod_addr (SOAP addressing - depends on eliminated engine library)
+# - mod_log (SOAP logging - depends on eliminated engine library)
+SUBDIRS =

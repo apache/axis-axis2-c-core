@@ -17,6 +17,7 @@
 
 #include <axis2_msg_info_headers.h>
 #include <axutil_string.h>
+#include <axiom_node.h>
 
 struct axis2_msg_info_headers
 {
@@ -309,20 +310,27 @@ axis2_msg_info_headers_get_all_ref_params(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_add_ref_param(
-    struct axis2_msg_info_headers * msg_info_headers,
+    struct axis2_msg_info_headers *msg_info_headers,
     const axutil_env_t * env,
-    axiom_node_t * ref_param)
+    axiom_node_t * reference_parameter)
 {
-    if(!(msg_info_headers->ref_params))
+    if(!msg_info_headers || !env)
     {
-        msg_info_headers->ref_params = axutil_array_list_create(env, 10);
-        if(!(msg_info_headers->ref_params))
-            return AXIS2_FAILURE;
+        return AXIS2_FAILURE;
     }
 
-    if(ref_param)
+    if(!msg_info_headers->ref_params)
     {
-        return axutil_array_list_add(msg_info_headers->ref_params, env, ref_param);
+        msg_info_headers->ref_params = axutil_array_list_create(env, 0);
+        if(!msg_info_headers->ref_params)
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+
+    if(reference_parameter)
+    {
+        return axutil_array_list_add(msg_info_headers->ref_params, env, reference_parameter);
     }
 
     return AXIS2_SUCCESS;

@@ -55,8 +55,10 @@ extern "C"
     /** Type name for struct axis2_transport_out_desc */
     typedef struct axis2_transport_out_desc axis2_transport_out_desc_t;
 
+    /** Forward declarations to resolve circular includes */
     struct axis2_phase;
     struct axis2_transport_sender;
+    typedef struct axis2_transport_sender axis2_transport_sender_t;
 
     /**
      * Frees transport out description.

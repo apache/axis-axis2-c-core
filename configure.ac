@@ -18,7 +18,7 @@ AC_PREREQ(2.59)
 AC_INIT(axis2c-src, 2.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE([tar-ustar subdir-objects foreign])
 AC_PREFIX_DEFAULT(/usr/local/axis2c)
 
 dnl Checks for programs.
@@ -391,12 +391,29 @@ AC_ARG_WITH(apr,
         aprinc="-I/usr/include/apr-0"
     elif test -d '/usr/include/apr-1'; then
         aprinc="-I/usr/include/apr-1"
+    elif test -d '/usr/include/apr-1.0'; then
+        aprinc="-I/usr/include/apr-1.0"
     else
         AC_MSG_ERROR(could not find apr. stop)
     fi
     ;;
   esac ],
-  AC_MSG_RESULT(no)
+  [
+  AC_MSG_RESULT(no, checking for APR automatically)
+  dnl Auto-detect APR when --with-apr is not specified
+  if test -d '/usr/include/apr-0'; then
+      aprinc="-I/usr/include/apr-0"
+      AC_MSG_NOTICE([APR found: /usr/include/apr-0])
+  elif test -d '/usr/include/apr-1'; then
+      aprinc="-I/usr/include/apr-1"
+      AC_MSG_NOTICE([APR found: /usr/include/apr-1])
+  elif test -d '/usr/include/apr-1.0'; then
+      aprinc="-I/usr/include/apr-1.0"
+      AC_MSG_NOTICE([APR found: /usr/include/apr-1.0])
+  else
+      AC_MSG_NOTICE([APR not found in standard locations, Apache2 module may not build])
+  fi
+  ]
 )
 
 AC_MSG_CHECKING(whether to use use the Google test framework)
@@ -604,6 +621,81 @@ AC_ARG_ENABLE(json, [  --enable-json
   CPPFLAGS="$CPPFLAGS"
 )
 
+AC_MSG_CHECKING(whether to enable HTTP/2 transport)
+AC_ARG_ENABLE(http2, [  --enable-http2
+                          enable HTTP/2 transport support (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    http2_enabled=false
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    http2_enabled=true
+
+    dnl Check for nghttp2 library
+    PKG_CHECK_MODULES([NGHTTP2], [libnghttp2 >= 1.0.0], [
+        CFLAGS="$CFLAGS $NGHTTP2_CFLAGS -DWITH_NGHTTP2"
+        CPPFLAGS="$CPPFLAGS $NGHTTP2_CFLAGS -DWITH_NGHTTP2"
+        LDFLAGS="$LDFLAGS $NGHTTP2_LIBS"
+    ], [
+        AC_MSG_ERROR([
+HTTP/2 support requires libnghttp2 >= 1.0.0 but it was not found.
+
+Please install the required packages:
+
+Ubuntu/Debian:
+    sudo apt install libnghttp2-dev libnghttp2-14 libssl-dev
+
+RedHat/CentOS:
+    sudo yum install libnghttp2-devel openssl-devel
+
+Fedora:
+    sudo dnf install libnghttp2-devel openssl-devel
+
+Alternatively, disable HTTP/2 support by removing --enable-http2 from configure.
+
+For more help, see: HTTP2_TROUBLESHOOTING.md
+        ])
+    ])
+
+    dnl Check for OpenSSL (required for HTTPS/HTTP2)
+    PKG_CHECK_MODULES([OPENSSL], [openssl >= 1.0.0], [
+        CFLAGS="$CFLAGS $OPENSSL_CFLAGS"
+        CPPFLAGS="$CPPFLAGS $OPENSSL_CFLAGS"
+        LDFLAGS="$LDFLAGS $OPENSSL_LIBS"
+    ], [
+        AC_CHECK_LIB([ssl], [SSL_library_init], [], [
+            AC_MSG_ERROR([
+HTTP/2 support requires OpenSSL >= 1.0.0 for HTTPS and ALPN negotiation.
+
+Please install OpenSSL development packages:
+
+Ubuntu/Debian:
+    sudo apt install libssl-dev
+
+RedHat/CentOS:
+    sudo yum install openssl-devel
+
+Fedora:
+    sudo dnf install openssl-devel
+
+For more help, see: HTTP2_TROUBLESHOOTING.md
+            ])
+        ])
+        AC_CHECK_LIB([crypto], [EVP_EncryptInit], [], [
+            AC_MSG_ERROR([OpenSSL crypto library is required for HTTP/2 support.])
+        ])
+    ])
+
+    AC_MSG_NOTICE([HTTP/2 transport enabled with nghttp2 and OpenSSL support])
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  http2_enabled=false
+)
+
+
 AC_MSG_CHECKING(whether to build native WSDL2C generator)
 AC_ARG_ENABLE(native-codegen, [  --enable-native-codegen
                           build native C WSDL2C code generator (default=yes)],
@@ -647,6 +739,23 @@ AC_SUBST(DICLIENT_DIR)
 AC_SUBST(TESTDIR)
 AC_SUBST(GTEST_DIR)
 AC_SUBST(GTEST)
+
+dnl Check if gtest should be included as a subdirectory
+dnl Only include it if we have --with-gtest and the directory has a proper Makefile
+gtest_available=false
+if test -n "$GTEST" && test -d "$srcdir/gtest" && test -f "$srcdir/gtest/Makefile.am"; then
+    dnl Check if gtest will be properly configured
+    if test -n "$GTEST_DIR" && test -d "$GTEST_DIR"; then
+        gtest_available=true
+        AC_MSG_NOTICE([GTest will be built as subdirectory])
+    else
+        AC_MSG_NOTICE([GTest configured but source directory not found: $GTEST_DIR])
+    fi
+else
+    AC_MSG_NOTICE([GTest not configured as subdirectory])
+fi
+
+AM_CONDITIONAL(GTEST_AVAILABLE, test x$gtest_available = xtrue)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
 AC_SUBST(NTLM_CFLAGS)
@@ -666,6 +775,9 @@ AC_SUBST(NATIVE_CODEGEN_DIR)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_JSON_ENABLED, test x$json_enabled = xtrue)
+AM_CONDITIONAL(AXIS2_HTTP2_ENABLED, test x$http2_enabled = xtrue)
+AM_CONDITIONAL(WITH_NGHTTP2, test x$http2_enabled = xtrue)
+AM_CONDITIONAL(AXIS2_APACHE2_ENABLED, test x$APACHE2BUILD = xapache2)
 AM_CONDITIONAL(AXIS2_NATIVE_CODEGEN_ENABLED, test x$native_codegen_enabled = xtrue)
 
 export NTLM_LDFLAGS
@@ -719,7 +831,6 @@ AC_CONFIG_FILES([Makefile \
     src/modules/Makefile \
     src/modules/mod_addr/Makefile \
     src/modules/mod_log/Makefile \
-    gtest/Makefile \
     test/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
@@ -740,9 +851,25 @@ AC_CONFIG_FILES([Makefile \
     ides/Makefile \
     include/Makefile \
     axis2c.pc \
+    gtest/Makefile \
 	dist.sh \
 	bindist.sh \
 	axis2c_build.sh
     ])
-    
+
+dnl gtest/Makefile is now configured unconditionally above
+dnl The GTEST_AVAILABLE conditional only controls whether it's included in SUBDIRS
+
+dnl Conditionally configure HTTP/2 transport subdirectories
+if test x$http2_enabled = xtrue; then
+    AC_CONFIG_FILES([
+        src/core/transport/h2/Makefile
+        src/core/transport/h2/util/Makefile
+        src/core/transport/h2/sender/Makefile
+        src/core/transport/h2/server/Makefile
+        src/core/transport/h2/server/apache2/Makefile
+        src/core/transport/h2/test/Makefile
+    ])
+fi
+
 AC_OUTPUT

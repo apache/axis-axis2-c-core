@@ -45,7 +45,7 @@ extern "C"
 
 #include <axis2_defines.h>
 #include <axis2_const.h>
-#include <axis2_svc_skeleton.h>
+/* HTTP/2 Pure JSON Architecture - axis2_svc_skeleton.h removed (SOAP header) */
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
 #include <axis2_svr_callback.h>
@@ -125,19 +125,7 @@ extern "C"
         struct axis2_msg_ctx *in_msg_ctx,
         struct axis2_msg_ctx *out_msg_ctx);
 
-    /**
-     * this will create a new service skeleton object
-     * @param msg_recv pointer to message receiver
-     * @param env pointer to environment struct
-     * @param msg_ctx pointer to message context
-     * @return service skeleton object
-     */
-    AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL
-
-    axis2_msg_recv_make_new_svc_obj(
-        axis2_msg_recv_t * msg_recv,
-        const axutil_env_t * env,
-        struct axis2_msg_ctx *msg_ctx);
+    /* HTTP/2 Pure JSON Architecture - SOAP service skeleton function removed */
 
     /**
      * This will return the service skeleton object

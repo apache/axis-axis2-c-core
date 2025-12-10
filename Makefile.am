@@ -22,7 +22,15 @@ wsdl2cdir=$(prefix)/bin/tools/wsdl2c
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
 
-SUBDIRS = $(GTEST) util $(GUTHTHILA_DIR) axiom neethi src include ides tools/tcpmon tools/md5 tools/codegen $(TESTDIR)
+# Conditionally include gtest only if it has a proper Makefile
+if GTEST_AVAILABLE
+GTEST_SUBDIR = gtest
+else
+GTEST_SUBDIR =
+endif
+
+# HTTP/2 uses pure JSON architecture while HTTP/1.1 maintains SOAP support via axiom
+SUBDIRS = $(GTEST_SUBDIR) util $(GUTHTHILA_DIR) axiom neethi src include ides tools/tcpmon tools/md5 tools/codegen $(TESTDIR)
 include_HEADERS=$(top_srcdir)/include/*.h
 # Install configuration files and documentation
 # For in-tree builds, skip installing files that are already in the correct location
@@ -31,10 +39,17 @@ data_DATA= samples/server/axis2.xml
 logs_DATA=
 docs_DATA= 
 wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README
-EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples gtest
+# Conditionally include gtest in distribution only if it's available
+if GTEST_AVAILABLE
+GTEST_EXTRA_DIST = gtest
+else
+GTEST_EXTRA_DIST =
+endif
+
+EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples $(GTEST_EXTRA_DIST)
 
 dist-hook:
-	rm -rf `find $(distdir)/ -type d -name .svn`
+	rm -rf `find $(distdir)/ -type d -name .git`
 	rm -rf `find $(distdir)/ -type f -name *.la`
 	rm -rf `find $(distdir)/ -type f -name *.o`
 	rm -rf `find $(distdir)/ -type f -name *.lo`
@@ -63,10 +78,27 @@ bindist: $(bin_PROGRAMS)
 
 # Install documentation and license files conditionally to prevent "same file" errors
 # during in-tree development builds. Uses test -ef to check if files are identical.
+# Override distclean-recursive to handle subdirectories that may lack distclean targets gracefully
+# This prevents the recurring "No rule to make target 'distclean'" errors
+distclean-recursive:
+	@echo "Performing robust recursive distclean..."
+	@for subdir in $(SUBDIRS); do \
+		if [ -f $$subdir/Makefile ]; then \
+			echo "Running distclean in $$subdir"; \
+			$(MAKE) -C $$subdir distclean || echo "Warning: distclean failed in $$subdir, continuing..."; \
+		elif [ -f $$subdir/Makefile.in ]; then \
+			echo "$$subdir has Makefile.in but no Makefile - cleaning manually"; \
+			rm -f $$subdir/Makefile $$subdir/config.log $$subdir/config.status $$subdir/config.h || true; \
+			rm -rf $$subdir/.deps $$subdir/.libs $$subdir/_libs || true; \
+		else \
+			echo "$$subdir lacks proper autotools setup - skipping distclean"; \
+		fi; \
+	done
+
 install-data-hook:
 	mkdir -p $(DESTDIR)$(docsdir)
 	cp -r docs $(DESTDIR)$(docsdir)
-	rm -rf `find $(DESTDIR)$(docsdir)/ -type d -name .svn`
+	rm -rf `find $(DESTDIR)$(docsdir)/ -type d -name .git`
 	rm $(DESTDIR)$(docsdir)/README
 	@for file in README INSTALL CREDITS COPYING NEWS NOTICE AUTHORS; do \
 		if [ ! "$(abs_srcdir)/$$file" -ef "$(DESTDIR)$(datadir)/$$file" ]; then \

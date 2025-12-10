@@ -43,9 +43,9 @@
   <siteAddress>axis.apache.org/axis2/c/core/</siteAddress>
   <siteDirectory>/www/axis.apache.org/axis2/c/core</siteDirectory>
   <repository>
-       <connection>scm|svn|http://svn.apache.org/repos/asf/axis/axis2/c/core/trunk</connection>
-       <developerConnection>scm|svn|https://svn.apache.org/repos/asf/axis/axis2/c/core/trunk</developerConnection>
-       <url>https://svn.apache.org/repos/asf/axis/axis2/c/core/trunk</url>
+       <connection>scm|git|https://github.com/apache/axis2-c.git</connection>
+       <developerConnection>scm|git|https://github.com/apache/axis2-c.git</developerConnection>
+       <url>https://github.com/apache/axis2-c</url>
        </repository>
   <mailingLists>
     <mailingList>

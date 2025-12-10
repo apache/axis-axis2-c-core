@@ -36,6 +36,7 @@
 #include <axutil_string_util.h>
 #include <axiom_mime_part.h>
 #include <axiom_mtom_sending_callback.h>
+#include <axis2_apache2_request_processor.h>
 
 #define READ_SIZE  2048
 
@@ -209,6 +210,10 @@ axis2_apache2_worker_process_request(
     axis2_char_t *accept_header_value = NULL;
     axis2_char_t *accept_charset_header_value = NULL;
     axis2_char_t *accept_language_header_value = NULL;
+    /* Interface Pattern Integration Variables */
+    axis2_apache2_request_processor_t *request_processor = NULL;
+    axis2_apache2_processing_context_t *processing_ctx = NULL;
+    axis2_bool_t use_interface_processing = AXIS2_FALSE;
     axis2_char_t *content_language_header_value = NULL;
     axis2_bool_t do_mtom = AXIS2_FALSE;
     axutil_array_list_t *mime_parts = NULL;
@@ -324,6 +329,65 @@ axis2_apache2_worker_process_request(
     apache2_out_transport_info = axis2_apache2_out_transport_info_create(env, request);
     axis2_msg_ctx_set_out_transport_info(msg_ctx, env, &(apache2_out_transport_info->out_transport));
 
+    /* ===== INTERFACE PATTERN INTEGRATION POINT ===== */
+
+    /* Try interface-based processing first (zero risk approach) */
+    request_processor = axis2_apache2_request_processor_factory_create(env, request);
+    if (request_processor)
+    {
+        /* Check if this request should use new interface processing */
+        if (axis2_apache2_request_processor_is_json_http2_request(request) ||
+            strstr(request_processor->get_protocol_id(request_processor, env), "JSON"))
+        {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[APACHE2_WORKER] Using interface-based processing for %s request",
+                request_processor->get_protocol_id(request_processor, env));
+
+            use_interface_processing = AXIS2_TRUE;
+
+            /* Create thread-isolated processing context */
+            processing_ctx = request_processor->create_processing_context(
+                request_processor, env, "http2-stream");
+
+            if (processing_ctx)
+            {
+                /* Process Accept headers using thread-safe implementation */
+                axis2_apache2_processing_result_t result =
+                    request_processor->process_accept_headers(
+                        request_processor, env, request, msg_ctx, processing_ctx);
+
+                if (result != AXIS2_APACHE2_PROCESSING_SUCCESS)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[APACHE2_WORKER_ERROR] Interface processing failed - falling back to legacy");
+                    use_interface_processing = AXIS2_FALSE;
+                }
+            }
+            else
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[APACHE2_WORKER_ERROR] Failed to create processing context - falling back to legacy");
+                use_interface_processing = AXIS2_FALSE;
+            }
+        }
+        else
+        {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "[APACHE2_WORKER_LEGACY] Request does not qualify for interface processing - using legacy");
+        }
+    }
+    else
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "[APACHE2_WORKER_LEGACY] No interface processor available - using legacy processing");
+    }
+
+    /* ===== ORIGINAL CODE PATH (Backward Compatibility) ===== */
+    if (!use_interface_processing)
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "[APACHE2_WORKER_LEGACY] Using legacy Accept header processing for backward compatibility");
+
     accept_header_value = (axis2_char_t *)apr_table_get(request->headers_in,
         AXIS2_HTTP_HEADER_ACCEPT);
     if(accept_header_value)
@@ -433,6 +497,8 @@ axis2_apache2_worker_process_request(
                 accept_language_record_list);
         }
     }
+    }
+    /* ===== END ORIGINAL CODE PATH ===== */
 
     soap_action_header_txt = (axis2_char_t *)apr_table_get(request->headers_in,
         AXIS2_HTTP_HEADER_SOAP_ACTION);
@@ -654,14 +720,56 @@ axis2_apache2_worker_process_request(
     else if(M_POST == request->method_number || M_PUT == request->method_number)
     {
         /*axis2_status_t status = AXIS2_FAILURE;*/
-        if(M_POST == request->method_number)
+
+        /* ===== INTERFACE PATTERN: REQUEST BODY PROCESSING ===== */
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "🔍 APACHE2_WORKER: Body processing conditions - use_interface=%d, processor=%p, ctx=%p, method=%d",
+            use_interface_processing, request_processor, processing_ctx, request->method_number);
+
+        if (use_interface_processing && request_processor && processing_ctx && M_POST == request->method_number)
         {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[APACHE2_WORKER] Using interface-based POST request body processing");
+
+            /* Use interface pattern for thread-safe JSON HTTP/2 processing */
+            axis2_apache2_processing_result_t result = request_processor->process_request_body(
+                request_processor, env, request, msg_ctx, processing_ctx);
+
+            if (result == AXIS2_APACHE2_PROCESSING_SUCCESS)
+            {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[APACHE2_WORKER_SUCCESS] Interface-based request body processing succeeded");
+                status = AXIS2_SUCCESS;
+            }
+            else if (result == AXIS2_APACHE2_PROCESSING_NOT_HANDLED)
+            {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[APACHE2_WORKER_DELEGATE] Interface processor delegating to original logic");
+                /* Fallback to original processing */
+                status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
+                    request_body, out_stream, content_type, content_length, soap_action,
+                    (axis2_char_t *)url_external_form);
+            }
+            else
+            {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[APACHE2_WORKER_ERROR] Interface-based request body processing failed");
+                status = AXIS2_FAILURE;
+            }
+        }
+        /* ===== ORIGINAL LOGIC: FALLBACK FOR NON-INTERFACE REQUESTS ===== */
+        else if(M_POST == request->method_number)
+        {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[APACHE2_WORKER_LEGACY] Using original POST request processing");
             status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action,
                 (axis2_char_t *)url_external_form);
         }
         else
         {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[APACHE2_WORKER_LEGACY] Using original PUT request processing");
             status = axis2_http_transport_utils_process_http_put_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action,
                 (axis2_char_t *)url_external_form);
@@ -1389,6 +1497,16 @@ axis2_apache2_worker_process_request(
     {
         ap_rwrite(body_string, body_string_len, request);
         body_string = NULL;
+    }
+
+    /* ===== INTERFACE PATTERN CLEANUP ===== */
+    if (processing_ctx && request_processor)
+    {
+        request_processor->free_processing_context(request_processor, env, processing_ctx);
+    }
+    if (request_processor)
+    {
+        request_processor->free(request_processor, env);
     }
 
     if (request_body)

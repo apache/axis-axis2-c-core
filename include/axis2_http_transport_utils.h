@@ -35,17 +35,29 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axutil_env.h>
+/* REVOLUTIONARY: Conditional STAX include - only for SOAP parsing */
+#ifndef HTTP2_JSON_ONLY_MODE
 #include <axiom_stax_builder.h>
+#endif
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
 #include <axutil_hash.h>
+/* REVOLUTIONARY: Conditional axiom element include - only for SOAP processing */
+#ifndef HTTP2_JSON_ONLY_MODE
 #include <axiom_element.h>
+#endif
 #include <axutil_stream.h>
+/* REVOLUTIONARY: Conditional SOAP envelope - needed for compatibility when available */
+#ifndef HTTP2_JSON_ONLY_MODE
 #include <axiom_soap_envelope.h>
+#endif
 #include <axutil_http_chunked_stream.h>
 #include <axis2_http_out_transport_info.h>
 #include <axutil_url.h>
+/* REVOLUTIONARY: Conditional MTOM include - only for SOAP attachments */
+#ifndef HTTP2_JSON_ONLY_MODE
 #include <axiom_mtom_sending_callback.h>
+#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -337,20 +349,24 @@ extern "C"
         axis2_conf_ctx_t * conf_ctx,
         axutil_hash_t * request_params);
 
+    /* REVOLUTIONARY: Conditional STAX function - only for SOAP parsing */
+#ifndef HTTP2_JSON_ONLY_MODE
     AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
-
     axis2_http_transport_utils_select_builder_for_mime(
         const axutil_env_t * env,
         axis2_char_t * request_uri,
         axis2_msg_ctx_t * msg_ctx,
         axutil_stream_t * in_stream,
         axis2_char_t * content_type);
+#endif
 
+    /* REVOLUTIONARY: Conditional MTOM function - only for SOAP attachments */
+#ifndef HTTP2_JSON_ONLY_MODE
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axis2_http_transport_utils_do_write_mtom(
         const axutil_env_t * env,
         axis2_msg_ctx_t * msg_ctx);
+#endif
 
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 
@@ -437,18 +453,22 @@ extern "C"
         const axutil_env_t * env,
         axis2_char_t * request_uri);
 
+    /* REVOLUTIONARY: Conditional SOAP message creation - only when SOAP envelope available */
+#ifndef HTTP2_JSON_ONLY_MODE
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axis2_http_transport_utils_create_soap_msg(
         const axutil_env_t * env,
         axis2_msg_ctx_t * msg_ctx,
         const axis2_char_t * soap_ns_uri);
+#endif
 
 	AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
 	axis2_http_transport_utils_process_accept_headers(
 		const axutil_env_t *env,
 		axis2_char_t *accept_value);
 
+    /* REVOLUTIONARY: Conditional MTOM functions - only for SOAP attachments */
+#ifndef HTTP2_JSON_ONLY_MODE
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_transport_utils_send_mtom_message(
         axutil_http_chunked_stream_t * chunked_stream,
@@ -456,21 +476,25 @@ extern "C"
         axutil_array_list_t *mime_parts,
         axis2_char_t *sending_callback_name);
 
-    AXIS2_EXTERN void AXIS2_CALL 
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_http_transport_utils_destroy_mime_parts(
         axutil_array_list_t *mime_parts,
         const axutil_env_t *env);
 
-    AXIS2_EXTERN void *AXIS2_CALL 
+    AXIS2_EXTERN void *AXIS2_CALL
         axis2_http_transport_utils_initiate_callback(
         const axutil_env_t *env,
         axis2_char_t *callback_name,
         void *user_param,
         axiom_mtom_sending_callback_t **callback);
+#endif
 
+    /* REVOLUTIONARY: Conditional MTOM callback function - only for SOAP attachments */
+#ifndef HTTP2_JSON_ONLY_MODE
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL axis2_http_transport_utils_is_callback_required(
         const axutil_env_t *env,
         axutil_array_list_t *mime_parts);
+#endif
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_transport_utils_get_session_id_from_cookie(

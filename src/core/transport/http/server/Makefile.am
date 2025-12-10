@@ -12,5 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS=@APACHE2BUILD@ simple_axis2_server ${CGI_DIR}
+# REVOLUTIONARY HTTP/2 JSON: Only Apache server needed for production HTTP/2 JSON system
+SUBDIRS=@APACHE2BUILD@ ${CGI_DIR}
+
+# REVOLUTIONARY: simple_axis2_server eliminated - depends on eliminated HTTP sender library
+# HTTP/2 JSON system only needs Apache integration (mod_axis2)
 EXTRA_DIST=IIS CGI

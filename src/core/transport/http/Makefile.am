@@ -12,4 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS = sender receiver server
+# REVOLUTIONARY HTTP/2 JSON: Minimal HTTP transport for Option B dependency resolution
+# Build only components that engine needs - server built separately after engine
+SUBDIRS = util common
+
+# Option B: Minimal HTTP transport to resolve circular dependencies
+# util - HTTP transport utilities (needed by engine)
+# common - HTTP common functions (needed by engine)
+# server - Apache module (mod_axis2.so) will be built after engine in main SUBDIRS

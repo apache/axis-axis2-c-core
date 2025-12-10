@@ -233,24 +233,42 @@ axis2_rest_disp_find_op(
 
     if(!op)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "❌ REST DISP: No operation found - starting parameter cleanup (POTENTIAL ERROR SOURCE!)");
         if(param_keys)
         {
-            for(i = 0; i < axutil_array_list_size(param_keys, env); i++)
+            int keys_size = axutil_array_list_size(param_keys, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "🎯 REST DISP CLEANUP: param_keys array size=%d - starting cleanup loop", keys_size);
+            for(i = 0; i < keys_size; i++)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "🎯 REST DISP CLEANUP: Getting param_keys[%d] from array of size %d", i, keys_size);
                 void *value = axutil_array_list_get(param_keys, env, i);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "🎯 REST DISP CLEANUP: Got param_keys[%d] = %p", i, value);
                 AXIS2_FREE(env->allocator, value);
             }
             axutil_array_list_free(param_keys, env);
         }
         if(param_values)
         {
-            for(i = 0; i < axutil_array_list_size(param_values, env); i++)
+            int values_size = axutil_array_list_size(param_values, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "🎯 REST DISP CLEANUP: param_values array size=%d - starting cleanup loop", values_size);
+            for(i = 0; i < values_size; i++)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "🎯 REST DISP CLEANUP: Getting param_values[%d] from array of size %d", i, values_size);
                 void *value = axutil_array_list_get(param_values, env, i);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "🎯 REST DISP CLEANUP: Got param_values[%d] = %p", i, value);
                 AXIS2_FREE(env->allocator, value);
             }
             axutil_array_list_free(param_values, env);
         }
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "❌ REST DISP: Parameter cleanup complete - returning NULL");
         return NULL;
     }
 

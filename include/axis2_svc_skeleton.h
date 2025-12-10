@@ -1,51 +1,48 @@
-
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef AXIS2_SVC_SKELETON_H
 #define AXIS2_SVC_SKELETON_H
 
-/**
- * @defgroup axis2_soc_api service API
- * @ingroup axis2
- * @{
- * @}
+/*
+ * Surgical Conditional Compilation - Service Skeleton Support
+ *
+ * HTTP/2 JSON mode: Minimal definitions for compatibility
+ * HTTP/1.1 SOAP mode: Full skeleton support with axiom
  */
 
-/**
- * @defgroup axis2_svc_skeleton service skeleton
- * @ingroup axis2_svc_api
- * service skeleton API should be implemented by all services
- * that are to be deployed with Axis2/C engine.
- * @{
- */
-
-/**
- * @file axis2_svc_skeleton.h
- */
-
+#ifndef WITH_NGHTTP2
+/* HTTP/1.1 SOAP mode - Full service skeleton support */
 #include <axiom_node.h>
 #include <axutil_array_list.h>
 #include <axis2_msg_ctx.h>
+#else
+/* HTTP/2 JSON mode - Minimal compatibility definitions */
+#include <axis2_const.h>
+#include <axis2_defines.h>
+#endif
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+#ifndef WITH_NGHTTP2
+/* HTTP/1.1 SOAP mode - Full service skeleton definitions */
 
     /** Type name for struct axis2_svc_skeleton_ops */
     typedef struct axis2_svc_skeleton_ops axis2_svc_skeleton_ops_t;
@@ -54,129 +51,81 @@ extern "C"
     typedef struct axis2_svc_skeleton axis2_svc_skeleton_t;
 
     /**
-     * service skeleton ops struct.
-     * Encapsulator struct for operations of axis2_svc_skeleton.
+     * Service skeleton operations struct
      */
     struct axis2_svc_skeleton_ops
     {
+        /**
+         * Invoke method
+         */
+        axiom_node_t* (AXIS2_CALL *invoke)(
+            axis2_svc_skeleton_t *svc_skeleton,
+            const axutil_env_t *env,
+            axiom_node_t *node,
+            axis2_msg_ctx_t *msg_ctx);
 
         /**
-         * Initializes the service implementation.
-         * @param svc_skeleton pointer to svc_skeleton struct
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * On fault method
          */
-        int(
-            AXIS2_CALL
-            * init)(
-                axis2_svc_skeleton_t * svc_skeleton,
-                const axutil_env_t * env);
+        axiom_node_t* (AXIS2_CALL *on_fault)(
+            axis2_svc_skeleton_t *svc_skeleton,
+            const axutil_env_t *env,
+            axiom_node_t *node);
 
         /**
-         * Invokes the service. This function should be used to call up the
-         * functions implementing service operations.
-         * @param svc_skeli pointer to svc_skeli struct
-         * @param env pointer to environment struct
-         * @param node pointer to node struct
-         * @param msg_ctx pointer to message context struct
-         * @return pointer to AXIOM node resulting from the invocation. 
-         * In case of one way operations, NULL would be returned with 
-         * status in environment error set to AXIS2_SUCCESS. On error
-         * NULL would be returned with error status set to AXIS2_FAILURE
+         * Free method
          */
-        axiom_node_t *(
-            AXIS2_CALL
-            * invoke)(
-                axis2_svc_skeleton_t * svc_skeli,
-                const axutil_env_t * env,
-                axiom_node_t * node,
-                axis2_msg_ctx_t * msg_ctx);
+        int (AXIS2_CALL *free)(
+            axis2_svc_skeleton_t *svc_skeleton,
+            const axutil_env_t *env);
 
         /**
-         * This method would be called if a fault is detected.
-         * @param svc_skeli pointer to svc_skeli struct
-         * @param env pointer to environment struct
-         * @param node pointer to node struct
-         * @return pointer to AXIOM node reflecting the fault, NULL on error
+         * Init method
          */
-        axiom_node_t *(
-            AXIS2_CALL
-            * on_fault)(
-                axis2_svc_skeleton_t * svc_skeli,
-                const axutil_env_t * env,
-                axiom_node_t * node);
-
-        /**
-         * Frees service implementation.
-         * @param svc_skeli pointer to svc_skeli struct
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        int(
-            AXIS2_CALL
-            * free)(
-                axis2_svc_skeleton_t * svc_skeli,
-                const axutil_env_t * env);
-
-        /**
-         * Initializes the service implementation.
-         * @param svc_skeleton pointer to svc_skeleton struct
-         * @param env pointer to environment struct
-         * @param conf pointer to axis2c configuration struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        int(
-            AXIS2_CALL
-            * init_with_conf)(
-                axis2_svc_skeleton_t * svc_skeleton,
-                const axutil_env_t * env,
-                struct axis2_conf * conf);
+        int (AXIS2_CALL *init)(
+            axis2_svc_skeleton_t *svc_skeleton,
+            const axutil_env_t *env);
     };
 
     /**
-     * service skeleton struct.
+     * Service skeleton struct
      */
     struct axis2_svc_skeleton
     {
-
         /** operations of service skeleton */
-        const axis2_svc_skeleton_ops_t *ops;
+        axis2_svc_skeleton_ops_t *ops;
 
-        /** Array list of functions, implementing the service operations */
+        /** function array for operations */
         axutil_array_list_t *func_array;
     };
 
-    /*************************** Function macros **********************************/
+    /** Macro to invoke service skeleton */
+    #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) \
+        ((svc_skeleton)->ops->invoke(svc_skeleton, env, node, msg_ctx))
 
-    /** Initialize the svc skeleton.
-        @sa axis2_svc_skeleton_ops#init */
-#define AXIS2_SVC_SKELETON_INIT(svc_skeleton, env) \
-      ((svc_skeleton)->ops->init (svc_skeleton, env))
+    /** Macro to call on_fault on service skeleton */
+    #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
+        ((svc_skeleton)->ops->on_fault(svc_skeleton, env, node))
 
-    /** Initialize the svc skeleton with axis2c configuration struct.
-        @sa axis2_svc_skeleton_ops#init_with_conf */
-#define AXIS2_SVC_SKELETON_INIT_WITH_CONF(svc_skeleton, env, conf) \
-      ((svc_skeleton)->ops->init_with_conf (svc_skeleton, env, conf))
+    /** Macro to free service skeleton */
+    #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
+        ((svc_skeleton)->ops->free(svc_skeleton, env))
 
-    /** Frees the svc skeleton.
-        @sa axis2_svc_skeleton_ops#free */
-#define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
-      ((svc_skeleton)->ops->free (svc_skeleton, env))
+#else
+/* HTTP/2 JSON mode - Minimal compatibility definitions */
 
-    /** Invokes axis2 service skeleton.
-        @sa axis2_svc_skeleton_ops#invoke */
-#define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) \
-      ((svc_skeleton)->ops->invoke (svc_skeleton, env, node, msg_ctx))
+    /** Stub type definition for HTTP/2 JSON compatibility */
+    typedef void axis2_svc_skeleton_t;
 
-    /** Called on fault.
-        @sa axis2_svc_skeleton_ops#on_fault */
-#define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
-      ((svc_skeleton)->ops->on_fault (svc_skeleton, env, node))
+    /** Stub macros for HTTP/2 JSON compatibility */
+    #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) NULL
+    #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) NULL
+    #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) AXIS2_SUCCESS
 
-    /** @} */
+#endif /* WITH_NGHTTP2 */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* AXIS2_SVC_SKELETON_H */
+#endif /* AXIS2_SVC_SKELETON_H */

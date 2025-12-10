@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Only build tests when Google Test is available
+if GTEST_AVAILABLE
 TESTS = test_deployment
 noinst_PROGRAMS = test_deployment
 SUBDIRS =
@@ -40,3 +42,4 @@ AM_CPPFLAGS = -I ../../../include \
             -I ../../../axiom/include \
             -I ../../../neethi/include \
 			-I $(GTEST_DIR)/include
+endif

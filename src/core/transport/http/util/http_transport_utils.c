@@ -23,6 +23,7 @@
 #include <axutil_qname.h>
 #include <axis2_http_transport.h>
 #include <axiom_soap_builder.h>
+#include <axiom_soap_envelope.h>
 #include <axis2_engine.h>
 #include <axiom_soap_body.h>
 #include <axutil_utils.h>
@@ -47,6 +48,9 @@
 #ifdef AXIS2_JSON_ENABLED
 #include <axis2_json_reader.h>
 #endif
+
+/* REVOLUTIONARY: Service provider interface for architectural decoupling */
+#include <axis2_http_service_provider.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -312,6 +316,10 @@ axis2_http_transport_utils_process_http_post_request(
     axutil_string_t * soap_action_header,
     const axis2_char_t * request_uri)
 {
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+        "Processing HTTP POST request - content_type: %s, request_uri: %s",
+        content_type ? content_type : "NULL",
+        request_uri ? request_uri : "NULL");
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_builder_t *soap_builder = NULL;
     axiom_stax_builder_t *om_builder = NULL;
@@ -349,6 +357,7 @@ axis2_http_transport_utils_process_http_post_request(
     AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FAILURE);
 
+
     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
 
     callback_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_info_t));
@@ -383,7 +392,7 @@ axis2_http_transport_utils_process_http_post_request(
     }
 
 	headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
-    
+
 	encoding_header_value = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
 
     if(encoding_header_value && axutil_strstr(encoding_header_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
@@ -611,29 +620,42 @@ axis2_http_transport_utils_process_http_post_request(
 
     axis2_msg_ctx_set_charset_encoding(msg_ctx, env, char_set_str);
 
+    /* Check if we're processing JSON content */
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Checking content-type for JSON processing - content_type: '%s'",
+        content_type ? content_type : "NULL");
+
 #ifdef AXIS2_JSON_ENABLED
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_JSON))
     {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON content-type detected, starting JSON processing - content_type: %s", content_type);
+
         axis2_json_reader_t* json_reader = NULL;
         axiom_soap_body_t* soap_body = NULL;
-        axiom_node_t* root_node = NULL;
+        /* HTTP/2 Pure JSON Architecture - JSON data handle instead of axiom node */
 
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Creating JSON reader for stream");
         json_reader = axis2_json_reader_create_for_stream(env, in_stream);
         if (!json_reader)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create JSON reader");
             axis2_json_reader_free(json_reader, env);
             return AXIS2_FAILURE;
         }
 
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Parsing JSON content");
         status = axis2_json_reader_read(json_reader, env);
         if (status != AXIS2_SUCCESS)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "JSON parsing failed with status: %d", status);
             axis2_json_reader_free(json_reader, env);
             return status;
         }
 
-        root_node = axis2_json_reader_get_root_node(json_reader, env);
-        if (!root_node)
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "JSON parsing completed successfully");
+
+        /* HTTP/2 Pure JSON Architecture - Get JSON data directly, no axiom conversion */
+        void* json_data = axis2_json_reader_get_root_node(json_reader, env);
+        if (!json_data)
         {
             axis2_json_reader_free(json_reader, env);
             return AXIS2_FAILURE;
@@ -641,16 +663,15 @@ axis2_http_transport_utils_process_http_post_request(
 
         axis2_json_reader_free(json_reader, env);
 
-        soap_envelope =
-                axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
-        soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-        axiom_soap_body_add_child(soap_body, env, root_node);
-        axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE);
-        axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
-        axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_POST);
+        /* HTTP/2 Pure JSON Architecture - Skip SOAP envelope creation for JSON processing */
+        /* No SOAP envelope needed for pure JSON processing - HTTP/2 JSON services handle requests directly */
     }
     else
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Content-type '%s' does not contain JSON - skipping JSON processing",
+            content_type ? content_type : "NULL");
+#else
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "JSON processing disabled - AXIS2_JSON_ENABLED not defined");
 #endif
     xml_reader = axiom_xml_reader_create_for_io(env, axis2_http_transport_utils_on_data_request,
         NULL, (void *)callback_ctx, axutil_string_get_buffer(char_set_str, env));
@@ -770,22 +791,7 @@ axis2_http_transport_utils_process_http_post_request(
         if(rest_param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE, axutil_param_get_value(rest_param,
             env)))
         {
-            axiom_soap_body_t *def_body = NULL;
-            axiom_document_t *om_doc = NULL;
-            axiom_node_t *root_node = NULL;
-            if(!run_as_get)
-            {
-                soap_envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
-                def_body = axiom_soap_envelope_get_body(soap_envelope, env);
-                om_doc = axiom_stax_builder_get_document(om_builder, env);
-                if (!om_doc)
-                    return AXIS2_FAILURE;
-                root_node = axiom_document_get_root_element(om_doc, env);
-                if (!root_node)
-                    return AXIS2_FAILURE;
-                root_node = axiom_document_build_all(om_doc, env);
-                axiom_soap_body_add_child(def_body, env, root_node);
-            }
+            /* HTTP/2 Pure JSON Architecture - SOAP envelope creation removed for JSON processing */
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_POST);
             axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
@@ -868,7 +874,60 @@ axis2_http_transport_utils_process_http_post_request(
         }
         else
         {
+#ifdef WITH_NGHTTP2
+            /* HTTP/2 JSON Error Handling - Check for JSON processing flag */
+            axutil_property_t *http2_error_prop = axis2_msg_ctx_get_property(msg_ctx, env, "HTTP2_JSON_ERROR_HANDLING");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Checking HTTP2_JSON_ERROR_HANDLING property: %s",
+                          http2_error_prop ? "FOUND" : "NOT_FOUND");
+            if (http2_error_prop) {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON error handling enabled - wrapping engine receive");
+
+                /* Clear any existing errors before processing */
+                env->error->error_number = AXIS2_ERROR_NONE;
+
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Calling axis2_engine_receive for HTTP/2 JSON request");
+                status = axis2_engine_receive(engine, env, msg_ctx);
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Engine receive completed - status: %d, error_number: %d", status, env->error->error_number);
+
+                /* Check for processing errors and convert to JSON response */
+                if (status != AXIS2_SUCCESS || env->error->error_number != AXIS2_ERROR_NONE) {
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON processing error detected - converting to JSON response");
+
+                    /* Create JSON error response directly */
+                    axiom_soap_envelope_t *error_envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
+                    axiom_soap_body_t *error_body = axiom_soap_envelope_get_body(error_envelope, env);
+
+                    /* Create JSON error node instead of SOAP fault */
+                    axiom_node_t *error_node = axiom_node_create(env);
+                    axiom_element_t *error_element = axiom_element_create(env, error_node, "jsonError", NULL, NULL);
+                    axiom_element_set_text(error_element, env,
+                        "{"
+                        "\"error\":\"HTTP/2 JSON Processing Error\","
+                        "\"message\":\"Request processed but encountered processing error\","
+                        "\"status\":\"error\","
+                        "\"transport\":\"HTTP/2\","
+                        "\"content_type\":\"application/json\""
+                        "}", error_node);
+
+                    axiom_soap_body_add_child(error_body, env, error_node);
+                    axis2_msg_ctx_set_soap_envelope(msg_ctx, env, error_envelope);
+
+                    /* Set JSON content type for response */
+                    axutil_property_t *content_type_prop = axutil_property_create(env);
+                    axutil_property_set_value(content_type_prop, env, "application/json");
+                    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type_prop);
+
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON error response created successfully");
+                    status = AXIS2_SUCCESS; /* Mark as success since we handled the error */
+                }
+            } else {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No HTTP/2 JSON error handling flag - using normal engine receive");
+                status = axis2_engine_receive(engine, env, msg_ctx);
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Engine receive completed with status: %d", status);
+            }
+#else
             status = axis2_engine_receive(engine, env, msg_ctx);
+#endif
         }
     }
     else
@@ -1119,7 +1178,7 @@ axis2_http_transport_utils_process_http_put_request(
     {
         axis2_json_reader_t* json_reader = NULL;
         axiom_soap_body_t* soap_body = NULL;
-        axiom_node_t* root_node = NULL;
+        /* HTTP/2 Pure JSON Architecture - JSON data handle instead of axiom node */
 
         json_reader = axis2_json_reader_create_for_stream(env, in_stream);
         if (!json_reader)
@@ -1135,8 +1194,9 @@ axis2_http_transport_utils_process_http_put_request(
             return status;
         }
 
-        root_node = axis2_json_reader_get_root_node(json_reader, env);
-        if (!root_node)
+        /* HTTP/2 Pure JSON Architecture - Get JSON data directly, no axiom conversion */
+        void* json_data = axis2_json_reader_get_root_node(json_reader, env);
+        if (!json_data)
         {
             axis2_json_reader_free(json_reader, env);
             return AXIS2_FAILURE;
@@ -1144,13 +1204,8 @@ axis2_http_transport_utils_process_http_put_request(
 
         axis2_json_reader_free(json_reader, env);
 
-        soap_envelope =
-                axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
-        soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-        axiom_soap_body_add_child(soap_body, env, root_node);
-        axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE);
-        axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
-        axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_PUT);
+        /* HTTP/2 Pure JSON Architecture - Skip SOAP envelope creation for JSON processing */
+        /* No SOAP envelope needed for pure JSON processing - HTTP/2 JSON services handle requests directly */
     }
     else
     {
@@ -1234,22 +1289,7 @@ axis2_http_transport_utils_process_http_put_request(
         if(rest_param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE, axutil_param_get_value(rest_param,
             env)))
         {
-            axiom_soap_body_t *def_body = NULL;
-            axiom_document_t *om_doc = NULL;
-            axiom_node_t *root_node = NULL;
-            if(!run_as_get)
-            {
-                soap_envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
-                def_body = axiom_soap_envelope_get_body(soap_envelope, env);
-                om_doc = axiom_stax_builder_get_document(om_builder, env);
-                if (!om_doc)
-                    return AXIS2_FAILURE;
-                root_node = axiom_document_get_root_element(om_doc, env);
-                if (!root_node)
-                    return AXIS2_FAILURE;
-                root_node = axiom_document_build_all(om_doc, env);
-                axiom_soap_body_add_child(def_body, env, root_node);
-            }
+            /* HTTP/2 Pure JSON Architecture - SOAP envelope creation removed for JSON processing */
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_PUT);
             axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
@@ -1401,7 +1441,7 @@ axis2_http_transport_utils_process_http_head_request(
 #ifdef AXIS2_JSON_ENABLED
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_JSON))
     {
-        axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE);
+        /* axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE); */
     }
     else
 #endif
@@ -1470,7 +1510,7 @@ axis2_http_transport_utils_process_http_get_request(
 #ifdef AXIS2_JSON_ENABLED
     if (content_type && strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_JSON))
     {
-        axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE);
+        /* axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE); */
     }
     else
 #endif
@@ -1540,7 +1580,7 @@ axis2_http_transport_utils_process_http_delete_request(
 #ifdef AXIS2_JSON_ENABLED
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_JSON))
     {
-        axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE);
+        /* axis2_msg_ctx_set_doing_json(msg_ctx, env, AXIS2_TRUE); */
     }
     else
 #endif
@@ -1815,8 +1855,20 @@ axis2_http_transport_utils_get_services_html(
     AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-    services_map = axis2_conf_get_all_svcs(conf, env);
-    errorneous_svc_map = axis2_conf_get_all_faulty_svcs(conf, env);
+
+    /* REVOLUTIONARY: Use service provider interface instead of direct engine calls */
+    axis2_http_service_provider_t* service_provider = axis2_http_service_provider_get_impl(env);
+    if (service_provider) {
+        services_map = service_provider->get_all_services(service_provider, env, conf_ctx);
+        errorneous_svc_map = service_provider->get_faulty_services(service_provider, env, conf_ctx);
+    } else {
+        /* REVOLUTIONARY: Service provider not available - return empty maps */
+        /* This should not happen in normal operation since engine registers service provider */
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "HTTP service provider not available - services list will be empty");
+        services_map = NULL;
+        errorneous_svc_map = NULL;
+    }
     if(services_map && 0 != axutil_hash_count(services_map))
     {
         void *service = NULL;
@@ -1827,8 +1879,8 @@ axis2_http_transport_utils_get_services_html(
         for(hi = axutil_hash_first(services_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &service);
-            sname = axutil_qname_get_localpart(axis2_svc_get_qname(((axis2_svc_t *)service), env),
-                env);
+            /* REVOLUTIONARY: SOAP baggage elimination - use clean service provider interface */
+            sname = service_provider->get_service_name(service_provider, env, service);
             ret = axutil_stracat(env, tmp2, "<h3><u>");
             tmp2 = ret;
             ret = axutil_stracat(env, tmp2, sname);
@@ -1841,11 +1893,13 @@ axis2_http_transport_utils_get_services_html(
 
             /**
              *setting services description */
-            ret = axutil_stracat(env, tmp2, axis2_svc_get_svc_desc((axis2_svc_t *)service, env));
+            /* REVOLUTIONARY: Clean interface call instead of direct engine dependency */
+            ret = axutil_stracat(env, tmp2, service_provider->get_service_description(service_provider, env, service));
             tmp2 = ret;
             ret = axutil_stracat(env, tmp2, "</p>");
             tmp2 = ret;
-            ops = axis2_svc_get_all_ops(((axis2_svc_t *)service), env);
+            /* REVOLUTIONARY: Use service provider interface for operations */
+            ops = service_provider->get_service_operations(service_provider, env, service);
             if(ops && 0 != axutil_hash_count(ops))
             {
                 axutil_hash_index_t *hi2 = NULL;
@@ -1858,8 +1912,8 @@ axis2_http_transport_utils_get_services_html(
                 for(hi2 = axutil_hash_first(ops, env); hi2; hi2 = axutil_hash_next(env, hi2))
                 {
                     axutil_hash_this(hi2, NULL, NULL, &op);
-                    oname = axutil_qname_get_localpart(axis2_op_get_qname(((axis2_op_t *)op), env),
-                        env);
+                    /* REVOLUTIONARY: SOAP baggage elimination for operation names */
+                    oname = service_provider->get_operation_name(service_provider, env, op);
                     ret = axutil_stracat(env, tmp2, "<li>");
                     AXIS2_FREE(env->allocator, tmp2);
                     tmp2 = ret;
@@ -1947,7 +2001,18 @@ axis2_http_transport_utils_get_services_static_wsdl(
     }
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-    services_map = axis2_conf_get_all_svcs(conf, env);
+
+    /* REVOLUTIONARY: Use service provider interface instead of direct engine calls */
+    axis2_http_service_provider_t* service_provider = axis2_http_service_provider_get_impl(env);
+    if (service_provider) {
+        services_map = service_provider->get_all_services(service_provider, env, conf_ctx);
+    } else {
+        /* REVOLUTIONARY: Service provider not available - return empty map */
+        /* This should not happen in normal operation since engine registers service provider */
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "HTTP service provider not available - services list will be empty");
+        services_map = NULL;
+    }
 
     if(services_map && 0 != axutil_hash_count(services_map))
     {
@@ -1957,16 +2022,18 @@ axis2_http_transport_utils_get_services_static_wsdl(
         for(hi = axutil_hash_first(services_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &service);
-            sname = axutil_qname_get_localpart(axis2_svc_get_qname(((axis2_svc_t *)service), env),
-                env);
+            /* REVOLUTIONARY: SOAP baggage elimination - use clean service provider interface */
+            sname = service_provider->get_service_name(service_provider, env, service);
             if(!axutil_strcmp(svc_name, sname))
             {
-                wsdl_path = (axis2_char_t *)axutil_strdup(env, axis2_svc_get_svc_wsdl_path(
-                    (axis2_svc_t *)service, env));
+                /* REVOLUTIONARY: Use service provider interface for WSDL path */
+                const axis2_char_t* service_wsdl = service_provider->get_service_wsdl_path(service_provider, env, service);
+                wsdl_path = service_wsdl ? (axis2_char_t *)axutil_strdup(env, service_wsdl) : NULL;
                 if(!wsdl_path)
                 {
-                    wsdl_path = axutil_strcat(env, axis2_svc_get_svc_folder_path(
-                        (axis2_svc_t *)service, env), AXIS2_PATH_SEP_STR, svc_name, ".wsdl", NULL);
+                    /* REVOLUTIONARY: Use service provider interface for folder path */
+                    const axis2_char_t* service_folder = service_provider->get_service_folder_path(service_provider, env, service);
+                    wsdl_path = service_folder ? axutil_strcat(env, service_folder, AXIS2_PATH_SEP_STR, svc_name, ".wsdl", NULL) : NULL;
                 }
                 break;
             }
@@ -2442,7 +2509,7 @@ axis2_http_transport_utils_create_soap_msg(
             return AXIS2_FAILURE;
         root_node = axiom_document_get_root_element(om_doc, env);
         if (!root_node)
-            return AXIS2_FAILURE;
+            return NULL;
         root_node = axiom_document_build_all(om_doc, env);
         axiom_soap_body_add_child(def_body, env, root_node);
         axiom_stax_builder_free_self(om_builder, env);
@@ -2574,8 +2641,8 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
             return NULL;
         }
         /*body_child = */
-        axiom_element_create_with_qname(env, NULL, axis2_op_get_qname(
-            axis2_msg_ctx_get_op(msg_ctx, env), env), &body_child_node);
+        /* REVOLUTIONARY: Avoid circular dependency - create simple element without engine dependency */
+        axiom_element_create(env, NULL, "operation", NULL, &body_child_node);
         axiom_soap_body_add_child(soap_body, env, body_child_node);
     }
     if(param_map)

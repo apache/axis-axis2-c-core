@@ -12,10 +12,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-TESTS = test_http_transport
-check_PROGRAMS = test_http_transport
-noinst_PROGRAMS = test_http_transport
+# Base configuration
 SUBDIRS =
+
+# Initialize program lists
+check_PROGRAMS =
+noinst_PROGRAMS =
+TESTS =
+
+# HTTP/2 Pure JSON Architecture - HTTP/2 tests removed (no axiom dependencies)
+# Test functionality is handled by HTTP/2-specific test framework
+
+# Only build gtest tests when Google Test is available
+if GTEST_AVAILABLE
+check_PROGRAMS += test_http_transport
+noinst_PROGRAMS += test_http_transport
+TESTS += test_http_transport
+
 AM_CFLAGS = -g -pthread
 test_http_transport_SOURCES = test_http_transport.cc
 
@@ -29,18 +42,19 @@ test_http_transport_LDADD = \
 							$(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
 							$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 							$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+							$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 							$(top_builddir)/$(GTEST)/libgtest.a \
 							$(top_builddir)/$(GTEST)/libgtest_main.a
 
-AM_CPPFLAGS = \
+test_http_transport_CPPFLAGS = \
 			  -I$(top_builddir)/include \
 			  -I ../../../../util/include \
 			  -I ../../../../axiom/include \
 			  -I $(GTEST_DIR)/include
 
+# Add JSON support conditionally
 if AXIS2_JSON_ENABLED
-test_http_transport_LDADD += $(JSON_LIBS) \
-							$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la
-
-AM_CPPFLAGS += $(JSON_CFLAGS)
+test_http_transport_LDADD += $(JSON_LIBS)
+test_http_transport_CPPFLAGS += $(JSON_CFLAGS)
+endif
 endif

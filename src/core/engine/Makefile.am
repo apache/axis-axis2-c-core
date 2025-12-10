@@ -26,7 +26,8 @@ libaxis2_engine_la_SOURCES= $(top_srcdir)/src/core/transport/transport_receiver.
 							soap_action_disp.c \
 							soap_body_disp.c \
 							ctx_handler.c \
-							engine.c
+							engine.c \
+							axis2_engine_service_provider.c
 
 libaxis2_engine_la_LDFLAGS = -version-info $(VERSION_NO)
 
@@ -39,10 +40,12 @@ libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_descript
 						  $(top_builddir)/src/core/phaseresolver/libaxis2_phaseresolver.la \
 						  $(top_builddir)/src/core/util/libaxis2_core_utils.la \
 						  $(top_builddir)/util/src/libaxutil.la \
-						  $(top_builddir)/neethi/src/libneethi.la \
-						  $(top_builddir)/axiom/src/om/libaxis2_axiom.la 
-libaxis2_engine_la_LIBADD+=$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
-						   $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la
+						  $(top_builddir)/neethi/src/libneethi.la
+
+# Include axiom for HTTP/1.1 SOAP support (HTTP/2 uses pure JSON)
+libaxis2_engine_la_LIBADD += $(top_builddir)/axiom/src/om/libaxis2_axiom.la
+# ARCHITECTURAL NOTE: HTTP dependencies removed to prevent circular dependency crashes
+# Samples requiring HTTP functions should link HTTP libraries directly
 
 
 libaxis2_engine_la_CPPFLAGS =  -I$(top_srcdir)/include \
@@ -55,11 +58,25 @@ libaxis2_engine_la_CPPFLAGS =  -I$(top_srcdir)/include \
 							   -I$(top_srcdir)/src/core/util \
 							   -I$(top_srcdir)/src/core/clientapi \
 							   -I$(top_srcdir)/util/include \
-							   -I$(top_srcdir)/neethi/include \
-							   -I$(top_srcdir)/axiom/include
+							   -I$(top_srcdir)/neethi/include
+
+# Include axiom headers for HTTP/1.1 SOAP support (HTTP/2 uses pure JSON)
+libaxis2_engine_la_CPPFLAGS += -I$(top_srcdir)/axiom/include
 
 EXTRA_DIST=axis2_disp_checker.h
 
 if AXIS2_JSON_ENABLED
 libaxis2_engine_la_LIBADD += $(JSON_LIBS)
 endif
+
+# Ensure proper cleanup of libtool artifacts
+CLEANFILES = *.o *.lo *.la
+DISTCLEANFILES = *.o *.lo *.la
+MAINTAINERCLEANFILES = Makefile.in
+
+# Force removal of libtool .libs directory and all contents
+clean-local:
+	rm -rf .libs
+
+distclean-local: clean-local
+	rm -f *.o *.lo *.la

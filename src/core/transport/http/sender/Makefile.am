@@ -72,6 +72,7 @@ libaxis2_http_sender_la_CPPFLAGS = -I$(top_srcdir)/include \
 
 
 if AXIS2_JSON_ENABLED
+# Include JSON writer for backward compatibility with existing tests
 libaxis2_http_sender_la_SOURCES += axis2_json_writer.c
 libaxis2_http_sender_la_LIBADD += $(JSON_LIBS)
 libaxis2_http_sender_la_CPPFLAGS += $(JSON_CFLAGS)

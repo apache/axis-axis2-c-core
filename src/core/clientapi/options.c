@@ -676,7 +676,15 @@ axis2_options_add_reference_parameter(
     const axutil_env_t * env,
     axiom_node_t * reference_parameter)
 {
+#ifdef WITH_NGHTTP2
+    /* HTTP/2 Pure JSON Architecture - Reference parameters not used in JSON processing */
+    (void)options;
+    (void)env;
+    (void)reference_parameter;
+    /* No-op for HTTP/2 JSON-only builds */
+#else
     axis2_msg_info_headers_add_ref_param(options->msg_info_headers, env, reference_parameter);
+#endif
     return AXIS2_SUCCESS;
 }
 

@@ -18,6 +18,25 @@
 #include "wsdl2c_native.h"
 #include <string.h>
 
+/* Forward declarations from wsdl_parser.c */
+typedef struct wsdl2c_operation {
+    axis2_char_t *name;
+    axis2_char_t *input_message;
+    axis2_char_t *output_message;
+    axis2_char_t *soap_action;
+} wsdl2c_operation_t;
+
+typedef struct wsdl2c_message {
+    axis2_char_t *name;
+    axutil_array_list_t *parts;
+} wsdl2c_message_t;
+
+typedef struct wsdl2c_message_part {
+    axis2_char_t *name;
+    axis2_char_t *type;
+    axis2_char_t *element;
+} wsdl2c_message_part_t;
+
 /* Context creation and destruction */
 AXIS2_EXTERN wsdl2c_context_t* AXIS2_CALL
 wsdl2c_context_create(const axutil_env_t *env)
@@ -87,7 +106,82 @@ wsdl2c_context_free(wsdl2c_context_t *context, const axutil_env_t *env)
     }
 
     if (context->wsdl) {
-        /* TODO: Free WSDL structure */
+        /* Free WSDL structure fields */
+        if (context->wsdl->target_namespace) {
+            AXIS2_FREE(env->allocator, context->wsdl->target_namespace);
+        }
+        if (context->wsdl->service_name) {
+            AXIS2_FREE(env->allocator, context->wsdl->service_name);
+        }
+        if (context->wsdl->port_type_name) {
+            AXIS2_FREE(env->allocator, context->wsdl->port_type_name);
+        }
+        if (context->wsdl->binding_name) {
+            AXIS2_FREE(env->allocator, context->wsdl->binding_name);
+        }
+
+        /* Free operations array and its contents */
+        if (context->wsdl->operations) {
+            int i, size = axutil_array_list_size(context->wsdl->operations, env);
+            for (i = 0; i < size; i++) {
+                wsdl2c_operation_t* operation = (wsdl2c_operation_t*)axutil_array_list_get(context->wsdl->operations, env, i);
+                if (operation) {
+                    if (operation->name) {
+                        AXIS2_FREE(env->allocator, operation->name);
+                    }
+                    if (operation->input_message) {
+                        AXIS2_FREE(env->allocator, operation->input_message);
+                    }
+                    if (operation->output_message) {
+                        AXIS2_FREE(env->allocator, operation->output_message);
+                    }
+                    if (operation->soap_action) {
+                        AXIS2_FREE(env->allocator, operation->soap_action);
+                    }
+                    AXIS2_FREE(env->allocator, operation);
+                }
+            }
+            axutil_array_list_free(context->wsdl->operations, env);
+        }
+
+        /* Free messages array and its contents */
+        if (context->wsdl->messages) {
+            int i, size = axutil_array_list_size(context->wsdl->messages, env);
+            for (i = 0; i < size; i++) {
+                wsdl2c_message_t* message = (wsdl2c_message_t*)axutil_array_list_get(context->wsdl->messages, env, i);
+                if (message) {
+                    if (message->name) {
+                        AXIS2_FREE(env->allocator, message->name);
+                    }
+
+                    /* Free message parts array and its contents */
+                    if (message->parts) {
+                        int j, parts_size = axutil_array_list_size(message->parts, env);
+                        for (j = 0; j < parts_size; j++) {
+                            wsdl2c_message_part_t* part = (wsdl2c_message_part_t*)axutil_array_list_get(message->parts, env, j);
+                            if (part) {
+                                if (part->name) {
+                                    AXIS2_FREE(env->allocator, part->name);
+                                }
+                                if (part->type) {
+                                    AXIS2_FREE(env->allocator, part->type);
+                                }
+                                if (part->element) {
+                                    AXIS2_FREE(env->allocator, part->element);
+                                }
+                                AXIS2_FREE(env->allocator, part);
+                            }
+                        }
+                        axutil_array_list_free(message->parts, env);
+                    }
+                    AXIS2_FREE(env->allocator, message);
+                }
+            }
+            axutil_array_list_free(context->wsdl->messages, env);
+        }
+
+        /* Note: schema_node cleanup would depend on its actual type */
+        /* Free the WSDL structure itself */
         AXIS2_FREE(env->allocator, context->wsdl);
     }
 
@@ -357,7 +451,10 @@ axutil_array_list_t* axutil_array_list_create(const axutil_env_t *env, int initi
 {
     axutil_array_list_t *list = NULL;
 
-    (void)env; /* Suppress unused parameter warning */
+    /* Parameter 'env' maintains API compatibility with full Axis2/C library
+     * In full build: used for error handling and memory allocation tracking
+     * In standalone: unused but keeps same function signature for consistency */
+    (void)env;
 
     if (initial_capacity <= 0) {
         initial_capacity = 10;
@@ -382,7 +479,10 @@ axutil_array_list_t* axutil_array_list_create(const axutil_env_t *env, int initi
 
 axis2_status_t axutil_array_list_add(axutil_array_list_t *list, const axutil_env_t *env, void *element)
 {
-    (void)env; /* Suppress unused parameter warning */
+    /* Parameter 'env' maintains API compatibility with full Axis2/C library
+     * In full build: used for error handling and logging operations
+     * In standalone: unused but preserves identical calling convention */
+    (void)env;
 
     if (!list) {
         return AXIS2_FAILURE;
@@ -407,7 +507,10 @@ axis2_status_t axutil_array_list_add(axutil_array_list_t *list, const axutil_env
 
 void axutil_array_list_free(axutil_array_list_t *list, const axutil_env_t *env)
 {
-    (void)env; /* Suppress unused parameter warning */
+    /* Parameter 'env' maintains API compatibility with full Axis2/C library
+     * In full build: used for proper memory deallocation through env->allocator
+     * In standalone: uses standard free() but keeps same function signature */
+    (void)env;
 
     if (list) {
         if (list->data) {
@@ -415,5 +518,33 @@ void axutil_array_list_free(axutil_array_list_t *list, const axutil_env_t *env)
         }
         free(list);
     }
+}
+
+int axutil_array_list_size(axutil_array_list_t *list, const axutil_env_t *env)
+{
+    /* Parameter 'env' maintains API compatibility with full Axis2/C library
+     * In full build: used for parameter validation and error reporting
+     * In standalone: simple bounds check but same function signature */
+    (void)env;
+
+    if (!list) {
+        return 0;
+    }
+
+    return list->size;
+}
+
+void* axutil_array_list_get(axutil_array_list_t *list, const axutil_env_t *env, int index)
+{
+    /* Parameter 'env' maintains API compatibility with full Axis2/C library
+     * In full build: used for bounds checking and error logging
+     * In standalone: basic validation but identical function interface */
+    (void)env;
+
+    if (!list || index < 0 || index >= list->size) {
+        return NULL;
+    }
+
+    return list->data[index];
 }
 #endif

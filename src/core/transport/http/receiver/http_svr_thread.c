@@ -26,9 +26,8 @@
 #include <axutil_url.h>
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
+#include <axis2_http_socket_read_timeout.h>
 #include <signal.h>
-
-AXIS2_EXPORT int axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
 struct axis2_http_svr_thread
 {

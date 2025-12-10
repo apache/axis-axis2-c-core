@@ -20,7 +20,10 @@
 
 #include <axis2_const.h>
 #include <axutil_version.h>
+/* REVOLUTIONARY: Conditional axiom include - only for SOAP processing */
+#ifndef HTTP2_JSON_ONLY_MODE
 #include <axiom_mime_const.h>
+#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -735,12 +738,22 @@ extern "C"
     /**
      * HEADER XOP XML
      */
+    /* REVOLUTIONARY: Conditional AXIOM defines - only for SOAP processing */
+#ifndef HTTP2_JSON_ONLY_MODE
     #define AXIS2_HTTP_HEADER_ACCEPT_XOP_XML AXIOM_MIME_TYPE_XOP_XML
+#else
+    #define AXIS2_HTTP_HEADER_ACCEPT_XOP_XML "application/xop+xml"
+#endif
 
     /**
      * HEADER_ACCEPT_MULTIPART_RELATED
      */
+    /* REVOLUTIONARY: Conditional AXIOM defines - only for SOAP processing */
+#ifndef HTTP2_JSON_ONLY_MODE
     #define AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED AXIOM_MIME_TYPE_MULTIPART_RELATED
+#else
+    #define AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED "multipart/related"
+#endif
 
 #ifdef AXIS2_JSON_ENABLED
     /**

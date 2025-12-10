@@ -36,7 +36,10 @@
 #endif
 
 #ifdef AXIS2_JSON_ENABLED
+#ifndef WITH_NGHTTP2
+/* HTTP/1.1 Legacy JSON Writer - not used in HTTP/2 Revolutionary Architecture */
 #include <axis2_json_writer.h>
+#endif
 #endif
 
 /**
@@ -265,6 +268,14 @@ axis2_http_transport_sender_invoke(
 #ifdef AXIS2_JSON_ENABLED
     if (AXIS2_TRUE == axis2_msg_ctx_get_doing_json(msg_ctx, env))
     {
+#ifdef WITH_NGHTTP2
+        /* Revolutionary HTTP/2 JSON Architecture: Skip legacy AXIOM-dependent JSON writer
+         * JSON processing is handled directly by JsonRpcMessageReceiver - transport just passes through */
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "Revolutionary HTTP/2 JSON mode: Bypassing legacy JSON writer, using direct message receiver processing");
+        /* Continue with normal SOAP envelope processing - JsonRpcMessageReceiver handles JSON extraction */
+#else
+        /* HTTP/1.1 Legacy JSON Processing */
         axis2_json_writer_t* json_writer;
         axiom_node_t *body_node = NULL;
         axiom_soap_body_t* soap_body =
@@ -342,6 +353,11 @@ axis2_http_transport_sender_invoke(
         axis2_json_writer_free(json_writer, env);
 
         return AXIS2_SUCCESS;
+#endif /* HTTP/1.1 Legacy JSON Processing */
+    }
+    else
+    {
+        /* Revolutionary HTTP/2: Continue to normal envelope processing, JsonRpcMessageReceiver handles JSON */
     }
 #endif
 

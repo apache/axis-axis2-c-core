@@ -25,8 +25,8 @@ TEST_WSDL="$AXIS2C_ROOT/axiom/test/resources/wsdl/Calculator.wsdl"
 JAVA_OUTPUT_DIR="/tmp/wsdl2c-java-2.0.1-output"
 NATIVE_OUTPUT_DIR="/tmp/wsdl2c-native-output"
 
-# Expected Axis2/Java 2.0.1-SNAPSHOT location
-EXPECTED_AXIS2_HOME="/home/robert/axis2-2.0.1-SNAPSHOT"
+# Expected Axis2/Java 2.0.1-SNAPSHOT location - use environment variable or default
+EXPECTED_AXIS2_HOME="${AXIS2_JAVA_HOME:-/usr/local/axis2-2.0.1-SNAPSHOT}"
 
 echo "Integration Test: Basic Code Generation (Axis2/Java 2.0.1-SNAPSHOT)"
 echo "=================================================================="
@@ -64,7 +64,8 @@ if [ -n "$AXIS2_HOME" ] && [ -x "$AXIS2C_ROOT/tools/codegen/javatool/WSDL2C.sh" 
     fi
 else
     echo "   ERROR: AXIS2_HOME not set or WSDL2C.sh not found"
-    echo "   Please set: export AXIS2_HOME=/home/robert/axis2-2.0.1-SNAPSHOT"
+    echo "   Please set: export AXIS2_HOME=/path/to/your/axis2-2.0.1-SNAPSHOT"
+    echo "   Or set: export AXIS2_JAVA_HOME=/path/to/your/axis2-java-installation"
     exit 1
 fi
 

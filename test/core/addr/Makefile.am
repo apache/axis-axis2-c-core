@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Only build tests when Google Test is available
+if GTEST_AVAILABLE
 TESTS = test_addr
 check_PROGRAMS = test_addr
 noinst_PROGRAMS = test_addr
@@ -35,4 +37,5 @@ AM_CPPFLAGS = \
             -I ../../../util/include \
             -I ../../../axiom/include \
 			-I $(GTEST_DIR)/include
+endif
 

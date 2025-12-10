@@ -314,9 +314,15 @@ axis2_svc_free(
     axis2_svc_t * svc,
     const axutil_env_t * env)
 {
+    /* HTTP/2 Pure JSON Architecture - Generic service implementation cleanup
+     * Replaced SOAP skeleton-specific cleanup with generic approach
+     * as SOAP skeletons are incompatible with HTTP/2 JSON-only design
+     */
     if(svc->impl_class)
     {
-        AXIS2_SVC_SKELETON_FREE((axis2_svc_skeleton_t *)svc->impl_class, env);
+        /* Generic cleanup for JSON service implementations */
+        AXIS2_FREE(env->allocator, svc->impl_class);
+        svc->impl_class = NULL;
     }
     if(svc->param_container)
     {

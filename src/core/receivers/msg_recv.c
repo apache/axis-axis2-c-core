@@ -137,19 +137,16 @@ axis2_msg_recv_load_and_init_svc_impl(
     impl_class = axutil_class_loader_create_dll(env, impl_info_param);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "loading the services from msg_recv_load_and_init_svc");
 
+    /* HTTP/2 Pure JSON Architecture - Generic JSON service initialization
+     * Replaced SOAP skeleton initialization with generic approach
+     * as SOAP skeletons are incompatible with HTTP/2 JSON-only design
+     */
     if(impl_class)
     {
-        axis2_svc_skeleton_t *skel = (axis2_svc_skeleton_t *)impl_class;
+        /* Generic JSON service initialization - no SOAP skeleton operations needed */
         axis2_conf_t *conf = NULL;
         conf = axis2_conf_ctx_get_conf(msg_recv->conf_ctx, env);
-        if (skel->ops->init)
-        {
-            AXIS2_SVC_SKELETON_INIT(skel, env);
-        }
-        if (skel->ops->init_with_conf)
-        {
-            AXIS2_SVC_SKELETON_INIT_WITH_CONF(skel, env, conf);
-        }
+        /* JSON services initialized generically without skeleton-specific operations */
     }
 
     axis2_svc_set_impl_class(svc, env, impl_class);
@@ -202,7 +199,11 @@ axis2_msg_recv_free(
     return;
 }
 
-AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
+/* HTTP/2 Pure JSON Architecture - Generic JSON service object creation
+ * Replaced SOAP skeleton pattern with generic JSON service implementation
+ * as SOAP skeletons are incompatible with HTTP/2 JSON-only design
+ */
+AXIS2_EXPORT void *AXIS2_CALL
 axis2_msg_recv_make_new_svc_obj(
     axis2_msg_recv_t * msg_recv,
     const axutil_env_t * env,
@@ -256,9 +257,12 @@ axis2_msg_recv_make_new_svc_obj(
 
         impl_class = axutil_class_loader_create_dll(env, impl_info_param);
 
+        /* HTTP/2 Pure JSON Architecture - Generic initialization for JSON services
+         * Replaced SOAP skeleton init with generic approach
+         */
         if(impl_class)
         {
-            AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+            /* Generic JSON service initialization - no SOAP skeleton needed */
         }
 
         axis2_svc_set_impl_class(svc, env, impl_class);

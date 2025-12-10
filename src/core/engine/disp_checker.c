@@ -23,6 +23,7 @@
 #include <axis2_const.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
+#include <axis2_http_transport.h>
 #include <axis2_svc_ctx.h>
 #include <axis2_endpoint_ref.h>
 #include <axiom_soap.h>
@@ -224,6 +225,23 @@ fault_code        =
 
     }
 
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "🚨 DISPATCH CHECKER: Creating 'Service Not Found' SOAP fault");
+
+    /* Check if this is a JSON request */
+    axutil_property_t *content_type_prop = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
+    if (content_type_prop) {
+        const axis2_char_t *content_type = (axis2_char_t*)axutil_property_get_value(content_type_prop, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "🚨 SERVICE NOT FOUND: Content-Type: '%s' - creating SOAP fault",
+            content_type ? content_type : "NULL");
+
+        if (content_type && strstr(content_type, "application/json")) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "❌ CRITICAL: JSON request 'Service Not Found' error returning SOAP instead of JSON!");
+        }
+    }
+
     soap_envelope =
     axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
     soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
@@ -260,6 +278,23 @@ if (!op)
         fault_code =
         AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
         AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
+    }
+
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "🚨 DISPATCH CHECKER: Creating 'Operation Not Found' SOAP fault");
+
+    /* Check if this is a JSON request */
+    axutil_property_t *content_type_prop = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
+    if (content_type_prop) {
+        const axis2_char_t *content_type = (axis2_char_t*)axutil_property_get_value(content_type_prop, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "🚨 OPERATION NOT FOUND: Content-Type: '%s' - creating SOAP fault",
+            content_type ? content_type : "NULL");
+
+        if (content_type && strstr(content_type, "application/json")) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "❌ CRITICAL: JSON request 'Operation Not Found' error returning SOAP instead of JSON!");
+        }
     }
 
     soap_envelope =

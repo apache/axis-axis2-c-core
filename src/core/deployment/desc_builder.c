@@ -21,6 +21,7 @@
 #include <axutil_utils.h>
 #include <axutil_generic_obj.h>
 #include <axis2_raw_xml_in_out_msg_recv.h>
+#include <axis2_json_rpc_msg_recv.h>
 #include <neethi_engine.h>
 
 struct axis2_desc_builder
@@ -1022,7 +1023,17 @@ axis2_desc_builder_load_default_msg_recv(
 {
     axis2_msg_recv_t *msg_recv = NULL;
 
+#ifdef WITH_NGHTTP2
+    /* Revolutionary HTTP/2 JSON Architecture - Use AXIOM-free JsonRpcMessageReceiver */
+    msg_recv = axis2_json_rpc_msg_recv_create(env);
+    if (!msg_recv) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Failed to create revolutionary JsonRpcMessageReceiver, falling back to basic receiver");
+        msg_recv = axis2_msg_recv_create(env);
+    }
+#else
     msg_recv = axis2_raw_xml_in_out_msg_recv_create(env);
+#endif
     return msg_recv;
 }
 

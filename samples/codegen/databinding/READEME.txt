@@ -4,8 +4,8 @@ Sample: Data Binding
 Introduction
 ------------
 
-These samples demonstrate the use of code generation using Axis2/Java WSDL2Java 
-(http://svn.apache.org/repos/asf/webservices/axis2/trunk/java)tool with Axis Data Binding.
+These samples demonstrate the use of code generation using Axis2/Java WSDL2Java
+(https://github.com/apache/axis-axis2-java-core) tool with Axis Data Binding.
 You can download Axis2/Java latest release from here, http://ws.apache.org/axis2/download.cgi.
 
 Files
