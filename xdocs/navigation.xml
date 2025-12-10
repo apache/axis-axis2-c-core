@@ -28,7 +28,7 @@
       </item>
     <item name="Get Involved" href="lists_issues.html">
 	    <item name="Mailing Lists &amp; Issue Tracking" href="lists_issues.html"/>
-        <item name="Checkout Source Code" href="svn.html"/>
+        <item name="Checkout Source Code" href="git.html"/>
       </item>
       <item name="Developer Guidelines" href="coding_conventions.html">
 	<item name="Coding Convention" href="coding_conventions.html"/>
@@ -36,7 +36,7 @@
       </item>
       <item name="Project Information" href="team-list.html">
         <item name="Project Team" href="team-list.html"/>
-        <item name="Source Code" href="http://svn.apache.org/viewvc/axis/axis2/c/core/trunk/"/>
+        <item name="Source Code" href="https://github.com/apache/axis2-c"/>
       </item>
     </menu>
   </body>
