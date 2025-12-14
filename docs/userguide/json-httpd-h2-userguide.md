@@ -53,11 +53,12 @@ This pure json-c approach for both transports provides:
 
 ## Demonstration Services
 
-This guide covers three **fully implemented** service demonstrations:
+This guide covers four **fully implemented** service demonstrations:
 
 1. **[BigDataH2Service](#bigdatah2service---http2-big-data-processing-service)**: HTTP/2 big data processing with streaming optimization
 2. **[LoginService](#loginservice---user-authentication-service)**: User authentication with JWT token generation
 3. **[TestwsService](#testwsservice---xss-protection-demonstration)**: XSS protection demonstration with HTML encoding
+4. **[CameraControlService](#cameracontrolservice---generic-camera-control-service)**: Generic camera control with SFTP file transfer using user-implementable stub functions
 
 **⚠️ Protocol Requirement**: These services are **HTTP/2-only** for performance optimization. HTTP/1.1 requests will receive **HTTP 426 "Upgrade Required"** responses. Always use `curl --http2` for testing.
 
@@ -878,10 +879,10 @@ sudo make install
 
 # Run the EXACT configure command for your distro as explained below. 
 # This is specifically for Ubuntu 25.10 with apache2-custom
+# --enable-tests is optional, skipped here 
     ./configure \
       --prefix=/usr/local/axis2c \
       --enable-json \
-      --enable-tests \
       --enable-ssl \
       --enable-libcurl \
       --with-apache2=/usr/local/apache2 \
@@ -899,6 +900,7 @@ export LD_LIBRARY_PATH=/usr/local/axis2c/lib:$LD_LIBRARY_PATH
 cd samples/user_guide/bigdata-h2-service && bash build_json_service.sh && cd ../../..
 cd samples/user_guide/login-service && bash build_json_service.sh && cd ../../..
 cd samples/user_guide/testws-service && bash build_json_service.sh && cd ../../..
+cd samples/user_guide/camera-control-service && bash build_camera_service.sh && cd ../../..
 
 # Check which source files exist vs what's expected by Makefile.am
 echo "=== BigDataH2Service ==="
@@ -910,6 +912,9 @@ echo "=== LoginService ==="
 echo "=== TestwsService ==="
 [ -f "samples/user_guide/testws-service/src/testws_service.c" ] && [ -f "samples/user_guide/testws-service/src/testws_service_handler.c" ] && echo "✅ Required: testws_service.c, testws_service_handler.c" && echo "📁 Additional files: $(ls samples/user_guide/testws-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (testws_service.c, testws_service_handler.c)"
 
+echo "=== CameraControlService ==="
+[ -f "samples/user_guide/camera-control-service/src/camera_control_service.c" ] && echo "✅ Required: camera_control_service.c (stub implementation)" && echo "📁 Additional files: $(ls samples/user_guide/camera-control-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (camera_control_service.c)"
+
 echo ""
 echo "✅ ALL HTTP/2 JSON services are fully implemented and ready for build and deployment"
 echo "🧪 Use curl for comprehensive HTTP/2 JSON testing including XSS protection demonstration"
@@ -920,10 +925,10 @@ echo "🧪 Use curl for comprehensive HTTP/2 JSON testing including XSS protecti
 ```bash
 # Configure build with JSON-C and HTTP/2 support (Ubuntu/Debian)
 # IMPORTANT: --prefix=/usr/local/axis2c ensures 'sudo make install' installs to system location
+# --enable-tests is optional, skipped here 
 ./configure \
     --prefix=/usr/local/axis2c \
     --enable-json \
-    --enable-tests \
     --enable-ssl \
     --enable-libcurl \
     --with-apache2=/usr/include/apache2 \
@@ -939,10 +944,10 @@ echo "🧪 Use curl for comprehensive HTTP/2 JSON testing including XSS protecti
 ```bash
 # Configure build with JSON-C and HTTP/2 support (RedHat/CentOS/Fedora)
 # IMPORTANT: --prefix=/usr/local/axis2c ensures 'sudo make install' installs to system location
+# --enable-tests is optional, skipped here 
 ./configure \
     --prefix=/usr/local/axis2c \
     --enable-json \
-    --enable-tests \
     --enable-ssl \
     --enable-libcurl \
     --with-apache2=/usr/include/httpd \
@@ -1173,6 +1178,92 @@ curl -k --http2 \
 }
 ```
 
+### CameraControlService Testing (Generic Camera Control with SFTP)
+
+**⚠️ Stub Implementation Notice**: The CameraControlService provides stub implementations that log operations but do not perform actual camera or SFTP operations. Users must implement camera-specific integration functions. See [Implementation Guide](../../samples/user_guide/camera-control-service/IMPLEMENTATION_GUIDE.md) for detailed examples.
+
+**Test start recording (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "start_recording",
+       "clip_name": "meeting_001",
+       "quality": "1080p",
+       "duration": 3600,
+       "format": "mp4"
+     }' \
+     https://localhost/services/CameraControlService/startRecording
+```
+
+**Test get camera status (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "get_status"
+     }' \
+     https://localhost/services/CameraControlService/getStatus
+```
+
+**Test SFTP file transfer (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "sftp_transfer",
+       "hostname": "backup.example.com",
+       "username": "camera_user",
+       "private_key_path": "/home/camera/.ssh/id_rsa",
+       "local_file_path": "/tmp/recording_001.mp4",
+       "remote_path": "/backups/camera/",
+       "port": 22
+     }' \
+     https://localhost/services/CameraControlService/sftpTransfer
+```
+
+**Test stop recording (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "stop_recording"
+     }' \
+     https://localhost/services/CameraControlService/stopRecording
+```
+
+**Expected Response Format (Success):**
+```json
+{
+  "success": true,
+  "message": "Recording started successfully"
+}
+```
+
+**Expected Response Format (SFTP Transfer Success):**
+```json
+{
+  "success": true,
+  "message": "File transferred successfully via SFTP"
+}
+```
+
+**Expected Response Format (Get Status):**
+```json
+{
+  "success": true,
+  "state": "idle",
+  "active_clip": "none",
+  "recording_duration": 0,
+  "last_error": "none"
+}
+```
+
+**Implementation Requirements**:
+- Replace stub functions with camera-specific implementations
+- Implement `camera_device_start_recording_impl()`, `camera_device_stop_recording_impl()`, `camera_device_get_status_impl()`, `camera_device_configure_settings_impl()`, and `camera_device_sftp_transfer_impl()`
+- See comprehensive examples for OpenCamera JNI, V4L2, IP cameras, and libssh2 SFTP integration in the implementation guide
+
 ## Architecture Comparison: Spring Boot vs Apache httpd
 
 | Component | Axis2/Java (Spring Boot) | Axis2/C (Apache httpd) |
@@ -1232,6 +1323,7 @@ json_object* bigdata_h2_service_invoke_json(
 - [BigDataH2Service Source Code](../../samples/user_guide/bigdata-h2-service/) - HTTP/2 big data processing
 - [LoginService Source Code](../../samples/user_guide/login-service/) - User authentication with JWT tokens
 - [TestwsService Source Code](../../samples/user_guide/testws-service/) - XSS protection demonstration
+- [CameraControlService Source Code](../../samples/user_guide/camera-control-service/) - Generic camera control with SFTP file transfer and user-implementable stub functions
 
 ### Security Resources
 - [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
