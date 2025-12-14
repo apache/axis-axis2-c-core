@@ -621,7 +621,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_msg_ctx_set_charset_encoding(msg_ctx, env, char_set_str);
 
     /* Check if we're processing JSON content */
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Checking content-type for JSON processing - content_type: '%s'",
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Checking content-type for JSON processing - content_type: '%s'",
         content_type ? content_type : "NULL");
 
 #ifdef AXIS2_JSON_ENABLED
@@ -633,7 +633,7 @@ axis2_http_transport_utils_process_http_post_request(
         axiom_soap_body_t* soap_body = NULL;
         /* HTTP/2 Pure JSON Architecture - JSON data handle instead of axiom node */
 
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Creating JSON reader for stream");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating JSON reader for stream");
         json_reader = axis2_json_reader_create_for_stream(env, in_stream);
         if (!json_reader)
         {
@@ -642,7 +642,7 @@ axis2_http_transport_utils_process_http_post_request(
             return AXIS2_FAILURE;
         }
 
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Parsing JSON content");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Parsing JSON content");
         status = axis2_json_reader_read(json_reader, env);
         if (status != AXIS2_SUCCESS)
         {
@@ -651,7 +651,7 @@ axis2_http_transport_utils_process_http_post_request(
             return status;
         }
 
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "JSON parsing completed successfully");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON parsing completed successfully");
 
         /* HTTP/2 Pure JSON Architecture - Get JSON data directly, no axiom conversion */
         void* json_data = axis2_json_reader_get_root_node(json_reader, env);
@@ -877,7 +877,7 @@ axis2_http_transport_utils_process_http_post_request(
 #ifdef WITH_NGHTTP2
             /* HTTP/2 JSON Error Handling - Check for JSON processing flag */
             axutil_property_t *http2_error_prop = axis2_msg_ctx_get_property(msg_ctx, env, "HTTP2_JSON_ERROR_HANDLING");
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Checking HTTP2_JSON_ERROR_HANDLING property: %s",
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Checking HTTP2_JSON_ERROR_HANDLING property: %s",
                           http2_error_prop ? "FOUND" : "NOT_FOUND");
             if (http2_error_prop) {
                 AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON error handling enabled - wrapping engine receive");
@@ -885,9 +885,9 @@ axis2_http_transport_utils_process_http_post_request(
                 /* Clear any existing errors before processing */
                 env->error->error_number = AXIS2_ERROR_NONE;
 
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Calling axis2_engine_receive for HTTP/2 JSON request");
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Calling axis2_engine_receive for HTTP/2 JSON request");
                 status = axis2_engine_receive(engine, env, msg_ctx);
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Engine receive completed - status: %d, error_number: %d", status, env->error->error_number);
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Engine receive completed - status: %d, error_number: %d", status, env->error->error_number);
 
                 /* Check for processing errors and convert to JSON response */
                 if (status != AXIS2_SUCCESS || env->error->error_number != AXIS2_ERROR_NONE) {
@@ -912,18 +912,70 @@ axis2_http_transport_utils_process_http_post_request(
                     axiom_soap_body_add_child(error_body, env, error_node);
                     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, error_envelope);
 
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        "[HTTP TRANSPORT UTILS] Creating HTTP/2 JSON error response");
+
                     /* Set JSON content type for response */
                     axutil_property_t *content_type_prop = axutil_property_create(env);
                     axutil_property_set_value(content_type_prop, env, "application/json");
                     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type_prop);
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        "✅ HTTP TRANSPORT UTILS: Set Content-Type property to 'application/json'");
 
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON error response created successfully");
+                    /* Set Accept header for HTTP/2 responses to prevent curl binary warning */
+                    axutil_property_t *accept_prop = axutil_property_create(env);
+                    axutil_property_set_value(accept_prop, env, "application/json");
+                    axis2_msg_ctx_set_property(msg_ctx, env, "Accept", accept_prop);
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        "✅ HTTP TRANSPORT UTILS: Set Accept property to 'application/json'");
+
+                    /* Add HTTP output headers to ensure they're sent to client */
+                    axutil_array_list_t *output_headers = axis2_msg_ctx_get_http_output_headers(msg_ctx, env);
+                    if (!output_headers) {
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "🔧 HTTP TRANSPORT UTILS: Creating new HTTP output headers array");
+                        output_headers = axutil_array_list_create(env, 4);
+                        axis2_msg_ctx_set_http_output_headers(msg_ctx, env, output_headers);
+                    } else {
+                        int existing_count = axutil_array_list_size(output_headers, env);
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "📋 HTTP TRANSPORT UTILS: Found existing HTTP output headers array with %d headers", existing_count);
+                    }
+
+                    /* Add Content-Type header to HTTP output headers */
+                    axis2_http_header_t *content_type_header = axis2_http_header_create(env, "Content-Type", "application/json; charset=utf-8");
+                    if (content_type_header) {
+                        axutil_array_list_add(output_headers, env, content_type_header);
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "✅ HTTP TRANSPORT UTILS: Added Content-Type: application/json; charset=utf-8 header to HTTP output headers");
+                    } else {
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "❌ HTTP TRANSPORT UTILS: Failed to create Content-Type header!");
+                    }
+
+                    /* Add Cache-Control header to HTTP output headers */
+                    axis2_http_header_t *cache_control_header = axis2_http_header_create(env, "Cache-Control", "no-cache");
+                    if (cache_control_header) {
+                        axutil_array_list_add(output_headers, env, cache_control_header);
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "✅ HTTP TRANSPORT UTILS: Added Cache-Control: no-cache header to HTTP output headers");
+                    } else {
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "❌ HTTP TRANSPORT UTILS: Failed to create Cache-Control header!");
+                    }
+
+                    /* Log final header count */
+                    int final_header_count = axutil_array_list_size(output_headers, env);
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        "[HTTP TRANSPORT UTILS] Final HTTP output headers count: %d", final_header_count);
+
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[HTTP TRANSPORT UTILS] HTTP/2 JSON error response created successfully");
                     status = AXIS2_SUCCESS; /* Mark as success since we handled the error */
                 }
             } else {
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No HTTP/2 JSON error handling flag - using normal engine receive");
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "No HTTP/2 JSON error handling flag - using normal engine receive");
                 status = axis2_engine_receive(engine, env, msg_ctx);
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Engine receive completed with status: %d", status);
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Engine receive completed with status: %d", status);
             }
 #else
             status = axis2_engine_receive(engine, env, msg_ctx);

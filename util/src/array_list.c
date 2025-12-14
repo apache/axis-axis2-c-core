@@ -151,7 +151,7 @@ axutil_array_list_get(
     /* Check error status BEFORE processing */
     int error_before = env->error ? env->error->status_code : AXIS2_SUCCESS;
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🔍 ARRAY LIST GET: ENTRY - array_list=%p, index=%d, size=%d, ERROR_BEFORE=%d",
+        "[ARRAY LIST GET] ENTRY - array_list=%p, index=%d, size=%d, ERROR_BEFORE=%d",
         (void*)array_list, index, array_list ? array_list->size : -1, error_before);
 
     /* Don't use AXIS2_PARAM_CHECK to verify array_list, as it clobbers
@@ -162,7 +162,7 @@ axutil_array_list_get(
     /* Check error status AFTER bounds check */
     int error_after_bounds = env->error ? env->error->status_code : AXIS2_SUCCESS;
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🔍 ARRAY LIST GET: Bounds check returned %s, ERROR_AFTER_BOUNDS=%d",
+        "[ARRAY LIST GET] Bounds check returned %s, ERROR_AFTER_BOUNDS=%d",
         bounds_check_result ? "TRUE (PASS)" : "FALSE (FAIL)", error_after_bounds);
 
     if(bounds_check_result)
@@ -170,14 +170,14 @@ axutil_array_list_get(
         void* result = array_list->data[index];
         int error_final = env->error ? env->error->status_code : AXIS2_SUCCESS;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "✅ ARRAY LIST GET: EXIT SUCCESS - data[%d] = %p, ERROR_FINAL=%d", index, result, error_final);
+            "[ARRAY LIST GET] EXIT SUCCESS - data[%d] = %p, ERROR_FINAL=%d", index, result, error_final);
         return result;
     }
     else
     {
         int error_final = env->error ? env->error->status_code : AXIS2_SUCCESS;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "❌ ARRAY LIST GET: EXIT FAILURE - returning NULL, ERROR_FINAL=%d", error_final);
+            "[ARRAY LIST GET] EXIT FAILURE - returning NULL, ERROR_FINAL=%d", error_final);
         return NULL;
     }
 }
@@ -275,13 +275,13 @@ axutil_array_list_check_bound_inclusive(
      therein that an error has already occurred. */
 
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🎯 ARRAY BOUNDS CHECK (INCLUSIVE): array_list=%p, index=%d, array_size=%d",
+        "[ARRAY BOUNDS CHECK INCLUSIVE] array_list=%p, index=%d, array_size=%d",
         (void*)array_list, index, array_list ? array_list->size : -1);
 
     if(!array_list || index < 0 || index > array_list->size)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "❌ ARRAY BOUNDS ERROR (INCLUSIVE): array_list=%p, index=%d, size=%d - BOUNDS CHECK FAILED!",
+            "[ARRAY BOUNDS ERROR INCLUSIVE] array_list=%p, index=%d, size=%d - BOUNDS CHECK FAILED!",
             (void*)array_list, index, array_list ? array_list->size : -1);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
         return AXIS2_FALSE;
@@ -300,13 +300,13 @@ axutil_array_list_check_bound_exclusive(
      therein that an error has already occurred. */
 
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🎯 ARRAY BOUNDS CHECK (EXCLUSIVE): array_list=%p, index=%d, array_size=%d",
+        "[ARRAY BOUNDS CHECK EXCLUSIVE] array_list=%p, index=%d, array_size=%d",
         (void*)array_list, index, array_list ? array_list->size : -1);
 
     if(!array_list || index < 0 || index >= array_list->size)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "❌ ARRAY BOUNDS ERROR (EXCLUSIVE): array_list=%p, index=%d, size=%d - BOUNDS CHECK FAILED!",
+            "[ARRAY BOUNDS ERROR EXCLUSIVE] array_list=%p, index=%d, size=%d - BOUNDS CHECK FAILED!",
             (void*)array_list, index, array_list ? array_list->size : -1);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
         return AXIS2_FALSE;

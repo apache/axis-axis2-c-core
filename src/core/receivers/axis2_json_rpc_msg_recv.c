@@ -38,6 +38,7 @@
 #include <axutil_property.h>
 #include <axutil_dll_desc.h>
 #include <axutil_class_loader.h>
+#include <axis2_http_header.h>
 #include <string.h>
 #include <json-c/json.h>
 /* Revolutionary: NO AXIOM includes - pure JSON processing only */
@@ -54,9 +55,9 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
     axis2_msg_ctx_t* out_msg_ctx)
 {
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🚀 JSON RPC MSG RECV: ENTRY POINT - Starting JSON business logic invocation");
+        "[JSON RPC MSG RECV] ENTRY POINT - Starting JSON business logic invocation");
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🚀 JSON RPC MSG RECV: This function should handle ALL JSON errors and return JSON (NOT SOAP!)");
+        "[JSON RPC MSG RECV] This function should handle ALL JSON errors and return JSON (NOT SOAP!)");
 
     axis2_svc_t* svc = NULL;
     axis2_op_ctx_t* op_ctx = NULL;
@@ -194,27 +195,102 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
 
     if (!json_response) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "⚠️ JSON RPC MSG RECV: No JSON response generated - creating default error JSON");
+            "[JSON RPC MSG RECV] No JSON response generated - creating default error JSON");
         json_response = axutil_strdup(env, "{\"error\":\"Service invocation failed\"}");
     }
 
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-        "✅ JSON RPC MSG RECV: Generated JSON response (should NOT create SOAP!) - length: %d",
+        "[JSON RPC MSG RECV] Generated JSON response (should NOT create SOAP!) - length: %d",
         json_response ? (int)strlen(json_response) : 0);
 
     // Revolutionary: Store pure JSON response (no SOAP envelope)
     if (json_response) {
+        int json_response_len = strlen(json_response);
         AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-            "🔄 JSON RPC MSG RECV: Setting JSON response properties to bypass SOAP envelope creation");
+            "[JSON RPC MSG RECV] Setting JSON response properties - Length: %d bytes", json_response_len);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Response content preview (first 100 chars): %.100s", json_response);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Response content end (last 20 chars): %s",
+            json_response_len > 20 ? json_response + json_response_len - 20 : json_response);
+
+        // Check for null bytes in response
+        int has_null_byte = 0;
+        for (int i = 0; i < json_response_len; i++) {
+            if (json_response[i] == '\0') {
+                has_null_byte = 1;
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON RPC MSG RECV] WARNING: Found null byte at position %d in JSON response!", i);
+                break;
+            }
+        }
+        if (!has_null_byte) {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] SUCCESS: No null bytes found in JSON response content");
+        }
 
         axutil_property_t* json_prop = axutil_property_create(env);
         axutil_property_set_value(json_prop, env, json_response);
         axis2_msg_ctx_set_property(out_msg_ctx, env, "JSON_RESPONSE", json_prop);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Set JSON_RESPONSE property in message context");
 
         // Set JSON content type for response
         axutil_property_t* content_type_prop = axutil_property_create(env);
         axutil_property_set_value(content_type_prop, env, axutil_strdup(env, "application/json"));
         axis2_msg_ctx_set_property(out_msg_ctx, env, "Content-Type", content_type_prop);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Set Content-Type property to 'application/json'");
+
+        // Set Accept header for HTTP/2 responses to prevent curl binary warning
+        axutil_property_t* accept_prop = axutil_property_create(env);
+        axutil_property_set_value(accept_prop, env, axutil_strdup(env, "application/json"));
+        axis2_msg_ctx_set_property(out_msg_ctx, env, "Accept", accept_prop);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Set Accept property to 'application/json'");
+
+        // Add HTTP output headers to ensure they're sent to client
+        axutil_array_list_t* output_headers = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+        if (!output_headers) {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Creating new HTTP output headers array");
+            output_headers = axutil_array_list_create(env, 4);
+            axis2_msg_ctx_set_http_output_headers(out_msg_ctx, env, output_headers);
+        } else {
+            int existing_count = axutil_array_list_size(output_headers, env);
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Found existing HTTP output headers array with %d headers", existing_count);
+        }
+
+        // Add Content-Type header to HTTP output headers to force text display
+        axis2_http_header_t* content_type_header = axis2_http_header_create(env, "Content-Type", "application/json; charset=utf-8");
+        if (content_type_header) {
+            axutil_array_list_add(output_headers, env, content_type_header);
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Added Content-Type: application/json; charset=utf-8 header to HTTP output headers");
+        } else {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Failed to create Content-Type header!");
+        }
+
+        // Add Cache-Control to prevent binary detection
+        axis2_http_header_t* cache_control_header = axis2_http_header_create(env, "Cache-Control", "no-cache");
+        if (cache_control_header) {
+            axutil_array_list_add(output_headers, env, cache_control_header);
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Added Cache-Control: no-cache header to HTTP output headers");
+        } else {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Failed to create Cache-Control header!");
+        }
+
+        // Log final header count
+        int final_header_count = axutil_array_list_size(output_headers, env);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Final HTTP output headers count: %d", final_header_count);
+    } else {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] json_response is NULL - no response to process!");
     }
 
     if (json_request) {
@@ -222,9 +298,9 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
     }
 
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "✅ JSON RPC MSG RECV: SUCCESSFUL COMPLETION - returning AXIS2_SUCCESS");
+        "[JSON RPC MSG RECV] SUCCESSFUL COMPLETION - returning AXIS2_SUCCESS");
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "✅ JSON RPC MSG RECV: If SOAP fault is still generated, error handling is BYPASSING this function!");
+        "[JSON RPC MSG RECV] If SOAP fault is still generated, error handling is BYPASSING this function!");
 
     return AXIS2_SUCCESS;
 }

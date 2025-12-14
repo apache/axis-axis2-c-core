@@ -1122,20 +1122,20 @@ axis2_phase_invoke_start_from_handler(
     size = axutil_array_list_size(phase->handlers, env);
 
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "🚀 PHASE HANDLER PROCESSING: phase='%s', handlers_array=%p, size=%d, paused_index=%d - CRITICAL ERROR SOURCE CHECK!",
+        "[PHASE HANDLER PROCESSING] phase='%s', handlers_array=%p, size=%d, paused_index=%d - CRITICAL ERROR SOURCE CHECK!",
         phase->name ? phase->name : "NULL", (void*)phase->handlers, size, paused_handler_index);
 
     for(i = paused_handler_index; i < size; i++)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "🎯 PHASE: Getting handler[%d] from array size=%d - POTENTIAL ERROR SOURCE!",
+            "[PHASE] Getting handler[%d] from array size=%d - POTENTIAL ERROR SOURCE!",
             i, size);
 
         axis2_handler_t *handler =
             (axis2_handler_t *)axutil_array_list_get(phase->handlers, env, i);
 
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "🎯 PHASE: Retrieved handler[%d] = %p", i, (void*)handler);
+            "[PHASE] Retrieved handler[%d] = %p", i, (void*)handler);
         if(handler)
         {
             const axis2_char_t *handler_name = axutil_string_get_buffer(axis2_handler_get_name(

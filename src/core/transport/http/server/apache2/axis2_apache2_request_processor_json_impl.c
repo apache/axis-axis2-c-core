@@ -446,7 +446,7 @@ axis2_apache2_json_processor_process_request_body_impl(
 
     /* impl = (axis2_apache2_json_processor_impl_t*)processor; */
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR] Processing complete JSON HTTP/2 request body");
 
     /* Create input stream from Apache request */
@@ -512,11 +512,11 @@ axis2_apache2_json_processor_process_request_body_impl(
         response_length = axutil_stream_get_len(out_stream, env);
         if (response_length > 0)
         {
-            response_buffer = AXIS2_MALLOC(env->allocator, response_length + 1);
+            response_buffer = AXIS2_MALLOC(env->allocator, response_length);
             if (response_buffer)
             {
                 axutil_stream_read(out_stream, env, response_buffer, response_length);
-                response_buffer[response_length] = '\0';
+                /* DO NOT add null terminator - we want exact byte content */
 
                 /* Write to Apache response */
                 ap_set_content_type(request, "application/json");
@@ -710,16 +710,47 @@ axis2_apache2_json_processor_write_json_error_response(
 
     if (!json_response)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[JSON PROCESSOR ERROR] json_response is NULL!");
         return AXIS2_FAILURE;
     }
 
     response_len = axutil_strlen(json_response);
-    if (axutil_stream_write(out_stream, env, json_response, response_len) != response_len)
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON PROCESSOR ERROR] Writing JSON error response - Length: %d bytes", response_len);
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON PROCESSOR ERROR] Response preview (first 100 chars): %.100s", json_response);
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON PROCESSOR ERROR] Response end (last 20 chars): %s",
+        response_len > 20 ? json_response + response_len - 20 : json_response);
+
+    // Check for null bytes in error response
+    int has_null_byte = 0;
+    for (int i = 0; i < response_len; i++) {
+        if (json_response[i] == '\0') {
+            has_null_byte = 1;
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON PROCESSOR ERROR] WARNING: Found null byte at position %d in JSON error response!", i);
+            break;
+        }
+    }
+    if (!has_null_byte) {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON PROCESSOR ERROR] No null bytes found in JSON error response content");
+    }
+
+    int bytes_written = axutil_stream_write(out_stream, env, json_response, response_len);
+    if (bytes_written != response_len)
     {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON PROCESSOR ERROR] Failed to write response - Expected: %d, Actual: %d",
+            response_len, bytes_written);
         AXIS2_FREE(env->allocator, json_response);
         return AXIS2_FAILURE;
     }
 
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON PROCESSOR ERROR] Successfully wrote %d bytes to output stream", bytes_written);
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR] Generated JSON error response - code: %d, message: %s",
         http_status_code, error_message ? error_message : "Unknown error");
@@ -899,11 +930,41 @@ process_json:
     if (json_response)
     {
         int response_len = axutil_strlen(json_response);
-        if (axutil_stream_write(out_stream, env, json_response, response_len) == response_len)
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON PROCESSOR SUCCESS] Writing JSON success response - Length: %d bytes", response_len);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON PROCESSOR SUCCESS] Response preview (first 100 chars): %.100s", json_response);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON PROCESSOR SUCCESS] Response end (last 20 chars): %s",
+            response_len > 20 ? json_response + response_len - 20 : json_response);
+
+        // Check for null bytes in success response
+        int has_null_byte = 0;
+        for (int i = 0; i < response_len; i++) {
+            if (json_response[i] == '\0') {
+                has_null_byte = 1;
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON PROCESSOR SUCCESS] WARNING: Found null byte at position %d in JSON success response!", i);
+                break;
+            }
+        }
+        if (!has_null_byte) {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON PROCESSOR SUCCESS] No null bytes found in JSON success response content");
+        }
+
+        int bytes_written = axutil_stream_write(out_stream, env, json_response, response_len);
+        if (bytes_written == response_len)
         {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON PROCESSOR SUCCESS] Successfully wrote %d bytes to output stream", bytes_written);
             AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 "[JSON_PROCESSOR_SUCCESS] Generated JSON success response (%d bytes)", response_len);
             status = AXIS2_SUCCESS;
+        } else {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON PROCESSOR SUCCESS] ERROR: Failed to write response - Expected: %d, Actual: %d",
+                response_len, bytes_written);
         }
         AXIS2_FREE(env->allocator, json_response);
     }

@@ -723,7 +723,7 @@ axis2_apache2_worker_process_request(
 
         /* ===== INTERFACE PATTERN: REQUEST BODY PROCESSING ===== */
         AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-            "🔍 APACHE2_WORKER: Body processing conditions - use_interface=%d, processor=%p, ctx=%p, method=%d",
+            "[APACHE2_WORKER] Body processing conditions - use_interface=%d, processor=%p, ctx=%p, method=%d",
             use_interface_processing, request_processor, processing_ctx, request->method_number);
 
         if (use_interface_processing && request_processor && processing_ctx && M_POST == request->method_number)
@@ -1091,6 +1091,11 @@ axis2_apache2_worker_process_request(
                     if (output_header_list)
                     {
                         size = axutil_array_list_size(output_header_list, env);
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[APACHE WORKER] Processing %d HTTP output headers from message context", size);
+                    } else {
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[APACHE WORKER] No HTTP output headers found in message context");
                     }
                     while (size)
                     {
@@ -1098,9 +1103,16 @@ axis2_apache2_worker_process_request(
                         size--;
                         output_header = (axis2_http_header_t *)
                         axutil_array_list_get(output_header_list, env, size);
-                        apr_table_set(request->err_headers_out,
-                            axis2_http_header_get_name(output_header, env),
-                            axis2_http_header_get_value(output_header, env));
+                        if (output_header) {
+                            const axis2_char_t* header_name = axis2_http_header_get_name(output_header, env);
+                            const axis2_char_t* header_value = axis2_http_header_get_value(output_header, env);
+                            apr_table_set(request->err_headers_out, header_name, header_value);
+                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                                "[APACHE WORKER] Set HTTP header: %s: %s", header_name, header_value);
+                        } else {
+                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                                "[APACHE WORKER] WARNING: Failed to get HTTP header at index %d", size);
+                        }
                     }
                     if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
                     {
@@ -1190,6 +1202,11 @@ axis2_apache2_worker_process_request(
                     if (output_header_list)
                     {
                         size = axutil_array_list_size(output_header_list, env);
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[APACHE WORKER] Processing %d HTTP output headers from message context", size);
+                    } else {
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[APACHE WORKER] No HTTP output headers found in message context");
                     }
                     while (size)
                     {
@@ -1197,9 +1214,16 @@ axis2_apache2_worker_process_request(
                         size--;
                         output_header = (axis2_http_header_t *)
                         axutil_array_list_get(output_header_list, env, size);
-                        apr_table_set(request->err_headers_out,
-                            axis2_http_header_get_name(output_header, env),
-                            axis2_http_header_get_value(output_header, env));
+                        if (output_header) {
+                            const axis2_char_t* header_name = axis2_http_header_get_name(output_header, env);
+                            const axis2_char_t* header_value = axis2_http_header_get_value(output_header, env);
+                            apr_table_set(request->err_headers_out, header_name, header_value);
+                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                                "[APACHE WORKER] Set HTTP header: %s: %s", header_name, header_value);
+                        } else {
+                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                                "[APACHE WORKER] WARNING: Failed to get HTTP header at index %d", size);
+                        }
                     }
                     if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
                     {
