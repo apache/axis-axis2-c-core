@@ -321,11 +321,37 @@ axutil_thread_mutex_create(
     unsigned int flags)
 {
     axutil_thread_mutex_t *new_mutex = NULL;
+    pthread_mutexattr_t attr;
+    int result;
 
     new_mutex = AXIS2_MALLOC(allocator, sizeof(axutil_thread_mutex_t));
     new_mutex->allocator = allocator;
 
-    if(pthread_mutex_init(&(new_mutex->mutex), NULL) != 0)
+    /* Initialize mutex attributes for robust mutex support */
+    result = pthread_mutexattr_init(&attr);
+    if(result != 0)
+    {
+        AXIS2_FREE(allocator, new_mutex);
+        return NULL;
+    }
+
+    /* CRITICAL FIX: Set mutex to be robust - survives thread termination */
+    /* This prevents pthread_mutex_lock.c:450 ESRCH assertion failures */
+    result = pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST);
+    if(result != 0)
+    {
+        pthread_mutexattr_destroy(&attr);
+        AXIS2_FREE(allocator, new_mutex);
+        return NULL;
+    }
+
+    /* Initialize mutex with robust attributes */
+    result = pthread_mutex_init(&(new_mutex->mutex), &attr);
+
+    /* Clean up attributes */
+    pthread_mutexattr_destroy(&attr);
+
+    if(result != 0)
     {
         AXIS2_FREE(allocator, new_mutex);
         return NULL;

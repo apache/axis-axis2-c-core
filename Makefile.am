@@ -107,5 +107,26 @@ install-data-hook:
 			echo "Skipping $$file - already in correct location"; \
 		fi; \
 	done
+	@echo ""
+	@echo "========================================================================"
+	@echo "CRITICAL: Complete Apache Module & Library Deployment Required!"
+	@echo "========================================================================"
+	@echo "make install only updates some libraries. Apache needs ALL components:"
+	@echo ""
+	@echo "# Install updated receivers library (contains ServiceClass parameter fixes)"
+	@echo "sudo cp src/core/receivers/.libs/libaxis2_receivers.a /usr/local/axis2c/lib/libaxis2_receivers.a"
+	@echo ""
+	@echo "# Install updated Apache module"
+	@echo "sudo cp src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/apache2/modules/mod_axis2.so"
+	@echo ""
+	@echo "# Update versioned module copy"
+	@echo "sudo cp src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so.0.7.0"
+	@echo ""
+	@echo "# CRITICAL: Restart Apache to load new libraries (running processes cache old versions)"
+	@echo "sudo systemctl restart apache2-custom"
+	@echo ""
+	@echo "Without ALL these steps, Apache will continue using old library versions"
+	@echo "and ServiceClass parameter fixes will NOT take effect!"
+	@echo "========================================================================"
 
 

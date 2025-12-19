@@ -212,28 +212,64 @@ axis2_json_reader_create_for_stream(
         const axutil_env_t* env,
         axutil_stream_t* stream)
 {
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "[JSON_READER] ENTRY - Creating JSON reader for stream: %p", (void*)stream);
+
     axis2_json_reader_t* reader =
             (axis2_json_reader_t*)AXIS2_MALLOC(env->allocator,
                                                sizeof(struct axis2_json_reader));
     if (reader)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[JSON_READER] Reader allocated successfully, starting stream parsing");
+
         axis2_char_t buffer[512];
         int readed;
         struct json_tokener* tokener = json_tokener_new();
         enum json_tokener_error error;
         json_object* json_obj = NULL;
+        int read_attempts = 0;
 
         reader->json_obj = NULL;
         reader->axiom_node = NULL;
+
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[JSON_READER] Starting stream read loop");
+
         do
         {
-            readed = axutil_stream_read(stream, env, &buffer, sizeof(buffer));
-            if (readed < 0)
-                break;
+            read_attempts++;
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_READER] Read attempt %d - calling axutil_stream_read", read_attempts);
 
+            readed = axutil_stream_read(stream, env, &buffer, sizeof(buffer));
+
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_READER] Read attempt %d - read %d bytes", read_attempts, readed);
+
+            if (readed < 0)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_READER] Stream read failed with %d bytes, breaking", readed);
+                break;
+            }
+
+            if (readed == 0)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_READER] Stream read returned 0 bytes, breaking");
+                break;
+            }
+
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_READER] Parsing JSON chunk of %d bytes", readed);
             json_obj = json_tokener_parse_ex(tokener, buffer, readed);
 
-        } while ((error = json_tokener_get_error(tokener)) == json_tokener_continue);
+            error = json_tokener_get_error(tokener);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_READER] JSON parse result - error: %s", json_tokener_error_to_str(error));
+
+        } while (error == json_tokener_continue && read_attempts < 10);
 
         if (error != json_tokener_success)
         {
