@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HTTP/2 Pure JSON Camera Control Service Configuration (No SOAP/XML dependencies) -->
+<serviceGroup>
+    <service name="CameraControlService">
+        <description>
+            Apache Axis2/C HTTP/2 Generic Camera Control Service
+            Generic camera operations with user-implementable stub functions
+            Uses pure json-c library (no XML/SOAP dependencies)
+
+            IMPLEMENTATION NOTE:
+            This service provides STUB implementations only. Users must implement
+            camera-specific integration functions for their target camera system.
+            See implementation guide for examples: OpenCamera JNI, V4L2, IP cameras.
+        </description>
+
+        <serviceClass>camera_control_service</serviceClass>
+        <parameter name="ServiceClass">libcamera_control_service</parameter>
+
+        <!-- HTTP/2 transport configuration -->
+        <parameter name="transport.h2">
+            <parameter name="enableHTTP2">true</parameter>
+            <parameter name="enableStreaming">true</parameter>
+            <parameter name="enableMemoryOptimization">true</parameter>
+            <parameter name="maxFrameSize">16384</parameter>
+            <parameter name="maxConcurrentStreams">50</parameter>
+        </parameter>
+
+        <!-- JSON processing configuration - Pure json-c library (no XML/SOAP deps) -->
+        <parameter name="maxJSONPayloadSize">1048576</parameter>
+        <parameter name="jsonProcessingMode">pure-jsonc</parameter>
+
+        <!-- Camera service specific settings -->
+        <parameter name="maxRecordingDuration">7200</parameter>  <!-- 2 hours max -->
+        <parameter name="defaultVideoQuality">1080p</parameter>
+        <parameter name="defaultVideoFormat">mp4</parameter>
+        <parameter name="enableConcurrentRecording">false</parameter>
+
+        <!-- HTTP/2 JSON Operation: startRecording -->
+        <operation name="startRecording">
+            <description>
+                Start camera recording with specified parameters.
+                Accepts clip_name, quality, duration, and format parameters.
+
+                STUB IMPLEMENTATION: Users must implement camera_device_start_recording_impl()
+                function with camera-specific integration code.
+
+                Example JSON Request:
+                {
+                    "action": "start_recording",
+                    "clip_name": "meeting_001",
+                    "quality": "1080p",
+                    "duration": 3600,
+                    "format": "mp4"
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/startRecording</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: stopRecording -->
+        <operation name="stopRecording">
+            <description>
+                Stop active camera recording.
+
+                STUB IMPLEMENTATION: Users must implement camera_device_stop_recording_impl()
+                function with camera-specific integration code.
+
+                Example JSON Request:
+                {
+                    "action": "stop_recording"
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/stopRecording</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: getStatus -->
+        <operation name="getStatus">
+            <description>
+                Get current camera status and recording information.
+
+                STUB IMPLEMENTATION: Users must implement camera_device_get_status_impl()
+                function with camera-specific integration code.
+
+                Example JSON Request:
+                {
+                    "action": "get_status"
+                }
+
+                Example JSON Response:
+                {
+                    "success": true,
+                    "state": "recording",
+                    "active_clip": "meeting_001",
+                    "recording_duration": 1230,
+                    "last_error": "none"
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/getStatus</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: configureSettings -->
+        <operation name="configureSettings">
+            <description>
+                Configure camera settings (resolution, fps, codec, bitrate, audio).
+
+                STUB IMPLEMENTATION: Users must implement camera_device_configure_settings_impl()
+                function with camera-specific integration code.
+
+                Example JSON Request:
+                {
+                    "action": "configure_settings",
+                    "resolution": "1920x1080",
+                    "fps": "30",
+                    "codec": "h264",
+                    "bitrate": "5000000",
+                    "audio_source": "microphone"
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/configureSettings</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: sftpTransfer -->
+        <operation name="sftpTransfer">
+            <description>
+                Transfer recorded files via SFTP using PKI (passwordless) authentication.
+
+                STUB IMPLEMENTATION: Users must implement camera_device_sftp_transfer_impl()
+                function with SFTP client integration code.
+
+                This operation enables secure transfer of camera recordings to remote servers
+                using SSH public key authentication, eliminating password-based authentication.
+
+                Example JSON Request:
+                {
+                    "action": "sftp_transfer",
+                    "hostname": "backup.example.com",
+                    "username": "camera_user",
+                    "private_key_path": "/home/camera/.ssh/id_rsa",
+                    "local_file_path": "/tmp/recording_001.mp4",
+                    "remote_path": "/backups/camera/",
+                    "port": 22
+                }
+
+                Implementation Requirements:
+                - SSH private key must be accessible and have proper permissions (600)
+                - Remote host must have the corresponding public key in authorized_keys
+                - SFTP subsystem must be enabled on remote server
+                - Network connectivity to remote host on specified port
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/sftpTransfer</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+    </service>
+</serviceGroup>
