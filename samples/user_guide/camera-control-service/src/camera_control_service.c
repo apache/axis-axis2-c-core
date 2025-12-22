@@ -585,7 +585,10 @@ camera_device_get_status_impl(const axutil_env_t *env)
 
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "STUB: Get status request");
     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-        "STUB: camera_device_get_status_impl() - Replace with camera-specific implementation!");
+        "This is a stub function; user needs to implement the code for their use case");
+
+    /* Print message to standard output as well */
+    printf("This is a stub function; user needs to implement the code for their use case\n");
 
     /*
      * USER IMPLEMENTATION GOES HERE
@@ -767,9 +770,18 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         return create_error_response(env, "Invalid request parameters");
     }
 
+    /* DEBUG: Print the received JSON request */
+    const char *json_string = json_object_to_json_string(json_request);
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[CAMERA_DEBUG] Received JSON request: %s", json_string ? json_string : "NULL");
+    printf("[CAMERA_DEBUG] Received JSON request: %s\n", json_string ? json_string : "NULL");
+
     /* Extract action from JSON request */
     if (!json_object_object_get_ex(json_request, "action", &action_obj))
     {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[CAMERA_DEBUG] json_object_object_get_ex returned FALSE for 'action' key");
+        printf("[CAMERA_DEBUG] Failed to find 'action' key in JSON object\n");
         return create_error_response(env, "Missing 'action' parameter");
     }
 

@@ -14,7 +14,7 @@
         </description>
 
         <serviceClass>camera_control_service</serviceClass>
-        <parameter name="ServiceClass">libcamera_control_service</parameter>
+        <parameter name="ServiceClass">camera_control_service</parameter>
 
         <!-- HTTP/2 transport configuration -->
         <parameter name="transport.h2">

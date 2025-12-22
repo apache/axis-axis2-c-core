@@ -362,6 +362,28 @@ axis2_apache2_worker_process_request(
                         "[APACHE2_WORKER_ERROR] Interface processing failed - falling back to legacy");
                     use_interface_processing = AXIS2_FALSE;
                 }
+                else
+                {
+                    /* CRITICAL FIX: Process request body using JSON processor */
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        "[APACHE2_WORKER_JSON] Processing request body using JSON processor interface");
+
+                    axis2_apache2_processing_result_t body_result =
+                        request_processor->process_request_body(
+                            request_processor, env, request, msg_ctx, processing_ctx);
+
+                    if (body_result != AXIS2_APACHE2_PROCESSING_SUCCESS)
+                    {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[APACHE2_WORKER_ERROR] Request body processing failed");
+                        use_interface_processing = AXIS2_FALSE;
+                    }
+                    else
+                    {
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[APACHE2_WORKER_SUCCESS] JSON request body processed successfully");
+                    }
+                }
             }
             else
             {

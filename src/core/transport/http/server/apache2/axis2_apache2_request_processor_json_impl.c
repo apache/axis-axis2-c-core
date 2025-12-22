@@ -36,11 +36,11 @@
  * by eliminating the dangerous concurrent array modification patterns that caused
  * "Array list index out of bounds" errors in the original apache2_worker.c.
  *
- * ✅ THREAD-SAFE: Uses safe iteration without concurrent modification
- * ✅ HTTP/2 OPTIMIZED: Stream isolation prevents race conditions
- * ✅ MEMORY SAFE: Proper resource management and cleanup
- * ✅ PERFORMANCE OPTIMIZED: Minimizes array operations and memory allocations
- * ✅ JSON FOCUSED: Optimized error handling returns JSON responses, not SOAP faults
+ * THREAD-SAFE: Uses safe iteration without concurrent modification
+ * HTTP/2 OPTIMIZED: Stream isolation prevents race conditions
+ * MEMORY SAFE: Proper resource management and cleanup
+ * PERFORMANCE OPTIMIZED: Minimizes array operations and memory allocations
+ * JSON FOCUSED: Optimized error handling returns JSON responses, not SOAP faults
  */
 
 /** JSON processor implementation structure */
@@ -174,10 +174,10 @@ axis2_apache2_request_processor_create_json_impl(
 /**
  * @brief Thread-safe Accept header processing implementation
  *
- * ✅ REVOLUTIONARY: Eliminates concurrent modification by using safe iteration
- * ✅ THREAD-SAFE: Each stream gets isolated processing context
- * ✅ MEMORY-SAFE: Proper resource management with cleanup
- * ✅ PERFORMANCE: Minimizes array operations and allocations
+ * REVOLUTIONARY: Eliminates concurrent modification by using safe iteration
+ * THREAD-SAFE: Each stream gets isolated processing context
+ * MEMORY-SAFE: Proper resource management with cleanup
+ * PERFORMANCE: Minimizes array operations and allocations
  */
 static axis2_apache2_processing_result_t
 axis2_apache2_json_processor_process_accept_headers_impl(
@@ -304,10 +304,10 @@ cleanup:
  * @brief REVOLUTIONARY: Thread-safe Accept header processing without concurrent modification
  *
  * This function eliminates the dangerous patterns from apache2_worker.c:
- * ✅ NO destructive iteration (no axutil_array_list_remove in loops)
- * ✅ Safe array traversal using axutil_array_list_get
- * ✅ Proper memory management with cleanup
- * ✅ Isolated processing context per stream
+ * NO destructive iteration (no axutil_array_list_remove in loops)
+ * Safe array traversal using axutil_array_list_get
+ * Proper memory management with cleanup
+ * Isolated processing context per stream
  */
 static axis2_apache2_processing_result_t
 axis2_apache2_json_processor_process_accept_header_safe(
@@ -363,7 +363,7 @@ axis2_apache2_json_processor_process_accept_header_safe(
         return AXIS2_APACHE2_PROCESSING_MEMORY_ERROR;
     }
 
-    /* ✅ REVOLUTIONARY: Safe iteration without concurrent modification */
+    /* REVOLUTIONARY: Safe iteration without concurrent modification */
     for (i = 0; i < token_count; i++)
     {
         axis2_char_t* token = (axis2_char_t*)axutil_array_list_get(token_list, env, i);
@@ -422,7 +422,9 @@ axis2_apache2_json_processor_parse_and_process_json(
     axutil_stream_t* out_stream,
     axis2_msg_ctx_t* msg_ctx,
     const axis2_char_t* content_type,
-    const axis2_char_t* service_path);
+    const axis2_char_t* service_path,
+    request_rec* request,
+    axis2_bool_t* direct_response_written);
 
 /**
  * @brief Process request body for JSON HTTP/2 requests
@@ -441,43 +443,68 @@ axis2_apache2_json_processor_process_request_body_impl(
     const axis2_char_t* content_type = NULL;
     const axis2_char_t* service_path = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_bool_t direct_response_written = AXIS2_FALSE;
 
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR_INTERFACE] ENTRY POINT - JSON processor interface function invoked!");
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR_INTERFACE] This proves the JSON processor interface is being called");
 
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to check env parameter: %p", (void*)env);
     AXIS2_ENV_CHECK(env, AXIS2_APACHE2_PROCESSING_FAILURE);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to check processor parameter: %p", (void*)processor);
     AXIS2_PARAM_CHECK(env->error, processor, AXIS2_APACHE2_PROCESSING_FAILURE);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to check request parameter: %p", (void*)request);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_APACHE2_PROCESSING_FAILURE);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to check msg_ctx parameter: %p", (void*)msg_ctx);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_APACHE2_PROCESSING_FAILURE);
 
     /* impl = (axis2_apache2_json_processor_impl_t*)processor; */
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] All parameter checks passed successfully!");
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR] Processing complete JSON HTTP/2 request body");
 
     /* Create input stream from Apache request */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to create input stream from Apache request");
     request_body = axutil_stream_create_apache2(env, request);
     if (!request_body)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[JSON_PROCESSOR] Failed to create input stream from Apache request");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR_TRACE] FAILED to create input stream from Apache request - returning early");
         return AXIS2_APACHE2_PROCESSING_FAILURE;
     }
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] Input stream created successfully: %p", (void*)request_body);
 
     /* Create output stream for response */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to create output stream for response");
     out_stream = axutil_stream_create_basic(env);
     if (!out_stream)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[JSON_PROCESSOR] Failed to create output stream");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR_TRACE] FAILED to create output stream - returning early");
         /* Clean up request body stream */
         axutil_stream_free(request_body, env);
         return AXIS2_APACHE2_PROCESSING_FAILURE;
     }
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] Output stream created successfully: %p", (void*)out_stream);
 
     /* Get content type and service path */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to get content type and service path");
     content_type = apr_table_get(request->headers_in, "Content-Type");
     if (!content_type)
     {
@@ -487,12 +514,20 @@ axis2_apache2_json_processor_process_request_body_impl(
     service_path = request->uri;  /* Service path from request URI */
 
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] Got Content-Type: %s, Service: %s",
+        content_type, service_path ? service_path : "NULL");
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR] Processing request - Content-Type: %s, Service: %s",
         content_type, service_path ? service_path : "unknown");
 
     /* Process JSON request and generate JSON response */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] About to call parse_and_process_json function - THIS IS THE CRITICAL CALL");
     status = axis2_apache2_json_processor_parse_and_process_json(
-        env, request_body, out_stream, msg_ctx, content_type, service_path);
+        env, request_body, out_stream, msg_ctx, content_type, service_path, request, &direct_response_written);
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_TRACE] RETURNED from parse_and_process_json with status: %d", status);
 
     if (status == AXIS2_FAILURE)
     {
@@ -511,8 +546,8 @@ axis2_apache2_json_processor_process_request_body_impl(
         }
     }
 
-    /* Write response to Apache request */
-    if (out_stream)
+    /* Write response to Apache request - SKIP if direct response was already written */
+    if (out_stream && !direct_response_written)
     {
         axis2_char_t* response_buffer = NULL;
         int response_length = 0;
@@ -531,13 +566,21 @@ axis2_apache2_json_processor_process_request_body_impl(
                 ap_rwrite(response_buffer, response_length, request);
 
                 AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                    "[JSON_PROCESSOR_SUCCESS] Sent JSON response (%d bytes)", response_length);
+                    "[JSON_PROCESSOR_SUCCESS] Sent JSON response via stream (%d bytes)", response_length);
 
                 AXIS2_FREE(env->allocator, response_buffer);
             }
         }
 
         axutil_stream_free(out_stream, env);
+    }
+    else if (direct_response_written)
+    {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR_SUCCESS] Skipping stream-based response - direct response already written");
+        if (out_stream) {
+            axutil_stream_free(out_stream, env);
+        }
     }
 
     /* Clean up */
@@ -546,15 +589,117 @@ axis2_apache2_json_processor_process_request_body_impl(
         axutil_stream_free(request_body, env);
     }
 
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_PROCESSOR_INTERFACE] Request body processing complete - delegating to transport utils");
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_PROCESSOR_INTERFACE] CRITICAL FIX: Returning NOT_HANDLED to trigger engine processing");
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_PROCESSOR_INTERFACE] This should cause apache2_worker to call transport utils and engine");
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_INTERFACE] Request body processing complete - calling engine directly");
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_INTERFACE] CRITICAL FIX: Calling transport utils and engine directly");
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_INTERFACE] This will invoke JsonRpcMessageReceiver and then retrieve response");
 
-    /* CRITICAL FIX: Return NOT_HANDLED to trigger apache2_worker to call transport utils -> engine */
-    return AXIS2_APACHE2_PROCESSING_NOT_HANDLED;
+    /* CRITICAL FIX: Call transport utils and engine directly, then retrieve JSON response */
+    axis2_status_t engine_status = AXIS2_FAILURE;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_ENGINE] About to call axis2_http_transport_utils_process_http_post_request");
+
+    /* Call the engine processing directly instead of delegating to apache2_worker */
+    axutil_stream_t* engine_input_stream = axutil_stream_create_apache2(env, request);
+    axutil_stream_t* engine_output_stream = axutil_stream_create_basic(env);
+    const axis2_char_t* engine_content_type = apr_table_get(request->headers_in, "Content-Type");
+    if (!engine_content_type) {
+        engine_content_type = "application/json";
+    }
+
+    const axis2_char_t* content_length_str = apr_table_get(request->headers_in, "Content-Length");
+    int engine_content_length = content_length_str ? atoi(content_length_str) : 0;
+
+    engine_status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
+                                engine_input_stream,
+                                engine_output_stream,
+                                engine_content_type,
+                                engine_content_length,
+                                NULL,  /* soap_action_header - not needed for JSON */
+                                request->uri);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR_ENGINE] Engine processing completed with status: %d", engine_status);
+
+    if (engine_status == AXIS2_SUCCESS) {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR_RESPONSE] Engine success - checking for JSON response in message context");
+
+        /* NOW check for JSON response after engine processing */
+        axutil_property_t* json_response_prop = axis2_msg_ctx_get_property(msg_ctx, env, "JSON_RESPONSE");
+        if (json_response_prop) {
+            axis2_char_t* json_response_data = (axis2_char_t*)axutil_property_get_value(json_response_prop, env);
+            if (json_response_data && axutil_strlen(json_response_data) > 0) {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_RESPONSE] Found JSON response (%d bytes) - delivering to client",
+                    (int)axutil_strlen(json_response_data));
+
+                /* Write JSON response directly to Apache response */
+                ap_set_content_type(request, "application/json");
+                ap_rwrite(json_response_data, axutil_strlen(json_response_data), request);
+
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_SUCCESS] JSON response delivered to client successfully!");
+
+                /* Clean up streams */
+                if (request_body) axutil_stream_free(request_body, env);
+                if (out_stream) axutil_stream_free(out_stream, env);
+                if (engine_input_stream) axutil_stream_free(engine_input_stream, env);
+                if (engine_output_stream) axutil_stream_free(engine_output_stream, env);
+
+                return AXIS2_APACHE2_PROCESSING_SUCCESS;
+            } else {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_RESPONSE] JSON_RESPONSE property found but data is NULL or empty");
+            }
+        } else {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_RESPONSE] No JSON_RESPONSE property found after engine processing");
+
+            /* ANTI-DUPLICATION FIX: If engine succeeded, service likely wrote response directly */
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_ANTI_DUP] Engine succeeded but no JSON_RESPONSE property - service may have written response directly");
+
+            /* Clean up streams and return success to prevent duplicate error responses */
+            if (request_body) axutil_stream_free(request_body, env);
+            if (out_stream) axutil_stream_free(out_stream, env);
+            if (engine_input_stream) axutil_stream_free(engine_input_stream, env);
+            if (engine_output_stream) axutil_stream_free(engine_output_stream, env);
+
+            return AXIS2_APACHE2_PROCESSING_SUCCESS;
+        }
+    } else {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR_ENGINE] Engine processing failed with status: %d", engine_status);
+
+        /* ANTI-DUPLICATION: Check if service already wrote successful response */
+        if (request->bytes_sent > 0 || request->status == HTTP_ACCEPTED || request->status == HTTP_OK) {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_ANTI_DUP] Service already wrote response (bytes_sent=%ld, status=%d) - skipping fallback error",
+                (long)request->bytes_sent, request->status);
+        } else {
+            /* Only write fallback error response if no response was already sent */
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_FALLBACK] Engine failed and no response sent - writing fallback error response");
+
+            /* Fallback: write error response */
+            ap_set_content_type(request, "application/json");
+            const axis2_char_t* error_response =
+                "{\"error\":{\"message\":\"Service processing failed\",\"code\":500}}";
+            ap_rwrite(error_response, axutil_strlen(error_response), request);
+        }
+    }
+
+    /* Clean up streams */
+    if (request_body) axutil_stream_free(request_body, env);
+    if (out_stream) axutil_stream_free(out_stream, env);
+    if (engine_input_stream) axutil_stream_free(engine_input_stream, env);
+    if (engine_output_stream) axutil_stream_free(engine_output_stream, env);
+
+    return AXIS2_APACHE2_PROCESSING_SUCCESS;
 }
 
 /**
@@ -750,12 +895,19 @@ axis2_apache2_json_processor_parse_and_process_json(
     axutil_stream_t* out_stream,
     axis2_msg_ctx_t* msg_ctx,
     const axis2_char_t* content_type,
-    const axis2_char_t* service_path)
+    const axis2_char_t* service_path,
+    request_rec* request,
+    axis2_bool_t* direct_response_written)
 {
     axis2_char_t* json_request_buffer = NULL;
     int request_length = 0;
     json_object* request_json = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR] ENTRY: parse_and_process_json function called!");
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR] ENTRY: msg_ctx=%p, service_path=%s", (void*)msg_ctx, service_path);
 
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         "[JSON_PROCESSOR] Starting JSON parsing and service processing");
@@ -794,7 +946,23 @@ axis2_apache2_json_processor_parse_and_process_json(
             }
         }
 
-        /* Generate "no data" JSON error response */
+        /* HTTP/2 COMPATIBILITY FIX: Check if data was already processed via JSON_REQUEST_BODY */
+        axutil_property_t* json_request_prop = axis2_msg_ctx_get_property(msg_ctx, env, "JSON_REQUEST_BODY");
+        if (json_request_prop) {
+            axis2_char_t* existing_json_data = (axis2_char_t*)axutil_property_get_value(json_request_prop, env);
+            if (existing_json_data && axutil_strlen(existing_json_data) > 0) {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_HTTP2_COMPAT] Found JSON_REQUEST_BODY property (%d bytes) - using existing data",
+                    (int)axutil_strlen(existing_json_data));
+
+                /* Use the existing JSON data */
+                json_request_buffer = axutil_strdup(env, existing_json_data);
+                request_length = axutil_strlen(json_request_buffer);
+                goto process_json;
+            }
+        }
+
+        /* Generate "no data" JSON error response only if no data found anywhere */
         return axis2_apache2_json_processor_write_json_error_response(
             env, out_stream, "No request data received", 400);
     }
@@ -887,18 +1055,36 @@ process_json:
     /* Step 1: Check if service framework has already processed this request
      * and provided a JSON response via axis2_json_rpc_msg_recv.c
      */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_PROCESSOR] LIBERAL_DEBUG: About to check for JSON_RESPONSE - msg_ctx pointer: %p", (void*)msg_ctx);
+
     if (msg_ctx) {
         axutil_property_t* json_response_prop = axis2_msg_ctx_get_property(msg_ctx, env, "JSON_RESPONSE");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR] LIBERAL_DEBUG: Retrieved JSON_RESPONSE property: %p", (void*)json_response_prop);
+
         if (json_response_prop) {
             axis2_char_t* service_json_response = (axis2_char_t*)axutil_property_get_value(json_response_prop, env);
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR] LIBERAL_DEBUG: Retrieved property value: %p", (void*)service_json_response);
+
             if (service_json_response && axutil_strlen(service_json_response) > 0) {
                 AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                     "[JSON_PROCESSOR_SERVICE] Using service framework response (length: %d)",
                     (int)axutil_strlen(service_json_response));
 
                 json_response = axutil_strdup(env, service_json_response);
+            } else {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR] LIBERAL_DEBUG: Service JSON response is NULL or empty");
             }
+        } else {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR] LIBERAL_DEBUG: No JSON_RESPONSE property found in message context");
         }
+    } else {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[JSON_PROCESSOR] LIBERAL_DEBUG: msg_ctx is NULL!");
     }
 
     /* Step 2: If no service response available, prepare for service framework processing
@@ -907,25 +1093,25 @@ process_json:
      * Axis2/C processing continue so the service framework can invoke JsonRpcMessageReceiver
      */
     if (!json_response) {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
             "[JSON_PROCESSOR_DELEGATION] CRITICAL: No service framework response found");
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
             "[JSON_PROCESSOR_DELEGATION] Preparing message context for service framework processing");
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
             "[JSON_PROCESSOR_DELEGATION] Service path: %s", service_path ? service_path : "NULL");
 
         /* Prepare message context for service framework processing
          * Following Axis2/Java JsonBuilder pattern: set properties needed by JsonRpcMessageReceiver
          */
         if (msg_ctx) {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 "[JSON_PROCESSOR_DELEGATION] Setting JSON processing flags on message context");
 
             /* Set JSON processing flag (equivalent to JsonConstant.IS_JSON_STREAM in Java) */
             axutil_property_t* json_stream_prop = axutil_property_create(env);
             axutil_property_set_value(json_stream_prop, env, (void*)AXIS2_TRUE);
             axis2_msg_ctx_set_property(msg_ctx, env, "IS_JSON_STREAM", json_stream_prop);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 " [JSON_PROCESSOR_DELEGATION] Set IS_JSON_STREAM = true");
 
             /* Set Content-Type property that JsonRpcMessageReceiver checks for */
@@ -933,7 +1119,7 @@ process_json:
                 axutil_property_t* content_type_prop = axutil_property_create(env);
                 axutil_property_set_value(content_type_prop, env, axutil_strdup(env, content_type));
                 axis2_msg_ctx_set_property(msg_ctx, env, "Content-Type", content_type_prop);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                     " [JSON_PROCESSOR_DELEGATION] Set Content-Type = %s", content_type);
             }
 
@@ -942,7 +1128,7 @@ process_json:
                 axutil_property_t* json_request_prop = axutil_property_create(env);
                 axutil_property_set_value(json_request_prop, env, axutil_strdup(env, json_request_buffer));
                 axis2_msg_ctx_set_property(msg_ctx, env, "JSON_REQUEST_BODY", json_request_prop);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                     " [JSON_PROCESSOR_DELEGATION] Stored JSON request body (%d bytes)",
                     (int)strlen(json_request_buffer));
             }
@@ -952,13 +1138,13 @@ process_json:
                 axutil_property_t* service_path_prop = axutil_property_create(env);
                 axutil_property_set_value(service_path_prop, env, axutil_strdup(env, service_path));
                 axis2_msg_ctx_set_property(msg_ctx, env, "SERVICE_PATH", service_path_prop);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                     " [JSON_PROCESSOR_DELEGATION] Set SERVICE_PATH = %s", service_path);
             }
 
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 " [JSON_PROCESSOR_DELEGATION] FIXED: NOT returning early - letting normal Axis2/C processing continue");
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 " [JSON_PROCESSOR_DELEGATION] This should allow service framework to invoke JsonRpcMessageReceiver");
 
             /* CRITICAL FIX: Create a transport acknowledgment response but DON'T return early
@@ -972,26 +1158,36 @@ process_json:
                 "\"debug\":\"If you see this response, service framework integration failed\""
                 "}");
 
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 " [JSON_PROCESSOR_DELEGATION] Created fallback response but continuing processing...");
         } else {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "❌ [JSON_PROCESSOR_ERROR] No message context available for service delegation");
+                "[JSON_PROCESSOR_ERROR] No message context available for service delegation");
             return AXIS2_FAILURE;
         }
     }
 
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         " [JSON_PROCESSOR_DELEGATION] Transport delegation complete - NOT writing fallback response");
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         " [JSON_PROCESSOR_DELEGATION] Letting normal Axis2/C processing continue to service framework");
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         " [JSON_PROCESSOR_DELEGATION] JsonRpcMessageReceiver should be invoked next");
 
-    // Clean up fallback response - we're not writing it to output stream
+    // CRITICAL FIX: Don't write fallback response directly - let engine processing happen
     if (json_response) {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            " [JSON_PROCESSOR_DELEGATION] Discarding fallback response: %s", json_response);
+        int response_len = axutil_strlen(json_response);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            " [JSON_PROCESSOR_DELEGATION] NOT writing fallback response directly - letting engine process request");
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            " [JSON_PROCESSOR_DELEGATION] Fallback response would be: %s", json_response);
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            " [JSON_PROCESSOR_DELEGATION] Engine should invoke JsonRpcMessageReceiver and generate proper response");
+
+        // DON'T write response directly - let apache2_worker call engine processing
+        // *direct_response_written = AXIS2_TRUE;  // REMOVED - allows engine processing to continue
+        *direct_response_written = AXIS2_FALSE;    // Allow normal engine processing
+
         AXIS2_FREE(env->allocator, json_response);
     }
 
@@ -1002,9 +1198,9 @@ process_json:
     json_object_put(request_json);
     AXIS2_FREE(env->allocator, json_request_buffer);
 
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         " [JSON_PROCESSOR_FLOW] Transport processing complete with status: %d", status);
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
         " [JSON_PROCESSOR_FLOW] If JsonRpcMessageReceiver is not invoked after this, there's a flow issue");
 
     return status;

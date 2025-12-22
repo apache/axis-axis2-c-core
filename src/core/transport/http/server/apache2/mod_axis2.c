@@ -474,7 +474,7 @@ axis2_fixups(
         if (content_type && strstr(content_type, "application/json")) {
 
             ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-                "🚀 REVOLUTIONARY: HTTP/2 JSON stream detected in fixups - Optimizing for breed apart processing");
+                "REVOLUTIONARY: HTTP/2 JSON stream detected in fixups - Optimizing for breed apart processing");
 
             /* Force this request to use axis2_module handler */
             req->handler = apr_pstrdup(req->pool, "axis2_module");
@@ -501,7 +501,7 @@ axis2_fixups(
             }
 
             ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-                "✅ REVOLUTIONARY: HTTP/2 JSON stream optimized - Revolutionary processing flags set");
+                "REVOLUTIONARY: HTTP/2 JSON stream optimized - Revolutionary processing flags set");
         }
     }
 

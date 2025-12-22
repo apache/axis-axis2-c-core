@@ -18,6 +18,8 @@
 #include <axis2_apache2_request_processor.h>
 #include <axutil_string.h>
 #include <axis2_http_transport.h>
+#include <httpd.h>
+#include <http_log.h>
 #include <apr_strings.h>
 
 /**
@@ -95,7 +97,7 @@ axis2_apache2_request_processor_factory_create(
     {
         /* HTTP/2 JSON: Use optimized thread-safe processor */
         AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-            "🚀 REQUEST PROCESSOR FACTORY: Creating JSON HTTP/2 processor for thread-safe processing");
+            "REQUEST PROCESSOR FACTORY: Creating JSON HTTP/2 processor for thread-safe processing");
         processor = axis2_apache2_request_processor_create_json_impl(env);
     }
     else if (analysis->is_http2)
@@ -173,7 +175,7 @@ axis2_apache2_request_processor_factory_analyze_request(
             result->is_http2 = AXIS2_TRUE;
             result->requires_thread_safety = AXIS2_TRUE;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "🔍 REQUEST ANALYSIS: HTTP/2 detected - protocol: %s", protocol);
+                "REQUEST ANALYSIS: HTTP/2 detected - protocol: %s", protocol);
         }
     }
 
@@ -196,7 +198,7 @@ axis2_apache2_request_processor_factory_analyze_request(
         {
             result->is_json_content = AXIS2_TRUE;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "🔍 REQUEST ANALYSIS: JSON content detected - content-type: %s", content_type);
+                "REQUEST ANALYSIS: JSON content detected - content-type: %s", content_type);
         }
         /* Check for SOAP content types */
         else if (strstr(content_type, "text/xml") ||
@@ -205,7 +207,7 @@ axis2_apache2_request_processor_factory_analyze_request(
         {
             result->is_soap_content = AXIS2_TRUE;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "🔍 REQUEST ANALYSIS: SOAP content detected - content-type: %s", content_type);
+                "REQUEST ANALYSIS: SOAP content detected - content-type: %s", content_type);
         }
     }
 
@@ -219,12 +221,12 @@ axis2_apache2_request_processor_factory_analyze_request(
             result->is_http2 = AXIS2_TRUE;
             result->requires_thread_safety = AXIS2_TRUE;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "🔍 REQUEST ANALYSIS: HTTP/2 detected via Upgrade header: %s", upgrade_header);
+                "REQUEST ANALYSIS: HTTP/2 detected via Upgrade header: %s", upgrade_header);
         }
     }
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "🔍 REQUEST ANALYSIS COMPLETE: HTTP2=%d, JSON=%d, SOAP=%d, ThreadSafe=%d",
+        "REQUEST ANALYSIS COMPLETE: HTTP2=%d, JSON=%d, SOAP=%d, ThreadSafe=%d",
         result->is_http2, result->is_json_content, result->is_soap_content, result->requires_thread_safety);
 
     return result;
@@ -255,15 +257,28 @@ axis2_apache2_request_processor_is_json_http2_request(
 {
     const axis2_char_t* content_type = NULL;
     const axis2_char_t* protocol = NULL;
+    axis2_bool_t result = AXIS2_FALSE;
 
-    if (!request) return AXIS2_FALSE;
+    if (!request) {
+        ap_log_error(APLOG_MARK, APLOG_ERR, 0, request->server,
+            "[JSON_HTTP2_DETECTION] Request is NULL");
+        return AXIS2_FALSE;
+    }
 
     /* Check protocol version */
     protocol = request->protocol;
+    ap_log_error(APLOG_MARK, APLOG_INFO, 0, request->server,
+        "[JSON_HTTP2_DETECTION] Protocol: '%s'", protocol ? protocol : "NULL");
+
     if (!protocol || (!strstr(protocol, "HTTP/2") && !strstr(protocol, "HTTP/2.0")))
     {
+        ap_log_error(APLOG_MARK, APLOG_ERR, 0, request->server,
+            "[JSON_HTTP2_DETECTION] Protocol check FAILED - not HTTP/2");
         return AXIS2_FALSE;
     }
+
+    ap_log_error(APLOG_MARK, APLOG_INFO, 0, request->server,
+        "[JSON_HTTP2_DETECTION] Protocol check PASSED - is HTTP/2");
 
     /* Check content type */
     content_type = apr_table_get(request->headers_in, "Content-Type");
@@ -272,12 +287,24 @@ axis2_apache2_request_processor_is_json_http2_request(
         content_type = apr_table_get(request->headers_in, "content-type");
     }
 
-    if (!content_type) return AXIS2_FALSE;
+    ap_log_error(APLOG_MARK, APLOG_INFO, 0, request->server,
+        "[JSON_HTTP2_DETECTION] Content-Type: '%s'", content_type ? content_type : "NULL");
+
+    if (!content_type) {
+        ap_log_error(APLOG_MARK, APLOG_ERR, 0, request->server,
+            "[JSON_HTTP2_DETECTION] Content-Type check FAILED - no content type");
+        return AXIS2_FALSE;
+    }
 
     /* JSON content type detection */
-    return (strstr(content_type, "application/json") != NULL ||
-            strstr(content_type, "text/json") != NULL ||
-            strstr(content_type, "application/hal+json") != NULL ||
-            strstr(content_type, "application/vnd.api+json") != NULL) ?
-           AXIS2_TRUE : AXIS2_FALSE;
+    result = (strstr(content_type, "application/json") != NULL ||
+              strstr(content_type, "text/json") != NULL ||
+              strstr(content_type, "application/hal+json") != NULL ||
+              strstr(content_type, "application/vnd.api+json") != NULL) ?
+             AXIS2_TRUE : AXIS2_FALSE;
+
+    ap_log_error(APLOG_MARK, APLOG_INFO, 0, request->server,
+        "[JSON_HTTP2_DETECTION] Final result: %s", result ? "TRUE (interface processing)" : "FALSE (legacy processing)");
+
+    return result;
 }
