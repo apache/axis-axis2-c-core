@@ -906,8 +906,10 @@ Table of Contents
     NOTE : To do the following tasks, you might need super user privileges 
 		   on your machine.
 
-    Copy the mod_axis2 (libmod_axis2.so.0.7.0 on Linux and mod_axis2.dll 
-	on Windows) to "<apache2 modules directory>" as mod_axis2.so 
+    Copy the mod_axis2 (libmod_axis2.so.0.7.0 on Linux and mod_axis2.dll
+	on Windows) to "<apache2 modules directory>" as mod_axis2.so
+
+	NOTE: The 0.7.0 version in the library filename reflects libtool's shared library versioning for ABI compatibility tracking and differs from the project release version (2.0.0). 
     
 	Example:
     	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.7.0 
