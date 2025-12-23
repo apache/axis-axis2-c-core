@@ -41,11 +41,11 @@ axiom_node_t *AXIS2_CALL notify_on_fault(
     const axutil_env_t * env,
     axiom_node_t * node);
 
-static const axis2_svc_skeleton_ops_t notify_svc_skeleton_ops_var = {
-    notify_init,
+static axis2_svc_skeleton_ops_t notify_svc_skeleton_ops_var = {
     notify_invoke,
     notify_on_fault,
-    notify_free
+    notify_free,
+    notify_init
 };
 
 /*Create function */

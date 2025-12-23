@@ -26,6 +26,8 @@ mtom_LDADD   = $(LDFLAGS) \
                     -laxis2_parser \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
+                    -laxis2_http_common \
+                    -laxis2_http_util \
                     $(GUTHTHILA_LIBS)
 
 mtom_CPPFLAGS = @AXIS2INC@

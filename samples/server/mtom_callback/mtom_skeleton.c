@@ -41,11 +41,11 @@ axiom_node_t *AXIS2_CALL mtom_on_fault(
     const axutil_env_t * env,
     axiom_node_t * node);
 
-static const axis2_svc_skeleton_ops_t mtom_svc_skeleton_ops_var = {
-    mtom_init,
+static axis2_svc_skeleton_ops_t mtom_svc_skeleton_ops_var = {
     mtom_invoke,
     mtom_on_fault,
-    mtom_free
+    mtom_free,
+    mtom_init
 };
 
 /*Create function */

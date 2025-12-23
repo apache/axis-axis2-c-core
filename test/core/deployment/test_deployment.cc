@@ -74,9 +74,25 @@ TEST_F(TestDeployment, test_dep_engine_load)
     axis2_char_t *axis2c_home = NULL;
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
+    printf("DEBUG: AXIS2C_HOME = %s\n", axis2c_home ? axis2c_home : "NULL");
+
     dep_engine = axis2_dep_engine_create_with_repos_name(m_env, axis2c_home);
     ASSERT_NE(dep_engine, nullptr);
+    printf("DEBUG: Deployment engine created successfully\n");
+
+    printf("DEBUG: Calling axis2_dep_engine_load()...\n");
     conf = axis2_dep_engine_load(dep_engine, m_env);
+
+    if (!conf) {
+        printf("DEBUG: axis2_dep_engine_load() returned NULL\n");
+        if (m_env->error->error_number != AXIS2_ERROR_NONE) {
+            printf("DEBUG: Error code: %d\n", m_env->error->error_number);
+            printf("DEBUG: Error message: %s\n", AXIS2_ERROR_GET_MESSAGE(m_env->error));
+        }
+    } else {
+        printf("DEBUG: axis2_dep_engine_load() succeeded\n");
+    }
+
     ASSERT_NE(conf, nullptr);
     axis2_conf_set_dep_engine(conf, m_env, dep_engine);
     svc_map = axis2_conf_get_all_svcs(conf, m_env);

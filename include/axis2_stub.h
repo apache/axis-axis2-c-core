@@ -72,6 +72,19 @@ axis2_stub_set_svc_client(
     const axutil_env_t *env,
     axis2_svc_client_t *svc_client);
 
+/* Additional stub creation functions for client compatibility */
+AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
+axis2_stub_create_with_endpoint_ref_and_client_home(
+    const axutil_env_t *env,
+    axis2_endpoint_ref_t *endpoint_ref,
+    const axis2_char_t *client_home);
+
+AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
+axis2_stub_create_with_endpoint_uri_and_client_home(
+    const axutil_env_t *env,
+    const axis2_char_t *endpoint_uri,
+    const axis2_char_t *client_home);
+
 #ifdef __cplusplus
 }
 #endif

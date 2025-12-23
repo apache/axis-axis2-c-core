@@ -119,7 +119,7 @@ http_server(axutil_thread_t *td, void *param)
     td_http_server = td;
     /* Set the service URL prefix to be used. This could default to services if not 
      set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
-    axis2_request_url_prefix = AXIS2_REQUEST_URL_PREFIX;
+    axis2_request_url_prefix = (axis2_char_t *)AXIS2_REQUEST_URL_PREFIX;
 
     allocator = axutil_allocator_init(NULL);
 

@@ -170,7 +170,7 @@ TEST_F(TestHTTPTransport, test_http_client)
     axis2_status_t status;
     char *body_bytes = NULL;
     int body_bytes_len = 0;
-    char * content ="<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"><soapenv:Body><echoString><text>echo5</text></echoString></soapenv:Body></soapenv:Envelope>";
+    const char * content ="<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"><soapenv:Body><echoString><text>echo5</text></echoString></soapenv:Body></soapenv:Envelope>";
     char tmpbuf[100];
     int server_status;
     printf("Starting http_client tests\n");
@@ -181,7 +181,7 @@ TEST_F(TestHTTPTransport, test_http_client)
                                                   "HTTP/1.1");
     request = axis2_http_simple_request_create(m_env, request_line,
                                                NULL, 0, NULL);
-    axis2_http_simple_request_set_body_string(request, m_env, content, strlen(content));
+    axis2_http_simple_request_set_body_string(request, m_env, (void *)content, strlen(content));
     url = axutil_url_create(m_env, "http", "localhost", 9090, NULL);
 	sprintf(tmpbuf,"%s:%d", axutil_url_get_host(url, m_env), axutil_url_get_port(url, m_env));
     header =

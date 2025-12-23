@@ -37,11 +37,11 @@ int AXIS2_CALL add_init(
     axis2_svc_skeleton_t * svc_skeleton,
     const axutil_env_t * env);
 
-static const axis2_svc_skeleton_ops_t add_svc_skeleton_ops_var = {
-    add_init,
+static axis2_svc_skeleton_ops_t add_svc_skeleton_ops_var = {
     add_invoke,
     NULL,
-    add_free
+    add_free,
+    add_init
 };
 
 AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL

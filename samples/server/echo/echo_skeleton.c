@@ -43,11 +43,11 @@ axiom_node_t *AXIS2_CALL echo_on_fault(
     const axutil_env_t * env,
     axiom_node_t * node);
 
-static const axis2_svc_skeleton_ops_t echo_svc_skeleton_ops_var = {
-    echo_init,
+static axis2_svc_skeleton_ops_t echo_svc_skeleton_ops_var = {
     echo_invoke,
     echo_on_fault,
-    echo_free
+    echo_free,
+    echo_init
 };
 
 /*Create function */

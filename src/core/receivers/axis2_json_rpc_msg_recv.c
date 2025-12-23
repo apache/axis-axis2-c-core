@@ -40,6 +40,7 @@
 #include <axutil_class_loader.h>
 #include <axis2_http_header.h>
 #include <string.h>
+#include <ctype.h>  /* For character type functions */
 #include <json-c/json.h>
 #include <dlfcn.h>  /* For JSON-direct service loading */
 /* Revolutionary: NO AXIOM includes - pure JSON processing only */
@@ -136,16 +137,45 @@ try_json_direct_service_loading(const axutil_env_t *env,
             "[JSON_DIRECT] CRITICAL - No ServiceClass parameter found for '%s' - using service name as class name", service_name);
         service_class_name = service_name;
     } else {
-        // ULTRA-SAFE FIX: Immediately use safe values - no memory validation that could hang
-        if (strcmp(service_name, "CameraControlService") == 0) {
-            service_class_name = "camera_control_service";
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                "[JSON_DIRECT] ULTRA_SAFE - Using hardcoded 'camera_control_service' to avoid memory corruption");
+        // GENERIC CORRUPTION DETECTION: Check if ServiceClass parameter contains corrupted data
+        axis2_bool_t is_corrupted = AXIS2_FALSE;
+
+        // Check for non-printable characters or obvious corruption patterns
+        if (service_class_name) {
+            for (int i = 0; service_class_name[i] != '\0'; i++) {
+                if (!isprint(service_class_name[i]) || (unsigned char)service_class_name[i] > 127) {
+                    is_corrupted = AXIS2_TRUE;
+                    break;
+                }
+            }
+        }
+
+        if (is_corrupted) {
+            // GENERIC SAFE CONVERSION: Convert CamelCase service name to snake_case
+            char* converted_name = (char*)AXIS2_MALLOC(env->allocator, strlen(service_name) * 2 + 1);
+            if (converted_name) {
+                int j = 0;
+                for (int i = 0; service_name[i] != '\0'; i++) {
+                    if (i > 0 && isupper(service_name[i])) {
+                        converted_name[j++] = '_';
+                    }
+                    converted_name[j++] = tolower(service_name[i]);
+                }
+                converted_name[j] = '\0';
+                service_class_name = converted_name;
+
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_DIRECT] GENERIC_CORRUPTION_FIX - Detected corruption, converted '%s' to '%s'",
+                    service_name, service_class_name);
+            } else {
+                // Fallback if allocation fails
+                service_class_name = service_name;
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_DIRECT] ALLOCATION_FAILED - Using service name as fallback");
+            }
         } else {
-            // For other services, use service name as safe fallback
-            service_class_name = service_name;
             AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                "[JSON_DIRECT] SAFE_FALLBACK - Using service name as class name for safety");
+                "[JSON_DIRECT] PARAMETER_VALID - Using ServiceClass parameter as provided");
         }
     }
 
@@ -358,16 +388,39 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
             size_t total_size = 0;
             axis2_char_t buffer[8192];
             int bytes_read = 0;
+            int read_attempts = 0;
+            const int max_read_attempts = 100; // Prevent infinite hangs
+            const size_t max_json_size = 10 * 1024 * 1024; // 10MB limit
 
             json_request = AXIS2_MALLOC(env->allocator, buffer_size);
             if (json_request) {
                 while ((bytes_read = axutil_stream_read(in_stream, env, buffer, sizeof(buffer))) > 0) {
+                    read_attempts++;
+
+                    // HANG FIX: Prevent infinite reading loops
+                    if (read_attempts > max_read_attempts) {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[JSON_STREAM_HANG_FIX] Stream reading exceeded maximum attempts (%d) - possible malformed JSON",
+                            max_read_attempts);
+                        break;
+                    }
+
+                    // HANG FIX: Prevent excessive memory usage
+                    if (total_size + bytes_read > max_json_size) {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[JSON_STREAM_HANG_FIX] JSON size exceeded maximum limit (%zu bytes) - rejecting request",
+                            max_json_size);
+                        break;
+                    }
+
                     if (total_size + bytes_read >= buffer_size) {
                         buffer_size *= 2;
                         axis2_char_t* new_buffer = AXIS2_REALLOC(env->allocator, json_request, buffer_size);
                         if (new_buffer) {
                             json_request = new_buffer;
                         } else {
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "[JSON_STREAM_HANG_FIX] Memory reallocation failed during JSON reading");
                             break;
                         }
                     }
@@ -381,6 +434,30 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
                         "[JSON_STREAM_READ] Read JSON from transport stream (%d bytes): '%.100s%s'",
                         (int)total_size, json_request,
                         total_size > 100 ? "..." : "");
+
+                    // VALIDATION FIX: Validate JSON format immediately after reading
+                    json_object *validation_obj = json_tokener_parse(json_request);
+                    if (!validation_obj) {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[JSON_VALIDATION_FIX] Invalid JSON format detected - returning validation error");
+
+                        // Create JSON error response for malformed input
+                        if (json_request) {
+                            AXIS2_FREE(env->allocator, json_request);
+                        }
+                        json_request = axutil_strdup(env,
+                            "{\"error\":{\"code\":\"INVALID_JSON\",\"message\":\"Malformed JSON in request body\"}}");
+
+                        // Set error response in output message context
+                        axis2_msg_ctx_set_status_code(out_msg_ctx, env, 400); // Bad Request
+
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[JSON_VALIDATION_FIX] Returning JSON validation error response");
+                    } else {
+                        json_object_put(validation_obj); // Free validation object
+                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            "[JSON_VALIDATION_FIX] JSON validation passed - proceeding with processing");
+                    }
                 }
             }
         }

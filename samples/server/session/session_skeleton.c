@@ -43,11 +43,11 @@ axiom_node_t *AXIS2_CALL session_on_fault(
     const axutil_env_t * env,
     axiom_node_t * node);
 
-static const axis2_svc_skeleton_ops_t session_svc_skeleton_ops_var = {
-    session_init,
+static axis2_svc_skeleton_ops_t session_svc_skeleton_ops_var = {
     session_invoke,
     session_on_fault,
-    session_free
+    session_free,
+    session_init
 };
 
 /*Create function */
