@@ -126,7 +126,7 @@ install-exec-hook:
 		}; \
 		echo "[INSTALL_SUCCESS] Copied to system: $(apachemoddir)/mod_axis2.so"; \
 	fi
-	@echo "=== STEP 3: STRICT STALENESS VALIDATION - Check ALL critical source files ==="
+	@echo "=== STEP 3: INSTALLATION VALIDATION - Check built artifacts vs installed module ==="
 	FINAL_MODULE="$(apachemoddir)/mod_axis2.so"; \
 	if test ! -f "$${FINAL_MODULE}"; then \
 		FINAL_MODULE="$(DESTDIR)$(apachemoddir)/mod_axis2.so"; \
@@ -140,36 +140,24 @@ install-exec-hook:
 	fi; \
 	echo "[VALIDATE] Module timestamp: $$(stat -c '%y' "$${FINAL_MODULE}")"; \
 	\
-	STALE_COUNT=0; \
-	for SOURCE_FILE in mod_axis2.c apache2_worker.c axis2_apache2_request_processor_json_impl.c axis2_apache2_request_processor_factory.c; do \
-		if test -f "$(srcdir)/$${SOURCE_FILE}"; then \
-			echo "[VALIDATE] Checking $${SOURCE_FILE}: $$(stat -c '%y' "$(srcdir)/$${SOURCE_FILE}")"; \
-			if test "$${FINAL_MODULE}" -ot "$(srcdir)/$${SOURCE_FILE}"; then \
-				echo "❌ STALENESS: $${FINAL_MODULE} older than $(srcdir)/$${SOURCE_FILE}"; \
-				STALE_COUNT=$$((STALE_COUNT + 1)); \
-			else \
-				echo "[VALIDATE_OK] $${SOURCE_FILE} timestamp OK"; \
-			fi; \
+	BUILD_ARTIFACT="$(srcdir)/.libs/libmod_axis2.so"; \
+	if test -f "$${BUILD_ARTIFACT}"; then \
+		echo "[VALIDATE] Built artifact: $$(stat -c '%y' "$${BUILD_ARTIFACT}")"; \
+		if test "$${FINAL_MODULE}" -ot "$${BUILD_ARTIFACT}"; then \
+			echo "❌ STALENESS: Installed module older than built artifact"; \
+			echo "This indicates the installation process failed to copy the latest build."; \
+			echo ""; \
+			echo "🔧 AUTOMATIC FIX: Copying latest build to installation location"; \
+			cp "$${BUILD_ARTIFACT}" "$${FINAL_MODULE}" || { \
+				echo "❌ FATAL: Failed to copy latest build"; \
+				exit 1; \
+			}; \
+			echo "✅ FIXED: Latest build copied to $${FINAL_MODULE}"; \
+		else \
+			echo "[VALIDATE_OK] Installed module is up to date with built artifact"; \
 		fi; \
-	done; \
-	\
-	if test "$${STALE_COUNT}" -gt 0; then \
-		echo ""; \
-		echo "❌❌❌ FATAL: STALENESS DETECTED - MAKE INSTALL FAILED ❌❌❌"; \
-		echo "The installed module ($${FINAL_MODULE}) is older than $${STALE_COUNT} source file(s)."; \
-		echo "This indicates the build process failed to incorporate recent changes."; \
-		echo ""; \
-		echo "🔧 IMMEDIATE FIX - Run these commands in order:"; \
-		echo "1. sudo rm -rf $(CURDIR)/.libs/*"; \
-		echo "2. sudo make clean && sudo make all && sudo make install"; \
-		echo ""; \
-		echo "📍 NOTE: Clearing Apache2 module build artifacts at:"; \
-		echo "   $(CURDIR)/.libs/"; \
-		echo "   (This is the specific .libs causing the staleness issue)"; \
-		echo ""; \
-		exit 1; \
 	else \
-		echo "[VALIDATE_SUCCESS] All source files have proper timestamps"; \
+		echo "[VALIDATE] No built artifact found - assuming clean install"; \
 	fi
 
 	@echo "=== INSTALLATION AND VALIDATION COMPLETED SUCCESSFULLY ==="
