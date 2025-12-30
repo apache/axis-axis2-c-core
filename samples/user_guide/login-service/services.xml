@@ -9,7 +9,7 @@
         </description>
 
         <serviceClass>login_service</serviceClass>
-        <parameter name="ServiceClass">liblogin_service</parameter>
+        <parameter name="ServiceClass">login_service</parameter>
 
         <!-- HTTP/2 transport configuration -->
         <parameter name="transport.h2">

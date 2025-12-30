@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements. See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License. You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!--
+  HTTP/2 Pure JSON Financial Benchmark Service Configuration
+
+  PURPOSE: Demonstrates Axis2/C performance on resource-constrained hardware
+  (old Android phones with 1-2GB RAM) where Java/WildFly cannot run.
+
+  USE CASE: "Single Camera" equivalent - one modest device running financial
+  calculations that would normally require expensive server infrastructure.
+
+  COMPARISON:
+  - Java/WildFly: Requires 4-8GB RAM minimum, cannot start on 2GB device
+  - Node.js/V8:   Requires 1-2GB, marginal/OOM risk on 2GB device
+  - Axis2/C:      Runs in ~30MB, comfortable on 2GB device
+-->
+<serviceGroup>
+    <service name="FinancialBenchmarkService">
+        <description>
+            Apache Axis2/C HTTP/2 Financial Benchmark Service
+
+            Demonstrates native C performance for financial calculations on
+            hardware too constrained for Java/WildFly (old Android phones,
+            embedded systems, edge devices).
+
+            Operations:
+            - portfolioVariance: O(n²) covariance matrix calculation
+            - monteCarlo: Compute-intensive VaR simulation
+            - scenarioAnalysis: Hash table vs linear lookup comparison
+            - metadata: Service information and device stats
+
+            Uses pure json-c library (no XML/SOAP dependencies)
+        </description>
+
+        <serviceClass>financial_benchmark_service</serviceClass>
+        <parameter name="ServiceClass">financial_benchmark_service</parameter>
+
+        <!-- HTTP/2 transport configuration -->
+        <parameter name="transport.h2">
+            <parameter name="enableHTTP2">true</parameter>
+            <parameter name="enableStreaming">true</parameter>
+            <parameter name="enableMemoryOptimization">true</parameter>
+            <parameter name="maxFrameSize">16384</parameter>
+            <parameter name="maxConcurrentStreams">50</parameter>
+        </parameter>
+
+        <!-- JSON processing configuration - Pure json-c library -->
+        <parameter name="maxJSONPayloadSize">10485760</parameter>
+        <parameter name="jsonProcessingMode">pure-jsonc</parameter>
+
+        <!-- Memory constraint for Android/embedded devices -->
+        <parameter name="memoryConstraintMB">512</parameter>
+        <parameter name="timeoutSeconds">60</parameter>
+
+        <!-- ================================================================
+             Operation: portfolioVariance
+
+             Calculate portfolio variance using covariance matrix.
+             This is O(n²) - the same complexity as DPT v2 correlation calcs.
+
+             Key benchmark: 500 assets = 250,000 matrix operations
+             Target: <10ms on old Android phone
+             ================================================================ -->
+        <operation name="portfolioVariance">
+            <description>
+                Calculate portfolio variance using covariance matrix multiplication.
+
+                Formula: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
+
+                This is an O(n²) operation that directly mirrors the correlation
+                calculations in production financial systems like DPT v2.
+
+                Example JSON Request:
+                {
+                    "n_assets": 500,
+                    "weights": [0.002, 0.002, ...],
+                    "covariance_matrix": [0.04, 0.006, ...],
+                    "request_id": "test-001"
+                }
+
+                Example JSON Response:
+                {
+                    "status": "SUCCESS",
+                    "portfolio_variance": 0.0156,
+                    "portfolio_volatility": 0.125,
+                    "annualized_volatility": 1.98,
+                    "calc_time_us": 4523,
+                    "memory_used_kb": 28456,
+                    "matrix_operations": 250000,
+                    "ops_per_second": 55273894,
+                    "device_info": "Android Device (Axis2/C 2.0 HTTP/2 JSON)",
+                    "comparison_note": "Java/WildFly requires 4-8GB RAM..."
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/portfolioVariance</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- ================================================================
+             Operation: monteCarlo
+
+             Run Monte Carlo simulation for Value at Risk (VaR) calculation.
+             Compute-intensive: n_simulations × n_periods iterations.
+
+             Key benchmark: 10,000 sims × 252 days = 2.52M iterations
+             Target: <500ms on old Android phone
+             ================================================================ -->
+        <operation name="monteCarlo">
+            <description>
+                Run Monte Carlo simulation for Value at Risk calculation.
+
+                Simulates portfolio paths using Geometric Brownian Motion:
+                S(t+dt) = S(t) * exp((μ - σ²/2)*dt + σ*sqrt(dt)*Z)
+
+                This is COMPUTE-INTENSIVE and demonstrates raw C performance
+                advantage over JVM for numerical calculations.
+
+                Example JSON Request:
+                {
+                    "n_simulations": 10000,
+                    "n_periods": 252,
+                    "initial_value": 1000000,
+                    "expected_return": 0.08,
+                    "volatility": 0.20,
+                    "random_seed": 12345,
+                    "request_id": "mc-001"
+                }
+
+                Example JSON Response:
+                {
+                    "status": "SUCCESS",
+                    "mean_final_value": 1082345.67,
+                    "var_95": 145678.90,
+                    "var_99": 234567.89,
+                    "cvar_95": 189012.34,
+                    "max_drawdown": 0.234,
+                    "prob_profit": 0.72,
+                    "calc_time_us": 234567,
+                    "simulations_per_second": 42650.5,
+                    "memory_used_kb": 31234
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/monteCarlo</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- ================================================================
+             Operation: scenarioAnalysis
+
+             Calculate scenario-weighted portfolio analysis.
+             Demonstrates O(1) hash lookups vs O(n) linear search.
+
+             Mirrors DPT v2's fundAssetList.find() pattern.
+             ================================================================ -->
+        <operation name="scenarioAnalysis">
+            <description>
+                Calculate scenario-weighted portfolio analysis.
+
+                Demonstrates hash table lookups vs linear search,
+                mirroring the Array→Map optimization in DPT v2.
+
+                Example JSON Request:
+                {
+                    "n_assets": 1000,
+                    "assets": [
+                        {
+                            "asset_id": 12345,
+                            "current_price": 150.00,
+                            "scenario_prices": [165.0, 157.5, 150.0, 142.5, 135.0],
+                            "probabilities": [0.15, 0.25, 0.30, 0.20, 0.10],
+                            "position_size": 100
+                        },
+                        ...
+                    ],
+                    "use_hash_lookup": true,
+                    "request_id": "scenario-001"
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/scenarioAnalysis</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- ================================================================
+             Operation: metadata
+
+             Get service information, capabilities, and device stats.
+             ================================================================ -->
+        <operation name="metadata">
+            <description>
+                Get service metadata, capabilities, and current device statistics.
+
+                Returns information about:
+                - Supported operations
+                - Maximum limits (assets, simulations)
+                - Current memory usage
+                - Device/platform information
+                - Comparison with Java/WildFly requirements
+
+                Example JSON Response:
+                {
+                    "service_name": "FinancialBenchmarkService",
+                    "version": "1.0.0",
+                    "operations": ["portfolioVariance", "monteCarlo", ...],
+                    "max_assets": 2000,
+                    "max_simulations": 1000000,
+                    "memory_constraint_mb": 512,
+                    "current_memory_kb": 28456,
+                    "device_info": "Android Device (Axis2/C 2.0 HTTP/2 JSON)",
+                    "comparison_note": "This service runs on hardware..."
+                }
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">GET</parameter>
+            <parameter name="httpPath">/metadata</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- ================================================================
+             Operation: generateTestData
+
+             Generate synthetic test portfolio data for benchmarking.
+             ================================================================ -->
+        <operation name="generateTestData">
+            <description>
+                Generate synthetic portfolio test data for benchmarking.
+
+                Creates a valid portfolio request with:
+                - Equal-weighted portfolio
+                - Synthetic covariance matrix (positive semi-definite)
+                - Realistic correlation structure
+
+                Example JSON Request:
+                {
+                    "n_assets": 500
+                }
+
+                Returns a complete portfolioVariance request JSON.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/generateTestData</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+    </service>
+</serviceGroup>

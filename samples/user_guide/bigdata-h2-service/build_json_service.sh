@@ -49,6 +49,12 @@ if [ -f "libbigdata_h2_json_service.so" ]; then
     sudo cp libbigdata_h2_json_service.so /usr/local/axis2c/services/BigDataH2Service/libbigdata_h2_service.so
     sudo cp services.xml /usr/local/axis2c/services/BigDataH2Service/
 
+    # Fix ownership and permissions for Apache (runs as www-data)
+    sudo chown -R www-data:www-data /usr/local/axis2c/services/BigDataH2Service
+    sudo chmod 755 /usr/local/axis2c/services/BigDataH2Service
+    sudo chmod 644 /usr/local/axis2c/services/BigDataH2Service/services.xml
+    sudo chmod 755 /usr/local/axis2c/services/BigDataH2Service/libbigdata_h2_service.so
+
     echo "📋 Installed files:"
     ls -la /usr/local/axis2c/services/BigDataH2Service/
 

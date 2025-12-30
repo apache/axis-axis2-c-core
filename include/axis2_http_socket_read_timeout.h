@@ -33,8 +33,10 @@ extern "C" {
 /**
  * HTTP socket read timeout global variable
  * This variable controls the socket read timeout for HTTP operations
+ * Note: Use 'extern' (not AXIS2_EXTERN) to ensure this is a declaration,
+ * not a tentative definition that causes ODR violations with ASAN.
  */
-AXIS2_EXTERN int axis2_http_socket_read_timeout;
+extern int axis2_http_socket_read_timeout;
 
 /** @} */
 

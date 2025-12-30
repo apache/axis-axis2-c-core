@@ -12,11 +12,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# REVOLUTIONARY HTTP/2 JSON: Minimal HTTP transport for Option B dependency resolution
-# Build only components that engine needs - server built separately after engine
-SUBDIRS = util common
+# HTTP Transport Build Configuration
+#
+# HTTP/2 JSON mode (WITH_NGHTTP2): Only builds util and common
+# Legacy HTTP/1.1 SOAP mode: Builds full stack including sender and receiver
 
-# Option B: Minimal HTTP transport to resolve circular dependencies
-# util - HTTP transport utilities (needed by engine)
-# common - HTTP common functions (needed by engine)
-# server - Apache module (mod_axis2.so) will be built after engine in main SUBDIRS
+if WITH_NGHTTP2
+# HTTP/2 JSON: Minimal HTTP transport - server built separately after engine
+SUBDIRS = util common
+else
+# Legacy HTTP/1.1 SOAP: Full HTTP transport stack for traditional SOAP services
+SUBDIRS = util common sender receiver
+endif
+
+# Note: Apache module (server/) is built after engine in main SUBDIRS to avoid circular deps

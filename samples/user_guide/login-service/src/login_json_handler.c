@@ -245,6 +245,67 @@ login_json_handler_free(login_json_handler_t *handler, const axutil_env_t *env)
 }
 
 /**
+ * JSON direct invocation entry point
+ * This is called by axis2_json_rpc_msg_recv for HTTP/2 JSON requests.
+ * Function naming convention: {service_name}_invoke_json
+ *
+ * Signature must match: json_object* (*)(const axutil_env_t *env, json_object *json_request)
+ */
+AXIS2_EXTERN json_object* AXIS2_CALL
+login_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request)
+{
+    const char *json_request_str = NULL;
+    axis2_char_t *json_response_str = NULL;
+    json_object *json_response = NULL;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "LoginService: Processing HTTP/2 JSON request via invoke_json");
+
+    /* Initialize handler if needed */
+    if (!g_login_handler)
+    {
+        axis2_login_json_handler_init(env);
+    }
+
+    /* Convert json_object to string for existing handler */
+    if (json_request)
+    {
+        json_request_str = json_object_to_json_string(json_request);
+    }
+
+    if (!json_request_str)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "LoginService: Failed to convert JSON request to string");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "status", json_object_new_string("FAILED"));
+        json_object_object_add(json_response, "message", json_object_new_string("Invalid JSON request"));
+        return json_response;
+    }
+
+    /* Delegate to the do_login function */
+    json_response_str = axis2_login_json_do_login(env, json_request_str);
+
+    /* Convert string response back to json_object */
+    if (json_response_str)
+    {
+        json_response = json_tokener_parse(json_response_str);
+        AXIS2_FREE(env->allocator, json_response_str);
+    }
+
+    if (!json_response)
+    {
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "status", json_object_new_string("FAILED"));
+        json_object_object_add(json_response, "message", json_object_new_string("Failed to generate response"));
+    }
+
+    return json_response;
+}
+
+/**
  * Create JSON error response
  */
 static axis2_char_t*

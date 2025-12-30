@@ -14,6 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 set -e
+
+# Clean stale objects from previous builds (especially HTTP/2 builds)
+# This ensures WITH_NGHTTP2 code isn't mixed with non-HTTP/2 builds
+if [ -f Makefile ]; then
+    echo "Cleaning stale objects from previous build..."
+    make distclean || make clean || true
+fi
+
+# Also clean any .libs directories that distclean might miss
+find . -type d -name ".libs" -exec rm -rf {} + 2>/dev/null || true
+
 sh autogen.sh
 AXIS2C_HOME=${AXIS2C_HOME:=`pwd`/deploy}
 

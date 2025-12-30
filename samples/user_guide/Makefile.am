@@ -16,17 +16,39 @@
 # Include only traditional clients (HTTP/2 services require --enable-http2)
 SUBDIRS = clients
 
-# HTTP/2 Pure JSON Services Documentation (not installed when HTTP/2 disabled)
-# EXTRA_DIST = \
-#     bigdata-h2-service/README.md \
-#     login-service/README.md \
-#     testws-service/README.md \
-#     bigdata-h2-service/services.xml \
-#     login-service/services.xml \
-#     testws-service/services.xml
+# Conditionally include HTTP/2 JSON services when both HTTP/2 and JSON are enabled
+if AXIS2_JSON_ENABLED
+if WITH_NGHTTP2
+SUBDIRS += \
+    bigdata-h2-service \
+    login-service \
+    testws-service \
+    camera-control-service \
+    financial-benchmark-service
+endif
+endif
 
-# Note: HTTP/2 service documentation not installed in HTTP/1.1-only builds
+# HTTP/2 Pure JSON Services Documentation
+EXTRA_DIST = \
+    bigdata-h2-service/README.md \
+    bigdata-h2-service/services.xml \
+    bigdata-h2-service/src/bigdata_h2_service.c \
+    bigdata-h2-service/src/bigdata_h2_service.h \
+    login-service/services.xml \
+    testws-service/services.xml \
+    camera-control-service/services.xml \
+    financial-benchmark-service/README.md \
+    financial-benchmark-service/services.xml \
+    financial-benchmark-service/src/financial_benchmark_service.c \
+    financial-benchmark-service/src/financial_benchmark_service.h \
+    financial-benchmark-service/test/test_benchmark.sh \
+    financial-benchmark-service/test/generate_test_data.py
 
 # Clean up service builds
 clean-local:
 	cd clients && $(MAKE) clean || true
+	if test -d bigdata-h2-service; then cd bigdata-h2-service && $(MAKE) clean || true; fi
+	if test -d login-service; then cd login-service && $(MAKE) clean || true; fi
+	if test -d testws-service; then cd testws-service && $(MAKE) clean || true; fi
+	if test -d camera-control-service; then cd camera-control-service && $(MAKE) clean || true; fi
+	if test -d financial-benchmark-service; then cd financial-benchmark-service && $(MAKE) clean || true; fi

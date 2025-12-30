@@ -246,6 +246,85 @@ testws_json_handler_free(testws_json_handler_t *handler, const axutil_env_t *env
 }
 
 /**
+ * JSON direct invocation entry point
+ * This is called by axis2_json_rpc_msg_recv for HTTP/2 JSON requests.
+ * Function naming convention: {service_name}_invoke_json
+ *
+ * Signature must match: json_object* (*)(const axutil_env_t *env, json_object *json_request)
+ */
+AXIS2_EXTERN json_object* AXIS2_CALL
+testws_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request)
+{
+    const char *json_request_str = NULL;
+    json_object *json_response = NULL;
+    testws_request_t *request = NULL;
+    testws_response_t *response = NULL;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "TestwsService: Processing HTTP/2 JSON request via invoke_json");
+
+    /* Convert json_object to string */
+    if (json_request)
+    {
+        json_request_str = json_object_to_json_string(json_request);
+    }
+
+    if (!json_request_str)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "TestwsService: Failed to convert JSON request to string");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "status", json_object_new_string("ERROR"));
+        json_object_object_add(json_response, "messageout", json_object_new_string(""));
+        json_object_object_add(json_response, "securityDetails", json_object_new_string("Invalid JSON request"));
+        return json_response;
+    }
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "TestwsService request: %s", json_request_str);
+
+    /* Parse JSON request directly */
+    request = testws_request_create_from_json(env, json_request_str);
+    if (!request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "TestwsService: Failed to parse JSON request");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "status", json_object_new_string("ERROR"));
+        json_object_object_add(json_response, "messageout", json_object_new_string(""));
+        json_object_object_add(json_response, "securityDetails", json_object_new_string("Invalid request format"));
+        return json_response;
+    }
+
+    /* Process the request */
+    response = testws_service_do_testws(env, request);
+    testws_request_free(request, env);
+
+    if (!response)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "TestwsService: Processing failed");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "status", json_object_new_string("ERROR"));
+        json_object_object_add(json_response, "messageout", json_object_new_string(""));
+        json_object_object_add(json_response, "securityDetails", json_object_new_string("Processing failed"));
+        return json_response;
+    }
+
+    /* Convert response to JSON object */
+    json_response = json_object_new_object();
+    json_object_object_add(json_response, "status", json_object_new_string(response->status ? response->status : "ERROR"));
+    json_object_object_add(json_response, "messageout", json_object_new_string(response->message_out ? response->message_out : ""));
+    json_object_object_add(json_response, "securityDetails", json_object_new_string(response->security_details ? response->security_details : ""));
+    json_object_object_add(json_response, "responseTime", json_object_new_int64(response->response_time));
+
+    testws_response_free(response, env);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestwsService: Successfully processed request");
+
+    return json_response;
+}
+
+/**
  * Create JSON error response
  */
 static axis2_char_t*

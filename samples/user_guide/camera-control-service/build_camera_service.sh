@@ -53,8 +53,14 @@ if [ -f "libcamera_control_service.so" ]; then
     # Install the service
     echo ""
     echo "🚀 Installing SOAP-free JSON Camera Control service..."
-    sudo cp libcamera_control_service.so /usr/local/axis2c/services/CameraControlService/libcamera_control_service.so
+    sudo cp libcamera_control_service.so /usr/local/axis2c/services/CameraControlService/
     sudo cp services.xml /usr/local/axis2c/services/CameraControlService/
+
+    # Fix ownership and permissions for Apache (runs as www-data)
+    sudo chown -R www-data:www-data /usr/local/axis2c/services/CameraControlService
+    sudo chmod 755 /usr/local/axis2c/services/CameraControlService
+    sudo chmod 644 /usr/local/axis2c/services/CameraControlService/services.xml
+    sudo chmod 755 /usr/local/axis2c/services/CameraControlService/libcamera_control_service.so
 
     echo ""
     echo "✅ Installation complete! Camera Control Service ready for HTTP/2 JSON requests"

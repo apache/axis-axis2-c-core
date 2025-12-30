@@ -750,18 +750,38 @@ axis2_apache2_worker_process_request(
 
         if (use_interface_processing && request_processor && processing_ctx && M_POST == request->method_number)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                "[APACHE2_WORKER] Using interface-based POST request body processing");
+            /* ANTI-DUPLICATION: Skip if response was already sent by earlier processing */
+            if (request->bytes_sent > 0)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[APACHE2_WORKER_SKIP] Skipping body processing - response already sent (%ld bytes)",
+                    (long)request->bytes_sent);
+                status = AXIS2_SUCCESS;
+                send_status = DONE;
+            }
+            else
+            {
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[APACHE2_WORKER] Using interface-based POST request body processing");
 
-            /* Use interface pattern for thread-safe JSON HTTP/2 processing */
-            axis2_apache2_processing_result_t result = request_processor->process_request_body(
-                request_processor, env, request, msg_ctx, processing_ctx);
+                /* Use interface pattern for thread-safe JSON HTTP/2 processing */
+                axis2_apache2_processing_result_t result = request_processor->process_request_body(
+                    request_processor, env, request, msg_ctx, processing_ctx);
 
             if (result == AXIS2_APACHE2_PROCESSING_SUCCESS)
             {
                 AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                     "[APACHE2_WORKER_SUCCESS] Interface-based request body processing succeeded");
                 status = AXIS2_SUCCESS;
+
+                /* If the processor already wrote a response, skip further processing */
+                if (request->bytes_sent > 0)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[APACHE2_WORKER_DONE] Response already sent by processor (%ld bytes) - returning early",
+                        (long)request->bytes_sent);
+                    send_status = DONE;
+                }
             }
             else if (result == AXIS2_APACHE2_PROCESSING_NOT_HANDLED)
             {
@@ -778,6 +798,7 @@ axis2_apache2_worker_process_request(
                     "[APACHE2_WORKER_ERROR] Interface-based request body processing failed");
                 status = AXIS2_FAILURE;
             }
+            }  /* Close else block for bytes_sent check */
         }
         /* ===== ORIGINAL LOGIC: FALLBACK FOR NON-INTERFACE REQUESTS ===== */
         else if(M_POST == request->method_number)

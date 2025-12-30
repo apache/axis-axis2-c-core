@@ -16,6 +16,7 @@
  */
 
 #include <config.h>
+#include <errno.h>
 #include "axutil_thread_unix.h"
 
 AXIS2_EXTERN axutil_threadattr_t *AXIS2_CALL
@@ -321,37 +322,15 @@ axutil_thread_mutex_create(
     unsigned int flags)
 {
     axutil_thread_mutex_t *new_mutex = NULL;
-    pthread_mutexattr_t attr;
-    int result;
 
     new_mutex = AXIS2_MALLOC(allocator, sizeof(axutil_thread_mutex_t));
+    if(!new_mutex)
+        return NULL;
     new_mutex->allocator = allocator;
 
-    /* Initialize mutex attributes for robust mutex support */
-    result = pthread_mutexattr_init(&attr);
-    if(result != 0)
-    {
-        AXIS2_FREE(allocator, new_mutex);
-        return NULL;
-    }
-
-    /* CRITICAL FIX: Set mutex to be robust - survives thread termination */
-    /* This prevents pthread_mutex_lock.c:450 ESRCH assertion failures */
-    result = pthread_mutexattr_setrobust(&attr, PTHREAD_MUTEX_ROBUST);
-    if(result != 0)
-    {
-        pthread_mutexattr_destroy(&attr);
-        AXIS2_FREE(allocator, new_mutex);
-        return NULL;
-    }
-
-    /* Initialize mutex with robust attributes */
-    result = pthread_mutex_init(&(new_mutex->mutex), &attr);
-
-    /* Clean up attributes */
-    pthread_mutexattr_destroy(&attr);
-
-    if(result != 0)
+    /* Use simple default mutex - robust mutexes cause glibc assertion failures
+     * in Apache worker thread scenarios due to thread termination timing issues */
+    if(pthread_mutex_init(&(new_mutex->mutex), NULL) != 0)
     {
         AXIS2_FREE(allocator, new_mutex);
         return NULL;
@@ -363,7 +342,11 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_mutex_lock(
     axutil_thread_mutex_t * mutex)
 {
-    return pthread_mutex_lock(&(mutex->mutex));
+    if(pthread_mutex_lock(&(mutex->mutex)) != 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -221,7 +221,7 @@ Table of Contents
 	For developers familiar with C project conventions, Axis2/C provides
 	convenience scripts that automate the typical autotools build process:
 
-		$ ./build_for_tests.sh          # Build with testing enabled
+		$ ./build_for_tests.sh          # Build with testing enabled, http/2 omitted - see section 3.3
 		$ ./run_tests.sh                # Run the full test suite (make check)
 		$ ./run_native_codegen_tests.sh # Run only native WSDL2C generator tests
 
@@ -995,7 +995,8 @@ RedHat/CentOS HTTP/2 setup:
     $ sudo yum install mod_http2  # or dnf install for newer versions
     $ sudo systemctl restart httpd
 
-Complete HTTP/2 configuration instructions are provided in docs/*HTTP2* .
+Complete HTTP/2 configuration instructions are provided in docs/*HTTP2* and
+docs/userguide/json-httpd-h2-userguide.md .
 
 Note: HTTP/2 is entirely optional. Axis2/C works perfectly with HTTP/1.1.
 HTTP/2 is recommended for JSON based production deployments handling high traffic

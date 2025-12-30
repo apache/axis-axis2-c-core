@@ -9,7 +9,7 @@
         </description>
 
         <serviceClass>testws_service</serviceClass>
-        <parameter name="ServiceClass">libtestws_service</parameter>
+        <parameter name="ServiceClass">testws_service</parameter>
 
         <!-- HTTP/2 transport configuration -->
         <parameter name="transport.h2">

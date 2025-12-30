@@ -50,6 +50,12 @@ if [ -f "libtestws_json_service.so" ]; then
     sudo cp libtestws_json_service.so /usr/local/axis2c/services/TestwsService/libtestws_service.so
     sudo cp services.xml /usr/local/axis2c/services/TestwsService/
 
+    # Fix ownership and permissions for Apache (runs as www-data)
+    sudo chown -R www-data:www-data /usr/local/axis2c/services/TestwsService
+    sudo chmod 755 /usr/local/axis2c/services/TestwsService
+    sudo chmod 644 /usr/local/axis2c/services/TestwsService/services.xml
+    sudo chmod 755 /usr/local/axis2c/services/TestwsService/libtestws_service.so
+
     echo "📋 Installed files:"
     ls -la /usr/local/axis2c/services/TestwsService/
 

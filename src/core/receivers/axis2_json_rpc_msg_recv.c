@@ -139,6 +139,8 @@ try_json_direct_service_loading(const axutil_env_t *env,
     } else {
         // GENERIC CORRUPTION DETECTION: Check if ServiceClass parameter contains corrupted data
         axis2_bool_t is_corrupted = AXIS2_FALSE;
+        size_t class_name_len = strlen(service_class_name);
+        axis2_bool_t has_underscore = AXIS2_FALSE;
 
         // Check for non-printable characters or obvious corruption patterns
         if (service_class_name) {
@@ -147,7 +149,27 @@ try_json_direct_service_loading(const axutil_env_t *env,
                     is_corrupted = AXIS2_TRUE;
                     break;
                 }
+                if (service_class_name[i] == '_') {
+                    has_underscore = AXIS2_TRUE;
+                }
             }
+        }
+
+        // ADDITIONAL CORRUPTION CHECKS:
+        // 1. ServiceClass should be at least 5 characters (e.g., "x_svc" minimum)
+        // 2. ServiceClass should contain underscore (snake_case naming convention)
+        // 3. ServiceClass should not be uppercase only (CamelCase would indicate corruption)
+        if (!is_corrupted && class_name_len < 5) {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "[JSON_DIRECT] CORRUPTION_DETECTED - ServiceClass too short (%d chars): '%s'",
+                (int)class_name_len, service_class_name);
+            is_corrupted = AXIS2_TRUE;
+        }
+        if (!is_corrupted && !has_underscore && class_name_len > 0) {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "[JSON_DIRECT] CORRUPTION_DETECTED - ServiceClass missing underscore: '%s'",
+                service_class_name);
+            is_corrupted = AXIS2_TRUE;
         }
 
         if (is_corrupted) {

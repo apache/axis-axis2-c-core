@@ -561,7 +561,47 @@ axis2_apache2_json_processor_process_request_body_impl(
                 axutil_stream_read(out_stream, env, response_buffer, response_length);
                 response_buffer[response_length] = '\0';
 
-                /* Write to Apache response */
+                /* Check if this is an error response from parse_and_process_json
+                 * If out_stream contains an error JSON, set HTTP status and return early
+                 */
+                if (strstr(response_buffer, "\"error\"") != NULL)
+                {
+                    int http_error_code = 500;
+
+                    /* Extract error code from response JSON */
+                    const char* code_pos = strstr(response_buffer, "\"code\":");
+                    if (code_pos)
+                    {
+                        http_error_code = atoi(code_pos + 7);
+                        if (http_error_code < 400 || http_error_code > 599)
+                        {
+                            http_error_code = 500;
+                        }
+                    }
+
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[JSON_PROCESSOR_ERROR_RESPONSE] Error detected - setting HTTP %d and returning early",
+                        http_error_code);
+
+                    request->status = http_error_code;
+                    ap_set_content_type(request, "application/json");
+                    ap_rwrite(response_buffer, response_length, request);
+                    ap_rflush(request);  /* Ensure bytes_sent is updated for anti-duplication check */
+
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[JSON_PROCESSOR_ERROR_RESPONSE] Error response sent (%d bytes), bytes_sent=%ld",
+                        response_length, (long)request->bytes_sent);
+
+                    AXIS2_FREE(env->allocator, response_buffer);
+                    axutil_stream_free(out_stream, env);
+                    if (request_body)
+                    {
+                        axutil_stream_free(request_body, env);
+                    }
+                    return AXIS2_APACHE2_PROCESSING_SUCCESS;
+                }
+
+                /* Write non-error response to Apache */
                 ap_set_content_type(request, "application/json");
                 ap_rwrite(response_buffer, response_length, request);
 
@@ -672,24 +712,43 @@ axis2_apache2_json_processor_process_request_body_impl(
             return AXIS2_APACHE2_PROCESSING_SUCCESS;
         }
     } else {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[JSON_PROCESSOR_ENGINE] Engine processing failed with status: %d", engine_status);
 
-        /* ANTI-DUPLICATION: Check if service already wrote successful response */
-        if (request->bytes_sent > 0 || request->status == HTTP_ACCEPTED || request->status == HTTP_OK) {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                "[JSON_PROCESSOR_ANTI_DUP] Service already wrote response (bytes_sent=%ld, status=%d) - skipping fallback error",
-                (long)request->bytes_sent, request->status);
+        /* Flush any pending output to get accurate bytes_sent count */
+        ap_rflush(request);
+
+        /* ANTI-DUPLICATION: Check if service already wrote successful response (bytes_sent > 0 means data was written) */
+        if (request->bytes_sent > 0) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_ANTI_DUP] Service already wrote response (bytes_sent=%ld) - skipping fallback error",
+                (long)request->bytes_sent);
         } else {
             /* Only write fallback error response if no response was already sent */
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "[JSON_PROCESSOR_FALLBACK] Engine failed and no response sent - writing fallback error response");
+
+            /* Check for specific JSON parse error */
+            const axis2_char_t* error_response = NULL;
+            axutil_property_t* json_error_prop = axis2_msg_ctx_get_property(msg_ctx, env, "JSON_PARSE_ERROR");
+            if (json_error_prop) {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_FALLBACK] JSON parse error detected - returning 400 Bad Request");
+                error_response = "{\"error\":{\"message\":\"Invalid JSON syntax in request body\",\"code\":400}}";
+                request->status = HTTP_BAD_REQUEST;
+            } else {
+                error_response = "{\"error\":{\"message\":\"Service processing failed\",\"code\":500}}";
+                request->status = HTTP_INTERNAL_SERVER_ERROR;
+            }
 
             /* Fallback: write error response */
             ap_set_content_type(request, "application/json");
-            const axis2_char_t* error_response =
-                "{\"error\":{\"message\":\"Service processing failed\",\"code\":500}}";
             ap_rwrite(error_response, axutil_strlen(error_response), request);
+            ap_rflush(request);  /* Flush to update bytes_sent for worker early-exit check */
+
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_FALLBACK] Error response written and flushed (bytes_sent=%ld)",
+                (long)request->bytes_sent);
         }
     }
 
@@ -922,28 +981,146 @@ axis2_apache2_json_processor_parse_and_process_json(
     if (request_length <= 0)
     {
         AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-            "[JSON_PROCESSOR_WARN] Stream length unknown, attempting buffer read");
+            "[JSON_PROCESSOR_WARN] Stream length unknown, attempting incremental buffer read");
 
-        /* Try reading up to 64KB from stream */
-        const int max_buffer = 65536;
-        axis2_char_t* temp_buffer = AXIS2_MALLOC(env->allocator, max_buffer);
-        if (temp_buffer)
+        /* Incremental buffer growth: 64KB initial, doubles up to 10MB max
+         * This optimizes for IoT (small payloads) while supporting enterprise (large payloads)
+         * Uses standard C malloc/realloc since AXIS2_REALLOC is unreliable
+         *
+         * SECURITY: Integer overflow protection added for all arithmetic operations
+         * to prevent heap overflow vulnerabilities from malicious payloads */
+        const size_t initial_size = 65536;     /* 64KB - efficient for IoT/camera payloads */
+        const size_t max_buffer = 10485760;    /* 10MB - supports 500+ asset portfolios */
+        size_t current_size = initial_size;
+        size_t total_read = 0;
+        int bytes_read;
+
+        axis2_char_t* temp_buffer = (axis2_char_t*)malloc(current_size);
+        if (!temp_buffer)
         {
-            request_length = axutil_stream_read(in_stream, env, temp_buffer, max_buffer - 1);
-            if (request_length > 0)
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_ERROR] Initial buffer allocation failed");
+            return axis2_apache2_json_processor_write_json_error_response(
+                env, out_stream, "Memory allocation error", 500);
+        }
+
+        /* Read in chunks, growing buffer as needed */
+        while (1)
+        {
+            /* SECURITY: Validate buffer space before read to prevent underflow */
+            if (total_read >= current_size || current_size - total_read < 2)
             {
-                temp_buffer[request_length] = '\0';
-                json_request_buffer = temp_buffer;
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                    "[JSON_PROCESSOR_SUCCESS] Successfully read %d bytes from stream", request_length);
-                goto process_json;  /* Skip the normal allocation path */
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_SECURITY] Buffer arithmetic check failed: total=%zu, size=%zu",
+                    total_read, current_size);
+                free(temp_buffer);
+                return axis2_apache2_json_processor_write_json_error_response(
+                    env, out_stream, "Internal buffer error", 500);
             }
-            else
+
+            size_t read_space = current_size - total_read - 1;
+            bytes_read = axutil_stream_read(in_stream, env,
+                temp_buffer + total_read, (int)read_space);
+
+            if (bytes_read <= 0)
+                break;
+
+            /* SECURITY: Check for overflow before addition */
+            if ((size_t)bytes_read > max_buffer - total_read)
             {
-                AXIS2_FREE(env->allocator, temp_buffer);
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                    "[JSON_PROCESSOR_WARN] Could not read from stream, length=%d", request_length);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_SECURITY] Read overflow detected: total=%zu, read=%d, max=%zu",
+                    total_read, bytes_read, max_buffer);
+                free(temp_buffer);
+                return axis2_apache2_json_processor_write_json_error_response(
+                    env, out_stream, "Payload too large", 413);
             }
+            total_read += (size_t)bytes_read;
+
+            /* Check if buffer is nearly full and needs growth */
+            if (total_read >= current_size - 1024)
+            {
+                if (current_size >= max_buffer)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[JSON_PROCESSOR_ERROR] Payload exceeds maximum %zu bytes", max_buffer);
+                    free(temp_buffer);
+                    return axis2_apache2_json_processor_write_json_error_response(
+                        env, out_stream, "Payload too large", 413);
+                }
+
+                /* SECURITY: Safe doubling with overflow check
+                 * If current_size > max_buffer/2, cap at max_buffer instead of doubling */
+                size_t new_size;
+                if (current_size > max_buffer / 2)
+                {
+                    new_size = max_buffer;
+                }
+                else
+                {
+                    new_size = current_size * 2;
+                }
+
+                axis2_char_t* new_buffer = (axis2_char_t*)realloc(temp_buffer, new_size);
+                if (!new_buffer)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[JSON_PROCESSOR_ERROR] Buffer growth failed at %zu bytes", new_size);
+                    free(temp_buffer);
+                    return axis2_apache2_json_processor_write_json_error_response(
+                        env, out_stream, "Memory allocation error", 500);
+                }
+
+                temp_buffer = new_buffer;
+                current_size = new_size;
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR] Buffer grown to %zu bytes", current_size);
+            }
+        }
+
+        if (total_read > 0)
+        {
+            /* SECURITY: Validate index before write */
+            if (total_read >= current_size)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_SECURITY] Null terminator overflow: total=%zu, size=%zu",
+                    total_read, current_size);
+                free(temp_buffer);
+                return axis2_apache2_json_processor_write_json_error_response(
+                    env, out_stream, "Internal buffer error", 500);
+            }
+            temp_buffer[total_read] = '\0';
+
+            /* SECURITY: Check allocation size won't overflow */
+            if (total_read > SIZE_MAX - 1)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_SECURITY] Allocation size overflow: total=%zu", total_read);
+                free(temp_buffer);
+                return axis2_apache2_json_processor_write_json_error_response(
+                    env, out_stream, "Payload too large", 413);
+            }
+
+            /* Copy to AXIS2-managed buffer for consistent memory management */
+            json_request_buffer = AXIS2_MALLOC(env->allocator, total_read + 1);
+            if (json_request_buffer)
+            {
+                memcpy(json_request_buffer, temp_buffer, total_read + 1);
+                request_length = (int)total_read;
+                free(temp_buffer);
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_PROCESSOR_SUCCESS] Read %zu bytes (buffer: %zuKB initial, %zuKB final)",
+                    total_read, initial_size/1024, current_size/1024);
+                goto process_json;
+            }
+            free(temp_buffer);
+        }
+        else
+        {
+            free(temp_buffer);
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON_PROCESSOR_WARN] Could not read from stream, bytes_read=%d", bytes_read);
         }
 
         /* HTTP/2 COMPATIBILITY FIX: Check if data was already processed via JSON_REQUEST_BODY */

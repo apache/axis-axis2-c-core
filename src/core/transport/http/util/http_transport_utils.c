@@ -316,12 +316,28 @@ axis2_http_transport_utils_process_http_post_request(
     axutil_string_t * soap_action_header,
     const axis2_char_t * request_uri)
 {
+    /* DEFENSIVE: Validate critical parameters before any processing */
+    if (!env || !env->log)
+    {
+        return AXIS2_FAILURE;
+    }
+
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
         "[HTTP_TRANSPORT_UTILS] ENTRY POINT - Processing HTTP POST request");
+
+    /* DEFENSIVE: Validate msg_ctx - crash protection */
+    if (!msg_ctx)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[HTTP_TRANSPORT_UTILS] CRITICAL ERROR - msg_ctx is NULL, cannot process request");
+        return AXIS2_FAILURE;
+    }
+
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[HTTP_TRANSPORT_UTILS] Parameters - content_type: %s, request_uri: %s",
+        "[HTTP_TRANSPORT_UTILS] Parameters - content_type: %s, request_uri: %s, msg_ctx: %p",
         content_type ? content_type : "NULL",
-        request_uri ? request_uri : "NULL");
+        request_uri ? request_uri : "NULL",
+        (void*)msg_ctx);
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_builder_t *soap_builder = NULL;
     axiom_stax_builder_t *om_builder = NULL;
@@ -623,32 +639,23 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_msg_ctx_set_charset_encoding(msg_ctx, env, char_set_str);
 
     /* Check if we're processing JSON content */
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[HTTP_TRANSPORT_UTILS] CHECKPOINT 1 - Checking content-type for JSON processing");
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[HTTP_TRANSPORT_UTILS] Content-type analysis - content_type: '%s'",
-        content_type ? content_type : "NULL");
-
 #ifdef AXIS2_JSON_ENABLED
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_JSON))
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[HTTP_TRANSPORT_UTILS] JSON BRANCH - JSON content-type detected, entering JSON processing");
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[HTTP_TRANSPORT_UTILS] JSON BRANCH - content_type: %s", content_type);
-
         axis2_json_reader_t* json_reader = NULL;
         axiom_soap_body_t* soap_body = NULL;
-        /* HTTP/2 Pure JSON Architecture - JSON data handle instead of axiom node */
 
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[HTTP_TRANSPORT_UTILS] JSON PROCESSING - Checking for pre-processed JSON in message context");
+        /* DEFENSIVE: Double-check msg_ctx before property access */
+        if (!msg_ctx)
+        {
+            return AXIS2_FAILURE;
+        }
 
         /* Check if JSON data is already available from the JSON processor */
-        axutil_property_t* json_body_prop = axis2_msg_ctx_get_property(msg_ctx, env, "JSON_REQUEST_BODY");
+        axutil_property_t* json_body_prop = NULL;
+        json_body_prop = axis2_msg_ctx_get_property(msg_ctx, env, "JSON_REQUEST_BODY");
+
         if (json_body_prop) {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[HTTP_TRANSPORT_UTILS] JSON PROCESSING - Found pre-processed JSON in message context, skipping stream read");
 
             /* Use pre-processed JSON data instead of reading from stream */
             axis2_char_t* json_body = (axis2_char_t*)axutil_property_get_value(json_body_prop, env);
@@ -665,8 +672,20 @@ axis2_http_transport_utils_process_http_post_request(
             if (!json_reader)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] JSON PROCESSING - FAILED to create JSON reader, continuing with empty JSON");
-                /* Don't return FAILURE - continue processing with empty JSON */
+                    "[HTTP_TRANSPORT_UTILS] JSON PROCESSING - FAILED to create JSON reader (invalid JSON syntax)");
+
+                /* Set JSON parse error flag in message context for proper error response */
+                axutil_property_t* json_error_prop = axutil_property_create(env);
+                if (json_error_prop)
+                {
+                    axutil_property_set_value(json_error_prop, env,
+                        axutil_strdup(env, "Invalid JSON syntax in request body"));
+                    axis2_msg_ctx_set_property(msg_ctx, env, "JSON_PARSE_ERROR", json_error_prop);
+                }
+
+                /* Return failure to trigger proper error handling */
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM, AXIS2_FAILURE);
+                return AXIS2_FAILURE;
             } else {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "[HTTP_TRANSPORT_UTILS] JSON PROCESSING - Parsing JSON content from stream");
@@ -826,7 +845,6 @@ axis2_http_transport_utils_process_http_post_request(
         if(rest_param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE, axutil_param_get_value(rest_param,
             env)))
         {
-            /* HTTP/2 Pure JSON Architecture - SOAP envelope creation removed for JSON processing */
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_POST);
             axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
@@ -872,6 +890,12 @@ axis2_http_transport_utils_process_http_post_request(
 
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
 
+    /* Defensive: validate conf_ctx before engine creation */
+    if (!conf_ctx)
+    {
+        return AXIS2_FAILURE;
+    }
+
     engine = axis2_engine_create(env, conf_ctx);
 
     if(!soap_envelope)
@@ -911,27 +935,12 @@ axis2_http_transport_utils_process_http_post_request(
         {
 #ifdef WITH_NGHTTP2
             /* HTTP/2 JSON Error Handling - Check for JSON processing flag */
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[HTTP_TRANSPORT_UTILS] CHECKPOINT 6 - Checking HTTP2_JSON_ERROR_HANDLING property");
             axutil_property_t *http2_error_prop = axis2_msg_ctx_get_property(msg_ctx, env, "HTTP2_JSON_ERROR_HANDLING");
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[HTTP_TRANSPORT_UTILS] HTTP2_JSON_ERROR_HANDLING property: %s",
-                http2_error_prop ? "FOUND" : "NOT_FOUND");
             if (http2_error_prop) {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] HTTP/2 JSON error handling enabled - wrapping engine receive");
-
                 /* Clear any existing errors before processing */
                 env->error->error_number = AXIS2_ERROR_NONE;
 
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] CRITICAL - About to call axis2_engine_receive for HTTP/2 JSON request");
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] Engine: %p, msg_ctx: %p", (void*)engine, (void*)msg_ctx);
                 status = axis2_engine_receive(engine, env, msg_ctx);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] CRITICAL - Engine receive completed - status: %d, error_number: %d",
-                    status, env->error->error_number);
 
                 /* Check for processing errors and convert to JSON response */
                 if (status != AXIS2_SUCCESS || env->error->error_number != AXIS2_ERROR_NONE) {
@@ -965,26 +974,10 @@ axis2_http_transport_utils_process_http_post_request(
                     status = AXIS2_SUCCESS; /* Mark as success since we handled the error */
                 }
             } else {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] No HTTP/2 JSON error handling flag - using normal engine receive");
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] CRITICAL - About to call axis2_engine_receive (normal path)");
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] Engine: %p, msg_ctx: %p", (void*)engine, (void*)msg_ctx);
                 status = axis2_engine_receive(engine, env, msg_ctx);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[HTTP_TRANSPORT_UTILS] CRITICAL - Engine receive completed (normal path) - status: %d",
-                    status);
             }
 #else
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[HTTP_TRANSPORT_UTILS] CRITICAL - About to call axis2_engine_receive (fallback path)");
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[HTTP_TRANSPORT_UTILS] Engine: %p, msg_ctx: %p", (void*)engine, (void*)msg_ctx);
             status = axis2_engine_receive(engine, env, msg_ctx);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[HTTP_TRANSPORT_UTILS] CRITICAL - Engine receive completed (fallback path) - status: %d",
-                status);
 #endif
         }
     }

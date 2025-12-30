@@ -53,12 +53,13 @@ This pure json-c approach for both transports provides:
 
 ## Demonstration Services
 
-This guide covers four **fully implemented** service demonstrations:
+This guide covers five **fully implemented** service demonstrations:
 
 1. **[BigDataH2Service](#bigdatah2service---http2-big-data-processing-service)**: HTTP/2 big data processing with streaming optimization
 2. **[LoginService](#loginservice---user-authentication-service)**: User authentication with JWT token generation
 3. **[TestwsService](#testwsservice---xss-protection-demonstration)**: XSS protection demonstration with HTML encoding
 4. **[CameraControlService](#cameracontrolservice---generic-camera-control-service)**: Generic camera control with SFTP file transfer using user-implementable stub functions
+5. **[FinancialBenchmarkService](#financialbenchmarkservice---financial-computation-benchmark)**: Financial computation benchmarks demonstrating native C performance for O(n²) matrix operations
 
 **⚠️ Protocol Requirement**: These services are **HTTP/2-only** for performance optimization. HTTP/1.1 requests will receive **HTTP 426 "Upgrade Required"** responses. Always use `curl --http2` for testing.
 
@@ -115,6 +116,91 @@ The HTTP/2 transport is specifically optimized for enterprise big data processin
 - **Memory Constraints**: Designed for 2GB heap environments with adaptive memory management
 - **Concurrent Processing**: Support for multiple simultaneous large dataset operations
 - **Performance Monitoring**: Built-in metrics collection for throughput and memory usage
+
+### Incremental Buffer Allocation
+
+Axis2/C uses an intelligent **incremental buffer growth** strategy that optimizes memory usage across diverse workloads - from IoT devices with tiny payloads to enterprise systems with multi-megabyte JSON:
+
+| Initial Size | Growth Strategy | Maximum | Use Case |
+|--------------|-----------------|---------|----------|
+| 64KB | Doubles on demand | 10MB | Adapts to actual payload size |
+
+**Memory Efficiency by Payload Size**:
+
+| Payload Type | Actual Size | Buffer Allocated | vs Static 10MB |
+|--------------|-------------|------------------|----------------|
+| IoT/Camera   | ~24 bytes   | 64KB             | **160x smaller** |
+| Medium JSON  | ~50KB       | 64KB             | **160x smaller** |
+| Large portfolio | ~235KB   | 256KB            | **40x smaller** |
+| Enterprise   | ~5MB        | 8MB              | **1.25x smaller** |
+
+This approach ensures:
+- **IoT efficiency**: Camera control payloads (~24 bytes) use only 64KB instead of 10MB
+- **Enterprise support**: 500-asset financial portfolios (~5MB) are fully supported
+- **No configuration needed**: Buffer grows automatically based on actual data
+
+**Implementation Note**: Uses standard C `malloc/realloc` for reliable buffer growth, with final copy to AXIS2-managed memory for consistent cleanup.
+
+### Defense in Depth: Request Limits
+
+Axis2/C implements a **multi-layer security architecture** where Apache httpd enforces request limits *before* payloads reach the C code. This provides protection against:
+
+- **Memory exhaustion attacks**: Large payloads rejected at TCP level
+- **Slowloris/slow-read attacks**: Timeout enforcement at Apache level
+- **Integer overflow exploits**: Size limits enforced before arithmetic operations
+
+**Security Layers**:
+
+| Layer | Directive | Enforced By | Failure Response |
+|-------|-----------|-------------|------------------|
+| **1. Apache** | `LimitRequestBody` | httpd (before mod_axis2) | HTTP 413 |
+| **2. Axis2/C** | `max_buffer` (10MB) | JSON processor with overflow checks | JSON error 413 |
+| **3. Service** | `maxJSONPayloadSize` | services.xml configuration | Application error |
+
+**Recommended Apache Configuration** (in `httpd.conf`):
+
+> **Convenience**: A complete [`httpd.conf`](httpd.conf) with these limits pre-configured is available at `docs/userguide/httpd.conf`. Copy it to `/usr/local/apache2/conf/` to deploy.
+
+```apache
+# Global default: 10MB max request body (matches Axis2/C max_buffer)
+LimitRequestBody 10485760
+
+# Limit request line (URL + method + protocol) - prevents long URL attacks
+LimitRequestLine 8190
+
+# Limit total header fields - prevents header flooding
+LimitRequestFields 100
+
+# Limit individual header size - prevents header overflow attacks
+LimitRequestFieldSize 8190
+
+# Per-service overrides for different workloads:
+<Location /services/CameraControlService>
+    # IoT endpoints need minimal payloads
+    LimitRequestBody 65536
+</Location>
+
+<Location /services/FinancialBenchmarkService>
+    # Enterprise payloads up to 10MB
+    LimitRequestBody 10485760
+</Location>
+
+<Location /services/BigDataH2Service>
+    # Big data service - allow larger payloads (50MB)
+    LimitRequestBody 52428800
+</Location>
+```
+
+**Key Security Benefit**: If an attacker sends a 100MB payload:
+1. Apache rejects at TCP level before mod_axis2 is invoked
+2. No memory allocated, no CPU spent parsing malicious data
+3. Clean HTTP 413 response with minimal server resources consumed
+
+**Integer Overflow Protection**: The Axis2/C JSON processor includes explicit checks for:
+- Buffer arithmetic underflow (`current_size - total_read - 1`)
+- Read size overflow before addition (`bytes_read > max_buffer - total_read`)
+- Safe buffer doubling (`current_size > max_buffer / 2` check before multiply)
+- Allocation size validation (`total_read + 1` overflow check)
 
 ## Getting Started for Beginners
 
@@ -518,7 +604,35 @@ sudo chown www-data:www-data /var/log/axis2c 2>/dev/null || sudo chown $(whoami)
 
 **IMPORTANT**: HTTP/2 requires HTTPS (TLS encryption). Modern browsers and the HTTP/2 specification mandate secure connections, so this configuration is HTTPS-only.
 
-**Ubuntu/Debian Systems:**
+**Custom Apache Build (Recommended for /usr/local/apache2):**
+```bash
+# Copy the pre-configured httpd.conf with defense-in-depth limits
+sudo cp /home/robert/repos/axis-axis2-c-core/docs/userguide/httpd.conf /usr/local/apache2/conf/httpd.conf
+
+# Create SSL directory and certificates
+sudo mkdir -p /usr/local/apache2/conf/ssl
+sudo openssl req -new -x509 -days 365 -nodes \
+  -out /usr/local/apache2/conf/ssl/apache-selfsigned.crt \
+  -keyout /usr/local/apache2/conf/ssl/apache-selfsigned.key \
+  -subj "/CN=localhost/O=Axis2C/C=US"
+
+# Set proper permissions
+sudo chmod 600 /usr/local/apache2/conf/ssl/apache-selfsigned.key
+sudo chmod 644 /usr/local/apache2/conf/ssl/apache-selfsigned.crt
+
+# Test configuration
+/usr/local/apache2/bin/apachectl configtest
+
+# Start Apache (or use systemd service if configured)
+sudo /usr/local/apache2/bin/apachectl start
+
+# Verify HTTP/2 is working
+curl -k -I --http2 https://localhost/
+```
+
+> **Note**: The `httpd.conf` includes defense-in-depth request limits, per-service payload limits, and security headers. See the "Defense in Depth" section above for details.
+
+**Ubuntu/Debian Systems (using system Apache):**
 ```bash
 # Create the HTTPS-only configuration file
 sudo tee /etc/apache2/sites-available/axis2-services.conf << 'EOF'
@@ -540,9 +654,7 @@ Axis2LogLevel info
     H2MaxWorkers 256
     H2MaxSessionStreams 100
     H2StreamMaxMemSize 104857600
-    H2SerializeHeaders on
     H2StreamTimeout 300
-    H2KeepAliveTimeout 30
 
     # Security: HTTP/2 only over TLS 1.2+
     H2ModernTLSOnly on
@@ -588,7 +700,6 @@ Axis2LogLevel info
 
     # Service-specific configurations
     <Location /services/BigDataH2Service>
-        Timeout 600
         Header always set Cache-Control "no-cache, no-store, must-revalidate"
     </Location>
 
@@ -672,7 +783,7 @@ echo "🚀 Testing HTTP/2 connectivity..."
 curl -k -I --http2 https://localhost/
 ```
 
-**RedHat/CentOS/Fedora Systems:**
+**RedHat/CentOS/Fedora Systems (using system Apache):**
 ```bash
 # Create the HTTPS-only configuration file
 sudo tee /etc/httpd/conf.d/axis2-services.conf << 'EOF'
@@ -694,9 +805,7 @@ Axis2LogLevel info
     H2MaxWorkers 256
     H2MaxSessionStreams 100
     H2StreamMaxMemSize 104857600
-    H2SerializeHeaders on
     H2StreamTimeout 300
-    H2KeepAliveTimeout 30
 
     # Security: HTTP/2 only over TLS 1.2+
     H2ModernTLSOnly on
@@ -742,7 +851,6 @@ Axis2LogLevel info
 
     # Service-specific configurations
     <Location /services/BigDataH2Service>
-        Timeout 600
         Header always set Cache-Control "no-cache, no-store, must-revalidate"
     </Location>
 
@@ -901,6 +1009,7 @@ cd samples/user_guide/bigdata-h2-service && bash build_json_service.sh && cd ../
 cd samples/user_guide/login-service && bash build_json_service.sh && cd ../../..
 cd samples/user_guide/testws-service && bash build_json_service.sh && cd ../../..
 cd samples/user_guide/camera-control-service && bash build_camera_service.sh && cd ../../..
+cd samples/user_guide/financial-benchmark-service && bash build_financial_service.sh && cd ../../..
 
 # Check which source files exist vs what's expected by Makefile.am
 echo "=== BigDataH2Service ==="
@@ -914,6 +1023,9 @@ echo "=== TestwsService ==="
 
 echo "=== CameraControlService ==="
 [ -f "samples/user_guide/camera-control-service/src/camera_control_service.c" ] && echo "✅ Required: camera_control_service.c (stub implementation)" && echo "📁 Additional files: $(ls samples/user_guide/camera-control-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (camera_control_service.c)"
+
+echo "=== FinancialBenchmarkService ==="
+[ -f "samples/user_guide/financial-benchmark-service/src/financial_benchmark_service.c" ] && echo "✅ Required: financial_benchmark_service.c" && echo "📁 Additional files: $(ls samples/user_guide/financial-benchmark-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (financial_benchmark_service.c)"
 
 echo ""
 echo "✅ ALL HTTP/2 JSON services are fully implemented and ready for build and deployment"
@@ -1095,87 +1207,92 @@ curl -k --http2 \
 
 **Test successful authentication:**
 ```bash
-curl -k --http2 \
+curl -sk --http2 \
      -H "Content-Type: application/json" \
-     -d '{
-       "email": "admin@example.com",
-       "password": "admin123"
-     }' \
-     https://localhost/services/LoginService
+     -d '{"email": "admin@example.com", "password": "admin123"}' \
+     https://localhost/services/LoginService/authenticate
+```
+
+**Expected successful response:**
+```json
+{
+  "status": "LOGIN_SUCCESS",
+  "message": "Login successful. Welcome, admin",
+  "token": "eyAiYWxnIjogIkhTMjU2IiwgInR5cCI6ICJKV1QiIH0=...",
+  "tokenType": "Bearer",
+  "expiresIn": 3600,
+  "responseTime": 1767119569
+}
 ```
 
 **Test authentication failure:**
 ```bash
-curl -k --http2 \
+curl -sk --http2 \
      -H "Content-Type: application/json" \
-     -d '{
-       "email": "invalid@example.com",
-       "password": "wrongpassword"
-     }' \
-     https://localhost/services/LoginService
+     -d '{"email": "invalid@example.com", "password": "wrongpassword"}' \
+     https://localhost/services/LoginService/authenticate
 ```
 
 **Test input validation:**
 ```bash
-curl -k --http2 \
+curl -sk --http2 \
      -H "Content-Type: application/json" \
-     -d '{
-       "email": "not-an-email",
-       "password": "123"
-     }' \
-     https://localhost/services/LoginService
+     -d '{"email": "not-an-email", "password": "123"}' \
+     https://localhost/services/LoginService/authenticate
 ```
 
 ### TestWS Service Testing (XSS Protection Demonstration)
 
 **Test with safe input (passes validation):**
 ```bash
-curl -k --http2 \
+curl -sk --http2 \
      -H "Content-Type: application/json" \
-     -d '{
-       "messagein": "Hello World"
-     }' \
-     https://localhost/services/TestwsService
+     -d '{"messagein": "Hello World"}' \
+     https://localhost/services/TestwsService/testXSSProtection
 ```
 
-**Test with XSS payload (fails validation):**
-```bash
-curl -k --http2 \
-     -H "Content-Type: application/json" \
-     -d '{
-       "messagein": "<script>alert(XSS)</script>"
-     }' \
-     https://localhost/services/TestwsService
-```
-
-**Test with injection attempts (fails validation):**
-```bash
-curl -k --http2 \
-     -H "Content-Type: application/json" \
-     -d '{
-       "messagein": "javascript:alert(1)"
-     }' \
-     https://localhost/services/TestwsService
-```
-
-**Test with HTML entities (fails validation):**
-```bash
-curl -k --http2 \
-     -H "Content-Type: application/json" \
-     -d '{
-       "messagein": "&lt;img src=x onerror=alert(1)&gt;"
-     }' \
-     https://localhost/services/TestwsService
-```
-
-**Expected Response Format:**
+**Expected successful response:**
 ```json
 {
   "status": "OK",
   "messageout": "<script xmlns=\"http://www.w3.org/1999/xhtml\">alert('Hello');</script> \">",
-  "securityDetails": "XSS Analysis: Input validated successfully. Output contains intentional XSS payload for demonstration purposes...",
-  "responseTime": 1638360000
+  "securityDetails": "XSS Analysis: Input validated successfully. Output contains intentional XSS payload for demonstration purposes. WARNING: Output contains potential XSS patterns - proper HTML encoding required in production.",
+  "responseTime": 1767120021
 }
+```
+
+**Test with XSS payload (fails validation):**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d '{"messagein": "<script>alert(XSS)</script>"}' \
+     https://localhost/services/TestwsService/testXSSProtection
+```
+
+**Expected validation failure response:**
+```json
+{
+  "status": "ERROR",
+  "messageout": "",
+  "securityDetails": "Input validation failed - potential security risk detected",
+  "responseTime": 1767120014
+}
+```
+
+**Test with injection attempts (fails validation):**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d '{"messagein": "javascript:alert(1)"}' \
+     https://localhost/services/TestwsService/testXSSProtection
+```
+
+**Test with HTML entities (fails validation):**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d '{"messagein": "&lt;img src=x onerror=alert(1)&gt;"}' \
+     https://localhost/services/TestwsService/testXSSProtection
 ```
 
 ### CameraControlService Testing (Generic Camera Control with SFTP)
@@ -1264,6 +1381,82 @@ curl -k --http2 \
 - Implement `camera_device_start_recording_impl()`, `camera_device_stop_recording_impl()`, `camera_device_get_status_impl()`, `camera_device_configure_settings_impl()`, and `camera_device_sftp_transfer_impl()`
 - See comprehensive examples for OpenCamera JNI, V4L2, IP cameras, and libssh2 SFTP integration in the implementation guide
 
+### FinancialBenchmarkService Testing (Financial Computation Benchmark)
+
+The FinancialBenchmarkService demonstrates native C performance for compute-intensive financial calculations. It provides a direct comparison point for evaluating Axis2/C against Java/WildFly on resource-constrained hardware.
+
+**Use Case**: Run financial calculations on devices where Java/WildFly cannot operate (old Android phones with 1-2GB RAM, embedded systems, edge devices).
+
+**Operations**:
+- `portfolioVariance`: O(n²) covariance matrix calculation
+- `monteCarlo`: Monte Carlo VaR simulation
+- `generateTestData`: Generate synthetic test portfolios
+- `metadata`: Service information and device stats
+
+**Test service metadata:**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d '{}' \
+     https://localhost/services/FinancialBenchmarkService/metadata
+```
+
+**Generate test portfolio data:**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d '{"n_assets": 500}' \
+     https://localhost/services/FinancialBenchmarkService/generateTestData \
+     -o /tmp/portfolio_500.json
+```
+
+**Run 500-asset portfolio variance benchmark:**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d @/tmp/portfolio_500.json \
+     https://localhost/services/FinancialBenchmarkService/portfolioVariance
+```
+
+**Run Monte Carlo simulation (10K paths):**
+```bash
+curl -sk --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "n_simulations": 10000,
+       "n_periods": 252,
+       "initial_value": 1000000,
+       "expected_return": 0.08,
+       "volatility": 0.20
+     }' \
+     https://localhost/services/FinancialBenchmarkService/monteCarlo
+```
+
+**Benchmark Results (500-asset O(n²) Portfolio Variance)**:
+
+| Metric | Result |
+|--------|--------|
+| Assets | 500 |
+| Matrix operations | 250,000 (500²) |
+| Calculation time | **136 μs** |
+| Throughput | **1.84 billion ops/sec** |
+| Memory usage | 94 MB |
+
+**Platform Comparison**:
+
+| Platform | 500-asset calc | Memory | Startup |
+|----------|----------------|--------|---------|
+| **Axis2/C** | 136 μs | ~94 MB | Instant |
+| Java/WildFly | Cannot run | 4-8 GB min | 30-60s |
+
+This benchmark demonstrates that Axis2/C can perform enterprise financial calculations on hardware where Java-based solutions cannot operate, making it suitable for edge computing and resource-constrained environments.
+
+**Build the service:**
+```bash
+cd samples/user_guide/financial-benchmark-service
+bash build_financial_service.sh
+```
+
 ## Architecture Comparison: Spring Boot vs Apache httpd
 
 | Component | Axis2/Java (Spring Boot) | Axis2/C (Apache httpd) |
@@ -1324,6 +1517,7 @@ json_object* bigdata_h2_service_invoke_json(
 - [LoginService Source Code](../../samples/user_guide/login-service/) - User authentication with JWT tokens
 - [TestwsService Source Code](../../samples/user_guide/testws-service/) - XSS protection demonstration
 - [CameraControlService Source Code](../../samples/user_guide/camera-control-service/) - Generic camera control with SFTP file transfer and user-implementable stub functions
+- [FinancialBenchmarkService Source Code](../../samples/user_guide/financial-benchmark-service/) - Financial computation benchmarks (O(n²) matrix operations, Monte Carlo VaR)
 
 ### Security Resources
 - [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)

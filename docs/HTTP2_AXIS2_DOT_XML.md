@@ -124,6 +124,20 @@ Required classes mentioned in the Java documentation:
 </transportSender>
 ```
 
+**Note on Buffer Sizes**: The 64KB values shown above (`initialWindowSize`, `streamingBufferSize`) are Axis2/Java defaults. Axis2/C uses an **incremental buffer growth** approach:
+- **Initial allocation**: 64KB (efficient for IoT/camera payloads ~24 bytes)
+- **Growth strategy**: Doubles on demand (64KB → 128KB → 256KB → ... → 10MB max)
+- **Maximum limit**: 10MB (supports 500+ asset financial portfolios at ~5MB)
+- **Service-level limit**: Configurable via `maxJSONPayloadSize` in services.xml (default 10MB)
+- **Implementation note**: Uses standard C `malloc/realloc` since `AXIS2_REALLOC` is unreliable
+
+**Memory Efficiency Comparison**:
+| Payload | Axis2/C (incremental) | Static 10MB | Savings |
+|---------|----------------------|-------------|---------|
+| IoT/Camera (~24B) | 64KB | 10MB | 160x |
+| Medium JSON (~50KB) | 64KB | 10MB | 160x |
+| Large portfolio (~235KB) | 256KB | 10MB | 40x |
+
 ## Architectural Comparison
 
 ### Axis2/C Advantages

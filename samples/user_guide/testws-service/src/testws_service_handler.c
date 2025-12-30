@@ -70,6 +70,14 @@ static axis2_char_t* extract_json_from_axiom(const axutil_env_t *env, axiom_node
 static axiom_node_t* create_axiom_from_json(const axutil_env_t *env, const axis2_char_t *json_string);
 static axiom_node_t* create_error_response(const axutil_env_t *env, const axis2_char_t *error_message);
 
+/* JSON direct invocation entry point - required by axis2_json_rpc_msg_recv */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+testws_service_invoke_json(
+    axis2_svc_t *svc,
+    const axutil_env_t *env,
+    const axis2_char_t *json_request,
+    axis2_msg_ctx_t *msg_ctx);
+
 /**
  * Create TestWS Service Skeleton
  */
@@ -320,6 +328,71 @@ testws_service_do_testws_operation(
     AXIS2_FREE(env->allocator, json_response);
 
     return result_node;
+}
+
+/**
+ * JSON direct invocation entry point
+ * This is called by axis2_json_rpc_msg_recv for HTTP/2 JSON requests.
+ * Function naming convention: {service_name}_invoke_json
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+testws_service_invoke_json(
+    axis2_svc_t *svc,
+    const axutil_env_t *env,
+    const axis2_char_t *json_request,
+    axis2_msg_ctx_t *msg_ctx)
+{
+    testws_request_t *request = NULL;
+    testws_response_t *response = NULL;
+    axis2_char_t *json_response = NULL;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "TestwsService: Processing HTTP/2 JSON request via invoke_json");
+
+    if (!json_request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "TestwsService: No JSON request provided");
+        return axutil_strdup(env, "{\"status\":\"ERROR\",\"messageout\":\"\",\"securityDetails\":\"No JSON request provided\"}");
+    }
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "TestwsService request: %s", json_request);
+
+    /* Parse JSON request */
+    request = testws_request_create_from_json(env, json_request);
+    if (!request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "TestwsService: Failed to parse JSON request");
+        return axutil_strdup(env, "{\"status\":\"ERROR\",\"messageout\":\"\",\"securityDetails\":\"Invalid JSON request format\"}");
+    }
+
+    /* Process XSS test */
+    response = testws_service_do_testws(env, request);
+    if (!response)
+    {
+        testws_request_free(request, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "TestwsService: Processing failed");
+        return axutil_strdup(env, "{\"status\":\"ERROR\",\"messageout\":\"\",\"securityDetails\":\"Processing failed\"}");
+    }
+
+    /* Convert response to JSON */
+    json_response = testws_response_to_json(response, env);
+
+    /* Clean up */
+    testws_response_free(response, env);
+    testws_request_free(request, env);
+
+    if (!json_response)
+    {
+        return axutil_strdup(env, "{\"status\":\"ERROR\",\"messageout\":\"\",\"securityDetails\":\"Failed to generate response\"}");
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "TestwsService: Successfully processed JSON request");
+
+    return json_response;
 }
 
 /* Utility Functions */

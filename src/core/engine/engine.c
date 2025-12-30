@@ -66,7 +66,7 @@ axis2_engine_create(
         engine->conf_ctx = conf_ctx;
     }
 
-    /* REVOLUTIONARY: Register HTTP service provider implementation to eliminate circular dependency */
+    /* Register HTTP service provider implementation to eliminate circular dependency */
     {
         axis2_http_service_provider_t* service_provider = axis2_engine_service_provider_create(env);
         if (service_provider) {

@@ -593,16 +593,46 @@ CFLAGS += -DHTTP2_JSON_ONLY_MODE  # Not currently implemented in Makefile.am
 ### **🔬 Key Technical Breakthroughs Achieved**
 
 #### **1. Stream Reading Revolution**
-Successfully resolved the HTTP/2 POST body reading challenge through intelligent fallback logic:
+Successfully resolved the HTTP/2 POST body reading challenge through intelligent incremental buffer growth:
 ```c
 /* Try reading with a buffer if stream length is unknown */
 if (request_length <= 0) {
-    const int max_buffer = 65536;
-    axis2_char_t* temp_buffer = AXIS2_MALLOC(env->allocator, max_buffer);
-    request_length = axutil_stream_read(in_stream, env, temp_buffer, max_buffer - 1);
-    // Successfully reads HTTP/2 POST data when axutil_stream_get_len() returns 0
+    /* Incremental buffer growth: 64KB initial, doubles up to 10MB max
+     * Optimizes for IoT (small payloads) while supporting enterprise (large payloads)
+     * Uses standard C malloc/realloc since AXIS2_REALLOC is unreliable */
+    const int initial_size = 65536;     /* 64KB - efficient for IoT/camera payloads */
+    const int max_buffer = 10485760;    /* 10MB - supports 500+ asset portfolios */
+    int current_size = initial_size;
+
+    axis2_char_t* temp_buffer = (axis2_char_t*)malloc(current_size);
+
+    /* Read in chunks, growing buffer as needed */
+    while ((bytes_read = axutil_stream_read(...)) > 0) {
+        total_read += bytes_read;
+        if (total_read >= current_size - 1024) {
+            /* Double the buffer size */
+            int new_size = current_size * 2;
+            if (new_size > max_buffer) new_size = max_buffer;
+            temp_buffer = (axis2_char_t*)realloc(temp_buffer, new_size);
+            current_size = new_size;
+        }
+    }
+    /* Copy to AXIS2-managed buffer for consistent memory management */
+    json_request_buffer = AXIS2_MALLOC(env->allocator, total_read + 1);
+    memcpy(json_request_buffer, temp_buffer, total_read + 1);
+    free(temp_buffer);
 }
 ```
+
+**Memory Efficiency**: The incremental buffer approach provides significant memory savings:
+| Payload Type | Payload Size | Buffer Used | vs 10MB Static |
+|--------------|--------------|-------------|----------------|
+| Camera/IoT   | ~24 bytes    | 64KB        | 160x smaller   |
+| Medium JSON  | ~50KB        | 64KB        | 160x smaller   |
+| Large portfolio | ~235KB    | 256KB       | 40x smaller    |
+| Enterprise   | ~5MB         | 8MB         | 1.25x smaller  |
+
+**Note**: Uses standard C `malloc/realloc` instead of `AXIS2_REALLOC` which was found to be unreliable. The final buffer is copied to AXIS2-managed memory for consistent cleanup.
 
 #### **2. Interface Pattern Polymorphism**
 Revolutionary C implementation of Java-style virtual method tables:

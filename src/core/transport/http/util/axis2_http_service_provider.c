@@ -26,36 +26,23 @@
 #include <axis2_http_service_provider.h>
 #include <axutil_thread.h>
 #include <axis2_thread_mutex.h>
+#include <pthread.h>
 
 /* Revolutionary Service Provider Registry - thread-safe singleton */
 static axis2_http_service_provider_t* g_service_provider = NULL;
-static axutil_thread_mutex_t* g_provider_mutex = NULL;
-static axis2_bool_t g_registry_initialized = AXIS2_FALSE;
+static pthread_mutex_t g_provider_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-/* Initialize registry thread-safety */
-static void
-axis2_http_service_provider_init_registry(const axutil_env_t* env)
-{
-    if (!g_registry_initialized) {
-        g_provider_mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
-        g_registry_initialized = AXIS2_TRUE;
-    }
-}
+/* No initialization needed - using static PTHREAD_MUTEX_INITIALIZER */
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_service_provider_set_impl(
     const axutil_env_t* env,
     axis2_http_service_provider_t* provider)
 {
-    axis2_http_service_provider_init_registry(env);
-
-    if (g_provider_mutex) {
-        axutil_thread_mutex_lock(g_provider_mutex);
-        g_service_provider = provider;
-        axutil_thread_mutex_unlock(g_provider_mutex);
-    } else {
-        g_service_provider = provider;
-    }
+    /* Thread-safe using statically initialized pthread mutex */
+    pthread_mutex_lock(&g_provider_mutex);
+    g_service_provider = provider;
+    pthread_mutex_unlock(&g_provider_mutex);
 }
 
 AXIS2_EXTERN axis2_http_service_provider_t* AXIS2_CALL
@@ -64,15 +51,10 @@ axis2_http_service_provider_get_impl(
 {
     axis2_http_service_provider_t* provider = NULL;
 
-    axis2_http_service_provider_init_registry(env);
-
-    if (g_provider_mutex) {
-        axutil_thread_mutex_lock(g_provider_mutex);
-        provider = g_service_provider;
-        axutil_thread_mutex_unlock(g_provider_mutex);
-    } else {
-        provider = g_service_provider;
-    }
+    /* Thread-safe using statically initialized pthread mutex */
+    pthread_mutex_lock(&g_provider_mutex);
+    provider = g_service_provider;
+    pthread_mutex_unlock(&g_provider_mutex);
 
     return provider;
 }

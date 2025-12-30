@@ -279,7 +279,7 @@ axis2_json_reader_create_for_stream(
             if (json_obj)
                 json_object_put(json_obj);
             json_tokener_free(tokener);
-            free(reader);
+            AXIS2_FREE(env->allocator, reader);
             return NULL;
         }
 
@@ -315,7 +315,7 @@ axis2_json_reader_create_for_memory(
             if (reader->json_obj)
                 json_object_put(reader->json_obj);
             json_tokener_free(tokener);
-            free(reader);
+            AXIS2_FREE(env->allocator, reader);
             return NULL;
         }
         json_tokener_free(tokener);

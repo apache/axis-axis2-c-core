@@ -70,6 +70,14 @@ static axis2_char_t* extract_json_from_axiom(const axutil_env_t *env, axiom_node
 static axiom_node_t* create_axiom_from_json(const axutil_env_t *env, const axis2_char_t *json_string);
 static axiom_node_t* create_error_response(const axutil_env_t *env, const axis2_char_t *error_message);
 
+/* JSON direct invocation entry point - required by axis2_json_rpc_msg_recv */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+login_service_invoke_json(
+    axis2_svc_t *svc,
+    const axutil_env_t *env,
+    const axis2_char_t *json_request,
+    axis2_msg_ctx_t *msg_ctx);
+
 /**
  * Create Login Service Skeleton
  */
@@ -320,6 +328,71 @@ login_service_do_login_operation(
     AXIS2_FREE(env->allocator, json_response);
 
     return result_node;
+}
+
+/**
+ * JSON direct invocation entry point
+ * This is called by axis2_json_rpc_msg_recv for HTTP/2 JSON requests.
+ * Function naming convention: {service_name}_invoke_json
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+login_service_invoke_json(
+    axis2_svc_t *svc,
+    const axutil_env_t *env,
+    const axis2_char_t *json_request,
+    axis2_msg_ctx_t *msg_ctx)
+{
+    login_request_t *request = NULL;
+    login_response_t *response = NULL;
+    axis2_char_t *json_response = NULL;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "LoginService: Processing HTTP/2 JSON request via invoke_json");
+
+    if (!json_request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "LoginService: No JSON request provided");
+        return axutil_strdup(env, "{\"status\":\"FAILED\",\"message\":\"No JSON request provided\"}");
+    }
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "LoginService request: %s", json_request);
+
+    /* Parse JSON request */
+    request = login_request_create_from_json(env, json_request);
+    if (!request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "LoginService: Failed to parse JSON request");
+        return axutil_strdup(env, "{\"status\":\"FAILED\",\"message\":\"Invalid JSON request format\"}");
+    }
+
+    /* Process login */
+    response = login_service_do_login(env, request);
+    if (!response)
+    {
+        login_request_free(request, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "LoginService: Login processing failed");
+        return axutil_strdup(env, "{\"status\":\"FAILED\",\"message\":\"Login processing failed\"}");
+    }
+
+    /* Convert response to JSON */
+    json_response = login_response_to_json(response, env);
+
+    /* Clean up */
+    login_response_free(response, env);
+    login_request_free(request, env);
+
+    if (!json_response)
+    {
+        return axutil_strdup(env, "{\"status\":\"FAILED\",\"message\":\"Failed to generate response\"}");
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "LoginService: Successfully processed JSON request");
+
+    return json_response;
 }
 
 /* Utility Functions */
