@@ -28,7 +28,7 @@ create_type1_header(const axutil_env_t *env, axis2_char_t *encoded)
 
     header1 = "HEAD /myservice/Service1.asmx HTTP/1.1\n"\
             "Host: 172.16.176.132:8080\n"\
-            "User-Agent: Axis2C/1.7.0\n";
+            "User-Agent: Axis2C/2.0.0\n";
     header1 = axutil_strcat(env, header1, type1_header, "\n\n", NULL);
     AXIS2_FREE(env->allocator, type1_header);
 
@@ -43,7 +43,7 @@ create_type3_header(const axutil_env_t *env,
 
     char *temp_header = strdup("GET /myservice/Service1.asmx?WSDL HTTP/1.1\n"\
             "Host: 172.16.176.132:8080\n"\
-            "User-Agent: Axis2C/1.7.0\n"\
+            "User-Agent: Axis2C/2.0.0\n"\
             "Authorization: NTLM ");
 
     int len1 = axutil_strlen(encoded);
@@ -91,7 +91,7 @@ int main()
     /* Create a normal message */
     char *init_send = axutil_strdup(env, "HEAD /myservice/Service1.asmx HTTP/1.1\n"\
                         "Host: 172.16.176.132:8080\n"\
-                        "User-Agent: Axis2C/1.7.0\n\n");
+                        "User-Agent: Axis2C/2.0.0\n\n");
 
     if (connect(sock, (struct sockaddr *)&server_addr,
                 sizeof(struct sockaddr)) == -1) 
