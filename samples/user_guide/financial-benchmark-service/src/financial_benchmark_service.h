@@ -64,7 +64,7 @@ extern "C"
  * Portfolio Variance Calculation
  *
  * Calculates portfolio variance using covariance matrix multiplication.
- * This is an O(n²) operation that mirrors DPT v2 correlation calculations.
+ * This is an O(n²) operation that mirrors common correlation calculations.
  *
  * Formula: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
  * where w = weights vector, σ = covariance matrix
@@ -219,7 +219,7 @@ typedef struct finbench_monte_carlo_response
 } finbench_monte_carlo_response_t;
 
 /* ============================================================================
- * Scenario Analysis (mirrors DPT fundAssetList.find() patterns)
+ * Scenario Analysis (mirrors common financial patterns)
  *
  * Demonstrates O(1) hash table lookups vs O(n) array scans.
  * ============================================================================

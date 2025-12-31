@@ -152,7 +152,7 @@ finbench_get_device_info(const axutil_env_t *env)
  * Portfolio Variance Implementation
  *
  * Core calculation: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
- * This is O(n²) - exactly what DPT v2 does for correlation calculations.
+ * This is O(n²) - common for correlation calculations.
  * ============================================================================
  */
 
@@ -372,7 +372,7 @@ finbench_calculate_portfolio_variance(
      * Core O(n²) calculation:
      * σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
      *
-     * This is exactly what DPT v2 does for correlation calculations.
+     * This is common for correlation calculations.
      * On a 500-asset portfolio, this is 250,000 operations.
      */
     for (i = 0; i < n; i++) {
