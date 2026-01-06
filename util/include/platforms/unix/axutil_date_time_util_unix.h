@@ -22,7 +22,9 @@
 #include <axutil_utils_defines.h>
 #include <stdio.h>
 #include <sys/types.h>
+#ifndef __ANDROID__
 #include <sys/timeb.h>
+#endif
 #include <time.h>
 
 #ifdef __cplusplus

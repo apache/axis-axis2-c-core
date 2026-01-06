@@ -20,6 +20,12 @@
 AXIS2_EXTERN int AXIS2_CALL
 axis2_platform_get_milliseconds()
 {
+#ifdef __ANDROID__
+    /* Android doesn't have sys/timeb.h or ftime(), use clock_gettime() instead */
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return (int)(ts.tv_nsec / 1000000);
+#else
     struct timeb t_current;
     int milliseconds;
 
@@ -27,5 +33,5 @@ axis2_platform_get_milliseconds()
     milliseconds = t_current.millitm;
 
     return milliseconds;
-
+#endif
 }

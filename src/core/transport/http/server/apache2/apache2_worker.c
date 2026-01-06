@@ -31,12 +31,21 @@
 #include <axutil_url.h>
 #include <http_core.h>
 #include <http_protocol.h>
+#include <http_log.h>
 #include <axiom_soap.h>
 #include <axutil_class_loader.h>
 #include <axutil_string_util.h>
 #include <axiom_mime_part.h>
 #include <axiom_mtom_sending_callback.h>
 #include <axis2_apache2_request_processor.h>
+
+/* Android logging macro - use INFO level for trace messages */
+#ifdef __ANDROID__
+#include <android/log.h>
+#define AXIS2_WORKER_LOG(fmt, ...) __android_log_print(ANDROID_LOG_INFO, "Axis2-worker", fmt, ##__VA_ARGS__)
+#else
+#define AXIS2_WORKER_LOG(fmt, ...) ((void)0)  /* No-op on non-Android */
+#endif
 
 #define READ_SIZE  2048
 
@@ -224,6 +233,12 @@ axis2_apache2_worker_process_request(
     axis2_status_t status = AXIS2_FAILURE;
 	axutil_hash_t *headers = NULL;
 
+    if (!apache2_worker || !env || !request) {
+        return DECLINED;
+    }
+
+    AXIS2_WORKER_LOG("Processing: %s", request->uri ? request->uri : "NULL");
+
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
 
@@ -262,10 +277,14 @@ axis2_apache2_worker_process_request(
     }
     request->content_type = content_type;
 
-    out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf(apache2_worker->conf_ctx, env),
-        env, AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc = axis2_conf_get_transport_in(axis2_conf_ctx_get_conf(apache2_worker->conf_ctx, env),
-        env, AXIS2_TRANSPORT_ENUM_HTTP);
+    {
+        axis2_conf_t *conf = axis2_conf_ctx_get_conf(apache2_worker->conf_ctx, env);
+        if (!conf) {
+            return DECLINED;
+        }
+        out_desc = axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+        in_desc = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+    }
 	{
 		axis2_transport_receiver_t *receiver = NULL;
 		receiver = axis2_transport_in_desc_get_recv(in_desc, env);

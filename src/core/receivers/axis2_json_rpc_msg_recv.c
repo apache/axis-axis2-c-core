@@ -45,6 +45,173 @@
 #include <dlfcn.h>  /* For JSON-direct service loading */
 /* Revolutionary: NO AXIOM includes - pure JSON processing only */
 
+#ifdef __ANDROID__
+/*
+ * Android Static Service Registry
+ *
+ * On Android with static linking, services are compiled directly into the
+ * httpd binary. Instead of trying to dlopen non-existent .so files, we use
+ * direct invoke functions for known services.
+ *
+ * Each service exports: <servicename>_invoke_json(env, json_request)
+ *
+ * WEAK SYMBOL ARCHITECTURE:
+ * Service functions are declared as weak symbols. This allows:
+ * 1. Core framework to compile without service implementations
+ * 2. Applications to provide strong symbol implementations at link time
+ * 3. Graceful handling when services are not linked (returns NULL)
+ *
+ * To add a new static service:
+ * 1. Add weak declaration here
+ * 2. Add entry in android_static_service_lookup()
+ * 3. Provide implementation in your application, compiled as a .o or .a file
+ * 4. Link the service archive during final httpd linking with --whole-archive
+ */
+
+typedef json_object* (*json_service_invoke_func_t)(const axutil_env_t *env, json_object *json_request);
+
+/*
+ * Weak symbol declarations for statically linked services
+ * Applications provide strong implementations at link time
+ */
+__attribute__((weak))
+json_object* camera_control_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request)
+{
+    /* Weak default - returns NULL if no implementation linked */
+    (void)env;
+    (void)json_request;
+    return NULL;
+}
+
+/* Add more weak service declarations here:
+ * __attribute__((weak))
+ * json_object* another_service_invoke_json(const axutil_env_t *env, json_object *json_request)
+ * {
+ *     (void)env; (void)json_request;
+ *     return NULL;
+ * }
+ */
+
+/**
+ * Android Static Service Registry - looks up services by name
+ *
+ * Returns function pointer for known service names. If only weak symbol
+ * was linked (no strong implementation), calls will return NULL responses,
+ * which the caller handles appropriately.
+ *
+ * @param service_name The service name (e.g., "CameraControlService")
+ * @return Function pointer to the service's invoke_json function, or NULL
+ */
+/* Non-static to ensure linker includes this function when linking from archives */
+json_service_invoke_func_t
+android_static_service_lookup(const char *service_name)
+{
+    if (!service_name) {
+        return NULL;
+    }
+
+    /* Static service registry - returns function pointer for known services.
+     * If application linked a strong implementation, it will be used.
+     * If only weak stub exists, caller handles NULL response gracefully. */
+    if (strcmp(service_name, "CameraControlService") == 0) {
+        return camera_control_service_invoke_json;
+    }
+
+    /* Add more services as needed:
+     * if (strcmp(service_name, "AnotherService") == 0) {
+     *     return another_service_invoke_json;
+     * }
+     */
+
+    return NULL;  /* Service not found in static registry */
+}
+
+/**
+ * Try static service invocation for Android
+ *
+ * @param env Environment
+ * @param service_name Service name
+ * @param json_request_str JSON request string
+ * @param json_response_out Output parameter for JSON response
+ * @return AXIS2_TRUE if successful, AXIS2_FALSE otherwise
+ */
+/* Non-static to ensure linker includes this function when linking from archives */
+axis2_bool_t
+try_android_static_service(const axutil_env_t *env,
+                           const char *service_name,
+                           const char *json_request_str,
+                           axis2_char_t **json_response_out)
+{
+    json_service_invoke_func_t service_invoke = NULL;
+    json_object *json_request = NULL;
+    json_object *json_response_obj = NULL;
+    const char *json_response_str = NULL;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[ANDROID_STATIC] Looking up service: %s", service_name);
+
+    service_invoke = android_static_service_lookup(service_name);
+    if (!service_invoke) {
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[ANDROID_STATIC] Service '%s' not in static registry", service_name);
+        return AXIS2_FALSE;
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[ANDROID_STATIC] Found service '%s' in static registry", service_name);
+
+    /* Parse JSON request */
+    json_request = json_tokener_parse(json_request_str);
+    if (!json_request) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[ANDROID_STATIC] Failed to parse JSON request");
+        return AXIS2_FALSE;
+    }
+
+    /* Invoke service */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[ANDROID_STATIC] Invoking %s", service_name);
+
+    json_response_obj = service_invoke(env, json_request);
+
+    json_object_put(json_request);  /* Free request */
+
+    if (!json_response_obj) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[ANDROID_STATIC] Service returned NULL response");
+        return AXIS2_FALSE;
+    }
+
+    /* Convert response to string */
+    json_response_str = json_object_to_json_string(json_response_obj);
+    if (!json_response_str) {
+        json_object_put(json_response_obj);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[ANDROID_STATIC] Failed to serialize response");
+        return AXIS2_FALSE;
+    }
+
+    /* Copy response for caller */
+    *json_response_out = axutil_strdup(env, json_response_str);
+
+    json_object_put(json_response_obj);  /* Free response */
+
+    if (!*json_response_out) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[ANDROID_STATIC] Failed to duplicate response string");
+        return AXIS2_FALSE;
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[ANDROID_STATIC] Service '%s' invoked successfully, response length: %d",
+        service_name, (int)strlen(*json_response_out));
+
+    return AXIS2_TRUE;
+}
+#endif /* __ANDROID__ */
+
 /**
  * Try JSON-direct service loading for HTTP/2 JSON services
  *
@@ -546,6 +713,31 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
             "[JSON RPC MSG RECV] DEBUG: Loading service implementation: %s",
             service_name ? service_name : "unknown");
 
+#ifdef __ANDROID__
+        /*
+         * Android Static Service Loading
+         *
+         * On Android with static linking, try the static service registry first.
+         * This avoids dlopen() which won't work with statically linked services.
+         */
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Android: Trying static service registry for '%s'",
+            service_name ? service_name : "unknown");
+
+        if (service_name && json_request &&
+            try_android_static_service(env, service_name, json_request, &json_response)) {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[JSON RPC MSG RECV] Android: Static service '%s' invoked successfully",
+                service_name);
+            /* json_response is already set, skip to response handling */
+            goto response_ready;
+        }
+
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "[JSON RPC MSG RECV] Android: Service '%s' not in static registry, trying dynamic loading",
+            service_name ? service_name : "unknown");
+#endif
+
         // CORRECT PATTERN: Pass parameter object directly to class loader (same as msg_recv.c:258)
         impl_obj = axutil_class_loader_create_dll(env, impl_class_param);
 
@@ -603,6 +795,9 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         }
     }
 
+#ifdef __ANDROID__
+response_ready:
+#endif
     if (!json_response) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[JSON RPC MSG RECV] No JSON response generated - creating default error JSON");

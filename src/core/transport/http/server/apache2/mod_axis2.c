@@ -28,6 +28,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <strings.h>
+
+/* Android logging macro - use INFO level for trace messages */
+#ifdef __ANDROID__
+#include <android/log.h>
+#define AXIS2_ANDROID_LOG(fmt, ...) __android_log_print(ANDROID_LOG_INFO, "Axis2-mod", fmt, ##__VA_ARGS__)
+#else
+#define AXIS2_ANDROID_LOG(fmt, ...) ((void)0)  /* No-op on non-Android */
+#endif
 #include <axutil_log_default.h>
 #include <axutil_thread_pool.h>
 /* REVOLUTIONARY: Conditional axiom include - only for SOAP processing */
@@ -45,6 +53,24 @@
 #include <axis2_engine.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_conf_init.h>
+
+#ifdef __ANDROID__
+/*
+ * Android Static Service References
+ *
+ * These extern declarations force the linker to include the statically
+ * linked service implementations. The services themselves are registered
+ * via the static service registry in axis2_json_rpc_msg_recv.c.
+ */
+#include <json-c/json.h>
+extern json_object* camera_control_service_invoke_json(
+    const axutil_env_t *env, json_object *json_request);
+
+/* Force linker to include the service - __attribute__((used)) prevents compiler from optimizing away this unreferenced array */
+static void* axis2_static_service_refs[] __attribute__((used)) = {
+    (void*)camera_control_service_invoke_json
+};
+#endif
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
@@ -66,28 +92,37 @@ apr_global_mutex_t *global_mutex = NULL;
 /* DEBUGGING: Signal handler for crash debugging */
 static void axis2_segfault_handler(int sig)
 {
-    void *array[10];
-    size_t size;
-    char **strings;
-    size_t i;
-
     /* Log crash information to Apache error log */
     ap_log_error(APLOG_MARK, APLOG_CRIT, APR_SUCCESS, NULL,
         "[Axis2] CRASH DETECTED: Signal %d received (SEGFAULT) - PID: %d", sig, getpid());
 
-    /* Get backtrace */
-    size = backtrace(array, 10);
-    strings = backtrace_symbols(array, size);
+#ifndef __ANDROID__
+    /* backtrace functions are not available on Android (Bionic libc) */
+    {
+        void *array[10];
+        size_t size;
+        char **strings;
+        size_t i;
 
-    ap_log_error(APLOG_MARK, APLOG_CRIT, APR_SUCCESS, NULL,
-        "[Axis2] BACKTRACE: Obtained %zd stack frames", size);
+        /* Get backtrace */
+        size = backtrace(array, 10);
+        strings = backtrace_symbols(array, size);
 
-    for (i = 0; i < size; i++) {
         ap_log_error(APLOG_MARK, APLOG_CRIT, APR_SUCCESS, NULL,
-            "[Axis2] BACKTRACE[%zd]: %s", i, strings[i]);
-    }
+            "[Axis2] BACKTRACE: Obtained %zd stack frames", size);
 
-    free(strings);
+        for (i = 0; i < size; i++) {
+            ap_log_error(APLOG_MARK, APLOG_CRIT, APR_SUCCESS, NULL,
+                "[Axis2] BACKTRACE[%zd]: %s", i, strings[i]);
+        }
+
+        free(strings);
+    }
+#else
+    /* Android: Simple crash logging without backtrace */
+    ap_log_error(APLOG_MARK, APLOG_CRIT, APR_SUCCESS, NULL,
+        "[Axis2] Backtrace not available on Android");
+#endif
 
     /* Exit gracefully to avoid infinite loops */
     _exit(1);
@@ -205,14 +240,10 @@ axis2_create_svr(
     apr_pool_t * p,
     server_rec * s)
 {
-    /* DEBUGGING: Log server configuration creation */
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, s,
-        "[Axis2] DEBUG: axis2_create_svr ENTRY - creating server configuration");
-
     axis2_config_rec_t *conf = apr_palloc(p, sizeof(*conf));
     if (!conf) {
         ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, s,
-            "[Axis2] DEBUG: axis2_create_svr FAILED - memory allocation failed");
+            "[Axis2] Failed to allocate server configuration");
         return NULL;
     }
 
@@ -222,8 +253,6 @@ axis2_create_svr(
     conf->axis2_global_pool_size = 0;
     conf->max_log_file_size = 1;
 
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, s,
-        "[Axis2] DEBUG: axis2_create_svr SUCCESS - server configuration created");
     return conf;
 }
 
@@ -233,27 +262,18 @@ axis2_set_repo_path(
     void *dummy,
     const char *arg)
 {
-    /* DEBUGGING: Log directive processing */
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_repo_path ENTRY - processing Axis2RepoPath directive: %s", arg);
-
     axis2_config_rec_t *conf = NULL;
     const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if(err != NULL)
     {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_repo_path FAILED - context error: %s", err);
         return err;
     }
     conf = (axis2_config_rec_t *)ap_get_module_config(cmd->server->module_config, &axis2_module);
     if (!conf) {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_repo_path FAILED - could not get module config");
         return "Failed to get module configuration";
     }
-    conf->axis2_repo_path = apr_pstrdup(cmd->pool, arg);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_repo_path SUCCESS - set repo path: %s", arg);
+    /* Resolve relative path to absolute path based on ServerRoot */
+    conf->axis2_repo_path = ap_server_root_relative(cmd->pool, arg);
     return NULL;
 }
 
@@ -263,28 +283,18 @@ axis2_set_log_file(
     void *dummy,
     const char *arg)
 {
-    /* DEBUGGING: Log directive processing */
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_file ENTRY - processing Axis2LogFile directive: %s", arg);
-
     axis2_config_rec_t *conf = NULL;
     const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if(err != NULL)
     {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_log_file FAILED - context error: %s", err);
         return err;
     }
 
     conf = (axis2_config_rec_t *)ap_get_module_config(cmd->server->module_config, &axis2_module);
     if (!conf) {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_log_file FAILED - could not get module config");
         return "Failed to get module configuration";
     }
     conf->axutil_log_file = apr_pstrdup(cmd->pool, arg);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_file SUCCESS - set log file: %s", arg);
     return NULL;
 }
 
@@ -294,28 +304,18 @@ axis2_set_max_log_file_size(
     void *dummy,
     const char *arg)
 {
-    /* DEBUGGING: Log directive processing */
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_max_log_file_size ENTRY - processing Axis2MaxLogFileSize directive: %s", arg);
-
     axis2_config_rec_t *conf = NULL;
     const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if(err != NULL)
     {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_max_log_file_size FAILED - context error: %s", err);
         return err;
     }
 
     conf = (axis2_config_rec_t *)ap_get_module_config(cmd->server->module_config, &axis2_module);
     if (!conf) {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_max_log_file_size FAILED - could not get module config");
         return "Failed to get module configuration";
     }
     conf->max_log_file_size = 1024 * 1024 * atoi(arg);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_max_log_file_size SUCCESS - set max log file size: %s", arg);
     return NULL;
 }
 
@@ -343,95 +343,55 @@ axis2_set_log_level(
     void *dummy,
     const char *arg)
 {
-    /* DEBUGGING: Log directive processing - this is likely where the crash occurs */
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_level ENTRY - processing Axis2LogLevel directive: %s", arg);
-
     char *str;
     axutil_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
     axis2_config_rec_t *conf = NULL;
 
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_level - about to check command context");
     const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if(err != NULL)
     {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_log_level FAILED - context error: %s", err);
         return err;
     }
 
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_level - about to get module config");
     conf = (axis2_config_rec_t *)ap_get_module_config(cmd->server->module_config, &axis2_module);
     if (!conf) {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_log_level FAILED - could not get module config");
         return "Failed to get module configuration";
     }
 
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_level - about to call ap_getword_conf");
     str = ap_getword_conf(cmd->pool, &arg);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_level - ap_getword_conf returned: %s", str ? str : "NULL");
 
     if(str)
     {
-        ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-            "[Axis2] DEBUG: axis2_set_log_level - about to check string: '%s'", str);
-
         if(strcmp(str, "info") == 0)
         {
             level = AXIS2_LOG_LEVEL_INFO;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'info' level");
         }
         else if(strcmp(str, "debug") == 0)
         {
             level = AXIS2_LOG_LEVEL_DEBUG;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'debug' level");
         }
         else if(strcmp(str, "error") == 0)
         {
             level = AXIS2_LOG_LEVEL_ERROR;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'error' level");
         }
         else if(strcmp(str, "warn") == 0)
         {
             level = AXIS2_LOG_LEVEL_WARNING;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'warn' level");
         }
         else if(strcmp(str, "crit") == 0)
         {
             level = AXIS2_LOG_LEVEL_CRITICAL;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'crit' level");
         }
         else if(strcmp(str, "user") == 0)
         {
             level = AXIS2_LOG_LEVEL_USER;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'user' level");
         }
         else if(strcmp(str, "trace") == 0)
         {
             level = AXIS2_LOG_LEVEL_TRACE;
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - matched 'trace' level");
-        }
-        else
-        {
-            ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-                "[Axis2] DEBUG: axis2_set_log_level - no match for '%s', using default debug level", str);
         }
     }
     conf->log_level = level;
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, cmd->server,
-        "[Axis2] DEBUG: axis2_set_log_level SUCCESS - set log level to %d, returning", level);
     return NULL;
 }
 
@@ -455,17 +415,17 @@ axis2_set_svc_url_prefix(
     return NULL;
 }
 
-/* REVOLUTIONARY HTTP/2 Request Interception - Enhanced Stream Processing */
+/* HTTP/2 Request Interception - Enhanced Stream Processing */
 static int
 axis2_fixups(
     request_rec * req)
 {
     /* Only process /services/* requests */
-    if (!req->uri || strncmp(req->uri, "/services/", 10) != 0) {
+    if (!req || !req->uri || strncmp(req->uri, "/services/", 10) != 0) {
         return DECLINED;
     }
 
-    /* REVOLUTIONARY HTTP/2 JSON Processing - Enhanced breed apart stream optimization */
+    /* HTTP/2 JSON Processing - direct handler routing */
     if (req->protocol && strstr(req->protocol, "HTTP/2")) {
 
         const char *content_type = req->content_type ? req->content_type :
@@ -473,42 +433,30 @@ axis2_fixups(
 
         if (content_type && strstr(content_type, "application/json")) {
 
-            ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-                "REVOLUTIONARY: HTTP/2 JSON stream detected in fixups - Optimizing for breed apart processing");
-
             /* Force this request to use axis2_module handler */
             req->handler = apr_pstrdup(req->pool, "axis2_module");
 
-            /* REVOLUTIONARY: Enhanced HTTP/2 processing flags */
-            apr_table_set(req->headers_in, "X-Axis2-JSON-Mode", "revolutionary");
-            apr_table_set(req->headers_in, "X-Axis2-HTTP2-Request", "breed-apart");
+            /* HTTP/2 processing flags */
+            apr_table_set(req->headers_in, "X-Axis2-JSON-Mode", "enabled");
+            apr_table_set(req->headers_in, "X-Axis2-HTTP2-Request", "true");
             apr_table_set(req->headers_in, "X-Axis2-Processing", "direct-response");
-            apr_table_set(req->headers_in, "X-Axis2-Architecture", "option-b-enhanced");
 
-            /* HTTP/2 Performance optimization flags */
-            apr_table_set(req->headers_in, "X-HTTP2-Multiplexing", "enabled");
-            apr_table_set(req->headers_in, "X-Pipeline-Bypass", "soap-transformation");
-
-            /* REVOLUTIONARY: Stream priority hints for HTTP/2 multiplexing */
+            /* Stream priority hints for HTTP/2 multiplexing */
             const char *service_path = req->uri + 10; /* Skip "/services/" */
             if (service_path && strlen(service_path) > 0) {
-                /* Set stream priority based on service type */
                 if (strstr(service_path, "BigData") || strstr(service_path, "H2")) {
                     apr_table_set(req->headers_in, "X-Stream-Priority", "high-performance");
                 } else {
                     apr_table_set(req->headers_in, "X-Stream-Priority", "standard");
                 }
             }
-
-            ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-                "REVOLUTIONARY: HTTP/2 JSON stream optimized - Revolutionary processing flags set");
         }
     }
 
     return DECLINED;
 }
 
-/* The sample content handler */
+/* Request handler */
 static int
 axis2_handler(
     request_rec * req)
@@ -521,27 +469,17 @@ axis2_handler(
     apr_allocator_t *local_allocator = NULL;
     apr_pool_t *local_pool = NULL;
 
-    const char *content_type_header = apr_table_get(req->headers_in, "Content-Type");
-    ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-        "DEBUG: mod_axis2 axis2_handler ENTRY - method: %s, content_type: %s, uri: %s, protocol: %s, header_content_type: %s",
-        req->method ? req->method : "NULL",
-        req->content_type ? req->content_type : "NULL",
-        req->uri ? req->uri : "NULL",
-        req->protocol ? req->protocol : "NULL",
-        content_type_header ? content_type_header : "NULL");
-
-    if(strcmp(req->handler, "axis2_module"))
-    {
-        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-            "DEBUG: mod_axis2 DECLINED - handler is %s, not axis2_module", req->handler);
+    if (!req) {
         return DECLINED;
     }
 
+    /* Check handler */
+    if (!req->handler || strcmp(req->handler, "axis2_module"))
+    {
+        return DECLINED;
+    }
 
-
-
-
-
+    AXIS2_ANDROID_LOG("Processing request: %s", req->uri ? req->uri : "NULL");
 
     /* Set up the read policy from the client. */
     if((rv = ap_setup_client_block(req, REQUEST_CHUNKED_DECHUNK)) != OK)
@@ -552,15 +490,6 @@ axis2_handler(
 
     apr_allocator_create(&local_allocator);
     apr_pool_create_ex(&local_pool, NULL, NULL, local_allocator);
-
-    /*thread_env = axutil_init_thread_env(axutil_env);*/
-
-    /*axutil_env->allocator->current_pool = (void *) req->pool;
-     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);*/
-
-    /* create new allocator for this request */
-    /*allocator = (axutil_allocator_t *) apr_palloc(req->pool,
-     sizeof(axutil_allocator_t));*/
 
     allocator = (axutil_allocator_t *)apr_palloc(local_pool, sizeof(axutil_allocator_t));
 
@@ -578,23 +507,17 @@ axis2_handler(
 
     error = axutil_error_create(allocator);
     thread_env = axutil_env_create_with_error_log_thread_pool(allocator, error, axutil_env->log,
-        axutil_env-> thread_pool);
+        axutil_env->thread_pool);
     thread_env->allocator = allocator;
     thread_env->set_session_fn = axis2_set_session;
     thread_env->get_session_fn = axis2_get_session;
 
-    ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-        "DEBUG: mod_axis2 calling AXIS2_APACHE2_WORKER_PROCESS_REQUEST - uri: %s, content_type: %s",
-        req->uri ? req->uri : "NULL",
-        req->content_type ? req->content_type : "NULL");
-
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, thread_env, req);
-
-    ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, req,
-        "DEBUG: mod_axis2 AXIS2_APACHE2_WORKER_PROCESS_REQUEST returned: %d", rv);
 
     if(AXIS2_CRITICAL_FAILURE == rv)
     {
+        apr_pool_destroy(local_pool);
+        apr_allocator_destroy(local_allocator);
         return HTTP_INTERNAL_SERVER_ERROR;
     }
 
@@ -697,14 +620,28 @@ axis2_post_config(
         return OK;
     }
 
-    /* DEBUGGING: Enable engine initialization with comprehensive logging */
+    /* Android: Skip shared memory initialization
+     * SELinux policy restricts apr_shm_create() for unprivileged apps.
+     * We run in single-process mode (-X) anyway, so shared memory is unnecessary.
+     */
+#ifdef __ANDROID__
     ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: *** POST_CONFIG FUNCTION ENTRY *** - post_config called, enabling engine initialization");
+        "[Axis2] Android mode - using pool allocation (no shared memory)");
 
-    /* Skip shared memory initialization for HTTP2_JSON_ONLY_MODE - use direct engine init */
-#ifdef HTTP2_JSON_ONLY_MODE
-    ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: HTTP2_JSON_ONLY_MODE - skipping shared memory, proceeding to engine init");
+    allocator = (axutil_allocator_t *)apr_palloc(pconf, sizeof(axutil_allocator_t));
+    if (!allocator) {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+            "[Axis2] Error creating allocator for Android");
+        exit(APEXIT_CHILDFATAL);
+    }
+    allocator->malloc_fn = axis2_module_malloc;
+    allocator->realloc = axis2_module_realloc;
+    allocator->free_fn = axis2_module_free;
+    allocator->global_pool_ref = 0;
+    allocator->local_pool = (void *)pconf;
+    allocator->current_pool = (void *)pconf;
+    allocator->global_pool = (void *)pconf;
+
     goto engine_init;
 #endif
 #if APR_HAS_SHARED_MEMORY
@@ -764,10 +701,8 @@ axis2_post_config(
         allocator->current_pool = (void *) rmm;
         allocator->global_pool = (void *) rmm;
 
-    /* REVOLUTIONARY HTTP2_JSON_ONLY_MODE: Direct engine initialization without shared memory */
+    /* Engine initialization */
 engine_init:
-    ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: engine_init - beginning core Axis2/C initialization");
 
 #ifdef HTTP2_JSON_ONLY_MODE
     /* For HTTP/2 JSON mode: Use simple pool-based allocator instead of shared memory */
@@ -779,21 +714,11 @@ engine_init:
     allocator->local_pool = (void *)pconf;
     allocator->current_pool = (void *)pconf;
     allocator->global_pool = (void *)pconf;
-
-    ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: HTTP2_JSON_ONLY_MODE allocator created using APR pool");
 #endif
 
-    /* REVOLUTIONARY: Skip axiom init for HTTP/2 JSON-only mode
-     * Initialize XML readers only when SOAP processing is needed
-     */
+    /* Initialize XML readers only when SOAP processing is needed */
 #ifndef HTTP2_JSON_ONLY_MODE
     axiom_xml_reader_init();
-    ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: axiom_xml_reader_init completed for SOAP mode");
-#else
-    ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: Skipping axiom_xml_reader_init in HTTP2_JSON_ONLY_MODE");
 #endif
     axutil_error_init();
 
@@ -841,79 +766,56 @@ engine_init:
         axutil_env->set_session_fn = axis2_set_session;
         axutil_env->get_session_fn = axis2_get_session;
 
-        /* REVOLUTIONARY: Create temporary engine to trigger HTTP service provider registration */
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: Creating temporary engine to register HTTP service provider");
-
+        /* Create temporary engine to trigger HTTP service provider registration */
         axis2_conf_ctx_t *temp_conf_ctx = axis2_build_conf_ctx(axutil_env, conf->axis2_repo_path);
         if (!temp_conf_ctx) {
+            int err_code = axutil_env->error ? axutil_env->error->error_number : -1;
+            const axis2_char_t *err_msg = axutil_env->error ?
+                axutil_error_get_message(axutil_env->error) : "unknown";
             ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                "[Axis2] Error creating temporary configuration context for service provider registration");
+                "[Axis2] Error creating configuration context - error_code=%d, message=%s",
+                err_code, err_msg ? err_msg : "NULL");
             exit(APEXIT_CHILDFATAL);
         }
 
         axis2_engine_t *temp_engine = axis2_engine_create(axutil_env, temp_conf_ctx);
         if (!temp_engine) {
             ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                "[Axis2] Error creating temporary engine for service provider registration");
+                "[Axis2] Error creating engine for service provider registration");
             exit(APEXIT_CHILDFATAL);
         }
-
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: Temporary engine created successfully - HTTP service provider should now be registered");
 
         /* Clean up temporary engine - service provider registration persists */
         axis2_engine_free(temp_engine, axutil_env);
         axis2_conf_ctx_free(temp_conf_ctx, axutil_env);
 
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: About to create axis2_apache2_worker after service provider registration");
-
-        /* DEBUGGING: Validate parameters before function call */
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: Validating parameters - axutil_env=%p, repo_path=%s",
-            (void*)axutil_env, conf->axis2_repo_path ? conf->axis2_repo_path : "NULL");
-
         if (!axutil_env) {
             ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                "[Axis2] CRITICAL: axutil_env is NULL before worker creation");
+                "[Axis2] Environment is NULL before worker creation");
             exit(APEXIT_CHILDFATAL);
         }
 
         if (!axutil_env->log) {
             ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                "[Axis2] CRITICAL: axutil_env->log is NULL before worker creation");
+                "[Axis2] Log is NULL before worker creation");
             exit(APEXIT_CHILDFATAL);
         }
-
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: Parameters validated, calling axis2_apache2_worker_create...");
 
         axis2_worker = axis2_apache2_worker_create(axutil_env,
             conf->axis2_repo_path);
 
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: axis2_apache2_worker_create returned: %p", (void*)axis2_worker);
-
         if (!axis2_worker)
         {
             ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                "[Axis2] Error creating mod_axis2 apache2 worker - function returned NULL");
+                "[Axis2] Error creating mod_axis2 apache2 worker");
             exit(APEXIT_CHILDFATAL);
         }
 
         ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: Worker creation SUCCESSFUL - axis2_worker=%p", (void*)axis2_worker);
-
-        ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-            "[Axis2] DEBUG: axis2_apache2_worker created successfully");
+            "[Axis2] Initialization complete - worker created successfully");
     }
 
 #endif
-
-    /* REVOLUTIONARY: Engine initialization complete - HTTP service provider should now be available */
-    ap_log_error(APLOG_MARK, APLOG_INFO, APR_SUCCESS, svr_rec,
-        "[Axis2] DEBUG: post_config completed successfully - HTTP service provider registered");
 
     return OK;
 }
@@ -941,9 +843,7 @@ axis2_module_init(
         return;
     }
 
-    /* REVOLUTIONARY: Skip axiom init for HTTP/2 JSON-only mode
-     * Initialize XML readers only when SOAP processing is needed
-     */
+    /* Skip axiom init for HTTP/2 JSON-only mode */
 #ifndef HTTP2_JSON_ONLY_MODE
     axiom_xml_reader_init();
 #endif
@@ -1037,35 +937,18 @@ static void
 axis2_register_hooks(
     apr_pool_t * p)
 {
-    /* DEBUGGING: Install comprehensive signal handlers to catch all crashes */
+    /* Install signal handlers for crash debugging */
     signal(SIGSEGV, axis2_segfault_handler);
     signal(SIGFPE, axis2_segfault_handler);
     signal(SIGILL, axis2_segfault_handler);
     signal(SIGABRT, axis2_segfault_handler);
     signal(SIGTERM, axis2_segfault_handler);
     signal(SIGBUS, axis2_segfault_handler);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, NULL,
-        "[Axis2] DEBUG: Comprehensive signal handlers installed (SIGSEGV, SIGFPE, SIGILL, SIGABRT, SIGTERM, SIGBUS)");
-
-    /* DEBUGGING: Log hook registration phase */
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, NULL,
-        "[Axis2] DEBUG: axis2_register_hooks ENTRY - about to register hooks");
 
     ap_hook_post_config(axis2_post_config, NULL, NULL, APR_HOOK_MIDDLE);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, NULL,
-        "[Axis2] DEBUG: post_config hook registered successfully");
-
     ap_hook_fixups(axis2_fixups, NULL, NULL, APR_HOOK_FIRST);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, NULL,
-        "[Axis2] DEBUG: fixups hook registered successfully");
-
     ap_hook_handler(axis2_handler, NULL, NULL, APR_HOOK_MIDDLE);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, NULL,
-        "[Axis2] DEBUG: handler hook registered successfully");
-
     ap_hook_child_init(axis2_module_init, NULL, NULL, APR_HOOK_MIDDLE);
-    ap_log_error(APLOG_MARK, APLOG_ERR, APR_SUCCESS, NULL,
-        "[Axis2] DEBUG: All hooks registered successfully - axis2_register_hooks COMPLETE");
 }
 
 apr_status_t

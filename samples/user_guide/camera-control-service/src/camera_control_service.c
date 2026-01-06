@@ -418,6 +418,175 @@ sftp_transfer_params_free(sftp_transfer_params_t *params,
     AXIS2_FREE(env->allocator, params);
 }
 
+/**
+ * Create File List Parameters from JSON string using pure json-c
+ */
+AXIS2_EXTERN file_list_params_t* AXIS2_CALL
+file_list_params_create_from_json(
+    const axutil_env_t *env,
+    const axis2_char_t *json_string)
+{
+    file_list_params_t *params = NULL;
+    json_object *json_obj = NULL;
+    json_object *value_obj = NULL;
+
+    if (!env || !json_string)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    json_obj = json_tokener_parse(json_string);
+    if (!json_obj)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse JSON file list request");
+        return NULL;
+    }
+
+    params = AXIS2_MALLOC(env->allocator, sizeof(file_list_params_t));
+    if (!params)
+    {
+        json_object_put(json_obj);
+        return NULL;
+    }
+    memset(params, 0, sizeof(file_list_params_t));
+
+    /* Extract pattern (optional) */
+    if (json_object_object_get_ex(json_obj, "pattern", &value_obj))
+    {
+        const char *pattern = json_object_get_string(value_obj);
+        if (pattern)
+        {
+            params->pattern = camera_service_sanitize_input(env, pattern,
+                                                           CAMERA_PATH_MAX_LENGTH);
+        }
+    }
+
+    /* Extract directory (optional) */
+    if (json_object_object_get_ex(json_obj, "directory", &value_obj))
+    {
+        const char *directory = json_object_get_string(value_obj);
+        if (directory)
+        {
+            params->directory = camera_service_sanitize_input(env, directory,
+                                                             CAMERA_PATH_MAX_LENGTH);
+        }
+    }
+
+    json_object_put(json_obj);
+    return params;
+}
+
+/**
+ * Free file list parameters
+ */
+AXIS2_EXTERN void AXIS2_CALL
+file_list_params_free(file_list_params_t *params,
+                      const axutil_env_t *env)
+{
+    if (!params || !env)
+        return;
+
+    if (params->pattern)
+        AXIS2_FREE(env->allocator, params->pattern);
+    if (params->directory)
+        AXIS2_FREE(env->allocator, params->directory);
+
+    AXIS2_FREE(env->allocator, params);
+}
+
+/**
+ * Free file list result
+ */
+AXIS2_EXTERN void AXIS2_CALL
+file_list_result_free(file_list_result_t *result,
+                      const axutil_env_t *env)
+{
+    if (!result || !env)
+        return;
+
+    if (result->files)
+    {
+        for (int i = 0; i < result->file_count; i++)
+        {
+            if (result->files[i].name)
+                AXIS2_FREE(env->allocator, result->files[i].name);
+            if (result->files[i].modified)
+                AXIS2_FREE(env->allocator, result->files[i].modified);
+        }
+        AXIS2_FREE(env->allocator, result->files);
+    }
+
+    if (result->directory)
+        AXIS2_FREE(env->allocator, result->directory);
+
+    AXIS2_FREE(env->allocator, result);
+}
+
+/**
+ * Create File Delete Parameters from JSON string using pure json-c
+ */
+AXIS2_EXTERN file_delete_params_t* AXIS2_CALL
+file_delete_params_create_from_json(
+    const axutil_env_t *env,
+    const axis2_char_t *json_string)
+{
+    file_delete_params_t *params = NULL;
+    json_object *json_obj = NULL;
+    json_object *value_obj = NULL;
+
+    if (!env || !json_string)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    json_obj = json_tokener_parse(json_string);
+    if (!json_obj)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse JSON file delete request");
+        return NULL;
+    }
+
+    params = AXIS2_MALLOC(env->allocator, sizeof(file_delete_params_t));
+    if (!params)
+    {
+        json_object_put(json_obj);
+        return NULL;
+    }
+    memset(params, 0, sizeof(file_delete_params_t));
+
+    /* Extract pattern (required) */
+    if (json_object_object_get_ex(json_obj, "pattern", &value_obj))
+    {
+        const char *pattern = json_object_get_string(value_obj);
+        if (pattern)
+        {
+            params->pattern = camera_service_sanitize_input(env, pattern,
+                                                           CAMERA_PATH_MAX_LENGTH);
+        }
+    }
+
+    json_object_put(json_obj);
+    return params;
+}
+
+/**
+ * Free file delete parameters
+ */
+AXIS2_EXTERN void AXIS2_CALL
+file_delete_params_free(file_delete_params_t *params,
+                        const axutil_env_t *env)
+{
+    if (!params || !env)
+        return;
+
+    if (params->pattern)
+        AXIS2_FREE(env->allocator, params->pattern);
+
+    AXIS2_FREE(env->allocator, params);
+}
+
 /* ========================================================================
  * STUB IMPLEMENTATIONS - USERS MUST REPLACE WITH CAMERA-SPECIFIC CODE
  * ========================================================================
@@ -750,6 +919,193 @@ camera_device_sftp_transfer_impl(
     return AXIS2_SUCCESS; /* Stub always succeeds for testing */
 }
 
+/**
+ * STUB: List video files on device implementation
+ *
+ * IMPLEMENTATION REQUIRED: Users must replace this stub with storage-specific code.
+ *
+ * Example implementations (reference: Kanaha camera app):
+ *
+ * 1. Android Integration via Intent IPC:
+ *    ```c
+ *    // Send broadcast to Java receiver
+ *    char intent_command[1024];
+ *    snprintf(intent_command, sizeof(intent_command),
+ *        "am broadcast --user 0 "
+ *        "-n org.myapp/org.myapp.CameraReceiver "
+ *        "-a org.myapp.CAMERA_CONTROL "
+ *        "--es action list_files "
+ *        "--es pattern '%s'",
+ *        params->pattern ? params->pattern : "");
+ *    system(intent_command);
+ *    // Read response from file written by Java receiver
+ *    ```
+ *
+ * 2. Linux filesystem integration:
+ *    ```c
+ *    DIR *dir = opendir("/var/camera/videos");
+ *    struct dirent *entry;
+ *    struct stat st;
+ *    while ((entry = readdir(dir)) != NULL) {
+ *        if (fnmatch(params->pattern ? params->pattern : "*.mp4",
+ *                    entry->d_name, 0) == 0) {
+ *            stat(entry->d_name, &st);
+ *            // Add to result list
+ *        }
+ *    }
+ *    closedir(dir);
+ *    ```
+ */
+AXIS2_EXTERN file_list_result_t* AXIS2_CALL
+camera_device_list_files_impl(
+    const axutil_env_t *env,
+    const file_list_params_t *params)
+{
+    /* STUB IMPLEMENTATION - USER MUST REPLACE */
+
+    file_list_result_t *result = NULL;
+
+    if (!env)
+    {
+        return NULL;
+    }
+
+    result = AXIS2_MALLOC(env->allocator, sizeof(file_list_result_t));
+    if (!result)
+    {
+        return NULL;
+    }
+    memset(result, 0, sizeof(file_list_result_t));
+
+    /* Log the stub operation */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "STUB: List files request - pattern: %s, directory: %s",
+        params && params->pattern ? params->pattern : "*",
+        params && params->directory ? params->directory : "default");
+
+    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+        "STUB: camera_device_list_files_impl() - Replace with storage-specific implementation!");
+
+    /* Create stub result - empty file list */
+    result->file_count = 0;
+    result->total_size = 0;
+    result->files = NULL;
+    result->directory = axutil_strdup(env, "/storage/emulated/0/DCIM/OpenCamera");
+
+    /*
+     * USER IMPLEMENTATION GOES HERE
+     * Replace this entire function with storage-specific code to list video files
+     *
+     * Expected behavior:
+     * 1. Determine target directory (use params->directory or default video storage)
+     * 2. List files matching params->pattern (or all video files if NULL)
+     * 3. For each file, populate file_info_t with name, size, modified timestamp
+     * 4. Return file_list_result_t with file_count, total_size, and files array
+     */
+
+    return result;
+}
+
+/**
+ * STUB: Delete video files from device implementation
+ *
+ * IMPLEMENTATION REQUIRED: Users must replace this stub with storage-specific code.
+ *
+ * Pattern support (reference: Kanaha implementation):
+ *   - Specific file: "VID_20260104_105049.mp4"
+ *   - Wildcard: "*.mp4", "VID_2026*"
+ *   - Date: "2026-01-04" (all files from that date)
+ *   - Today: "today" (all files from current date)
+ *   - All: "*" (delete all video files)
+ *
+ * Example implementations:
+ *
+ * 1. Android Integration via Intent IPC:
+ *    ```c
+ *    char intent_command[1024];
+ *    snprintf(intent_command, sizeof(intent_command),
+ *        "am broadcast --user 0 "
+ *        "-n org.myapp/org.myapp.CameraReceiver "
+ *        "-a org.myapp.CAMERA_CONTROL "
+ *        "--es action delete_files "
+ *        "--es pattern '%s'",
+ *        params->pattern);
+ *    system(intent_command);
+ *    ```
+ *
+ * 2. Linux filesystem integration:
+ *    ```c
+ *    // Security: Validate pattern doesn't contain ".."
+ *    if (strstr(params->pattern, "..")) return AXIS2_FAILURE;
+ *
+ *    glob_t globbuf;
+ *    char path_pattern[512];
+ *    snprintf(path_pattern, sizeof(path_pattern), "/var/camera/videos/%s",
+ *             params->pattern);
+ *    if (glob(path_pattern, 0, NULL, &globbuf) == 0) {
+ *        for (size_t i = 0; i < globbuf.gl_pathc; i++) {
+ *            unlink(globbuf.gl_pathv[i]);
+ *        }
+ *        globfree(&globbuf);
+ *    }
+ *    ```
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+camera_device_delete_files_impl(
+    const axutil_env_t *env,
+    const file_delete_params_t *params)
+{
+    /* STUB IMPLEMENTATION - USER MUST REPLACE */
+
+    if (!env || !params)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    /* Security validation - reject path traversal attempts */
+    if (params->pattern && strstr(params->pattern, ".."))
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "STUB: Security violation - path traversal detected in pattern: %s",
+            params->pattern);
+        return AXIS2_FAILURE;
+    }
+
+    /* Require a pattern for deletion */
+    if (!params->pattern || strlen(params->pattern) == 0)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "STUB: Missing required 'pattern' parameter for file deletion");
+        return AXIS2_FAILURE;
+    }
+
+    /* Log the stub operation */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "STUB: Delete files request - pattern: %s",
+        params->pattern);
+
+    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+        "STUB: camera_device_delete_files_impl() - Replace with storage-specific implementation!");
+
+    /*
+     * USER IMPLEMENTATION GOES HERE
+     * Replace this entire function with storage-specific code to delete video files
+     *
+     * Expected behavior:
+     * 1. Validate pattern for security (no path traversal)
+     * 2. Resolve pattern to list of files to delete:
+     *    - Specific filename: delete that file
+     *    - Wildcard (*.mp4, VID_2026*): delete matching files
+     *    - "today": delete files with today's date in filename
+     *    - Date (YYYY-MM-DD): delete files from that date
+     *    - "*": delete all video files
+     * 3. Delete each matching file
+     * 4. Return AXIS2_SUCCESS if all deletions succeeded
+     */
+
+    return AXIS2_SUCCESS; /* Stub always succeeds for testing */
+}
+
 /* ========================================================================
  * END STUB IMPLEMENTATIONS
  * ======================================================================== */
@@ -793,8 +1149,11 @@ camera_control_service_invoke_json(const axutil_env_t *env,
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Processing camera action: %s", action);
 
-    /* Route to appropriate camera operation */
-    if (strcmp(action, "start_recording") == 0)
+    /* Route to appropriate camera operation
+     * Accept both snake_case (Axis2/C style) and camelCase (user-friendly) action names
+     * Reference: Kanaha implementation accepts both for API compatibility
+     */
+    if (strcmp(action, "start_recording") == 0 || strcmp(action, "startRecording") == 0)
     {
         /* Handle start recording */
         const char *json_str = json_object_to_json_string(json_request);
@@ -832,7 +1191,7 @@ camera_control_service_invoke_json(const axutil_env_t *env,
 
         camera_recording_params_free(params, env);
     }
-    else if (strcmp(action, "stop_recording") == 0)
+    else if (strcmp(action, "stop_recording") == 0 || strcmp(action, "stopRecording") == 0)
     {
         /* Handle stop recording */
         axis2_status_t result = camera_device_stop_recording_impl(env);
@@ -846,7 +1205,7 @@ camera_control_service_invoke_json(const axutil_env_t *env,
             response = create_error_response(env, "Failed to stop recording");
         }
     }
-    else if (strcmp(action, "get_status") == 0)
+    else if (strcmp(action, "get_status") == 0 || strcmp(action, "getStatus") == 0)
     {
         /* Handle status request */
         camera_status_t *status = camera_device_get_status_impl(env);
@@ -871,7 +1230,7 @@ camera_control_service_invoke_json(const axutil_env_t *env,
             response = create_error_response(env, "Failed to get camera status");
         }
     }
-    else if (strcmp(action, "configure_settings") == 0)
+    else if (strcmp(action, "configure_settings") == 0 || strcmp(action, "configureSettings") == 0 || strcmp(action, "configure") == 0)
     {
         /* Handle settings configuration */
         const char *json_str = json_object_to_json_string(json_request);
@@ -895,7 +1254,7 @@ camera_control_service_invoke_json(const axutil_env_t *env,
 
         camera_settings_free(settings, env);
     }
-    else if (strcmp(action, "sftp_transfer") == 0)
+    else if (strcmp(action, "sftp_transfer") == 0 || strcmp(action, "sftpTransfer") == 0)
     {
         /* Handle SFTP file transfer */
         const char *json_str = json_object_to_json_string(json_request);
@@ -927,6 +1286,77 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         }
 
         sftp_transfer_params_free(sftp_params, env);
+    }
+    else if (strcmp(action, "list_files") == 0 || strcmp(action, "listFiles") == 0)
+    {
+        /* Handle list files request */
+        const char *json_str = json_object_to_json_string(json_request);
+        file_list_params_t *params = file_list_params_create_from_json(env, json_str);
+
+        /* Call user-implementable function */
+        file_list_result_t *result = camera_device_list_files_impl(env, params);
+
+        if (result)
+        {
+            /* Build JSON response with file list */
+            response = json_object_new_object();
+            json_object_object_add(response, "success", json_object_new_boolean(1));
+            json_object_object_add(response, "file_count", json_object_new_int(result->file_count));
+            json_object_object_add(response, "total_size", json_object_new_int64(result->total_size));
+            json_object_object_add(response, "directory",
+                json_object_new_string(result->directory ? result->directory : ""));
+
+            /* Add files array */
+            json_object *files_array = json_object_new_array();
+            for (int i = 0; i < result->file_count && result->files; i++)
+            {
+                json_object *file_obj = json_object_new_object();
+                json_object_object_add(file_obj, "name",
+                    json_object_new_string(result->files[i].name ? result->files[i].name : ""));
+                json_object_object_add(file_obj, "size",
+                    json_object_new_int64(result->files[i].size));
+                json_object_object_add(file_obj, "modified",
+                    json_object_new_string(result->files[i].modified ? result->files[i].modified : ""));
+                json_object_array_add(files_array, file_obj);
+            }
+            json_object_object_add(response, "files", files_array);
+
+            file_list_result_free(result, env);
+        }
+        else
+        {
+            response = create_error_response(env, "Failed to list files");
+        }
+
+        if (params)
+            file_list_params_free(params, env);
+    }
+    else if (strcmp(action, "delete_files") == 0 || strcmp(action, "deleteFiles") == 0)
+    {
+        /* Handle delete files request */
+        const char *json_str = json_object_to_json_string(json_request);
+        file_delete_params_t *params = file_delete_params_create_from_json(env, json_str);
+
+        if (!params || !params->pattern || strlen(params->pattern) == 0)
+        {
+            if (params)
+                file_delete_params_free(params, env);
+            return create_error_response(env, "Missing required 'pattern' parameter");
+        }
+
+        /* Call user-implementable function */
+        axis2_status_t result = camera_device_delete_files_impl(env, params);
+
+        if (result == AXIS2_SUCCESS)
+        {
+            response = create_success_response(env, "Files deleted successfully");
+        }
+        else
+        {
+            response = create_error_response(env, "Failed to delete files");
+        }
+
+        file_delete_params_free(params, env);
     }
     else
     {

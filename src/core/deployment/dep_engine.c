@@ -720,46 +720,45 @@ axis2_dep_engine_load(
     axis2_status_t status = AXIS2_FAILURE;
     axutil_array_list_t *out_fault_phases = NULL;
 
+
     if(!dep_engine->conf_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Path to axis2 configuration file is NULL. Unable to continue");
         return NULL;
     }
+
 
     dep_engine->conf = axis2_conf_create(env);
     if(!dep_engine->conf)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Allocation to configuration failed");
         return NULL;
     }
 
-    /* Set a flag to mark that conf is created using axis2 xml. To find out that conf is build using
-     * axis2 xml , this flag can be used.
-     */
+
     axis2_conf_set_axis2_flag(dep_engine->conf, env, dep_engine->file_flag);
     axis2_conf_set_axis2_xml(dep_engine->conf, env, dep_engine->conf_name);
+
 
     dep_engine->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
         dep_engine->conf_name, dep_engine, dep_engine->conf);
     if(!(dep_engine->conf_builder))
     {
         axis2_conf_free(dep_engine->conf, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Configuration builder creation failed");
         dep_engine->conf = NULL;
+        return NULL;
     }
 
-    /* Populate the axis2 configuration from reading axis2.xml.
-     */
+
     status = axis2_conf_builder_populate_conf(dep_engine->conf_builder, env);
     if(AXIS2_SUCCESS != status)
     {
+        int err_code = env->error ? env->error->error_number : -1;
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Populating Axis2 Configuration failed");
         return NULL;
     }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[dep_engine] populate_conf succeeded, about to set paths");
 
     status = axis2_dep_engine_set_svc_and_module_dir_path(dep_engine, env);
     if(AXIS2_SUCCESS != status)
@@ -768,12 +767,16 @@ axis2_dep_engine_load(
         return NULL;
     }
 
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[dep_engine] set paths succeeded, about to set features");
+
     status = axis2_dep_engine_set_dep_features(dep_engine, env);
     if(AXIS2_SUCCESS != status)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting deployment features failed");
         return NULL;
     }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[dep_engine] set features succeeded");
 
     if(dep_engine->repos_listener)
     {

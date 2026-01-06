@@ -960,6 +960,37 @@ axis2_desc_builder_load_msg_recv(
     axutil_qname_free(class_qname, env);
     class_name = axiom_attribute_get_value(recv_name, env);
 
+#ifdef __ANDROID__
+    /*
+     * Android Static Message Receiver Registry
+     *
+     * On Android with static linking, message receivers are compiled directly
+     * into the httpd binary. Instead of trying to dlopen non-existent .so files,
+     * we use direct create functions for known message receivers.
+     *
+     * Available receivers in HTTP/2 JSON mode: axis2_json_rpc_msg_recv, axis2_msg_recv
+     */
+    if (class_name)
+    {
+        if (axutil_strcmp(class_name, "axis2_json_rpc_msg_recv") == 0)
+        {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[desc_builder] Android static linking: creating axis2_json_rpc_msg_recv directly");
+            return axis2_json_rpc_msg_recv_create(env);
+        }
+        else if (axutil_strcmp(class_name, "axis2_msg_recv") == 0)
+        {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "[desc_builder] Android static linking: creating axis2_msg_recv directly");
+            return axis2_msg_recv_create(env);
+        }
+        /* Unknown class - will fall through to dlopen attempt which will fail with clear error */
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "[desc_builder] Android: Unknown message receiver class '%s', attempting dlopen (may fail)",
+            class_name);
+    }
+#endif
+
     conf = axis2_dep_engine_get_axis_conf(desc_builder->engine, env);
     if(!conf)
     {

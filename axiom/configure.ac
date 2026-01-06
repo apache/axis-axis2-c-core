@@ -62,8 +62,22 @@ AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(z, inflate)
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
+
+dnl Detect Android target for conditional compilation
+AC_MSG_CHECKING([for Android target])
+case "$host" in
+    *-linux-android*|*-android*)
+        android_build=yes
+        ;;
+    *)
+        android_build=no
+        ;;
+esac
+AC_MSG_RESULT([$android_build])
+
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration "
+    dnl Use gnu99 for json-c compatibility
+    CFLAGS="$CFLAGS -std=gnu99 -Wall -Wno-implicit-function-declaration "
 fi
 
 AC_PATH_TOOL(PKGCONFIG, pkg-config)

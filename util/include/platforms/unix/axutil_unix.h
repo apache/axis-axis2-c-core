@@ -102,7 +102,33 @@ extern "C"
      * Miscellaneous
     ****************************************************************/
 #include <sys/time.h>
+#ifndef __ANDROID__
 #include <sys/timeb.h>
+#endif
+
+/* Android replacement for sys/timeb.h */
+#ifdef __ANDROID__
+/* Android doesn't have sys/timeb.h or ftime(), use clock_gettime() instead */
+struct axis2_android_timeb {
+    time_t time;
+    unsigned short millitm;
+    short timezone;
+    short dstflag;
+};
+static inline void axis2_android_ftime(struct axis2_android_timeb *tb) {
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    tb->time = ts.tv_sec;
+    tb->millitm = ts.tv_nsec / 1000000;
+    tb->timezone = 0;
+    tb->dstflag = 0;
+}
+#define AXIS2_PLATFORM_GET_TIME_IN_MILLIS axis2_android_ftime
+#define AXIS2_PLATFORM_TIMEB axis2_android_timeb
+#else
+#define AXIS2_PLATFORM_GET_TIME_IN_MILLIS ftime
+#define AXIS2_PLATFORM_TIMEB timeb
+#endif
 
 #include <errno.h>
 #include <sys/param.h>

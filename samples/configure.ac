@@ -61,8 +61,22 @@ dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
+
+dnl Detect Android target for conditional compilation
+AC_MSG_CHECKING([for Android target])
+case "$host" in
+    *-linux-android*|*-android*)
+        android_build=yes
+        ;;
+    *)
+        android_build=no
+        ;;
+esac
+AC_MSG_RESULT([$android_build])
+
 if test "$GCC" = "yes"; then
-       CFLAGS="$CFLAGS -ansi -Werror -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+    dnl Use gnu99 for json-c compatibility
+    CFLAGS="$CFLAGS -std=gnu99 -Werror -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
 fi
 
 AC_MSG_CHECKING(whether to set -Werror)

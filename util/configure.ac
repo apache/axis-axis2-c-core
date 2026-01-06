@@ -60,16 +60,42 @@ dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(z, inflate)
 AC_CHECK_LIB(socket, socket)
-AC_CHECK_LIB(pthread, pthread_key_create)
 
-dnl This can be removed when the ftime call in 
-dnl ./util/src/platforms/unix/date_time_util_unix.c 
+dnl Skip pthread library check on Android (pthread is in libc)
+case "$host" in
+  *android*)
+    dnl Android has pthread built into libc, no separate -lpthread needed
+    PTHREADLIBS=""
+    ;;
+  *)
+    AC_CHECK_LIB(pthread, pthread_key_create)
+    PTHREADLIBS="-lpthread"
+    ;;
+esac
+AC_SUBST(PTHREADLIBS)
+
+dnl This can be removed when the ftime call in
+dnl ./util/src/platforms/unix/date_time_util_unix.c
 dnl is changed to call gettimeofday
 AC_CHECK_LIB(compat, ftime)
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
+
+dnl Detect Android target for conditional compilation
+AC_MSG_CHECKING([for Android target])
+case "$host" in
+    *-linux-android*|*-android*)
+        android_build=yes
+        ;;
+    *)
+        android_build=no
+        ;;
+esac
+AC_MSG_RESULT([$android_build])
+
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration -D_GNU_SOURCE"
+    dnl Use gnu99 for json-c compatibility
+    CFLAGS="$CFLAGS -std=gnu99 -Wall -Wno-implicit-function-declaration -D_GNU_SOURCE"
 fi
 
 AC_MSG_CHECKING(whether to set -Werror)

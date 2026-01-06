@@ -55,7 +55,7 @@ libaxutil_la_SOURCES = hash.c \
                         digest_calc.c 
                         
 libaxutil_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
-			-lpthread \
+			@PTHREADLIBS@ \
 			@ZLIBLIBS@
 
 libaxutil_la_LDFLAGS = -version-info $(VERSION_NO)

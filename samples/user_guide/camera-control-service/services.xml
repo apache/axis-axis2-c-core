@@ -179,5 +179,100 @@
             <parameter name="responseType">application/json</parameter>
         </operation>
 
+        <!-- HTTP/2 JSON Operation: listFiles -->
+        <operation name="listFiles">
+            <description>
+                List video files on the camera device storage.
+
+                STUB IMPLEMENTATION: Users must implement camera_device_list_files_impl()
+                function with storage-specific integration code.
+
+                Returns a list of video files with metadata (name, size, modified timestamp).
+                Supports optional pattern filtering.
+
+                Example JSON Request:
+                {
+                    "action": "list_files"
+                }
+
+                Or with pattern filter:
+                {
+                    "action": "list_files",
+                    "pattern": "*.mp4"
+                }
+
+                Example JSON Response:
+                {
+                    "success": true,
+                    "file_count": 2,
+                    "total_size": 293020170,
+                    "directory": "/storage/emulated/0/DCIM/OpenCamera",
+                    "files": [
+                        {"name": "VID_20260104_105049.mp4", "size": 178613590, "modified": "2026-01-04 10:51:36"},
+                        {"name": "VID_20260104_112809.mp4", "size": 114406580, "modified": "2026-01-04 11:28:55"}
+                    ]
+                }
+
+                Pattern support (reference: Kanaha implementation):
+                - Empty/NULL: List all video files
+                - "*.mp4": List files matching wildcard
+                - "today": List files from current date
+                - "YYYY-MM-DD": List files from specific date
+
+                NOTE: Action name accepts both "list_files" (snake_case) and "listFiles" (camelCase)
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/listFiles</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- HTTP/2 JSON Operation: deleteFiles -->
+        <operation name="deleteFiles">
+            <description>
+                Delete video files from the camera device storage.
+
+                STUB IMPLEMENTATION: Users must implement camera_device_delete_files_impl()
+                function with storage-specific integration code.
+
+                Deletes files matching the specified pattern. Pattern is required.
+
+                Example JSON Request:
+                {
+                    "action": "delete_files",
+                    "pattern": "VID_20260104_105049.mp4"
+                }
+
+                Pattern support (reference: Kanaha implementation):
+                - Specific file: "VID_20260104_105049.mp4"
+                - Wildcard: "*.mp4", "VID_2026*"
+                - Date: "2026-01-04" (all files from that date)
+                - Today: "today" (all files from current date)
+                - All: "*" (delete all video files)
+
+                Example JSON Response:
+                {
+                    "success": true,
+                    "message": "Files deleted successfully"
+                }
+
+                SECURITY NOTE: Implementation should validate patterns to prevent:
+                - Path traversal attacks (reject patterns containing "..")
+                - Deletion outside video directory
+
+                NOTE: Action name accepts both "delete_files" (snake_case) and "deleteFiles" (camelCase)
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <!-- REST-style HTTP mapping -->
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/deleteFiles</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
     </service>
 </serviceGroup>

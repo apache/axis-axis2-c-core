@@ -75,12 +75,26 @@ fi
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 CPPFLAGS="$CPPFLAGS -D_LARGEFILE64_SOURCE"
+
+dnl Detect Android target for conditional compilation
+AC_MSG_CHECKING([for Android target])
+case "$host" in
+    *-linux-android*|*-android*)
+        android_build=yes
+        AC_DEFINE([AXIS2_ANDROID_BUILD], [1], [Building for Android])
+        ;;
+    *)
+        android_build=no
+        ;;
+esac
+AC_MSG_RESULT([$android_build])
+AM_CONDITIONAL([BUILD_FOR_ANDROID], [test "x$android_build" = "xyes"])
+
 if test "$GCC" = "yes"; then
-    dnl Remove -ansi flag to support modern C99 features required by json-c library
-    dnl The -ansi flag enforces C89/C90 standard which conflicts with json-c headers
-    dnl that use inline functions and other C99 constructs. This change maintains
-    dnl backward compatibility while enabling JSON functionality.
-    CFLAGS="$CFLAGS -Wall -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+    dnl Use gnu99 mode for compatibility with json-c and other modern libraries
+    dnl The -ansi flag conflicts with json-c headers which use C99 inline
+    CFLAGS="$CFLAGS -std=gnu99 -Wall -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+    AC_MSG_NOTICE([Using -std=gnu99 for compatibility])
 fi
 
 dnl Checks for header files.

@@ -17,6 +17,7 @@
 sh autogen.sh
 
 ./configure --prefix=${AXIS2C_HOME}
-make -j 10
+make clean || true
+make -j 4
 make install
 

@@ -322,6 +322,133 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 camera_device_configure_multicam_deploy_impl(const axutil_env_t *env,
                                              const multi_camera_deploy_params_t *params);
 
+/**
+ * File listing parameters structure
+ */
+typedef struct file_list_params
+{
+    axis2_char_t *pattern;           /**< Optional filter pattern (e.g., "*.mp4", "today") */
+    axis2_char_t *directory;         /**< Directory to list (defaults to video storage) */
+} file_list_params_t;
+
+/**
+ * File info structure for list results
+ */
+typedef struct file_info
+{
+    axis2_char_t *name;              /**< Filename */
+    long size;                       /**< File size in bytes */
+    axis2_char_t *modified;          /**< Last modified timestamp */
+} file_info_t;
+
+/**
+ * File list result structure
+ */
+typedef struct file_list_result
+{
+    int file_count;                  /**< Number of files found */
+    long total_size;                 /**< Total size of all files */
+    file_info_t *files;              /**< Array of file info structures */
+    axis2_char_t *directory;         /**< Directory that was listed */
+} file_list_result_t;
+
+/**
+ * File deletion parameters structure
+ */
+typedef struct file_delete_params
+{
+    axis2_char_t *pattern;           /**< Pattern for files to delete */
+} file_delete_params_t;
+
+/* File list/delete parameter creation and free functions */
+AXIS2_EXTERN file_list_params_t* AXIS2_CALL
+file_list_params_create_from_json(const axutil_env_t *env,
+                                  const axis2_char_t *json_string);
+
+AXIS2_EXTERN void AXIS2_CALL
+file_list_params_free(file_list_params_t *params,
+                      const axutil_env_t *env);
+
+AXIS2_EXTERN void AXIS2_CALL
+file_list_result_free(file_list_result_t *result,
+                      const axutil_env_t *env);
+
+AXIS2_EXTERN file_delete_params_t* AXIS2_CALL
+file_delete_params_create_from_json(const axutil_env_t *env,
+                                    const axis2_char_t *json_string);
+
+AXIS2_EXTERN void AXIS2_CALL
+file_delete_params_free(file_delete_params_t *params,
+                        const axutil_env_t *env);
+
+/**
+ * List video files on device - STUB IMPLEMENTATION
+ *
+ * IMPLEMENTATION NOTE: This is a STUB function. Users must replace this with
+ * camera/storage-specific implementation to list video files.
+ *
+ * Example integrations:
+ *
+ * For Android integration:
+ *   - Query MediaStore for video files in DCIM/OpenCamera directory
+ *   - Use ContentResolver to get file metadata (size, date, duration)
+ *   - Return JSON array of file info objects
+ *
+ * For Linux/V4L2 integration:
+ *   - Use opendir/readdir to list files in video storage directory
+ *   - Use stat() to get file size and modification time
+ *   - Filter by pattern (glob matching)
+ *
+ * Pattern support (reference: Kanaha implementation):
+ *   - Empty/NULL: List all video files
+ *   - "*.mp4": List files matching wildcard
+ *   - "today": List files from current date
+ *   - "YYYY-MM-DD": List files from specific date
+ *
+ * @param env Apache Axis2/C environment
+ * @param params File listing parameters (pattern, directory)
+ * @return File list result structure (caller must free), NULL on failure
+ */
+AXIS2_EXTERN file_list_result_t* AXIS2_CALL
+camera_device_list_files_impl(const axutil_env_t *env,
+                              const file_list_params_t *params);
+
+/**
+ * Delete video files from device - STUB IMPLEMENTATION
+ *
+ * IMPLEMENTATION NOTE: This is a STUB function. Users must replace this with
+ * camera/storage-specific implementation to delete video files.
+ *
+ * Example integrations:
+ *
+ * For Android integration:
+ *   - Use MediaStore to delete files (requires WRITE_EXTERNAL_STORAGE permission)
+ *   - Use ContentResolver.delete() for MediaStore entries
+ *   - Also delete the actual file from filesystem
+ *
+ * For Linux integration:
+ *   - Use unlink() to delete files matching pattern
+ *   - Implement glob matching for wildcard patterns
+ *
+ * Pattern support (reference: Kanaha implementation):
+ *   - Specific file: "VID_20260104_105049.mp4"
+ *   - Wildcard: "*.mp4", "VID_2026*"
+ *   - Date: "2026-01-04" (all files from that date)
+ *   - Today: "today" (all files from current date)
+ *   - All: "*" (delete all video files)
+ *
+ * SECURITY NOTE: Implementation should validate patterns to prevent:
+ *   - Path traversal attacks (reject patterns containing "..")
+ *   - Deletion outside video directory
+ *
+ * @param env Apache Axis2/C environment
+ * @param params File deletion parameters (pattern)
+ * @return AXIS2_SUCCESS if files deleted successfully, AXIS2_FAILURE otherwise
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+camera_device_delete_files_impl(const axutil_env_t *env,
+                                const file_delete_params_t *params);
+
 /* Utility functions */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 camera_service_sanitize_input(const axutil_env_t *env,

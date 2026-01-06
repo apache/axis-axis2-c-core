@@ -37,7 +37,7 @@ sh configure --prefix=${AXIS2C_HOME} \
     --enable-coverage \
     --enable-asan \
     --enable-json=yes
-make -j 10 
+make -j 4
 make install
 
 cd samples

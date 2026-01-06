@@ -56,7 +56,8 @@ axis2_build_conf_ctx_with_dep_engine(
     conf = axis2_dep_engine_load(dep_engine, env);
     if(!conf)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading deployment engine failed");
+        int err_code = env->error ? env->error->error_number : -1;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading deployment engine failed, error_code=%d", err_code);
         axis2_dep_engine_free(dep_engine, env);
         return NULL;
     }
@@ -93,7 +94,6 @@ axis2_build_conf_ctx(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_conf_ctx");
     dep_engine = axis2_dep_engine_create_with_repos_name(env, repo_name);
     if(!dep_engine)
     {
@@ -105,8 +105,9 @@ axis2_build_conf_ctx(
     conf_ctx = axis2_build_conf_ctx_with_dep_engine(env, dep_engine, AXIS2_VALUE_TRUE);
     if(!conf_ctx)
     {
+        int err_code = env->error ? env->error->error_number : -1;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Loading configuration context failed for repository %s.", repo_name);
+            "Loading configuration context failed for repository %s. error_code=%d", repo_name, err_code);
         return NULL;
     }
 

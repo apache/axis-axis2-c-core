@@ -122,7 +122,7 @@ axutil_thread_create(
     if(attr)
     {
         temp = &(attr->attr);
-        new->detached = axutil_threadattr_detach_get(temp);
+        new->detached = axutil_threadattr_detach_get(attr);
     }
 
 

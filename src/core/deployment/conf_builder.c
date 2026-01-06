@@ -155,16 +155,13 @@ axis2_conf_builder_populate_conf(
     axis2_status_t status = AXIS2_FAILURE;
     axutil_param_t *param = NULL;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_conf_builder_populate_conf");
     conf_node = axis2_desc_builder_build_om(conf_builder->desc_builder, env);
     if(!conf_node)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Building om tree failed. Unable to continue");
         return AXIS2_FAILURE;
     }
     conf_element = axiom_node_get_data_element(conf_node, env);
     /* processing Paramters */
-    /* Processing service level paramters */
     qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     itr = axiom_element_get_children_with_qname(conf_element, env, qparamst, conf_node);
     axutil_qname_free(qparamst, env);
@@ -190,8 +187,6 @@ axis2_conf_builder_populate_conf(
             msg_recv_element);
         if(!msg_recv)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Message receiver loading failed. Unable to continue");
             return AXIS2_FAILURE;
         }
 
@@ -210,22 +205,14 @@ axis2_conf_builder_populate_conf(
     if(disp_order_element)
     {
         axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Found the custom disptaching"
-            " order and continue with that order");
     }
     else
     {
         status = axis2_conf_set_default_dispatchers(conf_builder->conf, env);
         if(!status)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Setting default dispatchers to configuration failed, "
-                    "unable to continue.");
             return AXIS2_FAILURE;
         }
-
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No custom dispatching order"
-            " found. Continue with the default dispatching order");
     }
 
     /* Process Module refs */
@@ -235,11 +222,10 @@ axis2_conf_builder_populate_conf(
     status = axis2_conf_builder_process_module_refs(conf_builder, env, module_itr);
     if(!status)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Processing module ref's failed, unable to continue.");
         return AXIS2_FAILURE;
     }
-    /* Proccessing Transport Sennders */
+
+    /* Proccessing Transport Senders */
     qtransportsender = axutil_qname_create(env, AXIS2_TRANSPORTSENDER, NULL, NULL);
     trs_senders = axiom_element_get_children_with_qname(conf_element, env, qtransportsender,
         conf_node);
@@ -247,8 +233,6 @@ axis2_conf_builder_populate_conf(
     status = axis2_conf_builder_process_transport_senders(conf_builder, env, trs_senders);
     if(!status)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Processing transport senders failed, unable to continue");
         return AXIS2_FAILURE;
     }
 
@@ -260,8 +244,6 @@ axis2_conf_builder_populate_conf(
 
     if(!status)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Processing transport receivers failed, unable to continue");
         return AXIS2_FAILURE;
     }
 
@@ -273,8 +255,6 @@ axis2_conf_builder_populate_conf(
 
     if(!status)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Processing phase orders failed, unable to continue");
         return AXIS2_FAILURE;
     }
 
@@ -778,85 +758,91 @@ axis2_conf_builder_process_transport_senders(
                 return AXIS2_FAILURE;
             }
 
-            /* transport impl class */
+            /* transport impl class - OPTIONAL for statically linked transports */
             qdllname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
             trs_dll_att = axiom_element_get_attribute(transport_element, env, qdllname);
             axutil_qname_free(qdllname, env);
             if(!trs_dll_att)
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_TRANSPORT_SENDER_ERROR, AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Transport dll name attribute is not set in the "
-                        "%s transport element node", name);
-                return AXIS2_FAILURE;
-            }
-            class_name = axiom_attribute_get_value(trs_dll_att, env);
-            impl_info_param = axutil_param_create(env, class_name, NULL);
-            if(!impl_info_param)
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Creating module dll name parameter failed for %s. Unable "
-                        "to continue", class_name);
-                axis2_transport_out_desc_free(transport_out, env);
-                return AXIS2_FAILURE;
-            }
-            dll_desc = axutil_dll_desc_create(env);
-            dll_name = axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env, class_name);
-            if(!axis2_flag)
-            {
-                repos_name = axis2_dep_engine_get_repos_path(axis2_desc_builder_get_dep_engine(
-                    conf_builder->desc_builder, env), env);
-                temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
-                temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
-                temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-                path_qualified_dll_name = axutil_stracat(env, temp_path3, dll_name);
-                AXIS2_FREE(env->allocator, temp_path);
-                AXIS2_FREE(env->allocator, temp_path2);
-                AXIS2_FREE(env->allocator, temp_path3);
+                /* No class attribute - transport is statically linked, skip DLL loading */
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "Transport sender %s has no class attribute - assuming statically linked", name);
+                transport_sender = NULL; /* Will be set by static initialization */
             }
             else
             {
-                libparam = axis2_conf_get_param(conf, env, AXIS2_LIB_DIR);
-                if(libparam)
+                class_name = axiom_attribute_get_value(trs_dll_att, env);
+                impl_info_param = axutil_param_create(env, class_name, NULL);
+                if(!impl_info_param)
                 {
-                    libdir = axutil_param_get_value(libparam, env);
-                }
-
-                if(!libdir)
-                {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Specifying"
-                        "services and modules directories using axis2.xml but"
-                        " path of the library directory is not present");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Creating module dll name parameter failed for %s. Unable "
+                            "to continue", class_name);
+                    axis2_transport_out_desc_free(transport_out, env);
                     return AXIS2_FAILURE;
                 }
-                path_qualified_dll_name = axutil_strcat(env, libdir, AXIS2_PATH_SEP_STR, dll_name,
-                    NULL);
+                dll_desc = axutil_dll_desc_create(env);
+                dll_name = axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env, class_name);
+                if(!axis2_flag)
+                {
+                    repos_name = axis2_dep_engine_get_repos_path(axis2_desc_builder_get_dep_engine(
+                        conf_builder->desc_builder, env), env);
+                    temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+                    temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+                    temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+                    path_qualified_dll_name = axutil_stracat(env, temp_path3, dll_name);
+                    AXIS2_FREE(env->allocator, temp_path);
+                    AXIS2_FREE(env->allocator, temp_path2);
+                    AXIS2_FREE(env->allocator, temp_path3);
+                }
+                else
+                {
+                    libparam = axis2_conf_get_param(conf, env, AXIS2_LIB_DIR);
+                    if(libparam)
+                    {
+                        libdir = axutil_param_get_value(libparam, env);
+                    }
+
+                    if(!libdir)
+                    {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Specifying"
+                            "services and modules directories using axis2.xml but"
+                            " path of the library directory is not present");
+                        return AXIS2_FAILURE;
+                    }
+                    path_qualified_dll_name = axutil_strcat(env, libdir, AXIS2_PATH_SEP_STR, dll_name,
+                        NULL);
+                }
+
+                axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
+                AXIS2_FREE(env->allocator, path_qualified_dll_name);
+
+                axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
+                axutil_param_set_value(impl_info_param, env, dll_desc);
+                axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+                axutil_class_loader_init(env);
+                transport_sender = axutil_class_loader_create_dll(env, impl_info_param);
+                axis2_transport_out_desc_add_param(transport_out, env, impl_info_param);
+
+                if(!transport_sender)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Transport sender is NULL for transport %s, unable to "
+                            "continue", name);
+                    axis2_transport_out_desc_free(transport_out, env);
+                    return status;
+                }
             }
 
-            axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
-            AXIS2_FREE(env->allocator, path_qualified_dll_name);
-
-            axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
-            axutil_param_set_value(impl_info_param, env, dll_desc);
-            axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
-            axutil_class_loader_init(env);
-            transport_sender = axutil_class_loader_create_dll(env, impl_info_param);
-            axis2_transport_out_desc_add_param(transport_out, env, impl_info_param);
-
-            if(!transport_sender)
+            /* Only set sender if we have one - statically linked transports have NULL here */
+            if(transport_sender)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Transport sender is NULL for transport %s, unable to "
-                        "continue", name);
-                axis2_transport_out_desc_free(transport_out, env);
-                return status;
-            }
-
-            status = axis2_transport_out_desc_set_sender(transport_out, env, transport_sender);
-            if(!status)
-            {
-                axis2_transport_out_desc_free(transport_out, env);
-                return status;
+                status = axis2_transport_out_desc_set_sender(transport_out, env, transport_sender);
+                if(!status)
+                {
+                    axis2_transport_out_desc_free(transport_out, env);
+                    return status;
+                }
             }
 
             /* Process Parameters */
