@@ -10,6 +10,8 @@ When working with Axis2/C Android support, remember:
 2. **Android uses static linking** - No dlopen(), services use weak symbol registry
 3. **Service code lives in applications** - Axis2/C core only has weak symbol stubs
 4. **`--whole-archive` is required** - For weak/strong symbol resolution during linking
+5. **IPC uses fork()/execvp()** - NEVER use system() for security (command injection)
+6. **Java validates all input** - SecurityValidator class provides defense-in-depth
 
 ## Build System
 
@@ -346,6 +348,154 @@ H2MinWorkers 1
 H2MaxWorkers 2
 ```
 
+## Android IPC Security
+
+### Native to Java Communication
+
+Axis2/C services on Android often need to communicate with Java application components. This is done via Android Intent broadcasts using the `am` (Activity Manager) command.
+
+### CRITICAL: Never Use system()
+
+**INSECURE (vulnerable to command injection):**
+
+```c
+/* NEVER DO THIS - user input is parsed by shell */
+char cmd[1024];
+snprintf(cmd, sizeof(cmd),
+    "am broadcast --es pattern '%s'", user_pattern);
+system(cmd);  /* Shell injection if pattern contains: '; rm -rf / ; ' */
+```
+
+**SECURE (use fork/execvp):**
+
+```c
+/* Arguments passed directly to process, no shell parsing */
+typedef struct {
+    const char* type;   /* "--es" for string, "--ei" for int */
+    const char* key;
+    const char* value;
+} intent_extra_t;
+
+static int send_intent_broadcast_secure(
+    const char* component,
+    const char* action,
+    const intent_extra_t* extras,
+    int num_extras)
+{
+    /* Build argument array */
+    int total_args = 8 + (num_extras * 3) + 1;  /* base args + extras + NULL */
+    char** argv = (char**)malloc(total_args * sizeof(char*));
+
+    int i = 0;
+    argv[i++] = "am";
+    argv[i++] = "broadcast";
+    argv[i++] = "--user";
+    argv[i++] = "0";
+    argv[i++] = "-n";
+    argv[i++] = (char*)component;
+    argv[i++] = "-a";
+    argv[i++] = (char*)action;
+
+    for (int j = 0; j < num_extras; j++) {
+        argv[i++] = (char*)extras[j].type;
+        argv[i++] = (char*)extras[j].key;
+        argv[i++] = (char*)extras[j].value;  /* User data - safe, not parsed */
+    }
+    argv[i] = NULL;
+
+    pid_t pid = fork();
+    if (pid == 0) {
+        /* Child process */
+        execvp("/system/bin/am", argv);
+        _exit(127);  /* exec failed */
+    }
+
+    /* Parent waits for child */
+    int status;
+    waitpid(pid, &status, 0);
+    free(argv);
+
+    return WIFEXITED(status) && WEXITSTATUS(status) == 0 ? 0 : -1;
+}
+```
+
+### Why fork/execvp Is Secure
+
+| Approach | Shell Invoked | User Data Parsed | Injection Risk |
+|----------|---------------|------------------|----------------|
+| `system("cmd " + input)` | Yes | Yes | **HIGH** |
+| `popen("cmd " + input, "r")` | Yes | Yes | **HIGH** |
+| `fork()` + `execvp(argv[])` | No | No | **None** |
+
+With `execvp()`, arguments are passed as an array directly to the new process. Shell metacharacters (`'`, `;`, `|`, `$()`, etc.) are treated as literal characters, not interpreted.
+
+### Usage Example
+
+```c
+/* Safe: user-provided pattern passed directly to Java */
+int camera_device_delete_files_impl(const char* pattern, char* op_id)
+{
+    intent_extra_t extras[] = {
+        {"--es", "action", "delete_files"},
+        {"--es", "pattern", pattern},        /* User input - safe */
+        {"--es", "operation_id", op_id}
+    };
+
+    return send_intent_broadcast_secure(
+        "org.kanaha.camera/org.kanaha.camera.CameraControlReceiver",
+        "org.kanaha.CAMERA_CONTROL",
+        extras, 3);
+}
+```
+
+### Java-Side Validation
+
+The Java `BroadcastReceiver` provides defense-in-depth validation:
+
+```java
+// In CameraControlReceiver.java
+class SecurityValidator {
+    // Length limits
+    static final int MAX_FILENAME_LENGTH = 255;
+    static final int MAX_PATH_LENGTH = 1024;
+
+    // Blocked patterns
+    private static final String[] PATH_TRAVERSAL = {"..", "%2e%2e", "%00"};
+    private static final String[] INJECTION = {"<script", "${", "`", "$("};
+
+    static String validateFilenameOrPattern(String input, String paramName) {
+        if (input == null || input.isEmpty()) return "empty " + paramName;
+        if (input.length() > MAX_FILENAME_LENGTH) return paramName + " too long";
+
+        // Check for path traversal
+        String lower = input.toLowerCase();
+        for (String pattern : PATH_TRAVERSAL) {
+            if (lower.contains(pattern)) return "path traversal in " + paramName;
+        }
+
+        // Check for injection attempts
+        for (String pattern : INJECTION) {
+            if (lower.contains(pattern)) return "injection attempt in " + paramName;
+        }
+
+        // Whitelist allowed characters
+        if (!input.matches("^[a-zA-Z0-9_\\-\\.\\*]+$")) {
+            return "invalid characters in " + paramName;
+        }
+
+        return null;  // Valid
+    }
+}
+```
+
+### Security Headers Reference
+
+See the Kanaha project's `docs/SECURITY.md` for complete security documentation including:
+- mTLS configuration
+- Certificate revocation (CRL)
+- Audit logging
+- Apache httpd security headers
+
 ## Summary Table
 
 | Aspect | Desktop/Server | Android |
@@ -356,15 +506,25 @@ H2MaxWorkers 2
 | Service location | External .so | Application provides strong symbols |
 | Linker | Libtool | Direct clang with `--whole-archive` |
 | Apache mode | Multi-process | Single-process (`-X`) |
+| IPC method | N/A | fork()/execvp() (NOT system()) |
+| Input validation | Application | Java SecurityValidator + C checks |
 
 ## Files Reference
 
 Key files for Android support:
 
+**Axis2/C Core:**
 - `configure.ac` - Android detection, C flags
 - `src/core/receivers/axis2_json_rpc_msg_recv.c` - Static service registry
 - `src/core/transport/http/server/apache2/mod_axis2.c` - Android init, logging
 - `src/core/transport/http/server/apache2/apache2_worker.c` - Request processing
+
+**Application (Kanaha example):**
+- `app/src/main/cpp/axis2c/camera_control_service.c` - Service impl with secure IPC
+- `app/src/main/java/org/kanaha/camera/CameraControlReceiver.java` - Java receiver with SecurityValidator
+- `app/src/main/assets/apache/httpd.conf` - Apache security config
+- `app/src/main/assets/apache/ssl.conf` - mTLS and CRL config
+- `docs/SECURITY.md` - Comprehensive security documentation
 
 ---
 
