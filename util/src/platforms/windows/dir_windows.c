@@ -246,6 +246,12 @@ axis2_scandir(
             newv = (struct dirent **)realloc(vector, vector_size * sizeof(struct dirent *));
             if(!newv)
             {
+                while(nfiles-- > 0)
+                {
+                    free(vector[nfiles]);
+                }
+                free(vector);
+                axis2_closedir(dirp);
                 return -1;
             }
             vector = newv;
@@ -264,6 +270,7 @@ axis2_scandir(
                 free(vector[nfiles]);
             }
             free(vector);
+            axis2_closedir(dirp);
             return -1;
         }
 
