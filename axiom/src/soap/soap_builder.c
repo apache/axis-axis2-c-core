@@ -422,6 +422,14 @@ axiom_soap_builder_construct_node(
             return AXIS2_FAILURE;
         }
 
+        /* Validate namespace BEFORE creating envelope to prevent memory leak if validation fails */
+        status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node);
+        if(status != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP Envelope is having invalid namespace");
+            return status;
+        }
+
         /** create a null soap envelope struct */
         soap_builder->soap_envelope = axiom_soap_envelope_create_null(env);
         if(!soap_builder->soap_envelope)
@@ -433,13 +441,8 @@ axiom_soap_builder_construct_node(
         /** wrap this OM node in it */
         axiom_soap_envelope_set_base_node(soap_builder->soap_envelope, env, om_element_node);
         axiom_soap_envelope_set_builder(soap_builder->soap_envelope, env, soap_builder);
-        status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node);
-        if(status != AXIS2_SUCCESS)
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP Envelope is having invalid namespace");
-        }
 
-        return status;
+        return AXIS2_SUCCESS;
     }
 
     /** a parent node exist , so not soap envelope. Can be either header/body/children of them */
