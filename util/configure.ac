@@ -388,6 +388,7 @@ AC_CONFIG_FILES([Makefile \
     test/Makefile \
     test/util/Makefile \
     test/allocator/Makefile \
+    test/base64/Makefile \
     test/date_time/Makefile \
     test/duration/Makefile \
     test/link_list/Makefile \

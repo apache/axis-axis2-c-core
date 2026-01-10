@@ -24,6 +24,11 @@
 
 #include <axutil_base64.h>
 
+/* Check if character is whitespace that should be skipped during base64 decode.
+ * Per RFC 2045, implementations should ignore whitespace in base64-encoded data.
+ */
+#define IS_BASE64_WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n' || (c) == '\r')
+
 static const unsigned char pr2six[256] = {
 #ifndef __OS400__
     /* ASCII table */
@@ -103,12 +108,21 @@ axutil_base64_decode_len(
         return -1;
     }
 
+    /* Count valid base64 characters, skipping whitespace (RFC 2045) */
     bufin = (const unsigned char *)bufcoded;
-    while(pr2six[*(bufin++)] <= 63)
-        ;
-
-    nprbytes = (int)(bufin - (const unsigned char *)bufcoded) - 1;
-    /* We are sure that the difference lies within the int range */
+    nprbytes = 0;
+    while(*bufin)
+    {
+        if(IS_BASE64_WHITESPACE(*bufin))
+        {
+            bufin++;
+            continue;
+        }
+        if(pr2six[*bufin] > 63)
+            break;
+        nprbytes++;
+        bufin++;
+    }
 
     nbytesdecoded = ((nprbytes >> 2) * 3);
 
@@ -130,6 +144,9 @@ axutil_base64_decode(
     return len;
 }
 
+/* Helper macro to advance past whitespace and get the next valid base64 char */
+#define NEXT_BASE64_CHAR(p) do { while(IS_BASE64_WHITESPACE(*(p))) (p)++; } while(0)
+
 /* This is the same as axutil_base64_decode() except on EBCDIC machines, where
  * the conversion of the output to ebcdic is left out.
  */
@@ -143,17 +160,29 @@ axutil_base64_decode_binary(
     register const unsigned char *bufin;
     register unsigned char *bufout;
     register int nprbytes;
+    unsigned char b0, b1, b2, b3;
 
     if(!bufcoded)
     {
         return -1;
     }
 
+    /* Count valid base64 characters, skipping whitespace (RFC 2045) */
     bufin = (const unsigned char *)bufcoded;
-    while(pr2six[*(bufin++)] <= 63)
-        ;
-    nprbytes = (int)(bufin - (const unsigned char *)bufcoded) - 1;
-    /* We are sure that the difference lies within the int range */
+    nprbytes = 0;
+    while(*bufin)
+    {
+        if(IS_BASE64_WHITESPACE(*bufin))
+        {
+            bufin++;
+            continue;
+        }
+        if(pr2six[*bufin] > 63)
+            break;
+        nprbytes++;
+        bufin++;
+    }
+
     nbytesdecoded = ((nprbytes + 3) / 4) * 3;
 
     bufout = (unsigned char *)bufplain;
@@ -161,25 +190,42 @@ axutil_base64_decode_binary(
 
     while(nprbytes > 4)
     {
-        *(bufout++) = (unsigned char)(pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
-        *(bufout++) = (unsigned char)(pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
-        *(bufout++) = (unsigned char)(pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
-        bufin += 4;
+        /* Get next 4 valid base64 characters, skipping whitespace */
+        NEXT_BASE64_CHAR(bufin);
+        b0 = pr2six[*bufin++];
+        NEXT_BASE64_CHAR(bufin);
+        b1 = pr2six[*bufin++];
+        NEXT_BASE64_CHAR(bufin);
+        b2 = pr2six[*bufin++];
+        NEXT_BASE64_CHAR(bufin);
+        b3 = pr2six[*bufin++];
+
+        *(bufout++) = (unsigned char)(b0 << 2 | b1 >> 4);
+        *(bufout++) = (unsigned char)(b1 << 4 | b2 >> 2);
+        *(bufout++) = (unsigned char)(b2 << 6 | b3);
         nprbytes -= 4;
     }
 
-    /* Note: (nprbytes == 1) would be an error, so just ingore that case */
+    /* Note: (nprbytes == 1) would be an error, so just ignore that case */
     if(nprbytes > 1)
     {
-        *(bufout++) = (unsigned char)(pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+        NEXT_BASE64_CHAR(bufin);
+        b0 = pr2six[*bufin++];
+        NEXT_BASE64_CHAR(bufin);
+        b1 = pr2six[*bufin++];
+        *(bufout++) = (unsigned char)(b0 << 2 | b1 >> 4);
     }
     if(nprbytes > 2)
     {
-        *(bufout++) = (unsigned char)(pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+        NEXT_BASE64_CHAR(bufin);
+        b2 = pr2six[*bufin++];
+        *(bufout++) = (unsigned char)(b1 << 4 | b2 >> 2);
     }
     if(nprbytes > 3)
     {
-        *(bufout++) = (unsigned char)(pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+        NEXT_BASE64_CHAR(bufin);
+        b3 = pr2six[*bufin++];
+        *(bufout++) = (unsigned char)(b2 << 6 | b3);
     }
 
     nbytesdecoded -= (4 - nprbytes) & 3;
