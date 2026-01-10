@@ -189,6 +189,18 @@ axiom_soap_builder_free(
         }
     }
 
+    /* Free the soap_envelope wrapper if it exists (AXIS2C-1262).
+     * The envelope has a back-pointer to us, so we must break the circular reference
+     * before freeing. Also clear the envelope's node pointer since the stax_builder
+     * owns and will free the underlying XML tree. */
+    if(soap_builder->soap_envelope)
+    {
+        axiom_soap_envelope_set_builder(soap_builder->soap_envelope, env, NULL);
+        axiom_soap_envelope_set_base_node(soap_builder->soap_envelope, env, NULL);
+        axiom_soap_envelope_free(soap_builder->soap_envelope, env);
+        soap_builder->soap_envelope = NULL;
+    }
+
     if(soap_builder->om_builder)
     {
         axiom_stax_builder_free(soap_builder->om_builder, env);
