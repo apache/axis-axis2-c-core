@@ -241,12 +241,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                 ns = axiom_namespace_create(env, "http://soapenc/", "res");
                 if(!ns)
                 {
+                    AXIS2_FREE(env->allocator, res_name);
                     status = AXIS2_FAILURE;
                 }
                 else
                 {
                     /*body_content_element = */
-		    axiom_element_create(env, NULL, res_name, ns, &body_content_node);
+                    axiom_element_create(env, NULL, res_name, ns, &body_content_node);
+                    AXIS2_FREE(env->allocator, res_name);
                     axiom_node_add_child(body_content_node, env, result_node);
                 }
             }
@@ -345,18 +347,21 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     out_header = axiom_soap_header_create_with_parent(env, default_envelope);
     if(!out_header)
     {
+        axiom_soap_envelope_free(default_envelope, env);
         return AXIS2_FAILURE;
     }
 
     out_body = axiom_soap_body_create_with_parent(env, default_envelope);
     if(!out_body)
     {
+        axiom_soap_envelope_free(default_envelope, env);
         return AXIS2_FAILURE;
     }
 
     out_node = axiom_soap_body_get_base_node(out_body, env);
     if(!out_node)
     {
+        axiom_soap_envelope_free(default_envelope, env);
         return AXIS2_FAILURE;
     }
 
