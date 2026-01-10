@@ -3219,6 +3219,11 @@ axis2_http_transport_utils_process_request(
                 fault_code, axutil_error_get_message(env->error));
 
             axis2_engine_send_fault(engine, env, fault_ctx);
+            if(fault_ctx)
+            {
+                axis2_msg_ctx_free(fault_ctx, env);
+            }
+            axis2_engine_free(engine, env);
             if (out_stream)
             {
                 response->response_data = axutil_stream_get_buffer(out_stream, env);

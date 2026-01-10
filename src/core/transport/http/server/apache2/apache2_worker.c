@@ -945,6 +945,11 @@ axis2_apache2_worker_process_request(
                 axutil_error_get_message
                 (env->error));
             axis2_engine_send_fault(engine, env, fault_ctx);
+            if(fault_ctx)
+            {
+                axis2_msg_ctx_free(fault_ctx, env);
+            }
+            axis2_engine_free(engine, env);
             if (out_stream)
             {
                 body_string = axutil_stream_get_buffer(out_stream, env);
