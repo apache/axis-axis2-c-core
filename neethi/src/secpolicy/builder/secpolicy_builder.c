@@ -51,6 +51,7 @@ rp_secpolicy_builder_build(
 
     if(secpolicy_process_alternatives(env, all, secpolicy) == AXIS2_FAILURE)
     {
+        rp_secpolicy_free(secpolicy, env);
         return NULL;
     }
     return secpolicy;
