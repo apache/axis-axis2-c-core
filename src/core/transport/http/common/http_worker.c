@@ -115,8 +115,8 @@ axis2_http_worker_process_request(
     axis2_msg_ctx_t *msg_ctx = NULL;
     axutil_stream_t *request_body = NULL;
 
-    /* Creating out_stream as basic stream */
-    axutil_stream_t *out_stream = axutil_stream_create_basic(env);
+    /* out_stream will be created later ONLY if msg_ctx does exist */
+    axutil_stream_t *out_stream = NULL;
     axis2_http_simple_response_t *response = NULL;
 
     /* Transport in and out descriptions */
@@ -431,10 +431,16 @@ axis2_http_worker_process_request(
     /* Here out_stream is set into the in message context. out_stream is copied from in message context
      * into the out message context later in core_utils_create_out_msg_ctx() function. The buffer in
      * out_stream is finally filled with the soap envelope in http_transport_sender_invoke() function.
-     * To avoid double freeing of out_stream we reset the out message context at the end of engine 
+     * To avoid double freeing of out_stream we reset the out message context at the end of engine
      * receive function.
+     *
+     * Create out_stream here only if msg_ctx exists to avoid memory leak on early returns.
      */
-    axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
+    if(msg_ctx)
+    {
+        out_stream = axutil_stream_create_basic(env);
+        axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
+    }
 
     headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
     axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers);
