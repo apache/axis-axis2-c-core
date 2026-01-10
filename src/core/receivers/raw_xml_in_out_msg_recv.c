@@ -206,7 +206,28 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         if(status == AXIS2_SUCCESS)
         {
             skel_invoked = AXIS2_TRUE;
+#ifndef WITH_NGHTTP2
+            /* HTTP/1.1 SOAP mode - Verify skeleton is properly initialized before invoke */
+            if(!svc_obj->ops)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Service skeleton ops is NULL - skeleton not properly initialized");
+                status = AXIS2_FAILURE;
+            }
+            else if(!svc_obj->ops->invoke)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Service skeleton invoke function is NULL");
+                status = AXIS2_FAILURE;
+            }
+            else
+            {
+                result_node = svc_obj->ops->invoke(svc_obj, env, om_node, new_msg_ctx);
+            }
+#else
+            /* HTTP/2 JSON mode - Use macro (returns NULL for JSON services) */
             result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
+#endif
         }
 
         if(result_node)

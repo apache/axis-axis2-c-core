@@ -66,11 +66,15 @@ axis2_engine_create(
         engine->conf_ctx = conf_ctx;
     }
 
-    /* Register HTTP service provider implementation to eliminate circular dependency */
+    /* Register HTTP service provider implementation to eliminate circular dependency.
+     * Only create if not already set (true singleton pattern). */
     {
-        axis2_http_service_provider_t* service_provider = axis2_engine_service_provider_create(env);
-        if (service_provider) {
-            axis2_http_service_provider_set_impl(env, service_provider);
+        axis2_http_service_provider_t* existing_provider = axis2_http_service_provider_get_impl(env);
+        if (!existing_provider) {
+            axis2_http_service_provider_t* service_provider = axis2_engine_service_provider_create(env);
+            if (service_provider) {
+                axis2_http_service_provider_set_impl(env, service_provider);
+            }
         }
     }
 
@@ -82,7 +86,7 @@ axis2_engine_free(
     axis2_engine_t * engine,
     const axutil_env_t * env)
 {
-    /* REVOLUTIONARY: Clean up HTTP service provider */
+    /* Clean up HTTP service provider singleton */
     axis2_http_service_provider_t* service_provider = axis2_http_service_provider_get_impl(env);
     if (service_provider) {
         service_provider->free(service_provider, env);

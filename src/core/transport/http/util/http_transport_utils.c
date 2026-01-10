@@ -899,12 +899,24 @@ axis2_http_transport_utils_process_http_post_request(
     engine = axis2_engine_create(env, conf_ctx);
 
     if(!soap_envelope)
+    {
+        if(engine)
+        {
+            axis2_engine_free(engine, env);
+        }
         return AXIS2_FAILURE;
+    }
 
     soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
     if(!soap_body)
+    {
+        if(engine)
+        {
+            axis2_engine_free(engine, env);
+        }
         return AXIS2_FAILURE;
+    }
 
     if(!is_svc_callback)
     {
@@ -1392,14 +1404,26 @@ axis2_http_transport_utils_process_http_put_request(
     engine = axis2_engine_create(env, conf_ctx);
 
     if(!soap_envelope)
+    {
+        if(engine)
+        {
+            axis2_engine_free(engine, env);
+        }
         return AXIS2_FAILURE;
+    }
 
     soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
     if(!soap_body)
+    {
+        if(engine)
+        {
+            axis2_engine_free(engine, env);
+        }
         return AXIS2_FAILURE;
+    }
 
-    is_client_property = axis2_msg_ctx_get_property(msg_ctx, env, 
+    is_client_property = axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_TRANPORT_IS_APPLICATION_CLIENT_SIDE);
     if(is_client_property)
     {
@@ -1531,6 +1555,10 @@ axis2_http_transport_utils_process_http_head_request(
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
+    if(engine)
+    {
+        axis2_engine_free(engine, env);
+    }
     return AXIS2_TRUE;
 }
 
@@ -1601,6 +1629,10 @@ axis2_http_transport_utils_process_http_get_request(
 
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
+    if(engine)
+    {
+        axis2_engine_free(engine, env);
+    }
     return AXIS2_TRUE;
 }
 
@@ -1670,9 +1702,12 @@ axis2_http_transport_utils_process_http_delete_request(
     }
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
 
-
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
+    if(engine)
+    {
+        axis2_engine_free(engine, env);
+    }
     return AXIS2_TRUE;
 }
 

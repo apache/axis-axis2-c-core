@@ -166,6 +166,21 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Create or retrieve the service implementation object.
+     * HTTP/1.1 SOAP mode: Returns axis2_svc_skeleton_t* with full skeleton initialization
+     * HTTP/2 JSON mode: Returns generic void* for JSON service implementation
+     * @param msg_recv pointer to message receiver
+     * @param env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @return pointer to service implementation object, or NULL on failure
+     */
+    AXIS2_EXPORT void *AXIS2_CALL
+    axis2_msg_recv_make_new_svc_obj(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
+        struct axis2_msg_ctx * msg_ctx);
+
+    /**
      * Delete the service skeleton object created by make_new_svc_obj
      * @param msg_recv pointer to message receiver
      * @env pointer to environment struct

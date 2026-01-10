@@ -865,3 +865,210 @@ With all fixes deployed, HTTP/2 JSON services achieve:
 **Client Experience**: Clean, single JSON responses for all HTTP/2 requests with zero issues.
 
 This represents the **complete resolution** of all known HTTP/2 JSON processing issues in Apache Axis2/C. The system now delivers enterprise-grade HTTP/2 JSON web service functionality with reliability equivalent to traditional HTTP/1.1 SOAP services.
+
+---
+
+## January 2026 Update: Conditional Compilation Regression Fix
+
+### Issue: HTTP/1.1 SOAP Tests Crashing After HTTP/2 JSON Changes
+
+**Date:** January 2026
+**Symptom:** SEGV crash in `raw_xml_in_out_msg_recv.c:209` during HTTP/1.1 SOAP tests
+**Root Cause:** Two separate issues introduced when adding HTTP/2 JSON support
+
+### Problem 1: Missing Conditional Compilation Guards
+
+The HTTP/2 JSON changes in `msg_recv.c` removed SOAP skeleton initialization code **unconditionally** instead of using `#ifdef WITH_NGHTTP2` guards.
+
+**Original Code (Broken):**
+```c
+/* HTTP/2 Pure JSON Architecture - removed skeleton init */
+if(impl_class)
+{
+    /* Generic JSON service initialization - no SOAP skeleton needed */
+}
+```
+
+**Fixed Code:**
+```c
+if(impl_class)
+{
+#ifndef WITH_NGHTTP2
+    /* HTTP/1.1 SOAP mode - Full skeleton initialization */
+    axis2_svc_skeleton_t *skel = (axis2_svc_skeleton_t *)impl_class;
+    if (skel->ops && skel->ops->init)
+    {
+        skel->ops->init(skel, env);
+    }
+#else
+    /* HTTP/2 JSON mode - Generic initialization */
+#endif
+}
+```
+
+**Files Modified:**
+- `src/core/receivers/msg_recv.c` - Added `#ifndef WITH_NGHTTP2` guards in two functions
+
+### Problem 2: Missing Function Declaration (ROOT CAUSE of Crash)
+
+The function `axis2_msg_recv_make_new_svc_obj` was **not declared** in any header file. Without a declaration, C assumes it returns `int` (32-bit), causing **pointer truncation** on 64-bit systems.
+
+**Symptom:** Compiler warning:
+```
+warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   99 |     svc_obj = (axis2_svc_skeleton_t *)axis2_msg_recv_make_new_svc_obj(...);
+```
+
+**Impact:** 64-bit pointers truncated to 32-bit, causing invalid memory access
+
+**Fix Added to `include/axis2_msg_recv.h`:**
+```c
+/**
+ * Create or retrieve the service implementation object.
+ * HTTP/1.1 SOAP mode: Returns axis2_svc_skeleton_t* with full skeleton initialization
+ * HTTP/2 JSON mode: Returns generic void* for JSON service implementation
+ */
+AXIS2_EXPORT void *AXIS2_CALL
+axis2_msg_recv_make_new_svc_obj(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * msg_ctx);
+```
+
+### Problem 3: Safety Checks Added
+
+**File:** `src/core/receivers/raw_xml_in_out_msg_recv.c`
+
+Added defensive null checks before invoking service skeleton:
+
+```c
+if(status == AXIS2_SUCCESS)
+{
+    skel_invoked = AXIS2_TRUE;
+#ifndef WITH_NGHTTP2
+    /* HTTP/1.1 SOAP mode - Verify skeleton before invoke */
+    if(!svc_obj->ops)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Service skeleton ops is NULL - skeleton not properly initialized");
+        status = AXIS2_FAILURE;
+    }
+    else if(!svc_obj->ops->invoke)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Service skeleton invoke function is NULL");
+        status = AXIS2_FAILURE;
+    }
+    else
+    {
+        result_node = svc_obj->ops->invoke(svc_obj, env, om_node, new_msg_ctx);
+    }
+#else
+    /* HTTP/2 JSON mode - Macro returns NULL safely */
+    result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
+#endif
+}
+```
+
+### Conditional Compilation Summary
+
+| File | Guard | HTTP/1.1 SOAP Behavior | HTTP/2 JSON Behavior |
+|------|-------|------------------------|----------------------|
+| `axis2_svc_skeleton.h` | `#ifndef WITH_NGHTTP2` | Full struct + macros | typedef void + NULL macros |
+| `msg_recv.c` | `#ifndef WITH_NGHTTP2` | Skeleton init via ops->init() | No initialization |
+| `raw_xml_in_out_msg_recv.c` | `#ifndef WITH_NGHTTP2` | Direct ops->invoke() with safety checks | Macro returns NULL |
+
+### Build Mode Detection
+
+```bash
+# Check if HTTP/2 mode is enabled
+grep "WITH_NGHTTP2" config.h
+
+# If no match: HTTP/1.1 SOAP mode (full skeleton support)
+# If defined: HTTP/2 JSON mode (minimal skeleton compatibility)
+```
+
+### Testing After Fix
+
+```bash
+# HTTP/1.1 SOAP tests should pass
+make -C test/core/transport/http check
+
+# Expected result:
+# [==========] 8 tests from 1 test suite ran.
+# [  PASSED  ] 8 tests.
+```
+
+### Key Lessons Learned
+
+1. **Always use conditional compilation** when modifying shared code for HTTP/2 JSON support
+2. **Declare all public functions** in headers to prevent pointer truncation on 64-bit
+3. **Add defensive null checks** before dereferencing function pointers
+4. **Build chain matters**: Changes to receivers require engine rebuild
+
+---
+
+## Memory Leak Fix: Service Provider Singleton Pattern
+
+### Problem Description
+
+AddressSanitizer detected a 72-byte memory leak originating from `axis2_engine_service_provider_create`:
+
+```
+Direct leak of 72 byte(s) in 1 object(s) allocated from:
+    #1 axis2_engine_service_provider_create at axis2_engine_service_provider.c:210
+    #2 axis2_engine_create at engine.c:71
+    #3 axis2_http_transport_utils_process_http_post_request at http_transport_utils.c:899
+```
+
+### Root Cause
+
+The HTTP service provider was designed as a global singleton, but `axis2_engine_create` was creating a new provider instance on EVERY engine creation, overwriting the global and orphaning previous allocations:
+
+```c
+// ORIGINAL (LEAKY) CODE in engine.c:
+axis2_http_service_provider_t* service_provider = axis2_engine_service_provider_create(env);
+if (service_provider) {
+    axis2_http_service_provider_set_impl(env, service_provider);  // Overwrites existing!
+}
+```
+
+In a multi-request server:
+1. Request 1: Engine creates provider A, sets global → A
+2. Request 2: Engine creates provider B, sets global → B (provider A orphaned - LEAK!)
+3. Request 3: Engine creates provider C, sets global → C (provider B orphaned - LEAK!)
+
+### Solution
+
+Modified `axis2_engine_create` to check for existing provider before creating:
+
+```c
+// FIXED CODE in engine.c:
+axis2_http_service_provider_t* existing_provider = axis2_http_service_provider_get_impl(env);
+if (!existing_provider) {
+    axis2_http_service_provider_t* service_provider = axis2_engine_service_provider_create(env);
+    if (service_provider) {
+        axis2_http_service_provider_set_impl(env, service_provider);
+    }
+}
+```
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `src/core/engine/engine.c` | Check for existing provider before creating new one |
+
+### Verification
+
+```bash
+# Run tests with AddressSanitizer
+make -C test/core/transport/http check
+
+# Expected: PASS with no memory leak reports
+```
+
+---
+
+**Document Updated:** January 2026
+**Status:** HTTP/1.1 SOAP + HTTP/2 JSON dual-mode support fully functional (no memory leaks)
