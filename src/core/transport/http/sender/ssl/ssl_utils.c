@@ -193,6 +193,7 @@ axis2_ssl_utils_initialize_ssl(
         AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
             "[ssl]unable to create BIO new socket for socket %d",
             (int)socket);
+        SSL_free(ssl);
         return NULL;
     }
 
@@ -200,6 +201,7 @@ axis2_ssl_utils_initialize_ssl(
     if (SSL_connect(ssl) <= 0)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
+        SSL_free(ssl);
         return NULL;
     }
 
@@ -253,6 +255,7 @@ axis2_ssl_utils_initialize_ssl(
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                         "[ssl client] peer name does not match certificate CN/SAN");
                                 X509_free(peer_cert);
+                                SSL_free(ssl);
                                 return NULL;
                             }
                         }
@@ -272,6 +275,7 @@ axis2_ssl_utils_initialize_ssl(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[ssl client] SSL certificate verification failed (%s)",
             sslerror);
+        SSL_free(ssl);
         return NULL;
     }
     else {
@@ -291,6 +295,7 @@ axis2_ssl_utils_initialize_ssl(
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                             "[ssl client] peer name does not match certificate CN/SAN");
                     X509_free(peer_cert);
+                    SSL_free(ssl);
                     return NULL;
                 }
             }
@@ -312,10 +317,10 @@ axis2_ssl_utils_cleanup_ssl(
 
     if (ssl)
     {
-        if(SSL_shutdown(ssl)==0)
-		{
-			SSL_free(ssl);
-		}
+        /* SSL_shutdown returns 0 if not yet complete, 1 if complete, <0 on error.
+         * We should always free the SSL object regardless of shutdown result. */
+        SSL_shutdown(ssl);
+        SSL_free(ssl);
     }
     if (ctx)
     {

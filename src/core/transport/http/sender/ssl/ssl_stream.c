@@ -100,6 +100,7 @@ axutil_stream_create_ssl(
         stream_impl->socket, host);
     if (!stream_impl->ssl)
     {
+        axis2_ssl_stream_free((axutil_stream_t *) stream_impl, env);
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
         return NULL;
     }
