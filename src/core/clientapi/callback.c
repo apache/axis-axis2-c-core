@@ -21,6 +21,8 @@
 
 struct axis2_callback
 {
+    /** reference count for preventing premature free in async operations */
+    int ref;
 
     /** callback complete? */
     axis2_bool_t complete;
@@ -105,6 +107,7 @@ axis2_callback_create(
     callback->on_error = axis2_callback_on_error;
 
     callback->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
+    callback->ref = 1;
     return callback;
 }
 
@@ -208,11 +211,39 @@ axis2_callback_set_error(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_callback_increment_ref(
+    axis2_callback_t * callback,
+    const axutil_env_t * env)
+{
+    axutil_thread_mutex_lock(callback->mutex);
+    callback->ref++;
+    axutil_thread_mutex_unlock(callback->mutex);
+
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN void AXIS2_CALL
 axis2_callback_free(
     axis2_callback_t * callback,
     const axutil_env_t * env)
 {
+    axutil_thread_mutex_lock(callback->mutex);
+    callback->ref--;
+
+    if(callback->ref > 0)
+    {
+        axutil_thread_mutex_unlock(callback->mutex);
+        return;
+    }
+
+    axutil_thread_mutex_unlock(callback->mutex);
+
+    if(callback->msg_ctx)
+    {
+        axis2_msg_ctx_free(callback->msg_ctx, env);
+    }
+
     if(callback->mutex)
     {
         axutil_thread_mutex_destroy(callback->mutex);

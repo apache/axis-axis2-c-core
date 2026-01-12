@@ -501,7 +501,11 @@ axis2_op_client_execute(
                 "Op client execute failed due to engine creation failure.");
             return AXIS2_FAILURE;
         }
-        axis2_engine_send(engine, env, msg_ctx);
+        if(axis2_engine_send(engine, env, msg_ctx) != AXIS2_SUCCESS)
+        {
+            axis2_engine_free(engine, env);
+            return AXIS2_FAILURE;
+        }
         axis2_engine_free(engine, env);
     }
     else /* Same channel will be used irrespective of message exchange pattern. */
@@ -641,10 +645,10 @@ axis2_op_client_free(
     if(!op_client)
         return;
 
-    /*if(op_client->callback)
+    if(op_client->callback)
     {
         axis2_callback_free(op_client->callback, env);
-    }*/
+    }
 
     if(op_client->op_ctx)
     {
@@ -690,10 +694,12 @@ axis2_op_client_worker_func(
     }
 
     th_env = axutil_init_thread_env(args_list->env);
+    axis2_callback_increment_ref(args_list->callback, th_env);
 
     op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->op_client->svc_ctx);
     if(!op_ctx)
     {
+        axis2_callback_free(args_list->callback, th_env);
         return NULL;
     }
     axis2_msg_ctx_set_op_ctx(args_list->msg_ctx, th_env, op_ctx);
@@ -702,29 +708,42 @@ axis2_op_client_worker_func(
     /* send the request and wait for response */
     response = axis2_op_client_two_way_send(th_env, args_list->msg_ctx);
 
-    /* We do not need to handle the NULL response here because this thread function is called only
-     * in the single channel non blocking case which, imply this is two way message by design.
-     */
-
-    /* Here after the code is a subset of what callback receiver do in dual channel case.*/
-    axis2_op_client_add_msg_ctx(args_list->op_client, th_env, response);
-    args_list->op_client->async_result = axis2_async_result_create(th_env, response);
-
-    if(args_list->callback)
+    /* Handle the response - NULL response indicates an error */
+    if(response)
     {
-        axis2_callback_invoke_on_complete(args_list->callback, th_env,
-            args_list->op_client->async_result);
+        /* Here after the code is a subset of what callback receiver do in dual channel case.*/
+        axis2_async_result_t *async_result = NULL;
 
-        axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
+        axis2_op_client_add_msg_ctx(args_list->op_client, th_env, response);
+        async_result = axis2_async_result_create(th_env, response);
+
+        if(args_list->callback)
+        {
+            axis2_callback_invoke_on_complete(args_list->callback, th_env,
+                async_result);
+
+            axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
+        }
+
+        /* Clean up memory */
+        axis2_async_result_free(async_result, th_env);
     }
-
-    /* Clean up memory */
-    axis2_async_result_free(args_list->op_client->async_result, th_env);
+    else
+    {
+        /* Report error to callback when response is NULL */
+        if(args_list->callback)
+        {
+            axis2_callback_report_error(args_list->callback, th_env,
+                AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE);
+            axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
+        }
+    }
 
     axis2_op_ctx_free(op_ctx, th_env);
 
     th_pool = th_env->thread_pool;
 
+    axis2_callback_free(args_list->callback, th_env);
     AXIS2_FREE(th_env->allocator, args_list);
 
     if(th_env)

@@ -805,6 +805,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     const axiom_node_t * payload,
     axis2_callback_t * callback)
 {
+    axis2_callback_increment_ref(callback, env);
     axis2_msg_ctx_t *msg_ctx = NULL;
     AXIS2_TRANSPORT_ENUMS transport_in_protocol;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
@@ -870,7 +871,16 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
         axis2_op_client_set_callback_recv(svc_client->op_client, env, svc_client->callback_recv);
     }
 
-    axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
+    if(axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE) != AXIS2_SUCCESS)
+    {
+        if(qname_free_flag)
+        {
+            axutil_qname_free((axutil_qname_t *)op_qname, env);
+        }
+        axis2_callback_free(callback, env);
+        return;
+    }
+
     axis2_svc_client_set_http_info(svc_client, env, msg_ctx);
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http = axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
@@ -884,6 +894,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
         axutil_qname_free((axutil_qname_t *)op_qname, env);
         op_qname = NULL;
     }
+    axis2_callback_free(callback, env);
 }
 
 AXIS2_EXTERN void AXIS2_CALL

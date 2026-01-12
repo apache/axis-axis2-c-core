@@ -236,7 +236,20 @@ extern "C"
         axis2_on_error_func_ptr f);
 
     /**
+     * Increments the reference count of the callback.
+     * Used in async operations where callback is shared between threads.
+     * @param callback pointer to callback struct
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_callback_increment_ref(
+        axis2_callback_t * callback,
+        const axutil_env_t * env);
+
+    /**
      * Frees callback struct.
+     * Decrements reference count and only frees when count reaches zero.
      * @param callback pointer to callback struct
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
