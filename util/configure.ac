@@ -168,7 +168,6 @@ AC_CHECK_FUNCS(getifaddrs)
 # System-dependent adjustments.
 cygwin=no
 darwin=no
-solaris=no
 no_undefined=no
 
 case "${host_cpu}" in
@@ -193,16 +192,6 @@ cygwin)
   ;;
 darwin*)
   darwin=yes
-dnl   if test x"$GCC" = xyes
-dnl  then
-dnl    CFLAGS="$CFLAGS -Wno-long-double"
-dnl    CXXFLAGS="$CXXFLAGS -Wno-long-double"
-dnl  fi
-  ;;
-solaris*)
-  solaris=yes
-  AC_DEFINE(AXIS2_SOLARIS,1,[Am I on Solaris?])
-  
   ;;
 *)
   ;;
@@ -210,7 +199,6 @@ esac
 
 AM_CONDITIONAL(HOST_OS_CYGWIN, test x$cygwin = xyes)
 AM_CONDITIONAL(HOST_OS_DARWIN, test x$darwin = xyes)
-AM_CONDITIONAL(HOST_OS_SOLARIS, test x$solaris = xyes)
 AM_CONDITIONAL(NO_UNDEFINED, test x$no_undefined = xyes)
 
 

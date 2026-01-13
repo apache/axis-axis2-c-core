@@ -290,12 +290,7 @@ AXIS2_EXTERN axutil_thread_once_t *AXIS2_CALL
 axutil_thread_once_init(
     axutil_allocator_t * allocator)
 {
-#if defined(AXIS2_SOLARIS) && (__GNUC__ <= 3)
-    static const pthread_once_t once_init =
-    {   PTHREAD_ONCE_INIT};
-#else
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
-#endif
     axutil_thread_once_t *control = AXIS2_MALLOC(allocator, sizeof(axutil_thread_once_t));
     if(!control)
     {

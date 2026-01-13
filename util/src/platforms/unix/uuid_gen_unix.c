@@ -335,46 +335,12 @@ axutil_uuid_get_mac_addr(
     freeifaddrs(ifap_head);
     return NULL;
 }
-# else                          /* Solaris-ish */
-
-/* code modified from that posted on:
- * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
- */
-
+# else
+/* Unsupported platform - return NULL to trigger random MAC fallback */
 char *AXIS2_CALL
 axutil_uuid_get_mac_addr()
 {
-    char hostname[MAXHOSTNAMELEN];
-    char *data_ptr;
-    struct hostent *he;
-    struct arpreq ar;
-    struct sockaddr_in *sa;
-    int s;
-    int i;
-
-    if(gethostname(hostname, sizeof(hostname)) < 0)
-        return NULL;
-    if((he = gethostbyname(hostname)) == NULL)
-        return NULL;
-    if((s = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
-        return NULL;
-    memset(&ar, 0, sizeof(ar));
-    sa = (struct sockaddr_in *)((void *)&(ar.arp_pa));
-    sa->sin_family = AF_INET;
-    memcpy(&(sa->sin_addr), *(he->h_addr_list), sizeof(struct in_addr));
-    if(ioctl(s, SIOCGARP, &ar) < 0)
-    {
-        close(s);
-        return NULL;
-    }
-    close(s);
-    if(!(ar.arp_flags & ATF_COM))
-        return NULL;
-    data_ptr = malloc(6 * sizeof(char));
-    for(i = 0; i < 6; i++)
-        data_ptr[i] = (unsigned char)(ar.arp_ha.sa_data[i] & 0xff);
-
-    return data_ptr;
+    return NULL;
 }
 # endif
 #endif
