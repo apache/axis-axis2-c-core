@@ -157,13 +157,21 @@ axiom_soap_envelope_free(
     {
         return;
     }
+    /* If ref is negative, this is a recursive call from builder_free.
+     * The envelope is already being freed, so skip to avoid double-free. */
+    if(soap_envelope->ref < 0)
+    {
+        return;
+    }
     if(soap_envelope->header)
     {
         axiom_soap_header_free(soap_envelope->header, env);
+        soap_envelope->header = NULL;
     }
     if(soap_envelope->body)
     {
         axiom_soap_body_free(soap_envelope->body, env);
+        soap_envelope->body = NULL;
     }
     if(soap_envelope->om_ele_node)
     {
