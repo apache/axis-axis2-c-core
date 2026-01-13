@@ -147,11 +147,27 @@ static inline void axis2_android_ftime(struct axis2_android_timeb *tb) {
 #include "axutil_date_time_util_unix.h"
 
     /* for file access handling */
-#ifdef HAVE_UNISTD_H 
-#ifndef __APPLE__
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* ifndef __APPLE__ */
 #endif /* HAVE_UNISTD_H */
+
+    /* AXIS2C-1567 FIX: Fallback definitions for access() mode constants
+     * These POSIX constants are typically defined in <unistd.h>, but some
+     * platforms (notably older macOS builds) may not have them available.
+     * The values are standardized by POSIX and are the same across platforms.
+     */
+#ifndef F_OK
+#define F_OK 0  /* Test for existence */
+#endif
+#ifndef R_OK
+#define R_OK 4  /* Test for read permission */
+#endif
+#ifndef W_OK
+#define W_OK 2  /* Test for write permission */
+#endif
+#ifndef X_OK
+#define X_OK 1  /* Test for execute permission */
+#endif
 
     /* network handling */
 #include <sys/socket.h>
