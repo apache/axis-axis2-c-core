@@ -338,6 +338,11 @@ axis2_http_worker_process_request(
         {
             axis2_msg_ctx_set_http_accept_record_list(msg_ctx, env, accept_record_list);
         }
+        /* AXIS2C-1702: Free the tokenized list structure (items already freed in loop) */
+        if(accept_header_field_list)
+        {
+            axutil_array_list_free(accept_header_field_list, env);
+        }
     }
 
     accept_charset_header = axis2_http_simple_request_get_first_header(simple_request, env,
@@ -382,6 +387,11 @@ axis2_http_worker_process_request(
             axis2_msg_ctx_set_http_accept_charset_record_list(msg_ctx, env,
                 accept_charset_record_list);
         }
+        /* AXIS2C-1702: Free the tokenized list structure (items already freed in loop) */
+        if(accept_charset_header_field_list)
+        {
+            axutil_array_list_free(accept_charset_header_field_list, env);
+        }
     }
 
     accept_language_header = axis2_http_simple_request_get_first_header(simple_request, env,
@@ -425,6 +435,11 @@ axis2_http_worker_process_request(
         {
             axis2_msg_ctx_set_http_accept_language_record_list(msg_ctx, env,
                 accept_language_record_list);
+        }
+        /* AXIS2C-1702: Free the tokenized list structure (items already freed in loop) */
+        if(accept_language_header_field_list)
+        {
+            axutil_array_list_free(accept_language_header_field_list, env);
         }
     }
 
@@ -1136,6 +1151,27 @@ axis2_http_worker_process_request(
 	{
 		AXIS2_FREE(env->allocator, url_ext_form);
 	}
+
+    /* AXIS2C-1702: Free request_params hash and its contents */
+    if(request_params)
+    {
+        axutil_hash_index_t *hi = NULL;
+        for(hi = axutil_hash_first(request_params, env); hi; hi = axutil_hash_next(env, hi))
+        {
+            axis2_char_t *key = NULL;
+            axis2_char_t *val = NULL;
+            axutil_hash_this(hi, (const void **)&key, NULL, (void **)&val);
+            if(key)
+            {
+                AXIS2_FREE(env->allocator, key);
+            }
+            if(val)
+            {
+                AXIS2_FREE(env->allocator, val);
+            }
+        }
+        axutil_hash_free(request_params, env);
+    }
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)

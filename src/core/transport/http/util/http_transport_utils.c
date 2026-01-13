@@ -1780,6 +1780,9 @@ axis2_http_transport_utils_get_request_params(
         axutil_hash_set(ret, tmp_name, AXIS2_HASH_KEY_STRING, tmp_value);
     }
 
+    /* AXIS2C-1702: Free the duplicated query string */
+    AXIS2_FREE(env->allocator, query_str);
+
     return ret;
 }
 
