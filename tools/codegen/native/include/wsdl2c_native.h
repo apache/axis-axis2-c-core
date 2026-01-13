@@ -184,6 +184,7 @@ typedef struct wsdl2c_options {
  * Contains element information including type and 'any' type flag.
  * AXIS2C-1580: is_any_type flag indicates xsd:any elements that may have NULL qname
  * AXIS2C-1573: Stores both original XML name and sanitized C identifier
+ * AXIS2C-1421: is_typeless flag indicates elements without explicit type attribute
  */
 typedef struct wsdl2c_schema_element {
     axis2_char_t *name;             /**< Element name (original XML name for serialization) */
@@ -192,6 +193,7 @@ typedef struct wsdl2c_schema_element {
     axis2_char_t *c_type;           /**< Sanitized C type identifier (AXIS2C-1573) */
     axis2_char_t *namespace_uri;    /**< Namespace URI */
     axis2_bool_t is_any_type;       /**< True if xsd:any element (AXIS2C-1580) */
+    axis2_bool_t is_typeless;       /**< True if no type attribute (AXIS2C-1421) */
     axis2_bool_t is_nillable;       /**< True if nillable="true" */
     axis2_bool_t name_was_sanitized; /**< True if name required sanitization (AXIS2C-1573) */
     int min_occurs;                 /**< minOccurs value (0 = optional) */
@@ -238,6 +240,7 @@ typedef struct wsdl2c_wsdl {
     axutil_array_list_t *complex_types; /**< Complex types (wsdl2c_complex_type_t*) - AXIS2C-1224 */
     axis2_bool_t has_any_type;          /**< True if any xsd:any elements found (AXIS2C-1580) */
     axis2_bool_t has_empty_sequences;   /**< True if any empty sequences found (AXIS2C-1224) */
+    axis2_bool_t has_typeless_elements; /**< True if any typeless elements found (AXIS2C-1421) */
     void *schema_node;                   /**< Schema information */
 } wsdl2c_wsdl_t;
 

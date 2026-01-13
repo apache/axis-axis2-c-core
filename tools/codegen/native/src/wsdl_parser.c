@@ -291,6 +291,7 @@ parse_wsdl_complex_types(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx
     /* Initialize complex types list */
     context->wsdl->complex_types = axutil_array_list_create(env, 0);
     context->wsdl->has_empty_sequences = AXIS2_FALSE;
+    context->wsdl->has_typeless_elements = AXIS2_FALSE;
 
     /* Find all complexType elements in the schema */
     complex_types_result = xmlXPathEvalExpression(
@@ -404,12 +405,22 @@ parse_wsdl_complex_types(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx
                     element->name = axutil_strdup(env, (const axis2_char_t*)elem_name);
                     element->c_name = wsdl2c_sanitize_c_identifier(env, (const axis2_char_t*)elem_name);
                     element->is_any_type = AXIS2_FALSE;
+                    element->is_typeless = AXIS2_FALSE;
 
                     elem_type = xmlGetProp(elem_node, BAD_CAST "type");
                     if (elem_type) {
                         element->type = axutil_strdup(env, (const axis2_char_t*)elem_type);
                         element->c_type = wsdl2c_sanitize_c_identifier(env, (const axis2_char_t*)elem_type);
                         xmlFree(elem_type);
+                    } else {
+                        /* AXIS2C-1421: Element has no type attribute - treat as anyType */
+                        element->is_typeless = AXIS2_TRUE;
+                        element->type = axutil_strdup(env, "anyType");
+                        element->c_type = axutil_strdup(env, "axiom_node_t");
+                        context->wsdl->has_typeless_elements = AXIS2_TRUE;
+                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "AXIS2C-1421: Element '%s' has no type - treating as anyType",
+                            element->name);
                     }
 
                     nillable = xmlGetProp(elem_node, BAD_CAST "nillable");

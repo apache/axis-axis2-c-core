@@ -861,8 +861,12 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
                 const char *c_type = "axis2_char_t*"; /* Default to string */
 
+                /* AXIS2C-1421: Typeless elements are treated as anyType (axiom_node_t*) */
+                if (elem->is_typeless || elem->is_any_type) {
+                    c_type = "axiom_node_t*";
+                }
                 /* Map XSD types to C types */
-                if (elem->type) {
+                else if (elem->type) {
                     if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
                         c_type = "int";
                     } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
@@ -871,7 +875,7 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                         c_type = "double";
                     } else if (strstr(elem->type, "dateTime")) {
                         c_type = "axutil_date_time_t*";
-                    } else if (strstr(elem->type, "base64Binary")) {
+                    } else if (strstr(elem->type, "base64Binary") || strstr(elem->type, "anyType")) {
                         c_type = "axiom_node_t*";
                     }
                 }
@@ -959,7 +963,11 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
                 const char *c_type = "axis2_char_t*";
 
-                if (elem->type) {
+                /* AXIS2C-1421: Typeless elements are treated as anyType (axiom_node_t*) */
+                if (elem->is_typeless || elem->is_any_type) {
+                    c_type = "axiom_node_t*";
+                }
+                else if (elem->type) {
                     if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
                         c_type = "int";
                     } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
@@ -968,7 +976,7 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                         c_type = "double";
                     } else if (strstr(elem->type, "dateTime")) {
                         c_type = "axutil_date_time_t*";
-                    } else if (strstr(elem->type, "base64Binary")) {
+                    } else if (strstr(elem->type, "base64Binary") || strstr(elem->type, "anyType")) {
                         c_type = "axiom_node_t*";
                     }
                 }
@@ -1049,7 +1057,12 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *c_type = "axis2_char_t*";
                 const char *default_val = "NULL";
 
-                if (elem->type) {
+                /* AXIS2C-1421: Typeless elements are treated as anyType (axiom_node_t*) */
+                if (elem->is_typeless || elem->is_any_type) {
+                    c_type = "axiom_node_t*";
+                    default_val = "NULL";
+                }
+                else if (elem->type) {
                     if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
                         c_type = "int";
                         default_val = "0";
@@ -1059,6 +1072,12 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     } else if (strstr(elem->type, "double") || strstr(elem->type, "float")) {
                         c_type = "double";
                         default_val = "0.0";
+                    } else if (strstr(elem->type, "dateTime")) {
+                        c_type = "axutil_date_time_t*";
+                        default_val = "NULL";
+                    } else if (strstr(elem->type, "base64Binary") || strstr(elem->type, "anyType")) {
+                        c_type = "axiom_node_t*";
+                        default_val = "NULL";
                     }
                 }
 
