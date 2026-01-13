@@ -45,6 +45,25 @@
 #  include <net/if_dl.h>
 # endif
 #endif
+/* AXIS2C-1672/AXIS2C-1239 FIX: Ensure HAVE_GETIFADDRS is defined on platforms
+ * that support it but may not have it detected by autoconf.
+ *
+ * On macOS, FreeBSD, NetBSD, OpenBSD, and DragonFlyBSD, the getifaddrs()
+ * function is available in libc and declared in <ifaddrs.h>. However,
+ * autoconf's AC_CHECK_FUNCS(getifaddrs) may fail to detect it if the
+ * <ifaddrs.h> header is not included in the test.
+ *
+ * Without this fix, builds fall through to the Solaris code path which
+ * uses SIOCGARP - an ioctl that doesn't exist on BSD-derived systems,
+ * causing: "error: 'SIOCGARP' undeclared"
+ */
+#if !defined(HAVE_GETIFADDRS)
+# if defined(IS_MACOSX) || defined(__APPLE__) || defined(__FreeBSD__) || \
+     defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
+#  define HAVE_GETIFADDRS 1
+# endif
+#endif
+
 #ifdef HAVE_GETIFADDRS
 #include <ifaddrs.h>
 #endif

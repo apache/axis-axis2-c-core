@@ -140,6 +140,8 @@ AC_CHECK_HEADERS([linux/if.h],[],[],
 #endif
 ])
 AC_CHECK_HEADERS([net/if_types.h net/if_dl.h])
+dnl AXIS2C-1672/AXIS2C-1239: Check for ifaddrs.h (BSD/macOS getifaddrs support)
+AC_CHECK_HEADERS([ifaddrs.h])
 
 dnl This is a check to see if we are running MacOS X
 dnl It may be better to do a Darwin check
