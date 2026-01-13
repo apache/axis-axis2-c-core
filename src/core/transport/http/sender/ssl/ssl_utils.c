@@ -317,9 +317,39 @@ axis2_ssl_utils_cleanup_ssl(
 
     if (ssl)
     {
-        /* SSL_shutdown returns 0 if not yet complete, 1 if complete, <0 on error.
-         * We should always free the SSL object regardless of shutdown result. */
-        SSL_shutdown(ssl);
+        int shutdown_ret;
+
+        /* AXIS2C-1605 FIX: Proper bidirectional SSL shutdown
+         *
+         * SSL_shutdown() return values:
+         *   0  = Shutdown in progress (sent close_notify, awaiting peer's)
+         *   1  = Shutdown complete (bidirectional)
+         *   <0 = Error
+         *
+         * To prevent sockets from being left in CLOSE_WAIT state, we must
+         * call SSL_shutdown() twice when the first call returns 0:
+         * - First call: sends our close_notify to the peer
+         * - Second call: waits to receive peer's close_notify
+         *
+         * Without the second call, the peer's close_notify arrives after
+         * we've freed the SSL object, leaving the socket in CLOSE_WAIT.
+         */
+        shutdown_ret = SSL_shutdown(ssl);
+
+        if (shutdown_ret == 0)
+        {
+            /* Shutdown not yet complete - call again to receive peer's close_notify */
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "[ssl] Performing bidirectional shutdown (waiting for peer close_notify)");
+            SSL_shutdown(ssl);
+        }
+        else if (shutdown_ret < 0)
+        {
+            /* Log error but continue with cleanup */
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "[ssl] SSL_shutdown returned error: %d", shutdown_ret);
+        }
+
         SSL_free(ssl);
     }
     if (ctx)
