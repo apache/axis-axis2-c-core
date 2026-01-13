@@ -126,7 +126,6 @@ main(
         axiom_soap_envelope_t *soap_envelope = NULL;
         axiom_soap_body_t *soap_body = NULL;
         axiom_soap_fault_t *soap_fault = NULL;
-        axis2_char_t *fault_string = NULL;
 
         printf("\nResponse has a SOAP fault\n");
         soap_envelope =
@@ -143,10 +142,69 @@ main(
 
         if (soap_fault)
         {
-            fault_string = axiom_node_to_string(axiom_soap_fault_get_base_node
-                                                (soap_fault, env), env);
-            printf("\nReturned SOAP fault: %s\n", fault_string);
-            AXIS2_FREE (env->allocator, fault_string);
+            /*
+             * SOAP Fault Handling Example (AXIS2C-1615 workaround)
+             *
+             * Extract fault reason, code, and detail from SOAP fault.
+             * This demonstrates programmatic access to fault information
+             * that the code generator does not automatically provide.
+             */
+            axiom_soap_fault_reason_t *fault_reason = NULL;
+            axiom_soap_fault_code_t *fault_code = NULL;
+            axiom_soap_fault_detail_t *fault_detail = NULL;
+
+            /* Extract fault reason/faultstring text */
+            fault_reason = axiom_soap_fault_get_reason(soap_fault, env);
+            if (fault_reason)
+            {
+                axiom_soap_fault_text_t *fault_text = NULL;
+                fault_text = axiom_soap_fault_reason_get_first_soap_fault_text(
+                    fault_reason, env);
+                if (fault_text)
+                {
+                    axis2_char_t *reason_text = NULL;
+                    reason_text = axiom_soap_fault_text_get_text(fault_text, env);
+                    if (reason_text)
+                    {
+                        printf("Fault Reason: %s\n", reason_text);
+                    }
+                }
+            }
+
+            /* Extract fault code */
+            fault_code = axiom_soap_fault_get_code(soap_fault, env);
+            if (fault_code)
+            {
+                axiom_soap_fault_value_t *fault_value = NULL;
+                fault_value = axiom_soap_fault_code_get_value(fault_code, env);
+                if (fault_value)
+                {
+                    axis2_char_t *code_text = NULL;
+                    code_text = axiom_soap_fault_value_get_text(fault_value, env);
+                    if (code_text)
+                    {
+                        printf("Fault Code: %s\n", code_text);
+                    }
+                }
+            }
+
+            /* Extract fault detail (application-specific fault data) */
+            fault_detail = axiom_soap_fault_get_detail(soap_fault, env);
+            if (fault_detail)
+            {
+                axiom_node_t *detail_node = NULL;
+                detail_node = axiom_soap_fault_detail_get_base_node(fault_detail, env);
+                if (detail_node)
+                {
+                    axis2_char_t *detail_str = NULL;
+                    detail_str = axiom_node_to_string(detail_node, env);
+                    if (detail_str)
+                    {
+                        printf("Fault Detail: %s\n", detail_str);
+                        AXIS2_FREE(env->allocator, detail_str);
+                    }
+                }
+            }
         }
 
         if (svc_client)
