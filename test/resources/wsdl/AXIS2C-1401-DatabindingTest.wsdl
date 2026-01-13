@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AXIS2C-1401: Test WSDL for sequence with minOccurs/maxOccurs on xsd:sequence element.
+
+  The issue is that WSDL2C generates code expecting a wrapper element
+  "NewOperationResponseTypeSequence" but WSDL2JAVA (and correct XML Schema semantics)
+  doesn't use such a wrapper. The sequence attributes apply to the repetition of
+  the sequence content, not to a wrapper element.
+-->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://www.example.org/DatabindingTest/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  name="DatabindingTest"
+                  targetNamespace="http://www.example.org/DatabindingTest/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/DatabindingTest/">
+      <xsd:element name="NewOperation" type="tns:NewOperationType"/>
+      <xsd:element name="NewOperationResponse" type="tns:NewOperationResponseType"/>
+
+      <!-- This is the problematic type: sequence with minOccurs/maxOccurs -->
+      <xsd:complexType name="NewOperationResponseType">
+        <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+          <xsd:element name="NewElement" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:simpleType name="NewOperationType">
+        <xsd:restriction base="xsd:string"/>
+      </xsd:simpleType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="NewOperationRequest">
+    <wsdl:part element="tns:NewOperation" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="NewOperationResponse">
+    <wsdl:part element="tns:NewOperationResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="DatabindingTest">
+    <wsdl:operation name="NewOperation">
+      <wsdl:input message="tns:NewOperationRequest"/>
+      <wsdl:output message="tns:NewOperationResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DatabindingTestSOAP" type="tns:DatabindingTest">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="NewOperation">
+      <soap:operation soapAction="http://www.example.org/DatabindingTest/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DatabindingTest">
+    <wsdl:port binding="tns:DatabindingTestSOAP" name="DatabindingTestSOAP">
+      <soap:address location="http://localhost:8080/axis2/services/DatabindingTest"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

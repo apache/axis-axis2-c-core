@@ -400,23 +400,22 @@ generate_stub_header(wsdl2c_context_t *context, const axutil_env_t *env)
 
     /* Include ADB headers if ADB databinding is used */
     if (strcmp(context->options->databinding, "adb") == 0) {
-        fprintf(header_file, "       \n");
-        fprintf(header_file, "         #include \"adb_add.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_addResponse.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_div.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_divResponse.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_sub.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_subResponse.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_mul.h\"\n");
-        fprintf(header_file, "        \n");
-        fprintf(header_file, "         #include \"adb_mulResponse.h\"\n");
-        fprintf(header_file, "        \n\n");
+        /* Generate includes from parsed WSDL operations */
+        if (context->wsdl && context->wsdl->operations) {
+            int op_count = axutil_array_list_size(context->wsdl->operations, env);
+            int i;
+            for (i = 0; i < op_count; i++) {
+                wsdl2c_operation_t *op = axutil_array_list_get(context->wsdl->operations, env, i);
+                if (op && op->name) {
+                    fprintf(header_file, "       \n");
+                    fprintf(header_file, "         #include \"adb_%s.h\"\n", op->name);
+                    fprintf(header_file, "        \n");
+                    fprintf(header_file, "         #include \"adb_%sResponse.h\"\n", op->name);
+                    fprintf(header_file, "        \n");
+                }
+            }
+        }
+        fprintf(header_file, "\n");
     }
 
     /* C++ compatibility */
@@ -473,25 +472,30 @@ generate_stub_header(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(header_file, "        axis2_char_t *\n");
     fprintf(header_file, "        axis2_stub_get_endpoint_uri_of_%s(const axutil_env_t *env);\n\n", service_name);
 
-    /* Operation functions - simplified for Calculator */
+    /* Operation functions - generated from parsed WSDL operations */
     if (strcmp(context->options->databinding, "adb") == 0) {
-        const char *operations[] = {"add", "sub", "mul", "div"};
-        int i;
+        if (context->wsdl && context->wsdl->operations) {
+            int op_count = axutil_array_list_size(context->wsdl->operations, env);
+            int i;
 
-        for (i = 0; i < 4; i++) {
-            fprintf(header_file, "        /**\n");
-            fprintf(header_file, "         * Auto generated function definition signature\n");
-            fprintf(header_file, "         * for \"%s\" operation.\n", operations[i]);
-            fprintf(header_file, "         * @param stub The stub (axis2_stub_t)\n");
-            fprintf(header_file, "         * @param env environment ( mandatory)\n");
-            fprintf(header_file, "         * @param _%s of the adb_%s_t\n", operations[i], operations[i]);
-            fprintf(header_file, "         *\n");
-            fprintf(header_file, "         * @return adb_%sResponse_t*\n", operations[i]);
-            fprintf(header_file, "         */\n");
+            for (i = 0; i < op_count; i++) {
+                wsdl2c_operation_t *op = axutil_array_list_get(context->wsdl->operations, env, i);
+                if (op && op->name) {
+                    fprintf(header_file, "        /**\n");
+                    fprintf(header_file, "         * Auto generated function definition signature\n");
+                    fprintf(header_file, "         * for \"%s\" operation.\n", op->name);
+                    fprintf(header_file, "         * @param stub The stub (axis2_stub_t)\n");
+                    fprintf(header_file, "         * @param env environment ( mandatory)\n");
+                    fprintf(header_file, "         * @param _%s of the adb_%s_t\n", op->name, op->name);
+                    fprintf(header_file, "         *\n");
+                    fprintf(header_file, "         * @return adb_%sResponse_t*\n", op->name);
+                    fprintf(header_file, "         */\n");
 
-            fprintf(header_file, "        adb_%sResponse_t* \n", operations[i]);
-            fprintf(header_file, "        axis2_stub_%s( axis2_stub_t *stub, const axutil_env_t *env,\n", operations[i]);
-            fprintf(header_file, "                                  adb_%s_t* _%s);\n\n", operations[i], operations[i]);
+                    fprintf(header_file, "        adb_%sResponse_t* \n", op->name);
+                    fprintf(header_file, "        axis2_stub_%s( axis2_stub_t *stub, const axutil_env_t *env,\n", op->name);
+                    fprintf(header_file, "                                  adb_%s_t* _%s);\n\n", op->name, op->name);
+                }
+            }
         }
     }
 
@@ -593,16 +597,22 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(source_file, "            svc = axis2_svc_create_with_qname(env, axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL));\n", service_name, service_name);
     fprintf(source_file, "            \n");
 
-    /* Add operations */
-    const char *operations[] = {"add", "sub", "mul", "div"};
-    int i;
-    for (i = 0; i < 4; i++) {
-        fprintf(source_file, "            /* Add %s operation */\n", operations[i]);
-        fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL);\n", operations[i], service_name);
-        fprintf(source_file, "            op = axis2_op_create_with_qname(env, op_qname);\n");
-        fprintf(source_file, "            axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_IN_OUT);\n");
-        fprintf(source_file, "            axis2_svc_add_op(svc, env, op);\n");
-        fprintf(source_file, "            \n");
+    /* Add operations - generated from parsed WSDL */
+    if (context->wsdl && context->wsdl->operations) {
+        int op_count = axutil_array_list_size(context->wsdl->operations, env);
+        int i;
+        for (i = 0; i < op_count; i++) {
+            wsdl2c_operation_t *op = axutil_array_list_get(context->wsdl->operations, env, i);
+            if (op && op->name) {
+                fprintf(source_file, "            /* Add %s operation */\n", op->name);
+                fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"%s\", NULL);\n",
+                        op->name, context->wsdl->target_namespace ? context->wsdl->target_namespace : "");
+                fprintf(source_file, "            op = axis2_op_create_with_qname(env, op_qname);\n");
+                fprintf(source_file, "            axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_IN_OUT);\n");
+                fprintf(source_file, "            axis2_svc_add_op(svc, env, op);\n");
+                fprintf(source_file, "            \n");
+            }
+        }
     }
 
     fprintf(source_file, "            /* Set service in stub - axis2_stub_set_svc not available in this Axis2/C version */\n");
@@ -661,94 +671,88 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(source_file, "            return stub->svc_client;\n");
     fprintf(source_file, "        }\n\n");
 
-    /* Implementation of operation functions
+    /* Implementation of operation functions - generated from parsed WSDL
      * AXIS2C-1581 FIX: When generating operation functions, only set soapAction
      * if it's non-NULL and non-empty. Empty soapAction="" should NOT generate
      * action="" in the Content-Type header - it should be omitted entirely.
      */
     if (strcmp(context->options->databinding, "adb") == 0) {
-        /* Use parsed operations if available, otherwise fall back to default */
-        int use_parsed_ops = (context->wsdl && context->wsdl->operations &&
-                              axutil_array_list_size(context->wsdl->operations, env) > 0);
-        int op_count = use_parsed_ops ?
-                       axutil_array_list_size(context->wsdl->operations, env) : 4;
+        if (context->wsdl && context->wsdl->operations) {
+            int op_count = axutil_array_list_size(context->wsdl->operations, env);
+            int idx;
 
-        for (i = 0; i < op_count; i++) {
-            const char *op_name = operations[i]; /* Default */
-            const char *soap_action = NULL;
-
-            /* Try to get operation info from parsed WSDL */
-            if (use_parsed_ops) {
+            for (idx = 0; idx < op_count; idx++) {
                 wsdl2c_operation_t *parsed_op = axutil_array_list_get(
-                    context->wsdl->operations, env, i);
+                    context->wsdl->operations, env, idx);
                 if (parsed_op && parsed_op->name) {
-                    op_name = parsed_op->name;
-                    soap_action = parsed_op->soap_action; /* May be NULL - AXIS2C-1581 fix */
+                    const char *op_name = parsed_op->name;
+                    const char *soap_action = parsed_op->soap_action; /* May be NULL - AXIS2C-1581 fix */
+
+                    fprintf(source_file, "        /**\n");
+                    fprintf(source_file, "         * Auto generated function implementation for \"%s\" operation.\n", op_name);
+                    if (soap_action) {
+                        fprintf(source_file, "         * SOAP Action: %s\n", soap_action);
+                    } else {
+                        fprintf(source_file, "         * SOAP Action: (none - AXIS2C-1581 compliant)\n");
+                    }
+                    fprintf(source_file, "         */\n");
+                    fprintf(source_file, "        adb_%sResponse_t* AXIS2_CALL\n", op_name);
+                    fprintf(source_file, "        axis2_stub_%s(axis2_stub_t *stub, const axutil_env_t *env, adb_%s_t* _%s)\n", op_name, op_name, op_name);
+                    fprintf(source_file, "        {\n");
+                    fprintf(source_file, "            axis2_svc_client_t *svc_client = NULL;\n");
+                    fprintf(source_file, "            axis2_options_t *options = NULL;\n");
+                    fprintf(source_file, "            axutil_qname_t *op_qname = NULL;\n");
+                    fprintf(source_file, "            axiom_node_t *payload = NULL;\n");
+                    fprintf(source_file, "            axiom_node_t *ret_node = NULL;\n");
+                    fprintf(source_file, "            adb_%sResponse_t *ret_val = NULL;\n", op_name);
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            AXIS2_ENV_CHECK(env, NULL);\n");
+                    fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, stub, NULL);\n");
+                    fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _%s, NULL);\n", op_name);
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            svc_client = axis2_stub_get_svc_client(stub, env);\n");
+                    fprintf(source_file, "            options = axis2_svc_client_get_options(svc_client, env);\n");
+                    fprintf(source_file, "            \n");
+
+                    /* AXIS2C-1581 FIX: Only set soapAction if non-NULL and non-empty */
+                    if (soap_action && soap_action[0] != '\0') {
+                        fprintf(source_file, "            /* Set SOAP action for this operation */\n");
+                        fprintf(source_file, "            axis2_options_set_action(options, env, \"%s\");\n", soap_action);
+                    } else {
+                        fprintf(source_file, "            /* AXIS2C-1581: No soapAction set - empty action omitted from Content-Type */\n");
+                        fprintf(source_file, "            /* This prevents action=\"\" in the HTTP header */\n");
+                    }
+                    fprintf(source_file, "            \n");
+
+                    fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"%s\", NULL);\n",
+                            op_name, context->wsdl->target_namespace ? context->wsdl->target_namespace : "");
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            /* Serialize ADB object to axiom_node */\n");
+                    fprintf(source_file, "            payload = adb_%s_serialize(_%s, env, NULL, NULL, AXIS2_TRUE, NULL, NULL);\n", op_name, op_name);
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            if (NULL == payload) {\n");
+                    fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to serialize %s request\");\n", op_name);
+                    fprintf(source_file, "                return NULL;\n");
+                    fprintf(source_file, "            }\n");
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            ret_node = axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);\n");
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            if (NULL == ret_node) {\n");
+                    fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to invoke %s operation\");\n", op_name);
+                    fprintf(source_file, "                return NULL;\n");
+                    fprintf(source_file, "            }\n");
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            /* Deserialize response node to ADB object */\n");
+                    fprintf(source_file, "            ret_val = adb_%sResponse_create(env);\n", op_name);
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            if (op_qname) {\n");
+                    fprintf(source_file, "                axutil_qname_free(op_qname, env);\n");
+                    fprintf(source_file, "            }\n");
+                    fprintf(source_file, "            \n");
+                    fprintf(source_file, "            return ret_val;\n");
+                    fprintf(source_file, "        }\n\n");
                 }
             }
-
-            fprintf(source_file, "        /**\n");
-            fprintf(source_file, "         * Auto generated function implementation for \"%s\" operation.\n", op_name);
-            if (soap_action) {
-                fprintf(source_file, "         * SOAP Action: %s\n", soap_action);
-            } else {
-                fprintf(source_file, "         * SOAP Action: (none - AXIS2C-1581 compliant)\n");
-            }
-            fprintf(source_file, "         */\n");
-            fprintf(source_file, "        adb_%sResponse_t* AXIS2_CALL\n", op_name);
-            fprintf(source_file, "        axis2_stub_%s(axis2_stub_t *stub, const axutil_env_t *env, adb_%s_t* _%s)\n", op_name, op_name, op_name);
-            fprintf(source_file, "        {\n");
-            fprintf(source_file, "            axis2_svc_client_t *svc_client = NULL;\n");
-            fprintf(source_file, "            axis2_options_t *options = NULL;\n");
-            fprintf(source_file, "            axutil_qname_t *op_qname = NULL;\n");
-            fprintf(source_file, "            axiom_node_t *payload = NULL;\n");
-            fprintf(source_file, "            axiom_node_t *ret_node = NULL;\n");
-            fprintf(source_file, "            adb_%sResponse_t *ret_val = NULL;\n", op_name);
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            AXIS2_ENV_CHECK(env, NULL);\n");
-            fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, stub, NULL);\n");
-            fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _%s, NULL);\n", op_name);
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            svc_client = axis2_stub_get_svc_client(stub, env);\n");
-            fprintf(source_file, "            options = axis2_svc_client_get_options(svc_client, env);\n");
-            fprintf(source_file, "            \n");
-
-            /* AXIS2C-1581 FIX: Only set soapAction if non-NULL and non-empty */
-            if (soap_action && soap_action[0] != '\0') {
-                fprintf(source_file, "            /* Set SOAP action for this operation */\n");
-                fprintf(source_file, "            axis2_options_set_action(options, env, \"%s\");\n", soap_action);
-            } else {
-                fprintf(source_file, "            /* AXIS2C-1581: No soapAction set - empty action omitted from Content-Type */\n");
-                fprintf(source_file, "            /* This prevents action=\"\" in the HTTP header */\n");
-            }
-            fprintf(source_file, "            \n");
-
-            fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL);\n", op_name, service_name);
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            /* Serialize ADB object to axiom_node */\n");
-            fprintf(source_file, "            payload = adb_%s_serialize(_%s, env, NULL, NULL, AXIS2_TRUE, NULL, NULL);\n", op_name, op_name);
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            if (NULL == payload) {\n");
-            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to serialize %s request\");\n", op_name);
-            fprintf(source_file, "                return NULL;\n");
-            fprintf(source_file, "            }\n");
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            ret_node = axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);\n");
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            if (NULL == ret_node) {\n");
-            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to invoke %s operation\");\n", op_name);
-            fprintf(source_file, "                return NULL;\n");
-            fprintf(source_file, "            }\n");
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            /* Deserialize response node to ADB object */\n");
-            fprintf(source_file, "            ret_val = adb_%sResponse_create(env);\n", op_name);
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            if (op_qname) {\n");
-            fprintf(source_file, "                axutil_qname_free(op_qname, env);\n");
-            fprintf(source_file, "            }\n");
-            fprintf(source_file, "            \n");
-            fprintf(source_file, "            return ret_val;\n");
-            fprintf(source_file, "        }\n\n");
         }
     }
 
@@ -759,7 +763,7 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     return AXIS2_SUCCESS;
 }
 
-/* Generate proper ADB class implementations */
+/* Generate proper ADB class implementations - AXIS2C-1401: Use parsed operations */
 static axis2_status_t
 generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 {
@@ -767,20 +771,28 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         return AXIS2_SUCCESS; /* Skip ADB generation if not using ADB */
     }
 
-    /* Request/Response classes for Calculator operations */
-    const char *request_classes[] = {"add", "sub", "mul", "div"};
-    const char *response_classes[] = {"addResponse", "subResponse", "mulResponse", "divResponse"};
+    /* Generate ADB classes from parsed WSDL operations */
+    if (!context->wsdl || !context->wsdl->operations) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No parsed operations available for ADB generation");
+        return AXIS2_FAILURE;
+    }
+
+    int op_count = axutil_array_list_size(context->wsdl->operations, env);
     int i;
 
-    /* Generate request classes (each has in0, in1 integer parameters) */
-    for (i = 0; i < 4; i++) {
+    /* Generate request classes for each operation */
+    for (i = 0; i < op_count; i++) {
+        wsdl2c_operation_t *op = axutil_array_list_get(context->wsdl->operations, env, i);
+        if (!op || !op->name) continue;
+
+        const char *op_name = op->name;
         FILE *header_file = NULL, *source_file = NULL;
         axis2_char_t *header_path = NULL, *source_path = NULL;
 
         /* Create ADB header file for request */
         header_path = AXIS2_MALLOC(env->allocator,
-            strlen(context->options->output_dir) + strlen(request_classes[i]) + 50);
-        sprintf(header_path, "%s/src/adb_%s.h", context->options->output_dir, request_classes[i]);
+            strlen(context->options->output_dir) + strlen(op_name) + 50);
+        sprintf(header_path, "%s/src/adb_%s.h", context->options->output_dir, op_name);
 
         header_file = fopen(header_path, "w");
         if (!header_file) {
@@ -792,13 +804,13 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         /* Write request ADB header */
         fprintf(header_file, "\n\n");
         fprintf(header_file, "        /**\n");
-        fprintf(header_file, "        * adb_%s.h\n", request_classes[i]);
+        fprintf(header_file, "        * adb_%s.h\n", op_name);
         fprintf(header_file, "        *\n");
         fprintf(header_file, "        * This file was auto-generated from WSDL\n");
         fprintf(header_file, "        * by the Apache Axis2/C Native version: 1.0.0\n");
         fprintf(header_file, "        */\n\n");
-        fprintf(header_file, "        #ifndef ADB_%s_H\n", axutil_string_toupper(request_classes[i], env));
-        fprintf(header_file, "        #define ADB_%s_H\n\n", axutil_string_toupper(request_classes[i], env));
+        fprintf(header_file, "        #ifndef ADB_%s_H\n", axutil_string_toupper(op_name, env));
+        fprintf(header_file, "        #define ADB_%s_H\n\n", axutil_string_toupper(op_name, env));
         fprintf(header_file, "        #include <stdio.h>\n");
         fprintf(header_file, "        #include <axiom.h>\n");
         fprintf(header_file, "        #include <axutil_utils.h>\n");
@@ -818,52 +830,52 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
          * Test coverage: test_axis2c_1616_type_name_conflict.c validates conflict detection
          * and resolution patterns for reserved words like "type", "class", "struct", etc.
          */
-        fprintf(header_file, "        typedef struct adb_%s adb_%s_t;\n\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        typedef struct adb_%s adb_%s_t;\n\n", op_name, op_name);
 
         /* Function declarations */
         fprintf(header_file, "        /**\n");
-        fprintf(header_file, "         * Constructor for %s\n", request_classes[i]);
+        fprintf(header_file, "         * Constructor for %s\n", op_name);
         fprintf(header_file, "         */\n");
-        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", request_classes[i]);
-        fprintf(header_file, "        adb_%s_create(const axutil_env_t *env);\n\n", request_classes[i]);
+        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", op_name);
+        fprintf(header_file, "        adb_%s_create(const axutil_env_t *env);\n\n", op_name);
 
         fprintf(header_file, "        /**\n");
-        fprintf(header_file, "         * Free %s\n", request_classes[i]);
+        fprintf(header_file, "         * Free %s\n", op_name);
         fprintf(header_file, "         */\n");
         fprintf(header_file, "        axis2_status_t AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env);\n\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env);\n\n", op_name, op_name);
 
         /* Property accessors for in0 and in1 */
         fprintf(header_file, "        /**\n");
         fprintf(header_file, "         * Getter for in0\n");
         fprintf(header_file, "         */\n");
         fprintf(header_file, "        int AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_get_in0(adb_%s_t* _this, const axutil_env_t *env);\n\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        adb_%s_get_in0(adb_%s_t* _this, const axutil_env_t *env);\n\n", op_name, op_name);
 
         fprintf(header_file, "        /**\n");
         fprintf(header_file, "         * Setter for in0\n");
         fprintf(header_file, "         */\n");
         fprintf(header_file, "        axis2_status_t AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_set_in0(adb_%s_t* _this, const axutil_env_t *env, const int arg_in0);\n\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        adb_%s_set_in0(adb_%s_t* _this, const axutil_env_t *env, const int arg_in0);\n\n", op_name, op_name);
 
         fprintf(header_file, "        /**\n");
         fprintf(header_file, "         * Getter for in1\n");
         fprintf(header_file, "         */\n");
         fprintf(header_file, "        int AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_get_in1(adb_%s_t* _this, const axutil_env_t *env);\n\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        adb_%s_get_in1(adb_%s_t* _this, const axutil_env_t *env);\n\n", op_name, op_name);
 
         fprintf(header_file, "        /**\n");
         fprintf(header_file, "         * Setter for in1\n");
         fprintf(header_file, "         */\n");
         fprintf(header_file, "        axis2_status_t AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_set_in1(adb_%s_t* _this, const axutil_env_t *env, const int arg_in1);\n\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        adb_%s_set_in1(adb_%s_t* _this, const axutil_env_t *env, const int arg_in1);\n\n", op_name, op_name);
 
         /* Serialization functions */
         fprintf(header_file, "        /**\n");
         fprintf(header_file, "         * Serialize to axiom_node\n");
         fprintf(header_file, "         */\n");
         fprintf(header_file, "        axiom_node_t* AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n", request_classes[i], request_classes[i]);
+        fprintf(header_file, "        adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n", op_name, op_name);
         fprintf(header_file, "                        axiom_node_t* parent, axiom_element_t *parent_element,\n");
         fprintf(header_file, "                        int parent_tag_closed, axutil_hash_t* namespaces,\n");
         fprintf(header_file, "                        int *next_ns_index);\n\n");
@@ -876,35 +888,35 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(header_file, "         * Deserialize from axiom_node - AXIS2C-1614 compliant\n");
         fprintf(header_file, "         * Validates required attributes and fails if missing\n");
         fprintf(header_file, "         */\n");
-        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", request_classes[i]);
-        fprintf(header_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", request_classes[i]);
+        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", op_name);
+        fprintf(header_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", op_name);
         fprintf(header_file, "                               int dont_care_minoccurs);\n\n");
 
         fprintf(header_file, "        #ifdef __cplusplus\n");
         fprintf(header_file, "        }\n");
         fprintf(header_file, "        #endif\n\n");
-        fprintf(header_file, "        #endif /* ADB_%s_H */\n", axutil_string_toupper(request_classes[i], env));
+        fprintf(header_file, "        #endif /* ADB_%s_H */\n", axutil_string_toupper(op_name, env));
 
         fclose(header_file);
 
         /* Create ADB source file for request */
         source_path = AXIS2_MALLOC(env->allocator,
-            strlen(context->options->output_dir) + strlen(request_classes[i]) + 50);
-        sprintf(source_path, "%s/src/adb_%s.c", context->options->output_dir, request_classes[i]);
+            strlen(context->options->output_dir) + strlen(op_name) + 50);
+        sprintf(source_path, "%s/src/adb_%s.c", context->options->output_dir, op_name);
 
         source_file = fopen(source_path, "w");
         if (source_file) {
             fprintf(source_file, "\n\n");
             fprintf(source_file, "        /**\n");
-            fprintf(source_file, "        * adb_%s.c\n", request_classes[i]);
+            fprintf(source_file, "        * adb_%s.c\n", op_name);
             fprintf(source_file, "        *\n");
             fprintf(source_file, "        * This file was auto-generated from WSDL\n");
             fprintf(source_file, "        * by the Apache Axis2/C Native version: 1.0.0\n");
             fprintf(source_file, "        */\n\n");
-            fprintf(source_file, "        #include \"adb_%s.h\"\n\n", request_classes[i]);
+            fprintf(source_file, "        #include \"adb_%s.h\"\n\n", op_name);
 
             /* Structure definition */
-            fprintf(source_file, "        struct adb_%s\n", request_classes[i]);
+            fprintf(source_file, "        struct adb_%s\n", op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            int property_in0;\n");
             fprintf(source_file, "            int property_in1;\n");
@@ -913,14 +925,14 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "        };\n\n");
 
             /* Constructor implementation */
-            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", request_classes[i]);
-            fprintf(source_file, "        adb_%s_create(const axutil_env_t *env)\n", request_classes[i]);
+            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", op_name);
+            fprintf(source_file, "        adb_%s_create(const axutil_env_t *env)\n", op_name);
             fprintf(source_file, "        {\n");
-            fprintf(source_file, "            adb_%s_t *_this = NULL;\n", request_classes[i]);
+            fprintf(source_file, "            adb_%s_t *_this = NULL;\n", op_name);
             fprintf(source_file, "            \n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, NULL);\n");
             fprintf(source_file, "            \n");
-            fprintf(source_file, "            _this = (adb_%s_t *) AXIS2_MALLOC(env->allocator, sizeof(adb_%s_t));\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "            _this = (adb_%s_t *) AXIS2_MALLOC(env->allocator, sizeof(adb_%s_t));\n", op_name, op_name);
             fprintf(source_file, "            if(NULL == _this)\n");
             fprintf(source_file, "            {\n");
             fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);\n");
@@ -937,7 +949,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
             /* Implementation of all accessor functions */
             fprintf(source_file, "        axis2_status_t AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env)\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env)\n", op_name, op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
@@ -948,7 +960,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
             /* Getters and setters */
             fprintf(source_file, "        int AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_get_in0(adb_%s_t* _this, const axutil_env_t *env)\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "        adb_%s_get_in0(adb_%s_t* _this, const axutil_env_t *env)\n", op_name, op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, 0);\n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _this, 0);\n");
@@ -957,7 +969,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "        }\n\n");
 
             fprintf(source_file, "        axis2_status_t AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_set_in0(adb_%s_t* _this, const axutil_env_t *env, const int arg_in0)\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "        adb_%s_set_in0(adb_%s_t* _this, const axutil_env_t *env, const int arg_in0)\n", op_name, op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
@@ -969,7 +981,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "        }\n\n");
 
             fprintf(source_file, "        int AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_get_in1(adb_%s_t* _this, const axutil_env_t *env)\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "        adb_%s_get_in1(adb_%s_t* _this, const axutil_env_t *env)\n", op_name, op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, 0);\n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _this, 0);\n");
@@ -978,7 +990,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "        }\n\n");
 
             fprintf(source_file, "        axis2_status_t AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_set_in1(adb_%s_t* _this, const axutil_env_t *env, const int arg_in1)\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "        adb_%s_set_in1(adb_%s_t* _this, const axutil_env_t *env, const int arg_in1)\n", op_name, op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
@@ -991,7 +1003,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
             /* Basic serialization function with AXIS2C-1579 xsi:type support */
             fprintf(source_file, "        axiom_node_t* AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n", request_classes[i], request_classes[i]);
+            fprintf(source_file, "        adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n", op_name, op_name);
             fprintf(source_file, "                        axiom_node_t* parent, axiom_element_t *parent_element,\n");
             fprintf(source_file, "                        int parent_tag_closed, axutil_hash_t* namespaces,\n");
             fprintf(source_file, "                        int *next_ns_index)\n");
@@ -1010,9 +1022,9 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
                     context->wsdl->target_namespace ? context->wsdl->target_namespace : "http://example.com/");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            /* Create the element */\n");
-            fprintf(source_file, "            current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", request_classes[i]);
+            fprintf(source_file, "            current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", op_name);
             fprintf(source_file, "            if (!current_element) {\n");
-            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to create element for %s\");\n", request_classes[i]);
+            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to create element for %s\");\n", op_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
@@ -1031,7 +1043,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            /* Add xsi:type attribute with properly prefixed type name */\n");
-            fprintf(source_file, "            xsi_type_value = \"ns1:%s\";\n", request_classes[i]);
+            fprintf(source_file, "            xsi_type_value = \"ns1:%s\";\n", op_name);
             fprintf(source_file, "            xsi_type_attr = axiom_attribute_create(env, \"type\", xsi_type_value, xsi_ns);\n");
             fprintf(source_file, "            if (xsi_type_attr) {\n");
             fprintf(source_file, "                axiom_element_add_attribute(current_element, env, xsi_type_attr, current_node);\n");
@@ -1058,11 +1070,11 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
              * This implements the fix from the original XSL template patch that added
              * validation to fail when required attributes are missing
              * AXIS2C-1580 FIX: Safe qname handling for xsd:any elements */
-            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", request_classes[i]);
-            fprintf(source_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", request_classes[i]);
+            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", op_name);
+            fprintf(source_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", op_name);
             fprintf(source_file, "                               int dont_care_minoccurs)\n");
             fprintf(source_file, "        {\n");
-            fprintf(source_file, "            adb_%s_t *adb_obj = NULL;\n", request_classes[i]);
+            fprintf(source_file, "            adb_%s_t *adb_obj = NULL;\n", op_name);
             fprintf(source_file, "            axiom_element_t *element = NULL;\n");
             fprintf(source_file, "            axutil_qname_t *element_qname = NULL;\n");
             fprintf(source_file, "            axis2_char_t *attr_value = NULL;\n");
@@ -1083,7 +1095,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            /* For xsd:any elements, element_qname can be NULL - skip qname validation */\n");
             fprintf(source_file, "            if (element_qname) {\n");
             fprintf(source_file, "                /* Normal element - validate qname matches expected */\n");
-            fprintf(source_file, "                /* axutil_qname_t *expected_qname = axutil_qname_create(env, \"%s\", namespace_uri, NULL); */\n", request_classes[i]);
+            fprintf(source_file, "                /* axutil_qname_t *expected_qname = axutil_qname_create(env, \"%s\", namespace_uri, NULL); */\n", op_name);
             fprintf(source_file, "                /* if (!axutil_qname_equals(element_qname, env, expected_qname)) { ... } */\n");
             fprintf(source_file, "            } else {\n");
             fprintf(source_file, "                /* AXIS2C-1580: xsd:any element detected - qname is NULL */\n");
@@ -1091,7 +1103,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, \"Deserializing xsd:any element (NULL qname)\");\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
-            fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", request_classes[i]);
+            fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", op_name);
             fprintf(source_file, "            if (!adb_obj) {\n");
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
@@ -1102,7 +1114,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            if (!attr_value && !dont_care_minoccurs) {\n");
             fprintf(source_file, "                /* This matches the XSL patch: if(!dont_care_minoccurs) return AXIS2_FAILURE */\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"required attribute id missing\");\n");
-            fprintf(source_file, "                adb_%s_free(adb_obj, env);\n", request_classes[i]);
+            fprintf(source_file, "                adb_%s_free(adb_obj, env);\n", op_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
@@ -1119,34 +1131,41 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         AXIS2_FREE(env->allocator, source_path);
     }
 
-    /* Generate response classes (each has a single return value) */
-    for (i = 0; i < 4; i++) {
+    /* Generate response classes (each has a single return value) - use parsed operations */
+    for (i = 0; i < op_count; i++) {
+        wsdl2c_operation_t *op = axutil_array_list_get(context->wsdl->operations, env, i);
+        if (!op || !op->name) continue;
+
+        /* Build response class name as "operationName" + "Response" */
+        axis2_char_t *response_name = AXIS2_MALLOC(env->allocator, strlen(op->name) + 20);
+        sprintf(response_name, "%sResponse", op->name);
+
         FILE *header_file = NULL, *source_file = NULL;
         axis2_char_t *header_path = NULL, *source_path = NULL;
-        const char *return_field = (strcmp(response_classes[i], "addResponse") == 0) ? "addReturn" :
-                                  (strstr(response_classes[i], "Response") ? "addReturn" : "result"); /* WSDL shows "addReturn" for all */
+        const char *return_field = "result"; /* Generic return field name */
 
         /* Create ADB header file for response */
         header_path = AXIS2_MALLOC(env->allocator,
-            strlen(context->options->output_dir) + strlen(response_classes[i]) + 50);
-        sprintf(header_path, "%s/src/adb_%s.h", context->options->output_dir, response_classes[i]);
+            strlen(context->options->output_dir) + strlen(response_name) + 50);
+        sprintf(header_path, "%s/src/adb_%s.h", context->options->output_dir, response_name);
 
         header_file = fopen(header_path, "w");
         if (!header_file) {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create ADB header: %s", header_path);
             AXIS2_FREE(env->allocator, header_path);
+            AXIS2_FREE(env->allocator, response_name);
             continue;
         }
 
         /* Write response ADB header (similar pattern but with single return value) */
         fprintf(header_file, "\n\n");
         fprintf(header_file, "        /**\n");
-        fprintf(header_file, "        * adb_%s.h\n", response_classes[i]);
+        fprintf(header_file, "        * adb_%s.h\n", response_name);
         fprintf(header_file, "        *\n");
         fprintf(header_file, "        * This file was auto-generated from WSDL\n");
         fprintf(header_file, "        * by the Apache Axis2/C Native version: 1.0.0\n");
         fprintf(header_file, "        */\n\n");
-        char *upper_class_name = axutil_string_toupper(response_classes[i], env);
+        char *upper_class_name = axutil_string_toupper(response_name, env);
         fprintf(header_file, "        #ifndef ADB_%s_H\n", upper_class_name);
         fprintf(header_file, "        #define ADB_%s_H\n\n", upper_class_name);
         if (upper_class_name) {
@@ -1163,34 +1182,34 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(header_file, "        #endif\n\n");
 
         /* Structure definition */
-        fprintf(header_file, "        typedef struct adb_%s adb_%s_t;\n\n", response_classes[i], response_classes[i]);
+        fprintf(header_file, "        typedef struct adb_%s adb_%s_t;\n\n", response_name, response_name);
 
         /* Function declarations */
-        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", response_classes[i]);
-        fprintf(header_file, "        adb_%s_create(const axutil_env_t *env);\n\n", response_classes[i]);
+        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", response_name);
+        fprintf(header_file, "        adb_%s_create(const axutil_env_t *env);\n\n", response_name);
 
         fprintf(header_file, "        axis2_status_t AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env);\n\n", response_classes[i], response_classes[i]);
+        fprintf(header_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env);\n\n", response_name, response_name);
 
         /* Return value accessor */
         fprintf(header_file, "        int AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_get_%s(adb_%s_t* _this, const axutil_env_t *env);\n\n", response_classes[i], return_field, response_classes[i]);
+        fprintf(header_file, "        adb_%s_get_%s(adb_%s_t* _this, const axutil_env_t *env);\n\n", response_name, return_field, response_name);
 
         fprintf(header_file, "        axis2_status_t AXIS2_CALL\n");
-        fprintf(header_file, "        adb_%s_set_%s(adb_%s_t* _this, const axutil_env_t *env, const int arg_%s);\n\n", response_classes[i], return_field, response_classes[i], return_field);
+        fprintf(header_file, "        adb_%s_set_%s(adb_%s_t* _this, const axutil_env_t *env, const int arg_%s);\n\n", response_name, return_field, response_name, return_field);
 
         /* AXIS2C-1614 FIX: Add deserialization function to response classes */
         fprintf(header_file, "        /**\n");
         fprintf(header_file, "         * Deserialize from axiom_node - AXIS2C-1614 compliant\n");
         fprintf(header_file, "         */\n");
-        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", response_classes[i]);
-        fprintf(header_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", response_classes[i]);
+        fprintf(header_file, "        adb_%s_t* AXIS2_CALL\n", response_name);
+        fprintf(header_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", response_name);
         fprintf(header_file, "                               int dont_care_minoccurs);\n\n");
 
         fprintf(header_file, "        #ifdef __cplusplus\n");
         fprintf(header_file, "        }\n");
         fprintf(header_file, "        #endif\n\n");
-        char *upper_class_name_end = axutil_string_toupper(response_classes[i], env);
+        char *upper_class_name_end = axutil_string_toupper(response_name, env);
         fprintf(header_file, "        #endif /* ADB_%s_H */\n", upper_class_name_end);
         if (upper_class_name_end) {
             free(upper_class_name_end);
@@ -1200,33 +1219,33 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
         /* Create ADB source file for response - similar implementation pattern */
         source_path = AXIS2_MALLOC(env->allocator,
-            strlen(context->options->output_dir) + strlen(response_classes[i]) + 50);
-        sprintf(source_path, "%s/src/adb_%s.c", context->options->output_dir, response_classes[i]);
+            strlen(context->options->output_dir) + strlen(response_name) + 50);
+        sprintf(source_path, "%s/src/adb_%s.c", context->options->output_dir, response_name);
 
         source_file = fopen(source_path, "w");
         if (source_file) {
             fprintf(source_file, "\n\n");
             fprintf(source_file, "        /**\n");
-            fprintf(source_file, "        * adb_%s.c\n", response_classes[i]);
+            fprintf(source_file, "        * adb_%s.c\n", response_name);
             fprintf(source_file, "        *\n");
             fprintf(source_file, "        * This file was auto-generated from WSDL\n");
             fprintf(source_file, "        * by the Apache Axis2/C Native version: 1.0.0\n");
             fprintf(source_file, "        */\n\n");
-            fprintf(source_file, "        #include \"adb_%s.h\"\n\n", response_classes[i]);
+            fprintf(source_file, "        #include \"adb_%s.h\"\n\n", response_name);
 
             /* Structure definition */
-            fprintf(source_file, "        struct adb_%s\n", response_classes[i]);
+            fprintf(source_file, "        struct adb_%s\n", response_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            int property_%s;\n", return_field);
             fprintf(source_file, "            axis2_bool_t is_valid_%s;\n", return_field);
             fprintf(source_file, "        };\n\n");
 
             /* Basic implementation - constructor, accessors */
-            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", response_classes[i]);
-            fprintf(source_file, "        adb_%s_create(const axutil_env_t *env)\n", response_classes[i]);
+            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", response_name);
+            fprintf(source_file, "        adb_%s_create(const axutil_env_t *env)\n", response_name);
             fprintf(source_file, "        {\n");
-            fprintf(source_file, "            adb_%s_t *_this = NULL;\n", response_classes[i]);
-            fprintf(source_file, "            _this = (adb_%s_t *) AXIS2_MALLOC(env->allocator, sizeof(adb_%s_t));\n", response_classes[i], response_classes[i]);
+            fprintf(source_file, "            adb_%s_t *_this = NULL;\n", response_name);
+            fprintf(source_file, "            _this = (adb_%s_t *) AXIS2_MALLOC(env->allocator, sizeof(adb_%s_t));\n", response_name, response_name);
             fprintf(source_file, "            if(NULL == _this) return NULL;\n");
             fprintf(source_file, "            _this->property_%s = 0;\n", return_field);
             fprintf(source_file, "            _this->is_valid_%s = AXIS2_FALSE;\n", return_field);
@@ -1235,20 +1254,20 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
             /* Simplified accessors for response */
             fprintf(source_file, "        axis2_status_t AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env)\n", response_classes[i], response_classes[i]);
+            fprintf(source_file, "        adb_%s_free(adb_%s_t* _this, const axutil_env_t *env)\n", response_name, response_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            if(_this) AXIS2_FREE(env->allocator, _this);\n");
             fprintf(source_file, "            return AXIS2_SUCCESS;\n");
             fprintf(source_file, "        }\n\n");
 
             fprintf(source_file, "        int AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_get_%s(adb_%s_t* _this, const axutil_env_t *env)\n", response_classes[i], return_field, response_classes[i]);
+            fprintf(source_file, "        adb_%s_get_%s(adb_%s_t* _this, const axutil_env_t *env)\n", response_name, return_field, response_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            return _this ? _this->property_%s : 0;\n", return_field);
             fprintf(source_file, "        }\n\n");
 
             fprintf(source_file, "        axis2_status_t AXIS2_CALL\n");
-            fprintf(source_file, "        adb_%s_set_%s(adb_%s_t* _this, const axutil_env_t *env, const int arg_%s)\n", response_classes[i], return_field, response_classes[i], return_field);
+            fprintf(source_file, "        adb_%s_set_%s(adb_%s_t* _this, const axutil_env_t *env, const int arg_%s)\n", response_name, return_field, response_name, return_field);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            if(_this) {\n");
             fprintf(source_file, "                _this->property_%s = arg_%s;\n", return_field, return_field);
@@ -1258,11 +1277,11 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "        }\n\n");
 
             /* AXIS2C-1614 FIX: Deserialization function for response classes with validation */
-            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", response_classes[i]);
-            fprintf(source_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", response_classes[i]);
+            fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", response_name);
+            fprintf(source_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", response_name);
             fprintf(source_file, "                               int dont_care_minoccurs)\n");
             fprintf(source_file, "        {\n");
-            fprintf(source_file, "            adb_%s_t *adb_obj = NULL;\n", response_classes[i]);
+            fprintf(source_file, "            adb_%s_t *adb_obj = NULL;\n", response_name);
             fprintf(source_file, "            axiom_element_t *element = NULL;\n");
             fprintf(source_file, "            axis2_char_t *attr_value = NULL;\n");
             fprintf(source_file, "            \n");
@@ -1274,7 +1293,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
-            fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", response_classes[i]);
+            fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", response_name);
             fprintf(source_file, "            if (!adb_obj) {\n");
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
@@ -1283,7 +1302,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            attr_value = axiom_element_get_attribute_value_by_name(element, env, \"status\");\n");
             fprintf(source_file, "            if (!attr_value && !dont_care_minoccurs) {\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"required attribute status missing\");\n");
-            fprintf(source_file, "                adb_%s_free(adb_obj, env);\n", response_classes[i]);
+            fprintf(source_file, "                adb_%s_free(adb_obj, env);\n", response_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
@@ -1297,6 +1316,7 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
         AXIS2_FREE(env->allocator, header_path);
         AXIS2_FREE(env->allocator, source_path);
+        AXIS2_FREE(env->allocator, response_name);
     }
 
     /* Generate extension mapper */
