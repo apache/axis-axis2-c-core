@@ -28,10 +28,12 @@
 #include <axutil_file_handler.h>
 #include <axutil_url.h>
 #include <axutil_string.h>
+#include <axutil_http_chunked_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
 #include <axis2_engine.h>
 #include <axis2_conf_init.h>
+#include <axis2_http_transport.h>
 #include <axis2_http_transport_utils.h>
 
 axis2_char_t *axis2_cgi_default_url_prefix = "/cgi-bin/axis2.cgi/";
@@ -74,6 +76,7 @@ main(
     /* axis2_bool_t processed = AXIS2_FALSE; */
     axis2_http_transport_in_t request;
     axis2_http_transport_out_t response;
+    axutil_array_list_t *mime_parts = NULL;  /* AXIS2C-1404: MTOM support */
     /*axis2_http_header_t* http_header = NULL; */
     /*axutil_hash_t *headers = NULL; */
     /* axis2_char_t *axis2_cgi_url_prefix = NULL; */
@@ -129,10 +132,10 @@ main(
         strcat(request_url, "?");
     strcat(request_url, cgi_request->query_string);
 
-    if(cgi_request->content_length)
+    if(cgi_request->content_length && strlen(cgi_request->content_length) > 0)
         content_length = axutil_atoi(cgi_request->content_length);
     else
-        content_length = 0;
+        content_length = -1;  /* AXIS2C-1404: Use -1 for unknown/chunked */
 
     /* Set streams */
 
@@ -190,30 +193,70 @@ main(
     request.out_transport_info = axis2_cgi_out_transport_info_create(env, cgi_request);
 
     /*Process request */
-    fprintf(stderr, "ok\n");
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "CGI: Processing request");
     axis2_http_transport_utils_process_request(env, conf_ctx, &request, &response);
-    fprintf(stderr, "ok\n");
-    /*Send status */
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "CGI: Done processing request");
 
-    fprintf(stdout, "Status: %d %s \r\n", response.http_status_code, response.http_status_code_name);
+    /*Send status */
+    fprintf(stdout, "Status: %d %s" AXIS2_CRLF, response.http_status_code, response.http_status_code_name);
 
     if(response.content_type)
     {
-        fprintf(stdout, "Content-type: %s \r\n", response.content_type);
+        fprintf(stdout, "Content-type: %s" AXIS2_CRLF, response.content_type);
     }
-    else if(strlen(axis2_cgi_out_transport_get_content(request.out_transport_info))
-        && axis2_cgi_out_transport_get_content(request.out_transport_info))
+    else if(axis2_cgi_out_transport_get_content(request.out_transport_info)
+        && strlen(axis2_cgi_out_transport_get_content(request.out_transport_info)))
     {
-        fprintf(stdout, "Content-type: %s \r\n", axis2_cgi_out_transport_get_content(
+        fprintf(stdout, "Content-type: %s" AXIS2_CRLF, axis2_cgi_out_transport_get_content(
             request.out_transport_info));
     }
 
-    fprintf(stdout, "\r\n"); /* End of headers for server */
-
-    /* Write data body */
-    if(!axis2_cgi_write_response(response.response_data, response.response_data_length))
+    /* AXIS2C-1404: Handle MTOM responses with chunked transfer encoding */
+    if((response.msg_ctx != NULL) &&
+        (mime_parts = axis2_msg_ctx_get_mime_parts(response.msg_ctx, env)))
     {
-        fprintf(stderr, "Error writing output data\n");
+        axutil_stream_t *stdout_stream = axutil_stream_create_file(env, stdout);
+        axutil_http_chunked_stream_t *stdout_chunked_stream =
+                axutil_http_chunked_stream_create(env, stdout_stream);
+        axutil_param_t *callback_name_param = NULL;
+        axis2_char_t *mtom_sending_callback_name = NULL;
+
+        if((callback_name_param = axis2_msg_ctx_get_parameter(response.msg_ctx,
+                    env, AXIS2_MTOM_SENDING_CALLBACK)))
+        {
+            mtom_sending_callback_name =
+                    (axis2_char_t *)axutil_param_get_value(callback_name_param, env);
+        }
+
+        /* Write chunked transfer encoding header */
+        fprintf(stdout, "Transfer-Encoding: chunked" AXIS2_CRLF AXIS2_CRLF);
+
+        if(!axis2_http_transport_utils_send_mtom_message(stdout_chunked_stream, env,
+                    mime_parts, mtom_sending_callback_name))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "CGI: Error writing MTOM data");
+            fprintf(stderr, "Error writing MTOM data\n");
+        }
+
+        /* Clean up chunked stream resources */
+        if(stdout_chunked_stream)
+        {
+            axutil_http_chunked_stream_free(stdout_chunked_stream, env);
+        }
+        if(stdout_stream)
+        {
+            axutil_stream_free(stdout_stream, env);
+        }
+    }
+    else
+    {
+        fprintf(stdout, AXIS2_CRLF); /* End of headers for server */
+
+        /* Write data body */
+        if(!axis2_cgi_write_response(response.response_data, response.response_data_length))
+        {
+            fprintf(stderr, "Error writing output data\n");
+        }
     }
 
     axis2_http_transport_utils_transport_in_uninit(&request, env);
