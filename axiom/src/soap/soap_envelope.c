@@ -204,7 +204,17 @@ axiom_soap_envelope_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
+    /* Allow NULL to break ownership during cleanup (AXIS2C-1490) */
+    if(!soap_envelope)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    if(!node)
+    {
+        soap_envelope->om_ele_node = NULL;
+        return AXIS2_SUCCESS;
+    }
 
     if(axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
@@ -405,7 +415,12 @@ axiom_soap_envelope_set_builder(
     const axutil_env_t * env,
     axiom_soap_builder_t * soap_builder)
 {
-    AXIS2_PARAM_CHECK(env->error, soap_builder, AXIS2_FAILURE);
+    /* Allow NULL to break circular reference during cleanup (AXIS2C-1490) */
+    if(!soap_envelope)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
     soap_envelope->soap_builder = soap_builder;
     return AXIS2_SUCCESS;
 }

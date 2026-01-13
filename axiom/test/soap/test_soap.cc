@@ -472,3 +472,169 @@ TEST_F(TestSOAP, test_soap_fault_value) {
     axiom_soap_envelope_free(soap_envelope, m_env);
 }
 
+/**
+ * Test for AXIS2C-1490: Verify that Header element without SOAP namespace is rejected.
+ *
+ * The bug report shows that this malformed SOAP message was incorrectly accepted:
+ *   <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+ *       <Header/>         <!-- BUG: should be soap:Header -->
+ *       <soap:Body/>
+ *   </soap:Envelope>
+ *
+ * The SOAP builder should reject this because <Header/> is not in the SOAP namespace.
+ */
+TEST_F(TestSOAP, test_axis2c_1490_header_without_namespace) {
+    /* Malformed SOAP message: Header element is not in SOAP namespace */
+    const char *malformed_soap =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\">"
+        "<Header/>"
+        "<soap:Body/>"
+        "</soap:Envelope>";
+
+    axiom_xml_reader_t *xml_reader = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_soap_builder_t *soap_builder = NULL;
+
+    printf("\n _______ TEST AXIS2C-1490: Header without SOAP namespace _______ \n");
+
+    xml_reader = axiom_xml_reader_create_for_memory(
+        m_env, (void*)malformed_soap, strlen(malformed_soap), NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
+    ASSERT_NE(xml_reader, nullptr);
+
+    om_builder = axiom_stax_builder_create(m_env, xml_reader);
+    ASSERT_NE(om_builder, nullptr);
+
+    /* The soap_builder_create should fail because Header is not in SOAP namespace */
+    soap_builder = axiom_soap_builder_create(m_env, om_builder,
+        AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+
+    /* AXIS2C-1490: soap_builder should be NULL because the message is malformed */
+    EXPECT_EQ(soap_builder, nullptr) <<
+        "AXIS2C-1490: SOAP builder should reject Header element not in SOAP namespace";
+
+    /* If the bug still exists (soap_builder is not NULL), clean up and fail */
+    if (soap_builder) {
+        axiom_soap_envelope_t *envelope = axiom_soap_builder_get_soap_envelope(soap_builder, m_env);
+        if (envelope) {
+            /* Debug: check what namespace the Header has */
+            axiom_soap_header_t *header = axiom_soap_envelope_get_header(envelope, m_env);
+            if (header) {
+                axiom_node_t *header_node = axiom_soap_header_get_base_node(header, m_env);
+                if (header_node) {
+                    axiom_element_t *header_ele = (axiom_element_t*)axiom_node_get_data_element(header_node, m_env);
+                    if (header_ele) {
+                        axiom_namespace_t *ns = axiom_element_get_namespace(header_ele, m_env, header_node);
+                        if (ns) {
+                            axis2_char_t *uri = axiom_namespace_get_uri(ns, m_env);
+                            axis2_char_t *prefix = axiom_namespace_get_prefix(ns, m_env);
+                            printf("DEBUG: Header namespace URI='%s' prefix='%s'\n",
+                                   uri ? uri : "NULL", prefix ? prefix : "NULL");
+                        } else {
+                            printf("DEBUG: Header has NULL namespace\n");
+                        }
+                    }
+                }
+            }
+            axiom_soap_envelope_free(envelope, m_env);
+        }
+        printf("AXIS2C-1490 BUG: Malformed SOAP was incorrectly accepted!\n");
+    } else {
+        /* om_builder was consumed by soap_builder_create attempt, so don't free it */
+        printf("AXIS2C-1490: Correctly rejected malformed SOAP\n");
+    }
+
+    printf("\n _______ END TEST AXIS2C-1490 _______ \n");
+}
+
+/**
+ * Test for AXIS2C-1490: Verify that Body element without SOAP namespace is rejected.
+ */
+TEST_F(TestSOAP, test_axis2c_1490_body_without_namespace) {
+    /* Malformed SOAP message: Body element is not in SOAP namespace */
+    const char *malformed_soap =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\">"
+        "<soap:Header/>"
+        "<Body/>"
+        "</soap:Envelope>";
+
+    axiom_xml_reader_t *xml_reader = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_soap_builder_t *soap_builder = NULL;
+
+    printf("\n _______ TEST AXIS2C-1490: Body without SOAP namespace _______ \n");
+
+    xml_reader = axiom_xml_reader_create_for_memory(
+        m_env, (void*)malformed_soap, strlen(malformed_soap), NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
+    ASSERT_NE(xml_reader, nullptr);
+
+    om_builder = axiom_stax_builder_create(m_env, xml_reader);
+    ASSERT_NE(om_builder, nullptr);
+
+    /* The soap_builder_create should fail because Body is not in SOAP namespace */
+    soap_builder = axiom_soap_builder_create(m_env, om_builder,
+        AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+
+    /* AXIS2C-1490: soap_builder should be NULL because the message is malformed */
+    EXPECT_EQ(soap_builder, nullptr) <<
+        "AXIS2C-1490: SOAP builder should reject Body element not in SOAP namespace";
+
+    if (soap_builder) {
+        axiom_soap_envelope_t *envelope = axiom_soap_builder_get_soap_envelope(soap_builder, m_env);
+        if (envelope) {
+            axiom_soap_envelope_free(envelope, m_env);
+        }
+        printf("AXIS2C-1490 BUG: Malformed SOAP was incorrectly accepted!\n");
+    } else {
+        printf("AXIS2C-1490: Correctly rejected malformed SOAP\n");
+    }
+
+    printf("\n _______ END TEST AXIS2C-1490 _______ \n");
+}
+
+/**
+ * Test: Verify that a valid SOAP message with proper namespaces is accepted.
+ */
+TEST_F(TestSOAP, test_axis2c_1490_valid_soap) {
+    /* Valid SOAP message: All elements in correct SOAP namespace */
+    const char *valid_soap =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\">"
+        "<soap:Header/>"
+        "<soap:Body/>"
+        "</soap:Envelope>";
+
+    axiom_xml_reader_t *xml_reader = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_soap_builder_t *soap_builder = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+
+    printf("\n _______ TEST: Valid SOAP with proper namespaces _______ \n");
+
+    xml_reader = axiom_xml_reader_create_for_memory(
+        m_env, (void*)valid_soap, strlen(valid_soap), NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
+    ASSERT_NE(xml_reader, nullptr);
+
+    om_builder = axiom_stax_builder_create(m_env, xml_reader);
+    ASSERT_NE(om_builder, nullptr);
+
+    soap_builder = axiom_soap_builder_create(m_env, om_builder,
+        AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+    ASSERT_NE(soap_builder, nullptr) << "Valid SOAP should be accepted";
+
+    soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, m_env);
+    ASSERT_NE(soap_envelope, nullptr);
+
+    /* Verify header and body are properly parsed */
+    axiom_soap_header_t *header = axiom_soap_envelope_get_header(soap_envelope, m_env);
+    EXPECT_NE(header, nullptr);
+
+    axiom_soap_body_t *body = axiom_soap_envelope_get_body(soap_envelope, m_env);
+    EXPECT_NE(body, nullptr);
+
+    axiom_soap_envelope_free(soap_envelope, m_env);
+
+    printf("\n _______ END TEST: Valid SOAP _______ \n");
+}
+

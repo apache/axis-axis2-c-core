@@ -937,6 +937,16 @@ axiom_soap_builder_parse_headers(
     }
     soap_header = axiom_soap_envelope_get_header(soap_builder->soap_envelope, env);
 
+    /* AXIS2C-1490: Check if an error occurred during header parsing.
+     * If soap_builder->done is set, it means a parsing error occurred
+     * (e.g., Header element not in SOAP namespace). */
+    if(soap_builder->done)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Error occurred while parsing SOAP envelope contents");
+        return AXIS2_FAILURE;
+    }
+
     if(soap_header)
     {
         om_node = axiom_soap_header_get_base_node(soap_header, env);
@@ -955,6 +965,30 @@ axiom_soap_builder_parse_headers(
              */
         }
     }
+
+    /* AXIS2C-1490: Also validate body element has correct namespace.
+     * Trigger body parsing to catch namespace errors early. */
+    {
+        axiom_soap_body_t *soap_body = NULL;
+        soap_body = axiom_soap_envelope_get_body(soap_builder->soap_envelope, env);
+
+        /* Check again if error occurred during body parsing */
+        if(soap_builder->done)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Error occurred while parsing SOAP body");
+            return AXIS2_FAILURE;
+        }
+
+        /* Body is mandatory in SOAP */
+        if(!soap_body)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "SOAP message must contain a Body element");
+            return AXIS2_FAILURE;
+        }
+    }
+
     return AXIS2_SUCCESS;
 }
 
