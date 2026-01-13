@@ -744,6 +744,8 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
                     fprintf(source_file, "            \n");
                     fprintf(source_file, "            if (NULL == payload) {\n");
                     fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to serialize %s request\");\n", op_name);
+                    fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+                    fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE, AXIS2_FAILURE);\n");
                     fprintf(source_file, "                return NULL;\n");
                     fprintf(source_file, "            }\n");
                     fprintf(source_file, "            \n");
@@ -751,6 +753,8 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
                     fprintf(source_file, "            \n");
                     fprintf(source_file, "            if (NULL == ret_node) {\n");
                     fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to invoke %s operation\");\n", op_name);
+                    fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+                    fprintf(source_file, "                AXIS2_ERROR_SET(env->error, env->error->error_number, AXIS2_FAILURE);\n");
                     fprintf(source_file, "                return NULL;\n");
                     fprintf(source_file, "            }\n");
                     fprintf(source_file, "            \n");
@@ -1633,6 +1637,8 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            element = axiom_node_get_data_element(node, env);\n");
             fprintf(source_file, "            if (!element) {\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to get element from node\");\n");
+            fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+            fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_SUCH_ELEMENT, AXIS2_FAILURE);\n");
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
@@ -1654,6 +1660,8 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            \n");
             fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", op_name);
             fprintf(source_file, "            if (!adb_obj) {\n");
+            fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+            fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);\n");
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
@@ -1663,6 +1671,8 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            if (!attr_value && !dont_care_minoccurs) {\n");
             fprintf(source_file, "                /* This matches the XSL patch: if(!dont_care_minoccurs) return AXIS2_FAILURE */\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"required attribute id missing\");\n");
+            fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+            fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_SUCH_ELEMENT, AXIS2_FAILURE);\n");
             fprintf(source_file, "                adb_%s_free(adb_obj, env);\n", op_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
@@ -1839,11 +1849,15 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            element = axiom_node_get_data_element(node, env);\n");
             fprintf(source_file, "            if (!element) {\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to get element from node\");\n");
+            fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+            fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_SUCH_ELEMENT, AXIS2_FAILURE);\n");
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", response_name);
             fprintf(source_file, "            if (!adb_obj) {\n");
+            fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+            fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);\n");
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
@@ -1851,6 +1865,8 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            attr_value = axiom_element_get_attribute_value_by_name(element, env, \"status\");\n");
             fprintf(source_file, "            if (!attr_value && !dont_care_minoccurs) {\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"required attribute status missing\");\n");
+            fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
+            fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_SUCH_ELEMENT, AXIS2_FAILURE);\n");
             fprintf(source_file, "                adb_%s_free(adb_obj, env);\n", response_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");

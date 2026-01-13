@@ -341,6 +341,30 @@ extern int axis2c_1573_test_count;
 extern adb_test_case_t axis2c_1529_tests[];
 extern int axis2c_1529_test_count;
 
+/* AXIS2C-1613 deserialization error handling tests - Error Set Before NULL Return
+ *
+ * AXIS2C-1613: No error is set during deserialization when an unexpected NULL value is return
+ * Analysis (2025-01-13): During deserialization, when a required element is missing or
+ * deserialization fails for any reason, the generated code only logs the incident but
+ * does not set an error value via AXIS2_ERROR_SET. This makes it impossible for calling
+ * code to detect the failure via env->error.
+ *
+ * Fix: Native generator now adds AXIS2_ERROR_SET before every return NULL in:
+ * - Serialization failures (AXIS2_ERROR_INVALID_MESSAGE)
+ * - Operation invocation failures (preserve existing error)
+ * - Element/node retrieval failures (AXIS2_ERROR_NO_SUCH_ELEMENT)
+ * - Object creation failures (AXIS2_ERROR_NO_MEMORY)
+ * - Required attribute validation failures (AXIS2_ERROR_NO_SUCH_ELEMENT)
+ *
+ * Test scenarios:
+ * - Generated code includes AXIS2_ERROR_SET before return NULL
+ * - Error types are appropriate for the failure context
+ * - env->error->error_number preservation for cascading errors
+ * - Validation failure error handling
+ */
+extern adb_test_case_t axis2c_1613_tests[];
+extern int axis2c_1613_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 
