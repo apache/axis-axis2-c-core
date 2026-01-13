@@ -278,6 +278,22 @@ extern int axis2c_1580_test_count;
 extern adb_test_case_t axis2c_1579_tests[];
 extern int axis2c_1579_test_count;
 
+/* AXIS2C-1575 QName property support tests - Variable Scope Fix
+ *
+ * AXIS2C-1575: Generated code has undefined variables qname_uri and qname_prefix
+ * Analysis (2025-01-12): Variables qname_uri, qname_prefix, and qname_localpart MUST
+ * be declared at function scope, NOT inside conditional blocks. The original XSL template
+ * bug declared these inside <xsl:otherwise> but used them for all QName properties.
+ *
+ * Test scenarios:
+ * - Variable scope pattern validation
+ * - QName serialization format (prefix:localpart)
+ * - QName deserialization format parsing
+ * - Generated code verification for proper variable scoping
+ */
+extern adb_test_case_t axis2c_1575_tests[];
+extern int axis2c_1575_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 

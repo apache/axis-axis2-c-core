@@ -83,6 +83,41 @@ typedef char axis2_char_t;
 #define AXIS2_XSD_NAMESPACE_URI "http://www.w3.org/2001/XMLSchema"
 #define AXIS2_XSD_NAMESPACE_PREFIX "xsd"
 
+/* AXIS2C-1575 FIX: QName property type support
+ * When handling axutil_qname_t* properties, variables for URI, prefix, and localpart
+ * MUST be declared at function scope, NOT inside conditional blocks.
+ * This prevents undefined variable errors in generated code.
+ *
+ * Correct pattern (variables at function scope):
+ *   axis2_char_t *qname_uri = NULL;
+ *   axis2_char_t *qname_prefix = NULL;
+ *   axis2_char_t *qname_localpart = NULL;
+ *   if (property_qname) {
+ *       qname_uri = axutil_qname_get_uri(property_qname, env);
+ *       qname_prefix = axutil_qname_get_prefix(property_qname, env);
+ *       qname_localpart = axutil_qname_get_localpart(property_qname, env);
+ *   }
+ *
+ * Wrong pattern (variables inside conditional - causes AXIS2C-1575):
+ *   if (is_complex_type) {
+ *       axis2_char_t *qname_uri = NULL;  // Only visible inside this block!
+ *       axis2_char_t *qname_prefix = NULL;
+ *   }
+ *   // ERROR: qname_uri and qname_prefix undefined here!
+ */
+
+/* Property type enumeration for code generation */
+typedef enum {
+    WSDL2C_PROPERTY_TYPE_INT,
+    WSDL2C_PROPERTY_TYPE_STRING,
+    WSDL2C_PROPERTY_TYPE_DOUBLE,
+    WSDL2C_PROPERTY_TYPE_BOOL,
+    WSDL2C_PROPERTY_TYPE_QNAME,      /* axutil_qname_t* - AXIS2C-1575 */
+    WSDL2C_PROPERTY_TYPE_DATETIME,
+    WSDL2C_PROPERTY_TYPE_BASE64,
+    WSDL2C_PROPERTY_TYPE_COMPLEX
+} wsdl2c_property_type_t;
+
 /* Environment structure - simplified for standalone use */
 typedef struct axutil_allocator {
     void *(*malloc_fn)(void *allocator, size_t size);

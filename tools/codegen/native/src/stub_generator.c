@@ -30,6 +30,122 @@ static axis2_status_t generate_adb_classes(wsdl2c_context_t *context, const axut
 static void get_service_name_from_wsdl(wsdl2c_context_t *context, axis2_char_t **service_name);
 static void write_file_header(FILE *file, const axis2_char_t *filename, const axis2_char_t *description);
 
+/* AXIS2C-1575 FIX: Helper function to generate QName property serialization code
+ * This ensures qname_uri, qname_prefix, and qname_localpart variables are declared
+ * at function scope, NOT inside conditional blocks, preventing undefined variable errors.
+ */
+static void
+generate_qname_serialize_code(FILE *source_file, const char *property_name, const char *element_name)
+{
+    /* AXIS2C-1575 FIX: Generate QName serialization with proper variable scoping
+     * All qname_* variables MUST be declared at function scope to avoid the bug
+     * where they were only declared inside an <xsl:otherwise> block in the XSL template.
+     */
+    fprintf(source_file, "            /* AXIS2C-1575 FIX: QName property serialization with proper variable scoping */\n");
+    fprintf(source_file, "            /* Variables declared at function scope - NOT inside conditional blocks */\n");
+    fprintf(source_file, "            {\n");
+    fprintf(source_file, "                axis2_char_t *qname_uri = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *qname_prefix = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *qname_localpart = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *qname_text = NULL;\n");
+    fprintf(source_file, "                axiom_element_t *qname_element = NULL;\n");
+    fprintf(source_file, "                axiom_node_t *qname_node = NULL;\n");
+    fprintf(source_file, "                \n");
+    fprintf(source_file, "                if (_this->property_%s) {\n", property_name);
+    fprintf(source_file, "                    /* Extract QName components - these are always valid if qname is not NULL */\n");
+    fprintf(source_file, "                    qname_uri = axutil_qname_get_uri(_this->property_%s, env);\n", property_name);
+    fprintf(source_file, "                    qname_prefix = axutil_qname_get_prefix(_this->property_%s, env);\n", property_name);
+    fprintf(source_file, "                    qname_localpart = axutil_qname_get_localpart(_this->property_%s, env);\n", property_name);
+    fprintf(source_file, "                    \n");
+    fprintf(source_file, "                    /* Create element for QName property */\n");
+    fprintf(source_file, "                    qname_element = axiom_element_create(env, current_node, \"%s\", ns, &qname_node);\n", element_name);
+    fprintf(source_file, "                    if (qname_element) {\n");
+    fprintf(source_file, "                        /* Format QName as prefix:localpart or just localpart if no prefix */\n");
+    fprintf(source_file, "                        if (qname_prefix && axutil_strlen(qname_prefix) > 0) {\n");
+    fprintf(source_file, "                            qname_text = AXIS2_MALLOC(env->allocator,\n");
+    fprintf(source_file, "                                axutil_strlen(qname_prefix) + axutil_strlen(qname_localpart) + 2);\n");
+    fprintf(source_file, "                            if (qname_text) {\n");
+    fprintf(source_file, "                                sprintf(qname_text, \"%%s:%%s\", qname_prefix, qname_localpart);\n");
+    fprintf(source_file, "                                axiom_element_set_text(qname_element, env, qname_text, qname_node);\n");
+    fprintf(source_file, "                                AXIS2_FREE(env->allocator, qname_text);\n");
+    fprintf(source_file, "                            }\n");
+    fprintf(source_file, "                        } else {\n");
+    fprintf(source_file, "                            axiom_element_set_text(qname_element, env, qname_localpart, qname_node);\n");
+    fprintf(source_file, "                        }\n");
+    fprintf(source_file, "                        \n");
+    fprintf(source_file, "                        /* Add namespace declaration for the QName if URI is present */\n");
+    fprintf(source_file, "                        if (qname_uri && axutil_strlen(qname_uri) > 0) {\n");
+    fprintf(source_file, "                            axiom_namespace_t *qname_ns = axiom_namespace_create(env, qname_uri, qname_prefix);\n");
+    fprintf(source_file, "                            if (qname_ns) {\n");
+    fprintf(source_file, "                                axiom_element_declare_namespace(qname_element, env, qname_node, qname_ns);\n");
+    fprintf(source_file, "                            }\n");
+    fprintf(source_file, "                        }\n");
+    fprintf(source_file, "                    }\n");
+    fprintf(source_file, "                }\n");
+    fprintf(source_file, "            }\n");
+}
+
+/* AXIS2C-1575 FIX: Helper function to generate QName property deserialization code */
+static void
+generate_qname_deserialize_code(FILE *source_file, const char *property_name, const char *element_name)
+{
+    fprintf(source_file, "            /* AXIS2C-1575 FIX: QName property deserialization with proper variable scoping */\n");
+    fprintf(source_file, "            {\n");
+    fprintf(source_file, "                axis2_char_t *qname_uri = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *qname_prefix = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *qname_localpart = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *qname_text = NULL;\n");
+    fprintf(source_file, "                axis2_char_t *colon_pos = NULL;\n");
+    fprintf(source_file, "                axutil_qname_t *parsed_qname = NULL;\n");
+    fprintf(source_file, "                axiom_element_t *child_element = NULL;\n");
+    fprintf(source_file, "                axiom_node_t *child_node = NULL;\n");
+    fprintf(source_file, "                axutil_qname_t *child_qname = NULL;\n");
+    fprintf(source_file, "                \n");
+    fprintf(source_file, "                /* Find the %s element */\n", element_name);
+    fprintf(source_file, "                child_qname = axutil_qname_create(env, \"%s\", NULL, NULL);\n", element_name);
+    fprintf(source_file, "                if (child_qname) {\n");
+    fprintf(source_file, "                    child_element = axiom_element_get_first_child_with_qname(element, env, child_qname, node, &child_node);\n");
+    fprintf(source_file, "                    axutil_qname_free(child_qname, env);\n");
+    fprintf(source_file, "                }\n");
+    fprintf(source_file, "                \n");
+    fprintf(source_file, "                if (child_element && child_node) {\n");
+    fprintf(source_file, "                    qname_text = axiom_element_get_text(child_element, env, child_node);\n");
+    fprintf(source_file, "                    if (qname_text) {\n");
+    fprintf(source_file, "                        /* Parse prefix:localpart format */\n");
+    fprintf(source_file, "                        colon_pos = strchr(qname_text, ':');\n");
+    fprintf(source_file, "                        if (colon_pos) {\n");
+    fprintf(source_file, "                            /* Has prefix - extract both parts */\n");
+    fprintf(source_file, "                            int prefix_len = colon_pos - qname_text;\n");
+    fprintf(source_file, "                            qname_prefix = AXIS2_MALLOC(env->allocator, prefix_len + 1);\n");
+    fprintf(source_file, "                            if (qname_prefix) {\n");
+    fprintf(source_file, "                                strncpy(qname_prefix, qname_text, prefix_len);\n");
+    fprintf(source_file, "                                qname_prefix[prefix_len] = '\\0';\n");
+    fprintf(source_file, "                            }\n");
+    fprintf(source_file, "                            qname_localpart = colon_pos + 1;\n");
+    fprintf(source_file, "                            \n");
+    fprintf(source_file, "                            /* Resolve prefix to URI using namespace declarations */\n");
+    fprintf(source_file, "                            qname_uri = (axis2_char_t*)axiom_element_find_namespace_uri(child_element, env, qname_prefix, child_node);\n");
+    fprintf(source_file, "                        } else {\n");
+    fprintf(source_file, "                            /* No prefix - just localpart */\n");
+    fprintf(source_file, "                            qname_localpart = qname_text;\n");
+    fprintf(source_file, "                        }\n");
+    fprintf(source_file, "                        \n");
+    fprintf(source_file, "                        /* Create the QName object */\n");
+    fprintf(source_file, "                        parsed_qname = axutil_qname_create(env, qname_localpart, qname_uri, qname_prefix);\n");
+    fprintf(source_file, "                        if (parsed_qname) {\n");
+    fprintf(source_file, "                            adb_obj->property_%s = parsed_qname;\n", property_name);
+    fprintf(source_file, "                            adb_obj->is_valid_%s = AXIS2_TRUE;\n", property_name);
+    fprintf(source_file, "                        }\n");
+    fprintf(source_file, "                        \n");
+    fprintf(source_file, "                        /* Clean up allocated prefix */\n");
+    fprintf(source_file, "                        if (qname_prefix && colon_pos) {\n");
+    fprintf(source_file, "                            AXIS2_FREE(env->allocator, qname_prefix);\n");
+    fprintf(source_file, "                        }\n");
+    fprintf(source_file, "                    }\n");
+    fprintf(source_file, "                }\n");
+    fprintf(source_file, "            }\n");
+}
+
 /* Create output directory if it doesn't exist */
 static axis2_status_t
 create_output_directory(const axis2_char_t *path, const axutil_env_t *env)
