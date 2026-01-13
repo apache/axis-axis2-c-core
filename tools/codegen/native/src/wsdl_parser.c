@@ -27,13 +27,7 @@
 #define SOAP_NS_URI "http://schemas.xmlsoap.org/wsdl/soap/"
 #define XSD_NS_URI "http://www.w3.org/2001/XMLSchema"
 
-/* Operation structure */
-typedef struct wsdl2c_operation {
-    axis2_char_t *name;
-    axis2_char_t *input_message;
-    axis2_char_t *output_message;
-    axis2_char_t *soap_action;
-} wsdl2c_operation_t;
+/* Note: wsdl2c_operation_t is now defined in wsdl2c_native.h */
 
 /* Message structure */
 typedef struct wsdl2c_message {
@@ -190,6 +184,97 @@ parse_wsdl_operations(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, c
     return AXIS2_SUCCESS;
 }
 
+/* Parse WSDL bindings to extract soapAction for operations (AXIS2C-1581 fix) */
+static axis2_status_t
+parse_wsdl_bindings(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, const axutil_env_t *env)
+{
+    xmlXPathObjectPtr binding_ops_result = NULL;
+    xmlNodeSetPtr binding_ops_nodes = NULL;
+    int i, j;
+
+    AXIS2_PARAM_CHECK(env->error, context, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, xpath_ctx, AXIS2_FAILURE);
+
+    /* Find all binding operation elements */
+    binding_ops_result = xmlXPathEvalExpression(
+        BAD_CAST "//wsdl:binding/wsdl:operation", xpath_ctx);
+
+    if (!binding_ops_result || !binding_ops_result->nodesetval) {
+        /* No bindings found - this is OK, soapAction will remain NULL */
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No binding operations found in WSDL");
+        return AXIS2_SUCCESS;
+    }
+
+    binding_ops_nodes = binding_ops_result->nodesetval;
+
+    /* For each binding operation, find the soap:operation and extract soapAction */
+    for (i = 0; i < binding_ops_nodes->nodeNr; i++) {
+        xmlNodePtr binding_op_node = binding_ops_nodes->nodeTab[i];
+        xmlChar *op_name = NULL;
+        xmlChar *soap_action = NULL;
+        xmlNodePtr child_node = NULL;
+
+        /* Get operation name from binding */
+        op_name = xmlGetProp(binding_op_node, BAD_CAST "name");
+        if (!op_name) {
+            continue;
+        }
+
+        /* Find soap:operation child element */
+        for (child_node = binding_op_node->children; child_node; child_node = child_node->next) {
+            if (child_node->type == XML_ELEMENT_NODE &&
+                xmlStrcmp(child_node->name, BAD_CAST "operation") == 0) {
+                /* Check if this is a soap:operation element (check namespace) */
+                if (child_node->ns && child_node->ns->href &&
+                    (xmlStrcmp(child_node->ns->href, BAD_CAST SOAP_NS_URI) == 0 ||
+                     xmlStrstr(child_node->ns->href, BAD_CAST "soap") != NULL)) {
+                    soap_action = xmlGetProp(child_node, BAD_CAST "soapAction");
+                    break;
+                }
+            }
+        }
+
+        /* Find the matching operation and set soapAction */
+        if (context->wsdl && context->wsdl->operations) {
+            int op_count = axutil_array_list_size(context->wsdl->operations, env);
+            for (j = 0; j < op_count; j++) {
+                wsdl2c_operation_t *operation = axutil_array_list_get(
+                    context->wsdl->operations, env, j);
+                if (operation && operation->name &&
+                    xmlStrcmp(BAD_CAST operation->name, op_name) == 0) {
+
+                    /* AXIS2C-1581 FIX: Only set soapAction if it's non-empty and not just quotes */
+                    if (soap_action) {
+                        const char *action_str = (const char*)soap_action;
+                        /* Skip empty strings, quoted empty strings */
+                        if (action_str[0] != '\0' &&
+                            strcmp(action_str, "\"\"") != 0) {
+                            operation->soap_action = axutil_strdup(env, action_str);
+                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                                "Operation '%s' soapAction: '%s'",
+                                operation->name, operation->soap_action);
+                        } else {
+                            /* Empty or quoted empty - leave as NULL (AXIS2C-1581 fix) */
+                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                                "Operation '%s' has empty soapAction - omitting (AXIS2C-1581)",
+                                operation->name);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (soap_action) {
+            xmlFree(soap_action);
+        }
+        xmlFree(op_name);
+    }
+
+    xmlXPathFreeObject(binding_ops_result);
+    return AXIS2_SUCCESS;
+}
+
 /* Main WSDL parsing function */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
@@ -249,6 +334,13 @@ wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
     status = parse_wsdl_operations(context, xpath_ctx, env);
     if (status != AXIS2_SUCCESS) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse WSDL operations");
+        goto cleanup;
+    }
+
+    /* Parse bindings to extract soapAction (AXIS2C-1581) */
+    status = parse_wsdl_bindings(context, xpath_ctx, env);
+    if (status != AXIS2_SUCCESS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse WSDL bindings");
         goto cleanup;
     }
 

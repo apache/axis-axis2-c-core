@@ -136,6 +136,18 @@ typedef struct wsdl2c_options {
 } wsdl2c_options_t;
 
 /**
+ * @brief Operation structure (parsed from WSDL)
+ * Contains operation name and soapAction extracted from binding.
+ * AXIS2C-1581: soap_action may be NULL if empty or missing in WSDL
+ */
+typedef struct wsdl2c_operation {
+    axis2_char_t *name;             /**< Operation name */
+    axis2_char_t *input_message;    /**< Input message reference */
+    axis2_char_t *output_message;   /**< Output message reference */
+    axis2_char_t *soap_action;      /**< SOAP action (NULL if empty - AXIS2C-1581) */
+} wsdl2c_operation_t;
+
+/**
  * @brief WSDL information structure
  */
 typedef struct wsdl2c_wsdl {
@@ -143,7 +155,7 @@ typedef struct wsdl2c_wsdl {
     axis2_char_t *service_name;         /**< Service name */
     axis2_char_t *port_type_name;       /**< Port type name */
     axis2_char_t *binding_name;         /**< Binding name */
-    axutil_array_list_t *operations;    /**< Operations array */
+    axutil_array_list_t *operations;    /**< Operations array (wsdl2c_operation_t*) */
     axutil_array_list_t *messages;      /**< Messages array */
     void *schema_node;                   /**< Schema information */
 } wsdl2c_wsdl_t;
@@ -280,6 +292,9 @@ axutil_string_toupper(const char *str, const axutil_env_t *env);
 
 #define AXIS2_LOG_INFO(log, location, format, ...) \
     printf("INFO: " format "\n", ##__VA_ARGS__)
+
+#define AXIS2_LOG_DEBUG(log, location, format, ...) \
+    /* Debug messages suppressed in standalone mode */
 
 #define AXIS2_LOG_SI ""
 

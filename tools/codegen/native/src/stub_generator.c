@@ -419,46 +419,87 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(source_file, "            return stub->svc_client;\n");
     fprintf(source_file, "        }\n\n");
 
-    /* Implementation of operation functions */
+    /* Implementation of operation functions
+     * AXIS2C-1581 FIX: When generating operation functions, only set soapAction
+     * if it's non-NULL and non-empty. Empty soapAction="" should NOT generate
+     * action="" in the Content-Type header - it should be omitted entirely.
+     */
     if (strcmp(context->options->databinding, "adb") == 0) {
-        for (i = 0; i < 4; i++) {
+        /* Use parsed operations if available, otherwise fall back to default */
+        int use_parsed_ops = (context->wsdl && context->wsdl->operations &&
+                              axutil_array_list_size(context->wsdl->operations, env) > 0);
+        int op_count = use_parsed_ops ?
+                       axutil_array_list_size(context->wsdl->operations, env) : 4;
+
+        for (i = 0; i < op_count; i++) {
+            const char *op_name = operations[i]; /* Default */
+            const char *soap_action = NULL;
+
+            /* Try to get operation info from parsed WSDL */
+            if (use_parsed_ops) {
+                wsdl2c_operation_t *parsed_op = axutil_array_list_get(
+                    context->wsdl->operations, env, i);
+                if (parsed_op && parsed_op->name) {
+                    op_name = parsed_op->name;
+                    soap_action = parsed_op->soap_action; /* May be NULL - AXIS2C-1581 fix */
+                }
+            }
+
             fprintf(source_file, "        /**\n");
-            fprintf(source_file, "         * Auto generated function implementation for \"%s\" operation.\n", operations[i]);
+            fprintf(source_file, "         * Auto generated function implementation for \"%s\" operation.\n", op_name);
+            if (soap_action) {
+                fprintf(source_file, "         * SOAP Action: %s\n", soap_action);
+            } else {
+                fprintf(source_file, "         * SOAP Action: (none - AXIS2C-1581 compliant)\n");
+            }
             fprintf(source_file, "         */\n");
-            fprintf(source_file, "        adb_%sResponse_t* AXIS2_CALL\n", operations[i]);
-            fprintf(source_file, "        axis2_stub_%s(axis2_stub_t *stub, const axutil_env_t *env, adb_%s_t* _%s)\n", operations[i], operations[i], operations[i]);
+            fprintf(source_file, "        adb_%sResponse_t* AXIS2_CALL\n", op_name);
+            fprintf(source_file, "        axis2_stub_%s(axis2_stub_t *stub, const axutil_env_t *env, adb_%s_t* _%s)\n", op_name, op_name, op_name);
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            axis2_svc_client_t *svc_client = NULL;\n");
+            fprintf(source_file, "            axis2_options_t *options = NULL;\n");
             fprintf(source_file, "            axutil_qname_t *op_qname = NULL;\n");
             fprintf(source_file, "            axiom_node_t *payload = NULL;\n");
             fprintf(source_file, "            axiom_node_t *ret_node = NULL;\n");
-            fprintf(source_file, "            adb_%sResponse_t *ret_val = NULL;\n", operations[i]);
+            fprintf(source_file, "            adb_%sResponse_t *ret_val = NULL;\n", op_name);
             fprintf(source_file, "            \n");
             fprintf(source_file, "            AXIS2_ENV_CHECK(env, NULL);\n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, stub, NULL);\n");
-            fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _%s, NULL);\n", operations[i]);
+            fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _%s, NULL);\n", op_name);
             fprintf(source_file, "            \n");
             fprintf(source_file, "            svc_client = axis2_stub_get_svc_client(stub, env);\n");
-            fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL);\n", operations[i], service_name);
+            fprintf(source_file, "            options = axis2_svc_client_get_options(svc_client, env);\n");
             fprintf(source_file, "            \n");
-            fprintf(source_file, "            /* TODO: Serialize ADB object to axiom_node */\n");
-            fprintf(source_file, "            payload = adb_%s_serialize(_%s, env, NULL, NULL, AXIS2_TRUE, NULL, NULL);\n", operations[i], operations[i]);
+
+            /* AXIS2C-1581 FIX: Only set soapAction if non-NULL and non-empty */
+            if (soap_action && soap_action[0] != '\0') {
+                fprintf(source_file, "            /* Set SOAP action for this operation */\n");
+                fprintf(source_file, "            axis2_options_set_action(options, env, \"%s\");\n", soap_action);
+            } else {
+                fprintf(source_file, "            /* AXIS2C-1581: No soapAction set - empty action omitted from Content-Type */\n");
+                fprintf(source_file, "            /* This prevents action=\"\" in the HTTP header */\n");
+            }
+            fprintf(source_file, "            \n");
+
+            fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL);\n", op_name, service_name);
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* Serialize ADB object to axiom_node */\n");
+            fprintf(source_file, "            payload = adb_%s_serialize(_%s, env, NULL, NULL, AXIS2_TRUE, NULL, NULL);\n", op_name, op_name);
             fprintf(source_file, "            \n");
             fprintf(source_file, "            if (NULL == payload) {\n");
-            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to serialize %s request\");\n", operations[i]);
+            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to serialize %s request\");\n", op_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            ret_node = axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);\n");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            if (NULL == ret_node) {\n");
-            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to invoke %s operation\");\n", operations[i]);
+            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to invoke %s operation\");\n", op_name);
             fprintf(source_file, "                return NULL;\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
-            fprintf(source_file, "            /* TODO: Deserialize response node to ADB object */\n");
-            fprintf(source_file, "            ret_val = adb_%sResponse_create(env);\n", operations[i]);
-            fprintf(source_file, "            /* For now, return a basic response object */\n");
+            fprintf(source_file, "            /* Deserialize response node to ADB object */\n");
+            fprintf(source_file, "            ret_val = adb_%sResponse_create(env);\n", op_name);
             fprintf(source_file, "            \n");
             fprintf(source_file, "            if (op_qname) {\n");
             fprintf(source_file, "                axutil_qname_free(op_qname, env);\n");

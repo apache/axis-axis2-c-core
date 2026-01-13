@@ -231,6 +231,21 @@ extern int axis2c_1616_test_count;
 extern adb_test_case_t axis2c_1614_tests[];
 extern int axis2c_1614_test_count;
 
+/* AXIS2C-1581 empty SOAP action tests - Content-Type Header Generation Fix
+ *
+ * AXIS2C-1581: Generated code creates bad action in multi-parts request
+ * Analysis (2025-01-12): When soapAction is empty or missing in WSDL binding,
+ * generated code should NOT include action="" in Content-Type header.
+ *
+ * Test scenarios:
+ * - Empty soapAction="" should be omitted from generated code
+ * - Missing soapAction attribute should result in NULL (not empty string)
+ * - Valid soapAction values should be correctly extracted and used
+ * - Binding operation soapAction extraction via XPath
+ */
+extern adb_test_case_t axis2c_1581_tests[];
+extern int axis2c_1581_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 

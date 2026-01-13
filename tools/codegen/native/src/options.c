@@ -18,14 +18,9 @@
 #include "wsdl2c_native.h"
 #include <string.h>
 
-/* Forward declarations from wsdl_parser.c */
-typedef struct wsdl2c_operation {
-    axis2_char_t *name;
-    axis2_char_t *input_message;
-    axis2_char_t *output_message;
-    axis2_char_t *soap_action;
-} wsdl2c_operation_t;
+/* Note: wsdl2c_operation_t is now defined in wsdl2c_native.h */
 
+/* Message structures (internal to parser/options) */
 typedef struct wsdl2c_message {
     axis2_char_t *name;
     axutil_array_list_t *parts;
