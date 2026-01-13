@@ -40,6 +40,7 @@ adb_test_runner_SOURCES = \
     src/test_axis2c_1579_xsi_type.c \
     src/test_axis2c_1575_qname_property.c \
     src/test_axis2c_1573_identifier_sanitization.c \
+    src/test_axis2c_1529_base64_memleak.c \
     src/axis2_stub_compat.c
 
 # Include directories

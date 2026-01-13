@@ -325,7 +325,15 @@ get_service_name_from_wsdl(wsdl2c_context_t *context, axis2_char_t **service_nam
         *dot = '\0';
     }
 
-    *service_name = name;
+    /* AXIS2C-1573/1529: Sanitize the name to be a valid C identifier
+     * This handles hyphens, periods, and other invalid characters */
+    axis2_char_t *sanitized = wsdl2c_sanitize_c_identifier(context->env, name);
+    if (sanitized) {
+        AXIS2_FREE(context->env->allocator, name);
+        *service_name = sanitized;
+    } else {
+        *service_name = name;
+    }
 }
 
 /* Write standard file header with license and generation info */
@@ -875,7 +883,10 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                         c_type = "double";
                     } else if (strstr(elem->type, "dateTime")) {
                         c_type = "axutil_date_time_t*";
-                    } else if (strstr(elem->type, "base64Binary") || strstr(elem->type, "anyType")) {
+                    } else if (strstr(elem->type, "base64Binary")) {
+                        /* AXIS2C-1529: Use proper base64 type */
+                        c_type = "axutil_base64_binary_t*";
+                    } else if (strstr(elem->type, "anyType")) {
                         c_type = "axiom_node_t*";
                     }
                 }
@@ -976,7 +987,10 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                         c_type = "double";
                     } else if (strstr(elem->type, "dateTime")) {
                         c_type = "axutil_date_time_t*";
-                    } else if (strstr(elem->type, "base64Binary") || strstr(elem->type, "anyType")) {
+                    } else if (strstr(elem->type, "base64Binary")) {
+                        /* AXIS2C-1529: Use proper base64 type */
+                        c_type = "axutil_base64_binary_t*";
+                    } else if (strstr(elem->type, "anyType")) {
                         c_type = "axiom_node_t*";
                     }
                 }
@@ -1014,7 +1028,7 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(source_file, "        return AXIS2_SUCCESS;\n");
         fprintf(source_file, "    }\n");
 
-        /* Free string properties */
+        /* Free allocated properties - AXIS2C-1529: Handle each type correctly */
         if (elem_count > 0) {
             int j;
             for (j = 0; j < elem_count; j++) {
@@ -1023,21 +1037,30 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 if (!elem || !elem->name) continue;
 
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
-                int is_string = 1;
 
-                if (elem->type) {
-                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
-                        strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
-                        strstr(elem->type, "double") || strstr(elem->type, "float")) {
-                        is_string = 0;
-                    }
-                }
-
-                if (is_string) {
+                /* Determine how to free this property based on type */
+                if (elem->type && strstr(elem->type, "base64Binary")) {
+                    /* AXIS2C-1529: Use axutil_base64_binary_free for base64Binary */
+                    fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        axutil_base64_binary_free(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "    }\n");
+                } else if (elem->type && strstr(elem->type, "dateTime")) {
+                    /* Use axutil_date_time_free for dateTime */
+                    fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        axutil_date_time_free(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "    }\n");
+                } else if (elem->type &&
+                    (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                     strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
+                     strstr(elem->type, "double") || strstr(elem->type, "float"))) {
+                    /* Primitive types don't need freeing */
+                } else if (!elem->is_typeless && !elem->is_any_type) {
+                    /* String types need AXIS2_FREE */
                     fprintf(source_file, "    if (_this->%s) {\n", elem_name);
                     fprintf(source_file, "        AXIS2_FREE(env->allocator, _this->%s);\n", elem_name);
                     fprintf(source_file, "    }\n");
                 }
+                /* Note: anyType (axiom_node_t*) - caller owns the node, don't free */
             }
         }
 
@@ -1075,7 +1098,11 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     } else if (strstr(elem->type, "dateTime")) {
                         c_type = "axutil_date_time_t*";
                         default_val = "NULL";
-                    } else if (strstr(elem->type, "base64Binary") || strstr(elem->type, "anyType")) {
+                    } else if (strstr(elem->type, "base64Binary")) {
+                        /* AXIS2C-1529: Use proper base64 type */
+                        c_type = "axutil_base64_binary_t*";
+                        default_val = "NULL";
+                    } else if (strstr(elem->type, "anyType")) {
                         c_type = "axiom_node_t*";
                         default_val = "NULL";
                     }
@@ -1103,7 +1130,7 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
             }
         }
 
-        /* Serialize implementation (placeholder) */
+        /* Serialize implementation - AXIS2C-1529: Proper memory management */
         fprintf(source_file, "axiom_node_t* AXIS2_CALL\n");
         fprintf(source_file, "adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n",
                 type_name, type_name);
@@ -1111,18 +1138,159 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(source_file, "                int parent_tag_closed, axutil_hash_t* namespaces,\n");
         fprintf(source_file, "                int *next_ns_index)\n");
         fprintf(source_file, "{\n");
-        fprintf(source_file, "    /* TODO: Implement full serialization */\n");
+        fprintf(source_file, "    axiom_node_t *current_node = NULL;\n");
+        fprintf(source_file, "    axiom_element_t *current_element = NULL;\n");
+        fprintf(source_file, "    axiom_namespace_t *ns = NULL;\n");
+        fprintf(source_file, "    axis2_char_t *text_value = NULL;\n");
+        fprintf(source_file, "    axis2_char_t tmp_buf[64];\n");
+        fprintf(source_file, "\n");
+        fprintf(source_file, "    AXIS2_ENV_CHECK(env, NULL);\n");
+        fprintf(source_file, "    AXIS2_PARAM_CHECK(env->error, _this, NULL);\n");
+        fprintf(source_file, "\n");
+
+        /* Generate serialization for each element */
+        if (elem_count > 0) {
+            int j;
+            for (j = 0; j < elem_count; j++) {
+                wsdl2c_schema_element_t *elem = axutil_array_list_get(
+                    complex_type->elements, env, j);
+                if (!elem || !elem->name) continue;
+
+                const char *elem_name = elem->c_name ? elem->c_name : elem->name;
+                const char *xml_name = elem->name;  /* Use original name for XML */
+
+                fprintf(source_file, "    /* Serialize %s */\n", elem_name);
+                fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                fprintf(source_file, "        ns = axiom_namespace_create(env, \"\", NULL);\n");
+                fprintf(source_file, "        current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
+                fprintf(source_file, "        if (current_element) {\n");
+
+                /* Handle different types for serialization */
+                if (elem->type && strstr(elem->type, "base64Binary")) {
+                    /* AXIS2C-1529: Memory-safe base64Binary serialization */
+                    fprintf(source_file, "            /* AXIS2C-1529: base64Binary - get encoded value and FREE it after use */\n");
+                    fprintf(source_file, "            text_value = axutil_base64_binary_get_encoded_binary(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "            if (text_value) {\n");
+                    fprintf(source_file, "                axiom_element_set_text(current_element, env, text_value, current_node);\n");
+                    fprintf(source_file, "                /* AXIS2C-1529 FIX: Free the encoded string to prevent memory leak */\n");
+                    fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
+                    fprintf(source_file, "                text_value = NULL;\n");
+                    fprintf(source_file, "            }\n");
+                } else if (elem->type && strstr(elem->type, "dateTime")) {
+                    fprintf(source_file, "            text_value = axutil_date_time_serialize_date_time(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "            if (text_value) {\n");
+                    fprintf(source_file, "                axiom_element_set_text(current_element, env, text_value, current_node);\n");
+                    fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
+                    fprintf(source_file, "                text_value = NULL;\n");
+                    fprintf(source_file, "            }\n");
+                } else if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
+                    fprintf(source_file, "            sprintf(tmp_buf, \"%%d\", _this->%s);\n", elem_name);
+                    fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
+                } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
+                    fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s ? \"true\" : \"false\", current_node);\n", elem_name);
+                } else if (elem->type && (strstr(elem->type, "double") || strstr(elem->type, "float"))) {
+                    fprintf(source_file, "            sprintf(tmp_buf, \"%%g\", _this->%s);\n", elem_name);
+                    fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
+                } else if (!elem->is_typeless && !elem->is_any_type) {
+                    /* String type */
+                    fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s, current_node);\n", elem_name);
+                }
+                /* anyType/typeless: the axiom_node_t* should be attached as child, not as text */
+
+                fprintf(source_file, "        }\n");
+                fprintf(source_file, "    }\n\n");
+            }
+        }
+
         fprintf(source_file, "    return parent;\n");
         fprintf(source_file, "}\n\n");
 
-        /* Deserialize implementation (placeholder) */
+        /* Deserialize implementation - AXIS2C-1529: Proper memory management */
         fprintf(source_file, "adb_%s_t* AXIS2_CALL\n", type_name);
         fprintf(source_file, "adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n",
                 type_name);
         fprintf(source_file, "                       int dont_care_minoccurs)\n");
         fprintf(source_file, "{\n");
-        fprintf(source_file, "    /* TODO: Implement full deserialization */\n");
-        fprintf(source_file, "    return adb_%s_create(env);\n", type_name);
+        fprintf(source_file, "    adb_%s_t *obj = NULL;\n", type_name);
+        fprintf(source_file, "    axiom_node_t *current_node = NULL;\n");
+        fprintf(source_file, "    axiom_element_t *current_element = NULL;\n");
+        fprintf(source_file, "    const axis2_char_t *text_value = NULL;\n");
+        fprintf(source_file, "\n");
+        fprintf(source_file, "    AXIS2_ENV_CHECK(env, NULL);\n");
+        fprintf(source_file, "\n");
+        fprintf(source_file, "    obj = adb_%s_create(env);\n", type_name);
+        fprintf(source_file, "    if (!obj) {\n");
+        fprintf(source_file, "        return NULL;\n");
+        fprintf(source_file, "    }\n\n");
+
+        /* Generate deserialization for each element */
+        if (elem_count > 0) {
+            fprintf(source_file, "    /* Iterate through child elements */\n");
+            fprintf(source_file, "    current_node = axiom_node_get_first_child(node, env);\n");
+            fprintf(source_file, "    while (current_node) {\n");
+            fprintf(source_file, "        if (axiom_node_get_node_type(current_node, env) == AXIOM_ELEMENT) {\n");
+            fprintf(source_file, "            current_element = (axiom_element_t*)axiom_node_get_data_element(current_node, env);\n");
+            fprintf(source_file, "            if (current_element) {\n");
+            fprintf(source_file, "                const axis2_char_t *local_name = axiom_element_get_localname(current_element, env);\n");
+
+            int j;
+            for (j = 0; j < elem_count; j++) {
+                wsdl2c_schema_element_t *elem = axutil_array_list_get(
+                    complex_type->elements, env, j);
+                if (!elem || !elem->name) continue;
+
+                const char *elem_name = elem->c_name ? elem->c_name : elem->name;
+                const char *xml_name = elem->name;
+
+                fprintf(source_file, "                %sif (axutil_strcmp(local_name, \"%s\") == 0) {\n",
+                        j > 0 ? "else " : "", xml_name);
+                fprintf(source_file, "                    text_value = axiom_element_get_text(current_element, env, current_node);\n");
+
+                /* Handle different types for deserialization */
+                if (elem->type && strstr(elem->type, "base64Binary")) {
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        axutil_base64_binary_t *b64 = axutil_base64_binary_create(env);\n");
+                    fprintf(source_file, "                        if (b64) {\n");
+                    fprintf(source_file, "                            axutil_base64_binary_set_encoded_binary(b64, env, text_value);\n");
+                    fprintf(source_file, "                            obj->%s = b64;\n", elem_name);
+                    fprintf(source_file, "                        }\n");
+                    fprintf(source_file, "                    }\n");
+                } else if (elem->type && strstr(elem->type, "dateTime")) {
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        obj->%s = axutil_date_time_create(env);\n", elem_name);
+                    fprintf(source_file, "                        if (obj->%s) {\n", elem_name);
+                    fprintf(source_file, "                            axutil_date_time_deserialize_date_time(obj->%s, env, text_value);\n", elem_name);
+                    fprintf(source_file, "                        }\n");
+                    fprintf(source_file, "                    }\n");
+                } else if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        obj->%s = atoi(text_value);\n", elem_name);
+                    fprintf(source_file, "                    }\n");
+                } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        obj->%s = (axutil_strcmp(text_value, \"true\") == 0 || axutil_strcmp(text_value, \"1\") == 0) ? AXIS2_TRUE : AXIS2_FALSE;\n", elem_name);
+                    fprintf(source_file, "                    }\n");
+                } else if (elem->type && (strstr(elem->type, "double") || strstr(elem->type, "float"))) {
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        obj->%s = atof(text_value);\n", elem_name);
+                    fprintf(source_file, "                    }\n");
+                } else if (!elem->is_typeless && !elem->is_any_type) {
+                    /* String type - duplicate the string */
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        obj->%s = axutil_strdup(env, text_value);\n", elem_name);
+                    fprintf(source_file, "                    }\n");
+                }
+
+                fprintf(source_file, "                }\n");
+            }
+
+            fprintf(source_file, "            }\n");
+            fprintf(source_file, "        }\n");
+            fprintf(source_file, "        current_node = axiom_node_get_next_sibling(current_node, env);\n");
+            fprintf(source_file, "    }\n\n");
+        }
+
+        fprintf(source_file, "    return obj;\n");
         fprintf(source_file, "}\n");
 
         fclose(source_file);

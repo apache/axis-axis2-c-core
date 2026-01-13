@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://memleak" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://memleak">
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://memleak">
+            <xs:element name="getServiceData">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="args0" nillable="true" type="xs:base64Binary"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getServiceDataResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:base64Binary"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getServiceDataRequest">
+        <wsdl:part name="parameters" element="ns:getServiceData"/>
+    </wsdl:message>
+    <wsdl:message name="getServiceDataResponse">
+        <wsdl:part name="parameters" element="ns:getServiceDataResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="axis2cmemleakPortType">
+        <wsdl:operation name="getServiceData">
+            <wsdl:input message="ns:getServiceDataRequest" wsaw:Action="urn:getServiceData"/>
+            <wsdl:output message="ns:getServiceDataResponse" wsaw:Action="urn:getServiceDataResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="axis2cmemleakSoap11Binding" type="ns:axis2cmemleakPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getServiceData">
+            <soap:operation soapAction="urn:getServiceData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="axis2cmemleakSoap12Binding" type="ns:axis2cmemleakPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getServiceData">
+            <soap12:operation soapAction="urn:getServiceData" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="axis2cmemleakHttpBinding" type="ns:axis2cmemleakPortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="getServiceData">
+            <http:operation location="axis2cmemleak/getServiceData"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="getServiceData"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="getServiceData"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="axis2cmemleak">
+        <wsdl:port name="axis2cmemleakHttpSoap11Endpoint" binding="ns:axis2cmemleakSoap11Binding">
+            <soap:address location="http://localhost:8080/axis2/services/axis2cmemleak"/>
+        </wsdl:port>
+        <wsdl:port name="axis2cmemleakHttpSoap12Endpoint" binding="ns:axis2cmemleakSoap12Binding">
+            <soap12:address location="http://localhost:8080/axis2/services/axis2cmemleak"/>
+        </wsdl:port>
+        <wsdl:port name="axis2cmemleakHttpEndpoint" binding="ns:axis2cmemleakHttpBinding">
+            <http:address location="http://localhost:8080/axis2/services/axis2cmemleak"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -318,6 +318,29 @@ extern int axis2c_1575_test_count;
 extern adb_test_case_t axis2c_1573_tests[];
 extern int axis2c_1573_test_count;
 
+/* AXIS2C-1529 base64Binary serialization tests - Memory Leak Fix
+ *
+ * AXIS2C-1529: wsdl2c generates skeleton code with memoryleak inside
+ * Analysis (2025-01-13): When serializing base64Binary types, the generated code
+ * calls axutil_base64_binary_get_encoded_binary() which allocates memory for the
+ * encoded string. This memory was never freed after being written to the stream,
+ * causing a memory leak on every serialization.
+ *
+ * Fix: Native generator now:
+ * - Uses axutil_base64_binary_t* for base64Binary types (not axiom_node_t*)
+ * - Properly frees memory allocated by axutil_base64_binary_get_encoded_binary()
+ * - Uses axutil_base64_binary_free() in the free function
+ * - Implements full serialize/deserialize for base64Binary types
+ *
+ * Test scenarios:
+ * - base64Binary type mapping verification
+ * - Generated code compilation with base64Binary properties
+ * - Memory management in serialization (AXIS2_FREE after get_encoded_binary)
+ * - Deserialization using axutil_base64_binary_set_encoded_binary
+ */
+extern adb_test_case_t axis2c_1529_tests[];
+extern int axis2c_1529_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 
