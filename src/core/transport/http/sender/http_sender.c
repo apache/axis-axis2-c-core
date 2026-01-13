@@ -3411,10 +3411,16 @@ axis2_http_sender_configure_proxy_auth(
 
         if(auth_type)
         {
+            /* AXIS2C-1465 FIX: Check for NULL before dereferencing.
+             * Auth types like "NTLM" may not have a space separator,
+             * causing axutil_strchr to return NULL. */
             auth_type_end = axutil_strchr(auth_type, ' ');
-            *auth_type_end = AXIS2_ESC_NULL;
-            auth_type_end++;
-            /*Read the realm and the rest stuff now from auth_type_end */
+            if(auth_type_end)
+            {
+                *auth_type_end = AXIS2_ESC_NULL;
+                auth_type_end++;
+                /*Read the realm and the rest stuff now from auth_type_end */
+            }
         }
     }
     if(auth_type)
@@ -3539,10 +3545,16 @@ axis2_http_sender_set_proxy_auth_type(
 
     if(auth_type)
     {
+        /* AXIS2C-1465 FIX: Check for NULL before dereferencing.
+         * Auth types like "NTLM" may not have a space separator,
+         * causing axutil_strchr to return NULL. */
         auth_type_end = axutil_strchr(auth_type, ' ');
-        *auth_type_end = AXIS2_ESC_NULL;
-        auth_type_end++;
-        /*Read the realm and the rest stuff now from auth_type_end */
+        if(auth_type_end)
+        {
+            *auth_type_end = AXIS2_ESC_NULL;
+            auth_type_end++;
+            /*Read the realm and the rest stuff now from auth_type_end */
+        }
     }
 
     if(auth_type)
@@ -3555,7 +3567,7 @@ axis2_http_sender_set_proxy_auth_type(
         {
             status = axis2_msg_ctx_set_auth_type(msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_DIGEST);
         }
-        if(axutil_strcasecmp(auth_type, AXIS2_PROXY_AUTH_TYPE_NTLM) == 0)
+        else if(axutil_strcasecmp(auth_type, AXIS2_PROXY_AUTH_TYPE_NTLM) == 0)
         {
             status = axis2_msg_ctx_set_auth_type(msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_NTLM);
         }
