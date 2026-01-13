@@ -17,10 +17,136 @@
 
 #include "wsdl2c_native.h"
 #include <string.h>
+#include <ctype.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <errno.h>
 #include <time.h>
+
+/* AXIS2C-1573/433/1616 FIX: C reserved keywords list
+ * These words cannot be used as identifiers in generated C code.
+ * Includes both C keywords and axis2-specific type conflicts.
+ */
+static const char *c_reserved_keywords[] = {
+    /* C89/C99 keywords */
+    "auto", "break", "case", "char", "const", "continue", "default", "do",
+    "double", "else", "enum", "extern", "float", "for", "goto", "if",
+    "inline", "int", "long", "register", "restrict", "return", "short",
+    "signed", "sizeof", "static", "struct", "switch", "typedef", "union",
+    "unsigned", "void", "volatile", "while", "_Bool", "_Complex", "_Imaginary",
+    /* C11 keywords */
+    "_Alignas", "_Alignof", "_Atomic", "_Generic", "_Noreturn", "_Static_assert",
+    "_Thread_local",
+    /* C++ keywords (for compatibility) */
+    "class", "public", "private", "protected", "virtual", "template",
+    "namespace", "using", "try", "catch", "throw", "new", "delete",
+    "bool", "true", "false", "nullptr",
+    /* Axis2/C type conflicts (AXIS2C-1616) */
+    "type", "Type",      /* adb_type_t conflicts with extension mapper */
+    "status", "Status",  /* axis2_status_t */
+    "bool", "Bool",      /* axis2_bool_t */
+    "env", "Env",        /* axutil_env_t */
+    "node", "Node",      /* axiom_node_t */
+    "element", "Element", /* axiom_element_t */
+    NULL  /* Sentinel */
+};
+
+/* AXIS2C-1616 FIX: Check if a name is a C reserved keyword */
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsdl2c_is_reserved_keyword(const axis2_char_t *name)
+{
+    int i;
+    if (!name) {
+        return AXIS2_FALSE;
+    }
+
+    for (i = 0; c_reserved_keywords[i] != NULL; i++) {
+        if (strcmp(name, c_reserved_keywords[i]) == 0) {
+            return AXIS2_TRUE;
+        }
+    }
+    return AXIS2_FALSE;
+}
+
+/* AXIS2C-1573/433 FIX: Sanitize WSDL name to valid C identifier
+ *
+ * This function handles:
+ * - AXIS2C-1573: Period (.) in type names (e.g., "Test.Types" -> "Test_Types")
+ * - AXIS2C-433: Hyphen (-) in type names (e.g., "my-type" -> "my_type")
+ * - AXIS2C-1616: Reserved word conflicts (e.g., "type" -> "type_value")
+ * - Leading digits (e.g., "123abc" -> "_123abc")
+ * - Other invalid characters
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+wsdl2c_sanitize_c_identifier(const axutil_env_t *env, const axis2_char_t *wsdl_name)
+{
+    axis2_char_t *result = NULL;
+    axis2_char_t *sanitized = NULL;
+    size_t len;
+    size_t i, j;
+    axis2_bool_t needs_prefix = AXIS2_FALSE;
+
+    if (!wsdl_name || !env) {
+        return NULL;
+    }
+
+    len = strlen(wsdl_name);
+    if (len == 0) {
+        return NULL;
+    }
+
+    /* Check if first character is a digit - needs underscore prefix */
+    if (isdigit((unsigned char)wsdl_name[0])) {
+        needs_prefix = AXIS2_TRUE;
+    }
+
+    /* Allocate space: original length + potential prefix + "_value" suffix + null */
+    sanitized = (axis2_char_t *)malloc(len + 1 + 7 + 1);
+    if (!sanitized) {
+        return NULL;
+    }
+
+    j = 0;
+
+    /* Add underscore prefix if name starts with digit */
+    if (needs_prefix) {
+        sanitized[j++] = '_';
+    }
+
+    /* Sanitize each character */
+    for (i = 0; i < len; i++) {
+        unsigned char c = (unsigned char)wsdl_name[i];
+
+        if (isalnum(c)) {
+            /* Alphanumeric characters are valid */
+            sanitized[j++] = c;
+        } else if (c == '_') {
+            /* Underscore is valid */
+            sanitized[j++] = '_';
+        } else if (c == '.' || c == '-' || c == ':' || c == ' ' || c == '/') {
+            /* AXIS2C-1573: Period -> underscore
+             * AXIS2C-433: Hyphen -> underscore
+             * Also handle colon, space, slash */
+            sanitized[j++] = '_';
+        } else {
+            /* Other invalid characters -> underscore */
+            sanitized[j++] = '_';
+        }
+    }
+    sanitized[j] = '\0';
+
+    /* AXIS2C-1616: Check if sanitized name is a reserved keyword */
+    if (wsdl2c_is_reserved_keyword(sanitized)) {
+        /* Append "_value" suffix to avoid conflict */
+        strcat(sanitized, "_value");
+    }
+
+    /* Duplicate result using environment allocator if available */
+    result = axutil_strdup(env, sanitized);
+    free(sanitized);
+
+    return result;
+}
 
 /* Forward declarations for internal functions */
 static axis2_status_t create_output_directory(const axis2_char_t *path, const axutil_env_t *env);

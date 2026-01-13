@@ -183,13 +183,17 @@ typedef struct wsdl2c_options {
  * @brief Schema element structure (parsed from XSD)
  * Contains element information including type and 'any' type flag.
  * AXIS2C-1580: is_any_type flag indicates xsd:any elements that may have NULL qname
+ * AXIS2C-1573: Stores both original XML name and sanitized C identifier
  */
 typedef struct wsdl2c_schema_element {
-    axis2_char_t *name;             /**< Element name */
+    axis2_char_t *name;             /**< Element name (original XML name for serialization) */
+    axis2_char_t *c_name;           /**< Sanitized C identifier (AXIS2C-1573) */
     axis2_char_t *type;             /**< Element type (xsd:string, etc.) */
+    axis2_char_t *c_type;           /**< Sanitized C type identifier (AXIS2C-1573) */
     axis2_char_t *namespace_uri;    /**< Namespace URI */
     axis2_bool_t is_any_type;       /**< True if xsd:any element (AXIS2C-1580) */
     axis2_bool_t is_nillable;       /**< True if nillable="true" */
+    axis2_bool_t name_was_sanitized; /**< True if name required sanitization (AXIS2C-1573) */
     int min_occurs;                 /**< minOccurs value (0 = optional) */
     int max_occurs;                 /**< maxOccurs value (-1 = unbounded) */
 } wsdl2c_schema_element_t;
@@ -326,6 +330,47 @@ axutil_strdup(const axutil_env_t *env, const char *str);
  */
 AXIS2_EXTERN char* AXIS2_CALL
 axutil_string_toupper(const char *str, const axutil_env_t *env);
+
+/* AXIS2C-1573 FIX: Identifier sanitization for valid C code generation
+ *
+ * WSDL type names may contain characters that are invalid in C identifiers:
+ * - Period (.) - e.g., "Test.Types" from .NET namespaces
+ * - Hyphen (-) - e.g., "my-type" (also AXIS2C-433)
+ * - Colon (:) - e.g., namespace prefixes
+ * - Leading digits - e.g., "123Type"
+ *
+ * This function converts WSDL names to valid C identifiers while preserving
+ * the original name for XML serialization (xsi:type attribute).
+ *
+ * Characters that need sanitization:
+ * - Invalid chars (., -, :, space, etc.) -> underscore (_)
+ * - Leading digit -> prefix with underscore (_)
+ * - Reserved C keywords -> suffix with _type (AXIS2C-1616)
+ */
+
+/**
+ * @brief Sanitize a WSDL name to create a valid C identifier
+ * @param env Environment
+ * @param wsdl_name Original WSDL type/element name
+ * @return Newly allocated sanitized C identifier string (caller must free)
+ *
+ * Examples:
+ *   "Test.Types"     -> "Test_Types"      (AXIS2C-1573: period)
+ *   "my-element"     -> "my_element"      (AXIS2C-433: hyphen)
+ *   "type"           -> "type_value"      (AXIS2C-1616: reserved word)
+ *   "123abc"         -> "_123abc"         (leading digit)
+ *   "Test.My-Type"   -> "Test_My_Type"    (combined)
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+wsdl2c_sanitize_c_identifier(const axutil_env_t *env, const axis2_char_t *wsdl_name);
+
+/**
+ * @brief Check if a name is a C reserved keyword
+ * @param name Name to check
+ * @return AXIS2_TRUE if reserved, AXIS2_FALSE otherwise
+ */
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsdl2c_is_reserved_keyword(const axis2_char_t *name);
 
 /* Standalone mode macros and definitions */
 #ifdef STANDALONE_BUILD

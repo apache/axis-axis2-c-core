@@ -39,6 +39,7 @@ adb_test_runner_SOURCES = \
     src/test_axis2c_1580_any_type.c \
     src/test_axis2c_1579_xsi_type.c \
     src/test_axis2c_1575_qname_property.c \
+    src/test_axis2c_1573_identifier_sanitization.c \
     src/axis2_stub_compat.c
 
 # Include directories

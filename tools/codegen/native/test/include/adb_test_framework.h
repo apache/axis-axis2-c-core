@@ -294,6 +294,30 @@ extern int axis2c_1579_test_count;
 extern adb_test_case_t axis2c_1575_tests[];
 extern int axis2c_1575_test_count;
 
+/* AXIS2C-1573 identifier sanitization tests - C Identifier Validation
+ *
+ * AXIS2C-1573: Generated code failed to compile when the type names in WSDL has '.'
+ * Analysis (2025-01-13): WSDL type names may contain characters invalid in C identifiers:
+ * - Period (.) from .NET namespaces - "Test.Types" -> "Test_Types"
+ * - Hyphen (-) from XML conventions - "my-type" -> "my_type" (also AXIS2C-433)
+ * - Leading digits - "123Type" -> "_123Type"
+ * - Reserved keywords - "type" -> "type_value" (also AXIS2C-1616)
+ *
+ * This fix also addresses:
+ * - AXIS2C-433: WSDL2C compilation errors due to "-" character
+ * - AXIS2C-1616: Conflict with data type names (reserved word handling)
+ *
+ * Test scenarios:
+ * - Period character sanitization
+ * - Hyphen character sanitization (AXIS2C-433)
+ * - Reserved keyword detection and resolution (AXIS2C-1616)
+ * - Leading digit handling
+ * - Combined sanitization scenarios
+ * - XML name preservation for xsi:type serialization
+ */
+extern adb_test_case_t axis2c_1573_tests[];
+extern int axis2c_1573_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 
