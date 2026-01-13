@@ -461,6 +461,7 @@ int main(int argc, char *argv[]) {
     adb_run_test_suite(axis2c_1614_tests, axis2c_1614_test_count);
     adb_run_test_suite(axis2c_1581_tests, axis2c_1581_test_count);
     adb_run_test_suite(axis2c_1580_tests, axis2c_1580_test_count);
+    adb_run_test_suite(axis2c_1579_tests, axis2c_1579_test_count);
 
     adb_test_cleanup();
 

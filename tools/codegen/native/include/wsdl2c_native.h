@@ -74,6 +74,15 @@ typedef char axis2_char_t;
 #define AXIS2_ERROR_INVALID_WSDL 1002
 #endif
 
+/* AXIS2C-1579 FIX: XSI namespace constants for proper xsi:type support
+ * The xsi:type attribute is used for type polymorphism in XML Schema.
+ * xmlns:xsi MUST be set to the XML Schema Instance namespace, NOT the target namespace.
+ */
+#define AXIS2_XSI_NAMESPACE_URI "http://www.w3.org/2001/XMLSchema-instance"
+#define AXIS2_XSI_NAMESPACE_PREFIX "xsi"
+#define AXIS2_XSD_NAMESPACE_URI "http://www.w3.org/2001/XMLSchema"
+#define AXIS2_XSD_NAMESPACE_PREFIX "xsd"
+
 /* Environment structure - simplified for standalone use */
 typedef struct axutil_allocator {
     void *(*malloc_fn)(void *allocator, size_t size);

@@ -262,6 +262,22 @@ extern int axis2c_1581_test_count;
 extern adb_test_case_t axis2c_1580_tests[];
 extern int axis2c_1580_test_count;
 
+/* AXIS2C-1579 xsi:type support tests - Proper Type Polymorphism Serialization
+ *
+ * AXIS2C-1579: Wrong xsi:type in the response
+ * Analysis (2025-01-12): Generated serialization code must use the correct XSI namespace
+ * (http://www.w3.org/2001/XMLSchema-instance) for the xmlns:xsi declaration, NOT the
+ * target namespace. The xsi:type attribute must also use properly prefixed type names.
+ *
+ * Test scenarios:
+ * - XSI namespace constant validation
+ * - xsi:type attribute format validation (prefixed type names)
+ * - Generated code verification for correct namespace usage
+ * - XML output format validation
+ */
+extern adb_test_case_t axis2c_1579_tests[];
+extern int axis2c_1579_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 

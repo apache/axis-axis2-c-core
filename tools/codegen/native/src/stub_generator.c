@@ -747,15 +747,69 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            return AXIS2_SUCCESS;\n");
             fprintf(source_file, "        }\n\n");
 
-            /* Basic serialization function */
+            /* Basic serialization function with AXIS2C-1579 xsi:type support */
             fprintf(source_file, "        axiom_node_t* AXIS2_CALL\n");
             fprintf(source_file, "        adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n", request_classes[i], request_classes[i]);
             fprintf(source_file, "                        axiom_node_t* parent, axiom_element_t *parent_element,\n");
             fprintf(source_file, "                        int parent_tag_closed, axutil_hash_t* namespaces,\n");
             fprintf(source_file, "                        int *next_ns_index)\n");
             fprintf(source_file, "        {\n");
-            fprintf(source_file, "            /* TODO: Implement XML serialization */\n");
-            fprintf(source_file, "            return NULL;\n");
+            fprintf(source_file, "            axiom_node_t *current_node = NULL;\n");
+            fprintf(source_file, "            axiom_element_t *current_element = NULL;\n");
+            fprintf(source_file, "            axiom_namespace_t *ns = NULL;\n");
+            fprintf(source_file, "            axiom_namespace_t *xsi_ns = NULL;\n");
+            fprintf(source_file, "            axiom_attribute_t *xsi_type_attr = NULL;\n");
+            fprintf(source_file, "            axis2_char_t *xsi_type_value = NULL;\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, _this, NULL);\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* Create namespace for the element */\n");
+            fprintf(source_file, "            ns = axiom_namespace_create(env, \"%s\", \"ns1\");\n",
+                    context->wsdl->target_namespace ? context->wsdl->target_namespace : "http://example.com/");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* Create the element */\n");
+            fprintf(source_file, "            current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", request_classes[i]);
+            fprintf(source_file, "            if (!current_element) {\n");
+            fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to create element for %s\");\n", request_classes[i]);
+            fprintf(source_file, "                return NULL;\n");
+            fprintf(source_file, "            }\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* AXIS2C-1579 FIX: Add proper xsi:type support for type polymorphism\n");
+            fprintf(source_file, "             * The xmlns:xsi MUST be set to the XML Schema Instance namespace,\n");
+            fprintf(source_file, "             * NOT the target namespace (which was the original bug).\n");
+            fprintf(source_file, "             * Correct: xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
+            fprintf(source_file, "             * Wrong:   xmlns:xsi=\"<target-namespace>\" (AXIS2C-1579 bug)\n");
+            fprintf(source_file, "             */\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* Add xmlns:xsi namespace declaration with CORRECT XSI namespace URI */\n");
+            fprintf(source_file, "            xsi_ns = axiom_namespace_create(env, \n");
+            fprintf(source_file, "                \"http://www.w3.org/2001/XMLSchema-instance\", \"xsi\");\n");
+            fprintf(source_file, "            if (xsi_ns) {\n");
+            fprintf(source_file, "                axiom_element_declare_namespace(current_element, env, current_node, xsi_ns);\n");
+            fprintf(source_file, "            }\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* Add xsi:type attribute with properly prefixed type name */\n");
+            fprintf(source_file, "            xsi_type_value = \"ns1:%s\";\n", request_classes[i]);
+            fprintf(source_file, "            xsi_type_attr = axiom_attribute_create(env, \"type\", xsi_type_value, xsi_ns);\n");
+            fprintf(source_file, "            if (xsi_type_attr) {\n");
+            fprintf(source_file, "                axiom_element_add_attribute(current_element, env, xsi_type_attr, current_node);\n");
+            fprintf(source_file, "            }\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* Serialize child elements */\n");
+            fprintf(source_file, "            if (_this->is_valid_in1) {\n");
+            fprintf(source_file, "                axiom_element_t *child_element = NULL;\n");
+            fprintf(source_file, "                axiom_node_t *child_node = NULL;\n");
+            fprintf(source_file, "                axis2_char_t value_str[64];\n");
+            fprintf(source_file, "                \n");
+            fprintf(source_file, "                /* Create child element for the value */\n");
+            fprintf(source_file, "                child_element = axiom_element_create(env, current_node, \"in1\", ns, &child_node);\n");
+            fprintf(source_file, "                if (child_element) {\n");
+            fprintf(source_file, "                    snprintf(value_str, sizeof(value_str), \"%%d\", _this->property_in1);\n");
+            fprintf(source_file, "                    axiom_element_set_text(child_element, env, value_str, child_node);\n");
+            fprintf(source_file, "                }\n");
+            fprintf(source_file, "            }\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            return current_node;\n");
             fprintf(source_file, "        }\n\n");
 
             /* AXIS2C-1614 FIX: Deserialization function with required attribute validation
