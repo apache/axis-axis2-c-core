@@ -598,11 +598,14 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(source_file, "        axis2_stub_populate_services_for_%s(axis2_stub_t *stub, const axutil_env_t *env)\n", service_name);
     fprintf(source_file, "        {\n");
     fprintf(source_file, "            axis2_svc_t *svc = NULL;\n");
+    fprintf(source_file, "            axutil_qname_t *svc_qname = NULL;\n");
     fprintf(source_file, "            axutil_qname_t *op_qname = NULL;\n");
     fprintf(source_file, "            axis2_op_t *op = NULL;\n");
     fprintf(source_file, "            \n");
-    fprintf(source_file, "            /* Create service */\n");
-    fprintf(source_file, "            svc = axis2_svc_create_with_qname(env, axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL));\n", service_name, service_name);
+    fprintf(source_file, "            /* AXIS2C-1542: Create service qname and free after use to prevent leak */\n");
+    fprintf(source_file, "            svc_qname = axutil_qname_create(env, \"%s\", \"http://localhost/axis/%s\", NULL);\n", service_name, service_name);
+    fprintf(source_file, "            svc = axis2_svc_create_with_qname(env, svc_qname);\n");
+    fprintf(source_file, "            axutil_qname_free(svc_qname, env);\n");
     fprintf(source_file, "            \n");
 
     /* Add operations - generated from parsed WSDL */
@@ -616,6 +619,7 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
                 fprintf(source_file, "            op_qname = axutil_qname_create(env, \"%s\", \"%s\", NULL);\n",
                         op->name, context->wsdl->target_namespace ? context->wsdl->target_namespace : "");
                 fprintf(source_file, "            op = axis2_op_create_with_qname(env, op_qname);\n");
+                fprintf(source_file, "            axutil_qname_free(op_qname, env);  /* AXIS2C-1542: Free qname after use */\n");
                 fprintf(source_file, "            axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_IN_OUT);\n");
                 fprintf(source_file, "            axis2_svc_add_op(svc, env, op);\n");
                 fprintf(source_file, "            \n");
