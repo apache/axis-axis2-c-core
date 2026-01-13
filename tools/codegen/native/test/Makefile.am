@@ -36,6 +36,7 @@ adb_test_runner_SOURCES = \
     src/test_axis2c_1616_type_name_conflict.c \
     src/test_axis2c_1614_required_attribute_validation.c \
     src/test_axis2c_1581_empty_soap_action.c \
+    src/test_axis2c_1580_any_type.c \
     src/axis2_stub_compat.c
 
 # Include directories

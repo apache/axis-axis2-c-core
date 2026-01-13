@@ -49,6 +49,8 @@ register_namespaces(xmlXPathContextPtr xpath_ctx)
     xmlXPathRegisterNs(xpath_ctx, BAD_CAST "wsdl", BAD_CAST WSDL_NS_URI);
     xmlXPathRegisterNs(xpath_ctx, BAD_CAST "soap", BAD_CAST SOAP_NS_URI);
     xmlXPathRegisterNs(xpath_ctx, BAD_CAST "xsd", BAD_CAST XSD_NS_URI);
+    /* Also register xs: prefix which is commonly used for XML Schema */
+    xmlXPathRegisterNs(xpath_ctx, BAD_CAST "xs", BAD_CAST XSD_NS_URI);
 }
 
 /* Parse WSDL messages */
@@ -275,6 +277,136 @@ parse_wsdl_bindings(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, con
     return AXIS2_SUCCESS;
 }
 
+/* Parse schema elements to detect xsd:any types (AXIS2C-1580 fix) */
+static axis2_status_t
+parse_wsdl_schema(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, const axutil_env_t *env)
+{
+    xmlXPathObjectPtr schema_result = NULL;
+    xmlNodeSetPtr element_nodes = NULL;
+    int i;
+
+    AXIS2_PARAM_CHECK(env->error, context, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, xpath_ctx, AXIS2_FAILURE);
+
+    /* Initialize schema elements list */
+    context->wsdl->schema_elements = axutil_array_list_create(env, 0);
+    context->wsdl->has_any_type = AXIS2_FALSE;
+
+    /* Find all xsd:any elements - these have no qname and can cause crashes if not handled */
+    schema_result = xmlXPathEvalExpression(
+        BAD_CAST "//xsd:any | //xs:any", xpath_ctx);
+
+    if (schema_result && schema_result->nodesetval && schema_result->nodesetval->nodeNr > 0) {
+        element_nodes = schema_result->nodesetval;
+        context->wsdl->has_any_type = AXIS2_TRUE;
+
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "AXIS2C-1580: Found %d xsd:any elements - generating safe deserialization code",
+            element_nodes->nodeNr);
+
+        for (i = 0; i < element_nodes->nodeNr; i++) {
+            xmlNodePtr any_node = element_nodes->nodeTab[i];
+            wsdl2c_schema_element_t *element = NULL;
+            xmlChar *min_occurs = NULL;
+            xmlChar *max_occurs = NULL;
+            xmlChar *namespace_attr = NULL;
+            xmlChar *process_contents = NULL;
+
+            element = AXIS2_MALLOC(env->allocator, sizeof(wsdl2c_schema_element_t));
+            memset(element, 0, sizeof(wsdl2c_schema_element_t));
+
+            element->is_any_type = AXIS2_TRUE;
+            element->name = axutil_strdup(env, "any"); /* xsd:any has no name */
+
+            /* Get minOccurs (default is 1) */
+            min_occurs = xmlGetProp(any_node, BAD_CAST "minOccurs");
+            element->min_occurs = min_occurs ? atoi((const char*)min_occurs) : 1;
+            if (min_occurs) xmlFree(min_occurs);
+
+            /* Get maxOccurs (default is 1, "unbounded" = -1) */
+            max_occurs = xmlGetProp(any_node, BAD_CAST "maxOccurs");
+            if (max_occurs) {
+                if (xmlStrcmp(max_occurs, BAD_CAST "unbounded") == 0) {
+                    element->max_occurs = -1;
+                } else {
+                    element->max_occurs = atoi((const char*)max_occurs);
+                }
+                xmlFree(max_occurs);
+            } else {
+                element->max_occurs = 1;
+            }
+
+            /* Get namespace attribute */
+            namespace_attr = xmlGetProp(any_node, BAD_CAST "namespace");
+            if (namespace_attr) {
+                element->namespace_uri = axutil_strdup(env, (const char*)namespace_attr);
+                xmlFree(namespace_attr);
+            }
+
+            /* Get processContents attribute for logging */
+            process_contents = xmlGetProp(any_node, BAD_CAST "processContents");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "  xsd:any element: namespace='%s', minOccurs=%d, maxOccurs=%d, processContents='%s'",
+                element->namespace_uri ? element->namespace_uri : "##any",
+                element->min_occurs, element->max_occurs,
+                process_contents ? (const char*)process_contents : "strict");
+            if (process_contents) xmlFree(process_contents);
+
+            axutil_array_list_add(context->wsdl->schema_elements, env, element);
+        }
+    }
+
+    if (schema_result) {
+        xmlXPathFreeObject(schema_result);
+    }
+
+    /* Also look for regular elements to understand the schema structure */
+    schema_result = xmlXPathEvalExpression(
+        BAD_CAST "//xsd:element[@name] | //xs:element[@name]", xpath_ctx);
+
+    if (schema_result && schema_result->nodesetval) {
+        element_nodes = schema_result->nodesetval;
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "Found %d named schema elements", element_nodes->nodeNr);
+
+        for (i = 0; i < element_nodes->nodeNr; i++) {
+            xmlNodePtr elem_node = element_nodes->nodeTab[i];
+            wsdl2c_schema_element_t *element = NULL;
+            xmlChar *name = NULL;
+            xmlChar *type = NULL;
+            xmlChar *nillable = NULL;
+
+            name = xmlGetProp(elem_node, BAD_CAST "name");
+            if (!name) continue;
+
+            element = AXIS2_MALLOC(env->allocator, sizeof(wsdl2c_schema_element_t));
+            memset(element, 0, sizeof(wsdl2c_schema_element_t));
+
+            element->name = axutil_strdup(env, (const char*)name);
+            element->is_any_type = AXIS2_FALSE;
+
+            type = xmlGetProp(elem_node, BAD_CAST "type");
+            if (type) {
+                element->type = axutil_strdup(env, (const char*)type);
+                xmlFree(type);
+            }
+
+            nillable = xmlGetProp(elem_node, BAD_CAST "nillable");
+            element->is_nillable = (nillable && xmlStrcmp(nillable, BAD_CAST "true") == 0);
+            if (nillable) xmlFree(nillable);
+
+            xmlFree(name);
+            axutil_array_list_add(context->wsdl->schema_elements, env, element);
+        }
+    }
+
+    if (schema_result) {
+        xmlXPathFreeObject(schema_result);
+    }
+
+    return AXIS2_SUCCESS;
+}
+
 /* Main WSDL parsing function */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
@@ -341,6 +473,13 @@ wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
     status = parse_wsdl_bindings(context, xpath_ctx, env);
     if (status != AXIS2_SUCCESS) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse WSDL bindings");
+        goto cleanup;
+    }
+
+    /* Parse schema to detect xsd:any types (AXIS2C-1580) */
+    status = parse_wsdl_schema(context, xpath_ctx, env);
+    if (status != AXIS2_SUCCESS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse WSDL schema");
         goto cleanup;
     }
 

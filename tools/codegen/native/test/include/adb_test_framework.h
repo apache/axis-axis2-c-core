@@ -246,6 +246,22 @@ extern int axis2c_1614_test_count;
 extern adb_test_case_t axis2c_1581_tests[];
 extern int axis2c_1581_test_count;
 
+/* AXIS2C-1580 any type handling tests - Safe Deserialization for xsd:any
+ *
+ * AXIS2C-1580: Native codegen crashes when deserializing 'any' type
+ * Analysis (2025-01-12): When deserializing xsd:any elements, axiom_element_get_qname
+ * returns NULL because xsd:any elements don't have a fixed qname. The generated code
+ * must check for NULL before performing qname comparison operations.
+ *
+ * Test scenarios:
+ * - xsd:any element detection in WSDL schema parsing
+ * - NULL qname handling logic (prevents crash)
+ * - Code generation with xsd:any types
+ * - Safe deserialization patterns for extensible schemas
+ */
+extern adb_test_case_t axis2c_1580_tests[];
+extern int axis2c_1580_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 

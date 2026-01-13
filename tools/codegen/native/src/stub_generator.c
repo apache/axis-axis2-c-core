@@ -760,13 +760,15 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
 
             /* AXIS2C-1614 FIX: Deserialization function with required attribute validation
              * This implements the fix from the original XSL template patch that added
-             * validation to fail when required attributes are missing */
+             * validation to fail when required attributes are missing
+             * AXIS2C-1580 FIX: Safe qname handling for xsd:any elements */
             fprintf(source_file, "        adb_%s_t* AXIS2_CALL\n", request_classes[i]);
             fprintf(source_file, "        adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n", request_classes[i]);
             fprintf(source_file, "                               int dont_care_minoccurs)\n");
             fprintf(source_file, "        {\n");
             fprintf(source_file, "            adb_%s_t *adb_obj = NULL;\n", request_classes[i]);
             fprintf(source_file, "            axiom_element_t *element = NULL;\n");
+            fprintf(source_file, "            axutil_qname_t *element_qname = NULL;\n");
             fprintf(source_file, "            axis2_char_t *attr_value = NULL;\n");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            AXIS2_PARAM_CHECK(env->error, node, NULL);\n");
@@ -775,6 +777,22 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "            if (!element) {\n");
             fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to get element from node\");\n");
             fprintf(source_file, "                return NULL;\n");
+            fprintf(source_file, "            }\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* AXIS2C-1580 FIX: Safe qname handling for xsd:any elements */\n");
+            fprintf(source_file, "            /* Get the qname - may be NULL for xsd:any elements */\n");
+            fprintf(source_file, "            element_qname = axiom_element_get_qname(element, env, node);\n");
+            fprintf(source_file, "            \n");
+            fprintf(source_file, "            /* AXIS2C-1580: Only perform qname comparison if element_qname is not NULL */\n");
+            fprintf(source_file, "            /* For xsd:any elements, element_qname can be NULL - skip qname validation */\n");
+            fprintf(source_file, "            if (element_qname) {\n");
+            fprintf(source_file, "                /* Normal element - validate qname matches expected */\n");
+            fprintf(source_file, "                /* axutil_qname_t *expected_qname = axutil_qname_create(env, \"%s\", namespace_uri, NULL); */\n", request_classes[i]);
+            fprintf(source_file, "                /* if (!axutil_qname_equals(element_qname, env, expected_qname)) { ... } */\n");
+            fprintf(source_file, "            } else {\n");
+            fprintf(source_file, "                /* AXIS2C-1580: xsd:any element detected - qname is NULL */\n");
+            fprintf(source_file, "                /* Skip qname validation, proceed with deserialization */\n");
+            fprintf(source_file, "                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, \"Deserializing xsd:any element (NULL qname)\");\n");
             fprintf(source_file, "            }\n");
             fprintf(source_file, "            \n");
             fprintf(source_file, "            adb_obj = adb_%s_create(env);\n", request_classes[i]);

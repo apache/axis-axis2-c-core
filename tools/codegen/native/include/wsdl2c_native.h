@@ -136,6 +136,21 @@ typedef struct wsdl2c_options {
 } wsdl2c_options_t;
 
 /**
+ * @brief Schema element structure (parsed from XSD)
+ * Contains element information including type and 'any' type flag.
+ * AXIS2C-1580: is_any_type flag indicates xsd:any elements that may have NULL qname
+ */
+typedef struct wsdl2c_schema_element {
+    axis2_char_t *name;             /**< Element name */
+    axis2_char_t *type;             /**< Element type (xsd:string, etc.) */
+    axis2_char_t *namespace_uri;    /**< Namespace URI */
+    axis2_bool_t is_any_type;       /**< True if xsd:any element (AXIS2C-1580) */
+    axis2_bool_t is_nillable;       /**< True if nillable="true" */
+    int min_occurs;                 /**< minOccurs value (0 = optional) */
+    int max_occurs;                 /**< maxOccurs value (-1 = unbounded) */
+} wsdl2c_schema_element_t;
+
+/**
  * @brief Operation structure (parsed from WSDL)
  * Contains operation name and soapAction extracted from binding.
  * AXIS2C-1581: soap_action may be NULL if empty or missing in WSDL
@@ -157,6 +172,8 @@ typedef struct wsdl2c_wsdl {
     axis2_char_t *binding_name;         /**< Binding name */
     axutil_array_list_t *operations;    /**< Operations array (wsdl2c_operation_t*) */
     axutil_array_list_t *messages;      /**< Messages array */
+    axutil_array_list_t *schema_elements; /**< Schema elements (wsdl2c_schema_element_t*) */
+    axis2_bool_t has_any_type;          /**< True if any xsd:any elements found (AXIS2C-1580) */
     void *schema_node;                   /**< Schema information */
 } wsdl2c_wsdl_t;
 
