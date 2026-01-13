@@ -1066,8 +1066,12 @@ guththila_next(
                 if(2 == guththila_next_no_char(m, 0, c_arra, 2, env) && '-' == c_arra[0] && '-'
                     == c_arra[1])
                 {
+                    /* AXIS2C-1536 FIX: Removed premature GUTHTHILA_NEXT_CHAR before while loop
+                     * For empty comments like <!---->, the parser was getting stuck because
+                     * the initial character read consumed the first hyphen of -->, breaking
+                     * the end-of-comment detection logic.
+                     */
                     int loop_state = 1;
-                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
                     while(loop_state)
                     {
@@ -1088,6 +1092,8 @@ guththila_next(
                                 }
                                 else
                                 {
+                                    /* AXIS2C-1536: Advance parser position on malformed comment */
+                                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                                     return -1;
                                 }
                             }
