@@ -140,7 +140,8 @@ axutil_base64_decode(
 {
     int len;
     len = axutil_base64_decode_binary((unsigned char *)bufplain, bufcoded);
-    bufplain[len] = '\0';
+    if(len >= 0)
+        bufplain[len] = '\0';
     return len;
 }
 
