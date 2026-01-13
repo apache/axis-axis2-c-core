@@ -277,6 +277,196 @@ parse_wsdl_bindings(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, con
     return AXIS2_SUCCESS;
 }
 
+/* AXIS2C-1224: Parse complexTypes from schema, including empty sequences */
+static axis2_status_t
+parse_wsdl_complex_types(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, const axutil_env_t *env)
+{
+    xmlXPathObjectPtr complex_types_result = NULL;
+    xmlNodeSetPtr complex_type_nodes = NULL;
+    int i;
+
+    AXIS2_PARAM_CHECK(env->error, context, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, xpath_ctx, AXIS2_FAILURE);
+
+    /* Initialize complex types list */
+    context->wsdl->complex_types = axutil_array_list_create(env, 0);
+    context->wsdl->has_empty_sequences = AXIS2_FALSE;
+
+    /* Find all complexType elements in the schema */
+    complex_types_result = xmlXPathEvalExpression(
+        BAD_CAST "//xsd:complexType[@name] | //xs:complexType[@name]", xpath_ctx);
+
+    if (!complex_types_result || !complex_types_result->nodesetval ||
+        complex_types_result->nodesetval->nodeNr == 0) {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No named complexTypes found in schema");
+        if (complex_types_result) {
+            xmlXPathFreeObject(complex_types_result);
+        }
+        return AXIS2_SUCCESS;
+    }
+
+    complex_type_nodes = complex_types_result->nodesetval;
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "AXIS2C-1224: Found %d complexTypes in schema", complex_type_nodes->nodeNr);
+
+    for (i = 0; i < complex_type_nodes->nodeNr; i++) {
+        xmlNodePtr complex_type_node = complex_type_nodes->nodeTab[i];
+        wsdl2c_complex_type_t *complex_type = NULL;
+        xmlChar *type_name = NULL;
+        xmlNodePtr child_node = NULL;
+        xmlNodePtr sequence_node = NULL;
+        int element_count = 0;
+
+        /* Get complexType name */
+        type_name = xmlGetProp(complex_type_node, BAD_CAST "name");
+        if (!type_name) {
+            continue;
+        }
+
+        /* Allocate and initialize complex type structure */
+        complex_type = AXIS2_MALLOC(env->allocator, sizeof(wsdl2c_complex_type_t));
+        memset(complex_type, 0, sizeof(wsdl2c_complex_type_t));
+
+        complex_type->name = axutil_strdup(env, (const axis2_char_t*)type_name);
+        complex_type->c_name = wsdl2c_sanitize_c_identifier(env, (const axis2_char_t*)type_name);
+        complex_type->elements = axutil_array_list_create(env, 0);
+        complex_type->is_empty_sequence = AXIS2_FALSE;
+        complex_type->has_sequence = AXIS2_FALSE;
+
+        /* Look for sequence element within the complexType */
+        for (child_node = complex_type_node->children; child_node; child_node = child_node->next) {
+            if (child_node->type != XML_ELEMENT_NODE) {
+                continue;
+            }
+
+            /* Check for direct sequence child */
+            if (xmlStrcmp(child_node->name, BAD_CAST "sequence") == 0) {
+                sequence_node = child_node;
+                complex_type->has_sequence = AXIS2_TRUE;
+                break;
+            }
+
+            /* Check for sequence inside complexContent/restriction or complexContent/extension */
+            if (xmlStrcmp(child_node->name, BAD_CAST "complexContent") == 0 ||
+                xmlStrcmp(child_node->name, BAD_CAST "simpleContent") == 0) {
+                xmlNodePtr content_child = NULL;
+                for (content_child = child_node->children; content_child; content_child = content_child->next) {
+                    if (content_child->type != XML_ELEMENT_NODE) {
+                        continue;
+                    }
+                    if (xmlStrcmp(content_child->name, BAD_CAST "restriction") == 0 ||
+                        xmlStrcmp(content_child->name, BAD_CAST "extension") == 0) {
+                        /* Get base type */
+                        xmlChar *base = xmlGetProp(content_child, BAD_CAST "base");
+                        if (base) {
+                            complex_type->base_type = axutil_strdup(env, (const axis2_char_t*)base);
+                            xmlFree(base);
+                        }
+                        /* Look for sequence inside */
+                        xmlNodePtr inner_child = NULL;
+                        for (inner_child = content_child->children; inner_child; inner_child = inner_child->next) {
+                            if (inner_child->type == XML_ELEMENT_NODE &&
+                                xmlStrcmp(inner_child->name, BAD_CAST "sequence") == 0) {
+                                sequence_node = inner_child;
+                                complex_type->has_sequence = AXIS2_TRUE;
+                                break;
+                            }
+                        }
+                    }
+                    if (sequence_node) break;
+                }
+            }
+            if (sequence_node) break;
+        }
+
+        /* Parse elements within the sequence */
+        if (sequence_node) {
+            xmlNodePtr elem_node = NULL;
+            for (elem_node = sequence_node->children; elem_node; elem_node = elem_node->next) {
+                if (elem_node->type == XML_ELEMENT_NODE &&
+                    xmlStrcmp(elem_node->name, BAD_CAST "element") == 0) {
+
+                    wsdl2c_schema_element_t *element = NULL;
+                    xmlChar *elem_name = NULL;
+                    xmlChar *elem_type = NULL;
+                    xmlChar *nillable = NULL;
+                    xmlChar *min_occurs = NULL;
+                    xmlChar *max_occurs = NULL;
+
+                    elem_name = xmlGetProp(elem_node, BAD_CAST "name");
+                    if (!elem_name) {
+                        continue;
+                    }
+
+                    element = AXIS2_MALLOC(env->allocator, sizeof(wsdl2c_schema_element_t));
+                    memset(element, 0, sizeof(wsdl2c_schema_element_t));
+
+                    element->name = axutil_strdup(env, (const axis2_char_t*)elem_name);
+                    element->c_name = wsdl2c_sanitize_c_identifier(env, (const axis2_char_t*)elem_name);
+                    element->is_any_type = AXIS2_FALSE;
+
+                    elem_type = xmlGetProp(elem_node, BAD_CAST "type");
+                    if (elem_type) {
+                        element->type = axutil_strdup(env, (const axis2_char_t*)elem_type);
+                        element->c_type = wsdl2c_sanitize_c_identifier(env, (const axis2_char_t*)elem_type);
+                        xmlFree(elem_type);
+                    }
+
+                    nillable = xmlGetProp(elem_node, BAD_CAST "nillable");
+                    element->is_nillable = (nillable && xmlStrcmp(nillable, BAD_CAST "true") == 0);
+                    if (nillable) xmlFree(nillable);
+
+                    min_occurs = xmlGetProp(elem_node, BAD_CAST "minOccurs");
+                    element->min_occurs = min_occurs ? atoi((const char*)min_occurs) : 1;
+                    if (min_occurs) xmlFree(min_occurs);
+
+                    max_occurs = xmlGetProp(elem_node, BAD_CAST "maxOccurs");
+                    if (max_occurs) {
+                        if (xmlStrcmp(max_occurs, BAD_CAST "unbounded") == 0) {
+                            element->max_occurs = -1;
+                        } else {
+                            element->max_occurs = atoi((const char*)max_occurs);
+                        }
+                        xmlFree(max_occurs);
+                    } else {
+                        element->max_occurs = 1;
+                    }
+
+                    axutil_array_list_add(complex_type->elements, env, element);
+                    element_count++;
+
+                    xmlFree(elem_name);
+                }
+            }
+
+            /* AXIS2C-1224: Check for empty sequence */
+            if (element_count == 0) {
+                complex_type->is_empty_sequence = AXIS2_TRUE;
+                context->wsdl->has_empty_sequences = AXIS2_TRUE;
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "AXIS2C-1224: ComplexType '%s' has empty sequence", complex_type->name);
+            }
+        }
+
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "Parsed complexType '%s': %d elements, empty_sequence=%d, has_sequence=%d",
+            complex_type->name, element_count,
+            complex_type->is_empty_sequence, complex_type->has_sequence);
+
+        axutil_array_list_add(context->wsdl->complex_types, env, complex_type);
+        xmlFree(type_name);
+    }
+
+    xmlXPathFreeObject(complex_types_result);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "AXIS2C-1224: Parsed %d complexTypes, %d have empty sequences",
+        axutil_array_list_size(context->wsdl->complex_types, env),
+        context->wsdl->has_empty_sequences ? 1 : 0);
+
+    return AXIS2_SUCCESS;
+}
+
 /* Parse schema elements to detect xsd:any types (AXIS2C-1580 fix) */
 static axis2_status_t
 parse_wsdl_schema(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, const axutil_env_t *env)
@@ -480,6 +670,13 @@ wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
     status = parse_wsdl_schema(context, xpath_ctx, env);
     if (status != AXIS2_SUCCESS) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse WSDL schema");
+        goto cleanup;
+    }
+
+    /* Parse complexTypes including empty sequences (AXIS2C-1224) */
+    status = parse_wsdl_complex_types(context, xpath_ctx, env);
+    if (status != AXIS2_SUCCESS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to parse WSDL complexTypes");
         goto cleanup;
     }
 

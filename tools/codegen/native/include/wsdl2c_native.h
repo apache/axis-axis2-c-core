@@ -199,6 +199,20 @@ typedef struct wsdl2c_schema_element {
 } wsdl2c_schema_element_t;
 
 /**
+ * @brief Complex type structure (parsed from XSD schema)
+ * AXIS2C-1224: Supports complexTypes including those with empty sequences.
+ * An empty sequence (no elements) generates a struct with no properties.
+ */
+typedef struct wsdl2c_complex_type {
+    axis2_char_t *name;             /**< Type name (original XML name) */
+    axis2_char_t *c_name;           /**< Sanitized C identifier */
+    axutil_array_list_t *elements;  /**< Child elements (wsdl2c_schema_element_t*) */
+    axis2_bool_t is_empty_sequence; /**< True if complexType has empty <sequence/> */
+    axis2_bool_t has_sequence;      /**< True if complexType contains a sequence */
+    axis2_char_t *base_type;        /**< Base type for extension/restriction */
+} wsdl2c_complex_type_t;
+
+/**
  * @brief Operation structure (parsed from WSDL)
  * Contains operation name and soapAction extracted from binding.
  * AXIS2C-1581: soap_action may be NULL if empty or missing in WSDL
@@ -221,7 +235,9 @@ typedef struct wsdl2c_wsdl {
     axutil_array_list_t *operations;    /**< Operations array (wsdl2c_operation_t*) */
     axutil_array_list_t *messages;      /**< Messages array */
     axutil_array_list_t *schema_elements; /**< Schema elements (wsdl2c_schema_element_t*) */
+    axutil_array_list_t *complex_types; /**< Complex types (wsdl2c_complex_type_t*) - AXIS2C-1224 */
     axis2_bool_t has_any_type;          /**< True if any xsd:any elements found (AXIS2C-1580) */
+    axis2_bool_t has_empty_sequences;   /**< True if any empty sequences found (AXIS2C-1224) */
     void *schema_node;                   /**< Schema information */
 } wsdl2c_wsdl_t;
 

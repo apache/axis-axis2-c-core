@@ -763,6 +763,364 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     return AXIS2_SUCCESS;
 }
 
+/* AXIS2C-1224: Generate ADB classes for parsed schema complexTypes
+ * This handles all complexTypes including those with empty sequences.
+ * Empty sequences generate structs with no properties but valid create/free/serialize functions.
+ */
+static axis2_status_t
+generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
+{
+    int type_count, i;
+
+    if (!context->wsdl || !context->wsdl->complex_types) {
+        return AXIS2_SUCCESS; /* No complex types to generate */
+    }
+
+    type_count = axutil_array_list_size(context->wsdl->complex_types, env);
+    if (type_count == 0) {
+        return AXIS2_SUCCESS;
+    }
+
+    printf("AXIS2C-1224: Generating ADB classes for %d schema complexTypes\n", type_count);
+
+    for (i = 0; i < type_count; i++) {
+        wsdl2c_complex_type_t *complex_type = axutil_array_list_get(
+            context->wsdl->complex_types, env, i);
+        if (!complex_type || !complex_type->name) continue;
+
+        const char *type_name = complex_type->c_name ? complex_type->c_name : complex_type->name;
+        FILE *header_file = NULL, *source_file = NULL;
+        axis2_char_t *header_path = NULL, *source_path = NULL;
+        int elem_count = 0;
+
+        if (complex_type->elements) {
+            elem_count = axutil_array_list_size(complex_type->elements, env);
+        }
+
+        /* Create ADB header file */
+        header_path = AXIS2_MALLOC(env->allocator,
+            strlen(context->options->output_dir) + strlen(type_name) + 50);
+        sprintf(header_path, "%s/src/adb_%s.h", context->options->output_dir, type_name);
+
+        header_file = fopen(header_path, "w");
+        if (!header_file) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Failed to create ADB header: %s", header_path);
+            AXIS2_FREE(env->allocator, header_path);
+            continue;
+        }
+
+        /* Write header file */
+        fprintf(header_file, "/**\n");
+        fprintf(header_file, " * adb_%s.h\n", type_name);
+        fprintf(header_file, " *\n");
+        fprintf(header_file, " * This file was auto-generated from WSDL schema\n");
+        fprintf(header_file, " * by the Apache Axis2/C Native version: 1.0.0\n");
+        if (complex_type->is_empty_sequence) {
+            fprintf(header_file, " * AXIS2C-1224: ComplexType with empty sequence\n");
+        }
+        fprintf(header_file, " */\n\n");
+
+        fprintf(header_file, "#ifndef ADB_%s_H\n", axutil_string_toupper(type_name, env));
+        fprintf(header_file, "#define ADB_%s_H\n\n", axutil_string_toupper(type_name, env));
+        fprintf(header_file, "#include <stdio.h>\n");
+        fprintf(header_file, "#include <axiom.h>\n");
+        fprintf(header_file, "#include <axutil_utils.h>\n");
+        fprintf(header_file, "#include <axiom_soap.h>\n");
+        fprintf(header_file, "#include <axis2_client.h>\n\n");
+        fprintf(header_file, "#ifdef __cplusplus\n");
+        fprintf(header_file, "extern \"C\" {\n");
+        fprintf(header_file, "#endif\n\n");
+
+        /* Structure forward declaration */
+        fprintf(header_file, "typedef struct adb_%s adb_%s_t;\n\n", type_name, type_name);
+
+        /* Constructor */
+        fprintf(header_file, "/**\n");
+        fprintf(header_file, " * Constructor for %s\n", type_name);
+        fprintf(header_file, " */\n");
+        fprintf(header_file, "adb_%s_t* AXIS2_CALL\n", type_name);
+        fprintf(header_file, "adb_%s_create(const axutil_env_t *env);\n\n", type_name);
+
+        /* Destructor */
+        fprintf(header_file, "/**\n");
+        fprintf(header_file, " * Free %s\n", type_name);
+        fprintf(header_file, " */\n");
+        fprintf(header_file, "axis2_status_t AXIS2_CALL\n");
+        fprintf(header_file, "adb_%s_free(adb_%s_t* _this, const axutil_env_t *env);\n\n",
+                type_name, type_name);
+
+        /* Generate property accessors for elements (if any) */
+        if (elem_count > 0) {
+            int j;
+            for (j = 0; j < elem_count; j++) {
+                wsdl2c_schema_element_t *elem = axutil_array_list_get(
+                    complex_type->elements, env, j);
+                if (!elem || !elem->name) continue;
+
+                const char *elem_name = elem->c_name ? elem->c_name : elem->name;
+                const char *c_type = "axis2_char_t*"; /* Default to string */
+
+                /* Map XSD types to C types */
+                if (elem->type) {
+                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
+                        c_type = "int";
+                    } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
+                        c_type = "axis2_bool_t";
+                    } else if (strstr(elem->type, "double") || strstr(elem->type, "float")) {
+                        c_type = "double";
+                    } else if (strstr(elem->type, "dateTime")) {
+                        c_type = "axutil_date_time_t*";
+                    } else if (strstr(elem->type, "base64Binary")) {
+                        c_type = "axiom_node_t*";
+                    }
+                }
+
+                /* Getter */
+                fprintf(header_file, "/**\n");
+                fprintf(header_file, " * Getter for %s\n", elem_name);
+                fprintf(header_file, " */\n");
+                fprintf(header_file, "%s AXIS2_CALL\n", c_type);
+                fprintf(header_file, "adb_%s_get_%s(adb_%s_t* _this, const axutil_env_t *env);\n\n",
+                        type_name, elem_name, type_name);
+
+                /* Setter */
+                fprintf(header_file, "/**\n");
+                fprintf(header_file, " * Setter for %s\n", elem_name);
+                fprintf(header_file, " */\n");
+                fprintf(header_file, "axis2_status_t AXIS2_CALL\n");
+                fprintf(header_file, "adb_%s_set_%s(adb_%s_t* _this, const axutil_env_t *env, %s value);\n\n",
+                        type_name, elem_name, type_name, c_type);
+            }
+        }
+
+        /* Serialize function */
+        fprintf(header_file, "/**\n");
+        fprintf(header_file, " * Serialize to axiom_node\n");
+        fprintf(header_file, " */\n");
+        fprintf(header_file, "axiom_node_t* AXIS2_CALL\n");
+        fprintf(header_file, "adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n",
+                type_name, type_name);
+        fprintf(header_file, "                axiom_node_t* parent, axiom_element_t *parent_element,\n");
+        fprintf(header_file, "                int parent_tag_closed, axutil_hash_t* namespaces,\n");
+        fprintf(header_file, "                int *next_ns_index);\n\n");
+
+        /* Deserialize function */
+        fprintf(header_file, "/**\n");
+        fprintf(header_file, " * Deserialize from axiom_node\n");
+        fprintf(header_file, " */\n");
+        fprintf(header_file, "adb_%s_t* AXIS2_CALL\n", type_name);
+        fprintf(header_file, "adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n",
+                type_name);
+        fprintf(header_file, "                       int dont_care_minoccurs);\n\n");
+
+        fprintf(header_file, "#ifdef __cplusplus\n");
+        fprintf(header_file, "}\n");
+        fprintf(header_file, "#endif\n\n");
+        fprintf(header_file, "#endif /* ADB_%s_H */\n", axutil_string_toupper(type_name, env));
+
+        fclose(header_file);
+
+        /* Create ADB source file */
+        source_path = AXIS2_MALLOC(env->allocator,
+            strlen(context->options->output_dir) + strlen(type_name) + 50);
+        sprintf(source_path, "%s/src/adb_%s.c", context->options->output_dir, type_name);
+
+        source_file = fopen(source_path, "w");
+        if (!source_file) {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Failed to create ADB source: %s", source_path);
+            AXIS2_FREE(env->allocator, header_path);
+            AXIS2_FREE(env->allocator, source_path);
+            continue;
+        }
+
+        /* Write source file */
+        fprintf(source_file, "/**\n");
+        fprintf(source_file, " * adb_%s.c\n", type_name);
+        fprintf(source_file, " *\n");
+        fprintf(source_file, " * This file was auto-generated from WSDL schema\n");
+        fprintf(source_file, " * by the Apache Axis2/C Native version: 1.0.0\n");
+        if (complex_type->is_empty_sequence) {
+            fprintf(source_file, " * AXIS2C-1224: ComplexType with empty sequence\n");
+        }
+        fprintf(source_file, " */\n\n");
+        fprintf(source_file, "#include \"adb_%s.h\"\n\n", type_name);
+
+        /* Structure definition */
+        fprintf(source_file, "struct adb_%s {\n", type_name);
+        if (elem_count > 0) {
+            int j;
+            for (j = 0; j < elem_count; j++) {
+                wsdl2c_schema_element_t *elem = axutil_array_list_get(
+                    complex_type->elements, env, j);
+                if (!elem || !elem->name) continue;
+
+                const char *elem_name = elem->c_name ? elem->c_name : elem->name;
+                const char *c_type = "axis2_char_t*";
+
+                if (elem->type) {
+                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
+                        c_type = "int";
+                    } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
+                        c_type = "axis2_bool_t";
+                    } else if (strstr(elem->type, "double") || strstr(elem->type, "float")) {
+                        c_type = "double";
+                    } else if (strstr(elem->type, "dateTime")) {
+                        c_type = "axutil_date_time_t*";
+                    } else if (strstr(elem->type, "base64Binary")) {
+                        c_type = "axiom_node_t*";
+                    }
+                }
+                fprintf(source_file, "    %s %s;\n", c_type, elem_name);
+            }
+        } else {
+            /* AXIS2C-1224: Empty sequence - add dummy field to avoid empty struct */
+            fprintf(source_file, "    /* AXIS2C-1224: Empty sequence - no properties */\n");
+            fprintf(source_file, "    int _unused; /* Placeholder to avoid empty struct */\n");
+        }
+        fprintf(source_file, "};\n\n");
+
+        /* Constructor implementation */
+        fprintf(source_file, "adb_%s_t* AXIS2_CALL\n", type_name);
+        fprintf(source_file, "adb_%s_create(const axutil_env_t *env)\n", type_name);
+        fprintf(source_file, "{\n");
+        fprintf(source_file, "    adb_%s_t *obj = NULL;\n", type_name);
+        fprintf(source_file, "    AXIS2_ENV_CHECK(env, NULL);\n");
+        fprintf(source_file, "    obj = AXIS2_MALLOC(env->allocator, sizeof(adb_%s_t));\n", type_name);
+        fprintf(source_file, "    if (!obj) {\n");
+        fprintf(source_file, "        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);\n");
+        fprintf(source_file, "        return NULL;\n");
+        fprintf(source_file, "    }\n");
+        fprintf(source_file, "    memset(obj, 0, sizeof(adb_%s_t));\n", type_name);
+        fprintf(source_file, "    return obj;\n");
+        fprintf(source_file, "}\n\n");
+
+        /* Destructor implementation */
+        fprintf(source_file, "axis2_status_t AXIS2_CALL\n");
+        fprintf(source_file, "adb_%s_free(adb_%s_t* _this, const axutil_env_t *env)\n",
+                type_name, type_name);
+        fprintf(source_file, "{\n");
+        fprintf(source_file, "    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
+        fprintf(source_file, "    if (!_this) {\n");
+        fprintf(source_file, "        return AXIS2_SUCCESS;\n");
+        fprintf(source_file, "    }\n");
+
+        /* Free string properties */
+        if (elem_count > 0) {
+            int j;
+            for (j = 0; j < elem_count; j++) {
+                wsdl2c_schema_element_t *elem = axutil_array_list_get(
+                    complex_type->elements, env, j);
+                if (!elem || !elem->name) continue;
+
+                const char *elem_name = elem->c_name ? elem->c_name : elem->name;
+                int is_string = 1;
+
+                if (elem->type) {
+                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                        strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
+                        strstr(elem->type, "double") || strstr(elem->type, "float")) {
+                        is_string = 0;
+                    }
+                }
+
+                if (is_string) {
+                    fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        AXIS2_FREE(env->allocator, _this->%s);\n", elem_name);
+                    fprintf(source_file, "    }\n");
+                }
+            }
+        }
+
+        fprintf(source_file, "    AXIS2_FREE(env->allocator, _this);\n");
+        fprintf(source_file, "    return AXIS2_SUCCESS;\n");
+        fprintf(source_file, "}\n\n");
+
+        /* Property accessor implementations */
+        if (elem_count > 0) {
+            int j;
+            for (j = 0; j < elem_count; j++) {
+                wsdl2c_schema_element_t *elem = axutil_array_list_get(
+                    complex_type->elements, env, j);
+                if (!elem || !elem->name) continue;
+
+                const char *elem_name = elem->c_name ? elem->c_name : elem->name;
+                const char *c_type = "axis2_char_t*";
+                const char *default_val = "NULL";
+
+                if (elem->type) {
+                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
+                        c_type = "int";
+                        default_val = "0";
+                    } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
+                        c_type = "axis2_bool_t";
+                        default_val = "AXIS2_FALSE";
+                    } else if (strstr(elem->type, "double") || strstr(elem->type, "float")) {
+                        c_type = "double";
+                        default_val = "0.0";
+                    }
+                }
+
+                /* Getter */
+                fprintf(source_file, "%s AXIS2_CALL\n", c_type);
+                fprintf(source_file, "adb_%s_get_%s(adb_%s_t* _this, const axutil_env_t *env)\n",
+                        type_name, elem_name, type_name);
+                fprintf(source_file, "{\n");
+                fprintf(source_file, "    AXIS2_ENV_CHECK(env, %s);\n", default_val);
+                fprintf(source_file, "    return _this ? _this->%s : %s;\n", elem_name, default_val);
+                fprintf(source_file, "}\n\n");
+
+                /* Setter */
+                fprintf(source_file, "axis2_status_t AXIS2_CALL\n");
+                fprintf(source_file, "adb_%s_set_%s(adb_%s_t* _this, const axutil_env_t *env, %s value)\n",
+                        type_name, elem_name, type_name, c_type);
+                fprintf(source_file, "{\n");
+                fprintf(source_file, "    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
+                fprintf(source_file, "    AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
+                fprintf(source_file, "    _this->%s = value;\n", elem_name);
+                fprintf(source_file, "    return AXIS2_SUCCESS;\n");
+                fprintf(source_file, "}\n\n");
+            }
+        }
+
+        /* Serialize implementation (placeholder) */
+        fprintf(source_file, "axiom_node_t* AXIS2_CALL\n");
+        fprintf(source_file, "adb_%s_serialize(adb_%s_t* _this, const axutil_env_t *env,\n",
+                type_name, type_name);
+        fprintf(source_file, "                axiom_node_t* parent, axiom_element_t *parent_element,\n");
+        fprintf(source_file, "                int parent_tag_closed, axutil_hash_t* namespaces,\n");
+        fprintf(source_file, "                int *next_ns_index)\n");
+        fprintf(source_file, "{\n");
+        fprintf(source_file, "    /* TODO: Implement full serialization */\n");
+        fprintf(source_file, "    return parent;\n");
+        fprintf(source_file, "}\n\n");
+
+        /* Deserialize implementation (placeholder) */
+        fprintf(source_file, "adb_%s_t* AXIS2_CALL\n", type_name);
+        fprintf(source_file, "adb_%s_create_from_node(const axutil_env_t *env, axiom_node_t *node,\n",
+                type_name);
+        fprintf(source_file, "                       int dont_care_minoccurs)\n");
+        fprintf(source_file, "{\n");
+        fprintf(source_file, "    /* TODO: Implement full deserialization */\n");
+        fprintf(source_file, "    return adb_%s_create(env);\n", type_name);
+        fprintf(source_file, "}\n");
+
+        fclose(source_file);
+
+        if (complex_type->is_empty_sequence) {
+            printf("  Generated ADB class for '%s' (empty sequence)\n", type_name);
+        } else {
+            printf("  Generated ADB class for '%s' (%d elements)\n", type_name, elem_count);
+        }
+
+        AXIS2_FREE(env->allocator, header_path);
+        AXIS2_FREE(env->allocator, source_path);
+    }
+
+    return AXIS2_SUCCESS;
+}
+
 /* Generate proper ADB class implementations - AXIS2C-1401: Use parsed operations */
 static axis2_status_t
 generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
@@ -1364,6 +1722,13 @@ wsdl2c_generate_code(wsdl2c_context_t *context, const axutil_env_t *env)
     status = generate_adb_classes(context, env);
     if (status != AXIS2_SUCCESS) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to generate ADB classes");
+        return AXIS2_FAILURE;
+    }
+
+    /* AXIS2C-1224: Generate ADB classes for schema complexTypes (including empty sequences) */
+    status = generate_adb_complex_types(context, env);
+    if (status != AXIS2_SUCCESS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to generate ADB complex types");
         return AXIS2_FAILURE;
     }
 

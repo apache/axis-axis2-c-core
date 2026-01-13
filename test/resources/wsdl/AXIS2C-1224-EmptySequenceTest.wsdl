@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AXIS2C-1224: Test WSDL for empty sequence handling.
+
+  The issue is that WSDL2C fails when encountering empty <sequence/> elements
+  in complexType definitions. This is common for exception types and marker
+  types that have no properties.
+-->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://www.example.org/EmptySequenceTest/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  name="EmptySequenceTest"
+                  targetNamespace="http://www.example.org/EmptySequenceTest/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/EmptySequenceTest/">
+      <!-- Request type with normal sequence -->
+      <xsd:element name="TestOperation" type="tns:TestOperationType"/>
+      <xsd:element name="TestOperationResponse" type="tns:TestOperationResponseType"/>
+
+      <!-- Normal type with elements -->
+      <xsd:complexType name="TestOperationType">
+        <xsd:sequence>
+          <xsd:element name="input" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- Normal response type -->
+      <xsd:complexType name="TestOperationResponseType">
+        <xsd:sequence>
+          <xsd:element name="result" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- AXIS2C-1224: Empty sequence - self-closing -->
+      <xsd:complexType name="AccessDeniedException">
+        <xsd:sequence/>
+      </xsd:complexType>
+
+      <!-- AXIS2C-1224: Empty sequence - open/close tags -->
+      <xsd:complexType name="OperationFailedException">
+        <xsd:sequence>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- AXIS2C-1224: Another empty sequence exception -->
+      <xsd:complexType name="InvalidParametersException">
+        <xsd:sequence/>
+      </xsd:complexType>
+
+      <!-- AXIS2C-1224: Marker type with empty sequence -->
+      <xsd:complexType name="EmptyMarkerType">
+        <xsd:sequence/>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="TestOperationRequest">
+    <wsdl:part element="tns:TestOperation" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="TestOperationResponse">
+    <wsdl:part element="tns:TestOperationResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="AccessDeniedFault">
+    <wsdl:part name="fault" type="tns:AccessDeniedException"/>
+  </wsdl:message>
+  <wsdl:message name="OperationFailedFault">
+    <wsdl:part name="fault" type="tns:OperationFailedException"/>
+  </wsdl:message>
+
+  <wsdl:portType name="EmptySequenceTest">
+    <wsdl:operation name="TestOperation">
+      <wsdl:input message="tns:TestOperationRequest"/>
+      <wsdl:output message="tns:TestOperationResponse"/>
+      <wsdl:fault name="AccessDenied" message="tns:AccessDeniedFault"/>
+      <wsdl:fault name="OperationFailed" message="tns:OperationFailedFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="EmptySequenceTestSOAP" type="tns:EmptySequenceTest">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="TestOperation">
+      <soap:operation soapAction="http://www.example.org/EmptySequenceTest/TestOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="AccessDenied">
+        <soap:fault name="AccessDenied" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="OperationFailed">
+        <soap:fault name="OperationFailed" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="EmptySequenceTest">
+    <wsdl:port binding="tns:EmptySequenceTestSOAP" name="EmptySequenceTestSOAP">
+      <soap:address location="http://localhost:8080/axis2/services/EmptySequenceTest"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
