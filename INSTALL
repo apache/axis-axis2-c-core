@@ -11,17 +11,11 @@ Table of Contents
 		1.3.2 Build with Options
 			(a) With Guththila
 			(b) With libxml2
-			(c) With AMQP Transport
 		1.3.3 Building Samples
-	1.4 Configuration
-		1.4.1 AMQP Transport
-	1.5 Running Samples
-		1.5.1 HTTP Transport
+	1.4 Running Samples
+		1.4.1 HTTP Transport
 			(a) Server
 			(b) Clients
-		1.5.2 AMQP Transport
-			(a) Server
-			(b) Client
 
 2. Getting Axis2/C Working on Windows (Win32)
 	
@@ -81,13 +75,7 @@ Table of Contents
     (c) libiconv - http://www.gnu.org/software/libiconv/
     (d) openssl - http://www.openssl.org/
 
-	(e) Apache Qpid - You need to have Qpid libraries installed on your machine
-	                  if you are going to use AMQP transport. It is recommended
-					  that you compile and install Qpid from Git source.
-					  You can checkout Qpid Git source from
-					  https://github.com/apache/qpid-cpp.
-
-	(f) HTTP/2 Transport Support (New in 2.0.0) - To enable HTTP/2 transport:
+	(e) HTTP/2 Transport Support (New in 2.0.0) - To enable HTTP/2 transport:
 	    libnghttp2 >= 1.0.0 - HTTP/2 C library for protocol implementation
 	    openssl >= 1.0.0 - Required for HTTPS and HTTP/2 ALPN negotiation
 
@@ -379,17 +367,7 @@ Table of Contents
 	$ make
  	$ make install
 	
-	(c) With AMQP Transport
-	-----------------------
-
-	You may need to try Axis2/C with the AMQP transport. You can do it by 
-	giving '--with-qpid=/path/to/qpid/home' as a configure option.
-    
-	$ ./configure --with-qpid=/path/to/qpid/home [other configuration options]
-	$ make
- 	$ make install
- 	
- 	(d) With openssl
+	(c) With openssl
     ----------------
     
     You may need to try Axis2/C with openssl. You can do it by 
@@ -513,25 +491,10 @@ Table of Contents
    	NOTE : If you don't provide a --prefix configure option, samples will by 
 		   default be installed into '/usr/local/axis2c/samples' directory.
 
-	1.4 Configuration
-	-----------------
-
-	1.4.1 AMQP Transport
-	--------------------
-	
-	You need to add the following entries into the axis2.xml.
-
-    <transportReceiver name="amqp" class="axis2_amqp_receiver">
-        <parameter name="qpid_broker_ip" locked="false">127.0.0.1</parameter>
-        <parameter name="qpid_broker_port" locked="false">5672</parameter>
-    </transportReceiver>
-
-	<transportSender name="amqp" class="axis2_amqp_sender"/>
-
-	1.5 Running Samples
+	1.4 Running Samples
 	-------------------
 
-	1.5.1 HTTP Transport
+	1.4.1 HTTP Transport
 	--------------------
 		
 	(a) Server
@@ -572,60 +535,10 @@ Table of Contents
    	To see the possible command line options for sample clients run them 
 	with '-h' option
 
-   	NOTE : If you run into shared lib problems, set the LD_LIBRARY_PATH as 
+   	NOTE : If you run into shared lib problems, set the LD_LIBRARY_PATH as
 		   follows.
 		   $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib
 
-	1.5.2 AMQP Transport
-	--------------------
-
-	(a) Server
-	----------
-
-	Start the Qpid broker as follows.
-	
-	$ cd ${QPID_HOME}/sbin
-	$ ./qpidd --data-dir ./
-
-	Start the axis2_amqp_server as follows.
-       
-	$ cd ${AXIS2C_HOME}/bin
-	$ ./axis2_amqp_server
-	
-   	You should see the message
-		Started Simple Axis2 AMQP Server...
-		
-	This will connect to the Qpid broker listening on 127.0.0.1:5672. 
-	To see the possible command line options run
-        
-	$ ./axis2_amqp_server -h
-		
-	NOTE 1 : You have the flexibility of starting the Qpid broker first and 
-			 then axis2_amqp_server or vice-versa.
-   	NOTE 2 : You may need to login as superuser to run the axis2_amqp_server.
-	NOTE 3 : If you run into shared lib problems, set the LD_LIBRARY_PATH as 
-			 follows.
-				 
-			 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib
-
-	(b) Clients
-	-----------
-	
-	When the axis2_amqp_server is up and running, you can run the sample 
-	clients in a new shell as follows.
-        
-	$ cd ${AXIS2C_HOME}/samples/bin/amqp
-    $ ./echo_blocking
-	This will invoke the echo service.
-
-   	To see the possible command line options for sample clients run them 
-	with '-h' option
-
-   	NOTE : If you run into shared lib problems, set the LD_LIBRARY_PATH as 
-		   follows.
-
-    	   $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib
-	
 
 2. Getting Axis2/C Working on Windows (Win32)
 =============================================

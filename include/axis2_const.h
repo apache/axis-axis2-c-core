@@ -117,7 +117,6 @@ extern "C"
 #define AXIS2_TRANSPORT_TCP		"tcp"
 #define AXIS2_TRANSPORT_XMPP	"xmpp"
 #define AXIS2_TRANSPORT_HTTPS	"https"
-#define AXIS2_TRANSPORT_AMQP	"amqp"
 #define AXIS2_TRANSPORT_UDP		"soap.udp"
     typedef enum
     {
@@ -126,7 +125,6 @@ extern "C"
         AXIS2_TRANSPORT_ENUM_TCP,
         AXIS2_TRANSPORT_ENUM_XMPP,
         AXIS2_TRANSPORT_ENUM_HTTPS,
-        AXIS2_TRANSPORT_ENUM_AMQP,
 		AXIS2_TRANSPORT_ENUM_UDP,
         AXIS2_TRANSPORT_ENUM_MAX
     } AXIS2_TRANSPORT_ENUMS;

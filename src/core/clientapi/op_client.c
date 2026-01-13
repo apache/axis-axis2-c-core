@@ -938,10 +938,6 @@ axis2_op_client_infer_transport(
             {
                 transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
             }
-            else if(!axutil_strcmp(transport, AXIS2_TRANSPORT_AMQP))
-            {
-                transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
-            }
             else if(!axutil_strcmp(transport, AXIS2_TRANSPORT_UDP))
             {
                 transport_enum = AXIS2_TRANSPORT_ENUM_UDP;

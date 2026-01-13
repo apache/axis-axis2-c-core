@@ -325,32 +325,6 @@ AC_ARG_ENABLE(cgi, [  --enable-cgi
   AC_MSG_RESULT(no)
 )
 
-AC_MSG_CHECKING(whether to build AMQP transport)
-AC_ARG_WITH(qpid,
-[  --with-qpid[=PATH]	'PATH' specifies the location where the Qpid is installed into.
-    If this option is specified, AMQP transport would be built.
-    If you omit the '=PATH' part completely, the configure script will take 
-    '/usr/local' as the Qpid home.],
-[ case "$withval" in
-  no)
-    AC_MSG_RESULT(no)
-    AMQP_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    if test -d $withval; then
-        qpidhome="$withval"
-    elif test -d '/usr/local/include/qpid'; then
-        qpidhome="/usr/local"
-    else
-        AC_MSG_ERROR(*** Could not Find Qpid in /usr/local ...)
-    fi
-    AMQP_DIR="amqp"
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
 AC_MSG_CHECKING(whether to use apache2 as server transport)
 AC_ARG_WITH(apache2,
 [  --with-apache2[=PATH]      Find the Apache2 HTTP Web server header files in 'PATH'.
@@ -780,8 +754,6 @@ AC_SUBST(NTLM_LIB)
 AC_SUBST(NTLM_DIR)
 AC_SUBST(TCP_DIR)
 AC_SUBST(CGI_DIR)
-AC_SUBST(AMQP_DIR)
-AC_SUBST(QPID_HOME)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(ZLIBBUILD)
@@ -828,15 +800,6 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/tcp/receiver/Makefile \
     src/core/transport/tcp/server/Makefile \
     src/core/transport/tcp/server/simple_tcp_server/Makefile \
-    src/core/transport/amqp/Makefile \
-    src/core/transport/amqp/util/Makefile \
-	src/core/transport/amqp/receiver/Makefile \
-	src/core/transport/amqp/receiver/qpid_receiver/Makefile \
-	src/core/transport/amqp/receiver/qpid_receiver/request_processor/Makefile \
-	src/core/transport/amqp/sender/Makefile \
-	src/core/transport/amqp/sender/qpid_sender/Makefile \
-	src/core/transport/amqp/server/Makefile \
-    src/core/transport/amqp/server/axis2_amqp_server/Makefile \
 	src/core/transport/http/server/CGI/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \

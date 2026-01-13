@@ -732,10 +732,6 @@ axis2_conf_builder_process_transport_senders(
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
-                else if(!axutil_strcmp(name, AXIS2_TRANSPORT_AMQP))
-                {
-                    transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
-                }
                 else if(!axutil_strcmp(name, AXIS2_TRANSPORT_UDP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_UDP;
@@ -1045,10 +1041,6 @@ axis2_conf_builder_process_transport_recvs(
                 else if(!axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
-                }
-                else if(!axutil_strcmp(name, AXIS2_TRANSPORT_AMQP))
-                {
-                    transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
                 }
                 else if(!axutil_strcmp(name, AXIS2_TRANSPORT_UDP))
                 {

@@ -228,11 +228,6 @@ AC_CONFIG_FILES([Makefile \
     client/notify/Makefile \
     client/google/Makefile \
     client/yahoo/Makefile \
-    client/amqp/Makefile \
-    client/amqp/echo/Makefile \
-    client/amqp/notify/Makefile \
-    client/amqp/mtom/Makefile \
-    client/amqp/mtom/resources/Makefile \
     client/session/Makefile \
     client/ntlm/Makefile \
     user_guide/Makefile \

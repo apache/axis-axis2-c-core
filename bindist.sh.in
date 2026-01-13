@@ -74,7 +74,6 @@ strip -s modules/logging/*
 
 strip -s ./bin/axis2_http_server
 strip -s ./samples/bin/*
-strip -s ./samples/bin/amqp/*
 strip -s ./bin/tools/tcpmon/*
 
 rm -rf ./lib/pkgconfig
