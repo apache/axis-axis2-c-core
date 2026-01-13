@@ -41,6 +41,7 @@ adb_test_result_t test_axis2c_1616_reserved_word_detection(void) {
     /* Test known reserved words that would cause conflicts */
     const char *reserved_words[] = {
         "type",      /* Would generate adb_type_t - conflicts with extension mapper */
+        "Type",      /* AXIS2C-1574: Capitalized form conflicts with property_Type */
         "class",     /* C++ reserved word */
         "struct",    /* C reserved word */
         "union",     /* C reserved word */
