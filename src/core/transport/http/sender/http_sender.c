@@ -46,7 +46,9 @@
 #define CLIENT_NONCE_LENGTH 8
 #endif
 
-
+/* AXIS2C-1568: Constants AXIS2_HTTP_CLIENT_STATUS_TIMEOUT (-2) and
+ * AXIS2_HTTP_KEEPALIVE_TIMEOUT_MAX_RETRIES are defined in axis2_http_transport.h
+ */
 
 struct axis2_http_sender
 {
@@ -57,6 +59,8 @@ struct axis2_http_sender
     axis2_http_client_t *client;
     axis2_bool_t is_soap;
     axis2_bool_t keep_alive;
+    /* AXIS2C-1568: Track retry attempts for keep-alive timeout recovery */
+    unsigned int keepalive_timeout_retries;
 };
 
 #ifndef AXIS2_LIBCURL_ENABLED
@@ -219,6 +223,8 @@ axis2_http_sender_create(
     sender->chunked = AXIS2_FALSE;
     sender->client = NULL;
     sender->keep_alive = AXIS2_TRUE;
+    /* AXIS2C-1568: Initialize retry counter */
+    sender->keepalive_timeout_retries = 0;
 
     return sender;
 }
@@ -1343,9 +1349,60 @@ axis2_http_sender_send(
         output_stream = NULL;
     }
 
+    /* AXIS2C-1568 FIX: Handle keep-alive connection timeout with retry logic
+     * When using keep-alive connections, the server may close idle connections.
+     * If we get a timeout (-2), remove the stale connection and retry once.
+     */
+    if(status_code == AXIS2_HTTP_CLIENT_STATUS_TIMEOUT)
+    {
+        if(sender->keep_alive &&
+           sender->keepalive_timeout_retries < AXIS2_HTTP_KEEPALIVE_TIMEOUT_MAX_RETRIES)
+        {
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                "AXIS2C-1568: Keep-alive connection timed out, attempting reconnect (retry %d)",
+                sender->keepalive_timeout_retries + 1);
+
+            /* Remove stale client from connection map */
+            if(connection_map && sender->client)
+            {
+                axutil_url_t *url = axutil_url_parse_string(env, str_url);
+                if(url)
+                {
+                    axis2_char_t *server = axutil_url_get_server(url, env);
+                    if(server)
+                    {
+                        axutil_hash_set(connection_map, server, AXIS2_HASH_KEY_STRING, NULL);
+                    }
+                    axutil_url_free(url, env);
+                }
+            }
+
+            /* Free the stale client */
+            if(sender->client)
+            {
+                axis2_http_client_free(sender->client, env);
+                sender->client = NULL;
+            }
+
+            /* Increment retry counter and retry the send */
+            sender->keepalive_timeout_retries++;
+
+            /* Recursive call to retry with new connection
+             * The envelope is already serialized, so we just need to resend
+             */
+            return axis2_http_sender_send(sender, env, msg_ctx, out, str_url, soap_action);
+        }
+        else
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "AXIS2C-1568: Connection timeout after %d retries",
+                sender->keepalive_timeout_retries);
+        }
+    }
+
     if(status_code < 0)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "status_code < 0");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "status_code < 0 (%d)", status_code);
         return AXIS2_FAILURE;
     }
 
@@ -3656,6 +3713,33 @@ axis2_http_sender_get_keep_alive(
     const axutil_env_t * env)
 {
     return sender->keep_alive;
+}
+
+/* AXIS2C-1568 FIX: Allow setting socket timeout from axis2.xml or programmatically */
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_sender_set_so_timeout(
+    axis2_http_sender_t * sender,
+    const axutil_env_t * env,
+    int so_timeout)
+{
+    if(sender)
+    {
+        sender->so_timeout = so_timeout;
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "AXIS2C-1568: Set socket timeout to %d ms", so_timeout);
+    }
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axis2_http_sender_get_so_timeout(
+    axis2_http_sender_t * sender,
+    const axutil_env_t * env)
+{
+    if(sender)
+    {
+        return sender->so_timeout;
+    }
+    return AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 }
 
 #ifndef AXIS2_LIBCURL_ENABLED

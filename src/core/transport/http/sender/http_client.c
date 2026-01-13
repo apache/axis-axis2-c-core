@@ -607,9 +607,13 @@ axis2_http_client_receive_header(
 
         if(read < 0)
         {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "http client , response timed out");
+            /* AXIS2C-1568 FIX: Return distinct status code for timeout
+             * This allows http_sender to implement retry logic for keep-alive connections
+             * that have been closed by the server due to idle timeout.
+             */
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "http client, response timed out");
             AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
-            return -1;
+            return AXIS2_HTTP_CLIENT_STATUS_TIMEOUT;  /* -2: timeout, distinct from -1: error */
         }
         else if(read == 0)
         {

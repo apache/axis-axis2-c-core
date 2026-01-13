@@ -193,6 +193,29 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * AXIS2C-1568 FIX: Set socket timeout for HTTP operations
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @param so_timeout socket timeout in milliseconds
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_http_sender_set_so_timeout(
+        axis2_http_sender_t * sender,
+        const axutil_env_t * env,
+        int so_timeout);
+
+    /**
+     * AXIS2C-1568: Get socket timeout
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @return socket timeout in milliseconds
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_http_sender_get_so_timeout(
+        axis2_http_sender_t * sender,
+        const axutil_env_t * env);
+
+    /**
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL

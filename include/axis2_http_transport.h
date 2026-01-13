@@ -853,6 +853,20 @@ extern "C"
      */
     #define AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT 60000
 
+    /**
+     * AXIS2C-1568 FIX: Internal status codes for HTTP client operations
+     * These are distinct from HTTP response codes (which are positive).
+     * -1 = General error
+     * -2 = Connection timeout (allows retry logic for keep-alive connections)
+     */
+    #define AXIS2_HTTP_CLIENT_STATUS_ERROR -1
+    #define AXIS2_HTTP_CLIENT_STATUS_TIMEOUT -2
+
+    /**
+     * AXIS2C-1568: Maximum retry attempts for keep-alive timeout recovery
+     */
+    #define AXIS2_HTTP_KEEPALIVE_TIMEOUT_MAX_RETRIES 1
+
     #define AXIS2_HTTP_PROXY "PROXY"
 
     /**
