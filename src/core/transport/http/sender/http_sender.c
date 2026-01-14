@@ -1403,6 +1403,9 @@ axis2_http_sender_send(
     if(status_code < 0)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "status_code < 0 (%d)", status_code);
+        /* AXIS2C-1535: Set HTTP 408 (Request Timeout) for timeout/connection errors
+         * so clients can detect this via axis2_svc_client_get_http_status_code() */
+        axis2_msg_ctx_set_status_code(msg_ctx, env, AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL);
         return AXIS2_FAILURE;
     }
 
