@@ -98,12 +98,17 @@ axis2_apache_out_transport_info_set_content_type(
 
 axis2_status_t AXIS2_CALL
 axis2_apache_out_transport_info_set_char_encoding(
-    axis2_http_out_transport_info_t * info,
+    axis2_http_out_transport_info_t * out_transport_info,
     const axutil_env_t * env,
     const axis2_char_t * encoding)
 {
+    /* AXIS2C-1509: Must convert to the derived struct to set encoding on the
+     * same struct that set_content_type() reads from */
+    axis2_apache2_out_transport_info_t *info = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
+    info = AXIS2_INTF_TO_IMPL(out_transport_info);
 
     if(info->encoding)
     {
