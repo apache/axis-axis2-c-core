@@ -12,8 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-datadir=$(prefix)/bin/tools/md5
-SUBDIRS = src 
+# AXIS2C-1338: Removed datadir=$(prefix)/bin/tools/md5 and data_DATA
+# which incorrectly created subdirectories under bin. Documentation files
+# are in EXTRA_DIST for distribution but don't need separate installation.
+SUBDIRS = src
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}
-data_DATA= INSTALL README AUTHORS NEWS LICENSE COPYING
 EXTRA_DIST=LICENSE

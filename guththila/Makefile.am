@@ -12,11 +12,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-datadir=$(prefix)
+# AXIS2C-1338: Removed datadir=$(prefix) and data_DATA which installed
+# documentation files to wrong location. These files are in EXTRA_DIST
+# for distribution but don't need separate installation as a subproject.
 SUBDIRS = src $(GTEST) $(TESTDIR)
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
 include_HEADERS=$(top_srcdir)/include/*.h
-data_DATA= INSTALL README AUTHORS NEWS LICENSE COPYING
 #EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .git`

@@ -12,11 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-datadir=$(prefix)
-logsdir=$(prefix)/logs
-docsdir=$(prefix)
+# AXIS2C-1338: Use proper installation directories following standard conventions
+# Data files go to $(datadir)/axis2c, docs to $(docdir), tools to libexec
+axis2cdatadir=$(datadir)/axis2c
+logsdir=$(localstatedir)/log/axis2c
+docsdir=$(docdir)
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}
-wsdl2cdir=$(prefix)/bin/tools/wsdl2c
+wsdl2cdir=$(libexecdir)/axis2c/wsdl2c
 
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -35,9 +37,9 @@ include_HEADERS=$(top_srcdir)/include/*.h
 # Install configuration files and documentation
 # For in-tree builds, skip installing files that are already in the correct location
 # to avoid "file and destination are the same" errors during development builds
-data_DATA= samples/server/axis2.xml
+axis2cdata_DATA= samples/server/axis2.xml
 logs_DATA=
-docs_DATA= 
+docs_DATA=
 wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README
 # Conditionally include gtest in distribution only if it's available
 if GTEST_AVAILABLE
@@ -99,7 +101,7 @@ install-data-hook:
 	mkdir -p $(DESTDIR)$(docsdir)
 	cp -r docs $(DESTDIR)$(docsdir)
 	rm -rf `find $(DESTDIR)$(docsdir)/ -type d -name .git`
-	rm $(DESTDIR)$(docsdir)/README
+	rm -f $(DESTDIR)$(docsdir)/README
 	@for file in README INSTALL CREDITS COPYING NEWS NOTICE AUTHORS; do \
 		if [ ! "$(abs_srcdir)/$$file" -ef "$(DESTDIR)$(datadir)/$$file" ]; then \
 			$(INSTALL_DATA) "$(srcdir)/$$file" "$(DESTDIR)$(datadir)/$$file"; \
