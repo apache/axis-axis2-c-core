@@ -145,6 +145,21 @@ extern "C"
         const axis2_http_client_t * client,
         const axutil_env_t * env);
 
+    /**
+     * AXIS2C-1312/1555: Set proxy authentication credentials for HTTPS CONNECT
+     * @param client pointer to client
+     * @param env pointer to environment struct
+     * @param username proxy authentication username
+     * @param password proxy authentication password
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_set_proxy_auth(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        const axis2_char_t * username,
+        const axis2_char_t * password);
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
     axis2_http_client_connect_ssl_host(

@@ -54,6 +54,10 @@ struct axis2_http_client
     int req_body_size;
     axis2_bool_t validate_ssl_hostname;
 
+    /* AXIS2C-1312/1555: Proxy authentication for HTTPS CONNECT */
+    axis2_char_t *proxy_auth_username;
+    axis2_char_t *proxy_auth_password;
+
     /* These are for mtom case */
     axutil_array_list_t *mime_parts;
     axis2_bool_t doing_mtom;
@@ -118,6 +122,15 @@ axis2_http_client_free(
     if(http_client->proxy_host_port)
     {
         AXIS2_FREE(env->allocator, http_client->proxy_host_port);
+    }
+    /* AXIS2C-1312/1555: Free proxy authentication credentials */
+    if(http_client->proxy_auth_username)
+    {
+        AXIS2_FREE(env->allocator, http_client->proxy_auth_username);
+    }
+    if(http_client->proxy_auth_password)
+    {
+        AXIS2_FREE(env->allocator, http_client->proxy_auth_password);
     }
     if(http_client->url)
     {
@@ -815,6 +828,46 @@ axis2_http_client_get_proxy(
     return client->proxy_host_port;
 }
 
+/* AXIS2C-1312/1555: Set proxy authentication credentials for HTTPS CONNECT */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_set_proxy_auth(
+    axis2_http_client_t * client,
+    const axutil_env_t * env,
+    const axis2_char_t * username,
+    const axis2_char_t * password)
+{
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+
+    if(client->proxy_auth_username)
+    {
+        AXIS2_FREE(env->allocator, client->proxy_auth_username);
+        client->proxy_auth_username = NULL;
+    }
+    if(client->proxy_auth_password)
+    {
+        AXIS2_FREE(env->allocator, client->proxy_auth_password);
+        client->proxy_auth_password = NULL;
+    }
+
+    if(username)
+    {
+        client->proxy_auth_username = axutil_strdup(env, username);
+        if(!client->proxy_auth_username)
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+    if(password)
+    {
+        client->proxy_auth_password = axutil_strdup(env, password);
+        if(!client->proxy_auth_password)
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_connect_ssl_host(
     axis2_http_client_t * client,
@@ -851,9 +904,50 @@ axis2_http_client_connect_ssl_host(
         return AXIS2_FAILURE;
     }
 
-    connect_string = AXIS2_MALLOC(env->allocator, axutil_strlen(host) * sizeof(axis2_char_t) + 30
-        * sizeof(axis2_char_t));
-    sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+    /* AXIS2C-1312/1555: Build CONNECT request with optional proxy authentication */
+    if(client->proxy_auth_username && client->proxy_auth_password)
+    {
+        /* Build Basic authentication header for proxy */
+        axis2_char_t *credentials = NULL;
+        axis2_char_t *encoded = NULL;
+        int credentials_len;
+        int encoded_len;
+
+        credentials_len = axutil_strlen(client->proxy_auth_username) +
+                          axutil_strlen(client->proxy_auth_password) + 2;
+        credentials = AXIS2_MALLOC(env->allocator, credentials_len);
+        sprintf(credentials, "%s:%s", client->proxy_auth_username, client->proxy_auth_password);
+
+        /* Base64 encode the credentials */
+        encoded_len = axutil_base64_encode_len(axutil_strlen(credentials));
+        encoded = AXIS2_MALLOC(env->allocator, encoded_len + 1);
+        if(encoded)
+        {
+            axutil_base64_encode(encoded, credentials, axutil_strlen(credentials));
+            encoded[encoded_len] = '\0';
+        }
+        AXIS2_FREE(env->allocator, credentials);
+
+        if(encoded)
+        {
+            int connect_len = axutil_strlen(host) + axutil_strlen(encoded) + 100;
+            connect_string = AXIS2_MALLOC(env->allocator, connect_len);
+            sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\nProxy-Authorization: Basic %s\r\n\r\n",
+                    host, port, encoded);
+            AXIS2_FREE(env->allocator, encoded);
+        }
+        else
+        {
+            /* Fallback to no auth if encoding fails */
+            connect_string = AXIS2_MALLOC(env->allocator, axutil_strlen(host) + 30);
+            sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+        }
+    }
+    else
+    {
+        connect_string = AXIS2_MALLOC(env->allocator, axutil_strlen(host) + 30);
+        sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+    }
     axutil_stream_write(tmp_stream, env, connect_string, axutil_strlen(connect_string)
         * sizeof(axis2_char_t));
 
@@ -893,12 +987,23 @@ axis2_http_client_connect_ssl_host(
         axutil_stream_free(tmp_stream, env);
         return AXIS2_FAILURE;
     }
-    if(200 != axis2_http_status_line_get_status_code(status_line, env))
+    /* AXIS2C-1312/1555: Handle proxy authentication response */
     {
-        AXIS2_FREE(env->allocator, connect_string);
-        axis2_http_status_line_free(status_line, env);
-        axutil_stream_free(tmp_stream, env);
-        return AXIS2_FAILURE;
+        int status_code = axis2_http_status_line_get_status_code(status_line, env);
+        if(200 != status_code)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Proxy CONNECT failed with status code %d", status_code);
+            AXIS2_FREE(env->allocator, connect_string);
+            axis2_http_status_line_free(status_line, env);
+            axutil_stream_free(tmp_stream, env);
+            /* Return 407 status code so caller can handle proxy auth */
+            if(AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
+            {
+                return AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL;
+            }
+            return AXIS2_FAILURE;
+        }
     }
     /* We need to empty the stream before we return
      */

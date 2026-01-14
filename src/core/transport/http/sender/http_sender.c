@@ -1890,6 +1890,27 @@ axis2_http_sender_configure_proxy(
     if(proxy_port && proxy_host)
     {
         axis2_http_client_set_proxy(sender->client, env, proxy_host, AXIS2_ATOI(proxy_port));
+
+        /* AXIS2C-1312/1555: Set proxy authentication credentials for HTTPS CONNECT */
+        {
+            axutil_property_t *proxy_auth_un = NULL;
+            axutil_property_t *proxy_auth_pw = NULL;
+            axis2_char_t *proxy_uname = NULL;
+            axis2_char_t *proxy_passwd = NULL;
+
+            proxy_auth_un = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_PROXY_AUTH_UNAME);
+            proxy_auth_pw = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_PROXY_AUTH_PASSWD);
+
+            if(proxy_auth_un && proxy_auth_pw)
+            {
+                proxy_uname = (axis2_char_t *)axutil_property_get_value(proxy_auth_un, env);
+                proxy_passwd = (axis2_char_t *)axutil_property_get_value(proxy_auth_pw, env);
+                if(proxy_uname && proxy_passwd)
+                {
+                    axis2_http_client_set_proxy_auth(sender->client, env, proxy_uname, proxy_passwd);
+                }
+            }
+        }
     }
     return AXIS2_SUCCESS;
 }
