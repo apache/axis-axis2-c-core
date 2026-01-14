@@ -445,8 +445,13 @@ axiom_element_declare_namespace(
     uri = axiom_namespace_get_uri(ns, env);
     prefix = axiom_namespace_get_prefix(ns, env);
 
-    /* If namespace already declared, return */
-    declared_ns = axiom_element_find_namespace(om_element, env, node, uri, prefix);
+    /* AXIS2C-1701: Only check the current element for existing namespace declaration.
+     * Previously this used axiom_element_find_namespace() which searches parent elements
+     * too. If a namespace was found in a parent, we'd return SUCCESS without taking
+     * ownership of the passed namespace, causing a memory leak since the caller expects
+     * us to take ownership on SUCCESS. By only checking the current element, we allow
+     * redeclaration of namespaces from parents, which properly takes ownership. */
+    declared_ns = axiom_element_find_declared_namespace(om_element, env, uri, prefix);
     if (declared_ns)
         return AXIS2_SUCCESS;
 
