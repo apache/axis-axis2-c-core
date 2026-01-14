@@ -4173,34 +4173,25 @@ axis2_http_transport_utils_get_session_id_from_cookie(
         const axutil_env_t *env,
         axis2_char_t *cookie)
 {
-    axis2_char_t *next = NULL;
-    axis2_char_t *session_id = NULL;
-
-    next = axutil_strstr(cookie, ";");
-    if (next)
-    {
-        session_id = axis2_http_transport_utils_copy_value(env, cookie);
-    }
-
-    return session_id;
+    /* AXIS2C-1608: Always try to extract session ID from the first cookie.
+     * The old code only worked if there was a semicolon in the string,
+     * but a single cookie like "sessionid=value" should also work. */
+    return axis2_http_transport_utils_copy_value(env, cookie);
 }
 
 static axis2_char_t *
 axis2_http_transport_utils_copy_key(
-        const axutil_env_t *env, 
+        const axutil_env_t *env,
         axis2_char_t *pair)
 {
     axis2_char_t *p = axutil_strchr(pair, '=');
     axis2_char_t *ret = NULL;
 
+    /* AXIS2C-1608: Don't modify input string, use axutil_strmemdup instead */
     if (p)
     {
-        axis2_char_t c;
         size_t len = p - pair;
-        c = pair[len];
-        pair[len] = '\0';
-        ret = axutil_strdup(env, pair);
-        pair[len] = c;
+        ret = axutil_strmemdup(pair, len, env);
     }
 
     return ret;
@@ -4208,22 +4199,30 @@ axis2_http_transport_utils_copy_key(
 
 static axis2_char_t *
 axis2_http_transport_utils_copy_value(
-        const axutil_env_t *env, 
+        const axutil_env_t *env,
         axis2_char_t *pair)
 {
     axis2_char_t *ret = NULL;
+    axis2_char_t *end = NULL;
     size_t len;
-    axis2_char_t c;
 
     pair = axutil_strchr(pair, '=');
     if (pair)
     {
         pair++;
-        len = axutil_strchr(pair, ';') - pair;
-        c = pair[len];
-        pair[len] = '\0';
-        ret = axutil_strdup(env, pair);
-        pair[len] = c;
+        /* AXIS2C-1608: Check if ';' exists, handle last cookie in string.
+         * Also don't modify input string as it may be read-only (Apache headers). */
+        end = axutil_strchr(pair, ';');
+        if (end)
+        {
+            len = end - pair;
+        }
+        else
+        {
+            /* No semicolon - this is the last (or only) cookie */
+            len = axutil_strlen(pair);
+        }
+        ret = axutil_strmemdup(pair, len, env);
     }
 
     return ret;
