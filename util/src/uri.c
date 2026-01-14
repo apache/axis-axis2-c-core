@@ -390,6 +390,27 @@ axutil_uri_parse_string(
     {
         ++s;
     }
+
+    /* AXIS2C-1564: Handle URN scheme specially.
+     * URNs have format "urn:<NID>:<NSS>" without "://" after the scheme.
+     * For example: urn:ietf:rfc:2648
+     */
+    if(s != uri_str && s[0] == ':' && (s - uri_str == 3) &&
+       (uri_str[0] == 'u' || uri_str[0] == 'U') &&
+       (uri_str[1] == 'r' || uri_str[1] == 'R') &&
+       (uri_str[2] == 'n' || uri_str[2] == 'N'))
+    {
+        /* This is a URN - store scheme and path, no host/port */
+        uri->scheme = axutil_strmemdup(uri_str, s - uri_str, env);
+        ++s; /* skip the colon */
+        /* Store the rest (NID:NSS) as the path */
+        if(*s != '\0')
+        {
+            uri->path = axutil_strdup(env, s);
+        }
+        goto end;
+    }
+
     /* scheme must be non-empty and followed by :// */
     if(s == uri_str || s[0] != ':' || s[1] != '/' || s[2] != '/')
     {

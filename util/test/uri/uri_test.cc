@@ -115,3 +115,55 @@ TEST_F(TestURI, test_uri)
     axutil_uri_free(base, m_env);
     axutil_uri_free(hostinfo, m_env);
 }
+
+/* AXIS2C-1564: Test URN parsing
+ * URNs have format urn:<NID>:<NSS> without "://" after the scheme
+ */
+TEST_F(TestURI, test_urn_parsing)
+{
+    axutil_uri_t *uri = NULL;
+    axis2_char_t *str;
+
+    /* Test basic URN */
+    uri = axutil_uri_parse_string(m_env, "urn:ietf:rfc:2648");
+    ASSERT_NE(uri, nullptr) << "Failed to parse URN urn:ietf:rfc:2648";
+
+    str = axutil_uri_get_protocol(uri, m_env);
+    ASSERT_STREQ(str, "urn") << "URN scheme should be 'urn'";
+
+    str = axutil_uri_get_path(uri, m_env);
+    ASSERT_STREQ(str, "ietf:rfc:2648") << "URN path should be 'ietf:rfc:2648'";
+
+    /* URN should not have host or port */
+    str = axutil_uri_get_host(uri, m_env);
+    ASSERT_EQ(str, nullptr) << "URN should not have host";
+
+    axis2_port_t port = axutil_uri_get_port(uri, m_env);
+    ASSERT_EQ(port, 0) << "URN should not have port";
+
+    axutil_uri_free(uri, m_env);
+
+    /* Test URN with uppercase */
+    uri = axutil_uri_parse_string(m_env, "URN:ISBN:0451450523");
+    ASSERT_NE(uri, nullptr) << "Failed to parse URN URN:ISBN:0451450523";
+
+    str = axutil_uri_get_protocol(uri, m_env);
+    ASSERT_STREQ(str, "URN") << "URN scheme should be 'URN'";
+
+    str = axutil_uri_get_path(uri, m_env);
+    ASSERT_STREQ(str, "ISBN:0451450523") << "URN path should be 'ISBN:0451450523'";
+
+    axutil_uri_free(uri, m_env);
+
+    /* Test URN with ebXML registry status (the original issue case) */
+    uri = axutil_uri_parse_string(m_env, "urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Success");
+    ASSERT_NE(uri, nullptr) << "Failed to parse ebXML URN";
+
+    str = axutil_uri_get_protocol(uri, m_env);
+    ASSERT_STREQ(str, "urn");
+
+    str = axutil_uri_get_path(uri, m_env);
+    ASSERT_STREQ(str, "oasis:names:tc:ebxml-regrep:ResponseStatusType:Success");
+
+    axutil_uri_free(uri, m_env);
+}
