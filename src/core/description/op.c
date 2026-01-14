@@ -543,6 +543,14 @@ axis2_op_set_qname(
     if(qname)
     {
         op->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
+        /* AXIS2C-1378: Pre-compute and cache the qname string representation
+         * using the current allocator. This prevents use-after-free when
+         * axutil_qname_to_string is called later with a different (request-scoped)
+         * allocator that may be freed before the qname is accessed again. */
+        if(op->qname)
+        {
+            axutil_qname_to_string(op->qname, env);
+        }
     }
 
     return AXIS2_SUCCESS;
