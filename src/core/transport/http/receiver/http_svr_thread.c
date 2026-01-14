@@ -121,6 +121,19 @@ axis2_http_svr_thread_run(
 #endif
 
         socket = (int)axutil_network_handler_svr_socket_accept(env, svr_thread-> listen_socket);
+        /* AXIS2C-1537: Check if server was stopped while we were waiting in accept().
+         * When axis2_http_svr_thread_destroy() is called, it sets stopped=true and
+         * closes the listening socket, causing accept() to return. We must exit
+         * immediately before accessing any other svr_thread members to avoid
+         * use-after-free if axis2_http_svr_thread_free() is called concurrently. */
+        if(svr_thread->stopped)
+        {
+            if(socket != -1)
+            {
+                axutil_network_handler_close_socket(env, socket);
+            }
+            break;
+        }
         if(!svr_thread->worker)
         {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
