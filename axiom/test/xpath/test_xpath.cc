@@ -83,6 +83,98 @@ class TestXPath: public ::testing::Test
 };
 
 
+/* AXIS2C-1361: Test XPath with all prefixed elements using correct namespace prefixes */
+TEST_F(TestXPath, test_xpath_prefixed_elements_with_ns) {
+    const char *xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+        "<soapenv:Header xmlns:wsa=\"http://www.w3.org/2005/08/addressing\">"
+        " <aip:Topic xmlns:aip=\"http://apache.org/aip\">synapse/event/test</aip:Topic>"
+        " </soapenv:Header> </soapenv:Envelope>";
+
+    axiom_node_t *node = axiom_node_create_from_buffer(m_env, (axis2_char_t *)xml);
+    ASSERT_NE(node, nullptr);
+
+    axiom_xpath_context_t *ctx = axiom_xpath_context_create(m_env, node);
+    ASSERT_NE(ctx, nullptr);
+
+    /* Register namespaces */
+    axiom_namespace_t *ns1 = axiom_namespace_create(m_env,
+                                "http://schemas.xmlsoap.org/soap/envelope/", "soapenv");
+    axiom_namespace_t *ns2 = axiom_namespace_create(m_env, "http://apache.org/aip", "aip");
+
+    axiom_xpath_register_namespace(ctx, ns1);
+    axiom_xpath_register_namespace(ctx, ns2);
+
+    /* Compile and evaluate XPath expression */
+    axiom_xpath_expression_t *exp = axiom_xpath_compile_expression(m_env,
+                                        "/soapenv:Envelope/soapenv:Header/aip:Topic");
+    ASSERT_NE(exp, nullptr);
+
+    axiom_xpath_result_t *result = axiom_xpath_evaluate(ctx, exp);
+    ASSERT_NE(result, nullptr);
+
+    /* Should find exactly 1 result */
+    int count = axutil_array_list_size(result->nodes, m_env);
+    printf("AXIS2C-1361: XPath result count = %d (expected 1)\n", count);
+    EXPECT_EQ(count, 1) << "XPath should find aip:Topic element";
+
+    if (count > 0) {
+        axiom_xpath_result_node_t *result_node = (axiom_xpath_result_node_t *)
+            axutil_array_list_get(result->nodes, m_env, 0);
+        ASSERT_NE(result_node, nullptr);
+        EXPECT_EQ(result_node->type, AXIOM_XPATH_TYPE_NODE);
+
+        if (result_node->type == AXIOM_XPATH_TYPE_NODE) {
+            axiom_node_t *found_node = (axiom_node_t *)result_node->value;
+            axis2_char_t *node_str = axiom_node_to_string(found_node, m_env);
+            printf("AXIS2C-1361: Found node: %s\n", node_str);
+            AXIS2_FREE(m_env->allocator, node_str);
+        }
+    }
+
+    /* Cleanup - context takes ownership of expression after evaluate() */
+    axiom_xpath_free_result(m_env, result);
+    axiom_xpath_free_context(m_env, ctx);
+    axiom_node_free_tree(node, m_env);
+}
+
+/* AXIS2C-1361: Test XPath without namespace prefixes against prefixed elements
+ * Note: Per XPath spec, unprefixed XPath matches elements in NO namespace.
+ * When XML uses prefixed elements (which ARE in a namespace), unprefixed XPath should NOT match.
+ * This test verifies the CORRECT behavior per XPath spec. */
+TEST_F(TestXPath, test_xpath_unprefixed_vs_prefixed) {
+    const char *xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+        "<soapenv:Header xmlns:wsa=\"http://www.w3.org/2005/08/addressing\">"
+        " <aip:Topic xmlns:aip=\"http://apache.org/aip\">synapse/event/test</aip:Topic>"
+        " </soapenv:Header> </soapenv:Envelope>";
+
+    axiom_node_t *node = axiom_node_create_from_buffer(m_env, (axis2_char_t *)xml);
+    ASSERT_NE(node, nullptr);
+
+    axiom_xpath_context_t *ctx = axiom_xpath_context_create(m_env, node);
+    ASSERT_NE(ctx, nullptr);
+
+    /* Compile and evaluate XPath WITHOUT namespace prefixes */
+    axiom_xpath_expression_t *exp = axiom_xpath_compile_expression(m_env,
+                                        "/Envelope/Header/Topic");
+    ASSERT_NE(exp, nullptr);
+
+    axiom_xpath_result_t *result = axiom_xpath_evaluate(ctx, exp);
+    ASSERT_NE(result, nullptr);
+
+    /* Per XPath spec, unprefixed names match elements with NO namespace.
+     * Since <soapenv:Envelope> IS in a namespace, unprefixed "Envelope" should NOT match.
+     * This is CORRECT behavior per XPath 1.0 spec. */
+    int count = axutil_array_list_size(result->nodes, m_env);
+    printf("AXIS2C-1361: Unprefixed XPath against prefixed XML: count = %d (expected 0)\n", count);
+    EXPECT_EQ(count, 0) << "Unprefixed XPath should NOT match prefixed XML elements (correct XPath behavior)";
+
+    axiom_xpath_free_result(m_env, result);
+    axiom_xpath_free_context(m_env, ctx);
+    axiom_node_free_tree(node, m_env);
+}
+
 TEST_F(TestXPath, test_xpath) {
 
     axiom_node_t *test_tree = NULL;
