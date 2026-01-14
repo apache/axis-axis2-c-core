@@ -162,6 +162,11 @@ axis2_ctx_handler_invoke(
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Could not create Operation context for operatoin %s", op_name);
 
+            /* AXIS2C-1342: Switch back to local pool before returning */
+            if(use_pools)
+            {
+                axutil_allocator_switch_to_local_pool(env->allocator);
+            }
             return AXIS2_FAILURE;
         }
 

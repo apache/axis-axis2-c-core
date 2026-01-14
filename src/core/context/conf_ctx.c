@@ -492,13 +492,13 @@ axis2_conf_ctx_fill_ctxs(
             msg_ctx, env), env);
     }
 
-    /* By this time service group context id must have a value, either from transport or from 
-     * addressing 
+    /* By this time service group context id must have a value, either from transport or from
+     * addressing
      */
     if(svc_grp_ctx_id)
     {
-        svc_grp_ctx = (axis2_svc_grp_ctx_t *)axutil_hash_get(conf_ctx->svc_grp_ctx_map,
-            svc_grp_ctx_id, AXIS2_HASH_KEY_STRING);
+        /* AXIS2C-1342: Use thread-safe accessor to get service group context */
+        svc_grp_ctx = axis2_conf_ctx_get_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id);
 
         if(svc_grp_ctx)
         {
