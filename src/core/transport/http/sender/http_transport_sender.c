@@ -904,6 +904,25 @@ axis2_http_transport_sender_write_message(
         }
         else
         {
+            /* AXIS2C-1005: Check if using separate listener (dual channel mode).
+             * In dual mode, the HTTP response is just a 202 ACK with no body -
+             * the actual response comes later on the callback channel. Don't try
+             * to parse an empty/ACK response as SOAP, which causes spurious
+             * "SOAP message does not have a SOAP envelope" errors. */
+            axutil_property_t *sep_listener_prop = axis2_msg_ctx_get_property(msg_ctx, env,
+                AXIS2_USE_SEPARATE_LISTENER);
+            if(sep_listener_prop)
+            {
+                axis2_char_t *sep_listener_val = axutil_property_get_value(sep_listener_prop, env);
+                if(sep_listener_val && axutil_strcmp(sep_listener_val, AXIS2_VALUE_TRUE) == 0)
+                {
+                    /* Using separate listener - response will come on callback channel */
+                    AXIS2_HTTP_SENDER_FREE(sender, env);
+                    sender = NULL;
+                    return status;
+                }
+            }
+
             /* AXIS2_MEP_URI_IN_OUT case , we have a response this
              * time */
             soap_ns_uri
