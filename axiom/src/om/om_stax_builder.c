@@ -252,8 +252,13 @@ axiom_stax_builder_process_attributes(
             if(axiom_element_add_attribute(om_ele, env, attribute, element_node) != AXIS2_SUCCESS)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot add attribute to element");
+                axiom_attribute_free(attribute, env);
                 return AXIS2_FAILURE;
             }
+            /* AXIS2C-1590: Release our reference to the attribute after adding it to the element.
+             * The element now owns a reference (via increment_ref in add_attribute). Since we
+             * don't keep our own reference, we must release it to prevent leaks. */
+            axiom_attribute_free(attribute, env);
         }
     }
     return AXIS2_SUCCESS;

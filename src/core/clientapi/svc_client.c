@@ -1311,9 +1311,13 @@ axis2_svc_client_fill_soap_envelope(
 				
 				axiom_attribute_t *attXmlXsi = axiom_attribute_create(env, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance", NULL);
 				axiom_element_add_attribute(element, env, attXmlXsi, node);
+				/* AXIS2C-1590: Release our reference after adding to element */
+				axiom_attribute_free(attXmlXsi, env);
 
 				axiom_attribute_t *attXmlXsd = axiom_attribute_create(env, "xmlns:xsd", "http://www.w3.org/2001/XMLSchema", NULL);
 				axiom_element_add_attribute(element, env, attXmlXsd, node);
+				/* AXIS2C-1590: Release our reference after adding to element */
+				axiom_attribute_free(attXmlXsd, env);
 
                 axiom_node_add_child(node, env, (axiom_node_t *)payload);
             }

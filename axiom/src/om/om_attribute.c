@@ -82,7 +82,11 @@ axiom_attribute_create(
     }
     attribute->ns = ns;
 
-    attribute->ref = 0;
+    /* AXIS2C-1590: Initialize ref to 1 (creator owns the object).
+     * This matches axiom_namespace behavior and standard reference counting.
+     * Each call to increment_ref adds an owner; each call to free releases one.
+     * Object is freed when last owner calls free. */
+    attribute->ref = 1;
 
     return attribute;
 }
@@ -365,7 +369,9 @@ axiom_attribute_create_str(
     }
     attribute->ns = ns;
 
-    attribute->ref = 0;
+    /* AXIS2C-1590: Initialize ref to 1 (creator owns the object).
+     * This matches axiom_namespace behavior and standard reference counting. */
+    attribute->ref = 1;
 
     return attribute;
 }
