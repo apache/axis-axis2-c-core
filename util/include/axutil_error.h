@@ -85,6 +85,9 @@ extern "C"
         /** NULL parameter was passed when a non NULL parameter was expected */
         AXIS2_ERROR_INVALID_NULL_PARAM,
 
+        /** Invalid or malformed message */
+        AXIS2_ERROR_INVALID_MESSAGE,
+
         /*
          * Group - core:addr
          */

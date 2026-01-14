@@ -55,6 +55,8 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_NO_MEMORY] = "Out of memory";
     axutil_error_messages[AXIS2_ERROR_INVALID_NULL_PARAM]
         = "NULL parameter was passed when a non NULL parameter was expected";
+    axutil_error_messages[AXIS2_ERROR_INVALID_MESSAGE]
+        = "Invalid or malformed message";
     /* core:addr */
 
     /* core:clientapi */
