@@ -1298,6 +1298,14 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
             fprintf(source_file, "    }\n\n");
         }
 
+        /* AXIS2C-936: Check if node was completely parsed */
+        fprintf(source_file, "    /* AXIS2C-936: Verify XML was completely parsed */\n");
+        fprintf(source_file, "    if (!axiom_node_is_complete(node, env)) {\n");
+        fprintf(source_file, "        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"XML node is not complete, possible truncated response\");\n");
+        fprintf(source_file, "        adb_%s_free(obj, env);\n", type_name);
+        fprintf(source_file, "        return NULL;\n");
+        fprintf(source_file, "    }\n\n");
+
         fprintf(source_file, "    return obj;\n");
         fprintf(source_file, "}\n");
 
