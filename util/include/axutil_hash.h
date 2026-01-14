@@ -200,6 +200,21 @@ extern "C"
         void **val);
 
     /**
+     * Free a hash iteration state before iteration is complete.
+     * AXIS2C-1609: This function must be called to free the iterator when
+     * breaking out of an iteration loop early. If axutil_hash_next() returns
+     * NULL (iteration complete), the iterator is automatically freed and this
+     * function should NOT be called.
+     * @param hi The iteration state to free
+     * @param env The environment used to allocate the iterator (must match
+     *            the env passed to axutil_hash_first)
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_hash_index_free(
+        axutil_hash_index_t * hi,
+        const axutil_env_t * env);
+
+    /**
      * Get the number of key/value pairs in the hash table.
      * @param ht The hash table
      * @return The number of key/value pairs in the hash table.

@@ -187,6 +187,25 @@ axutil_hash_this(
         *val = (void *)hi->this->val;
 }
 
+/* AXIS2C-1609: Free hash iterator when breaking out of iteration loop early.
+ * When iterating with axutil_hash_first/axutil_hash_next and breaking out
+ * before completion, the iterator memory would leak. This function allows
+ * proper cleanup in such cases.
+ */
+AXIS2_EXTERN void AXIS2_CALL
+axutil_hash_index_free(
+    axutil_hash_index_t *hi,
+    const axutil_env_t *env)
+{
+    if(hi && env)
+    {
+        /* Only free if this is a heap-allocated iterator (env was non-NULL
+         * when axutil_hash_first was called). If env was NULL, the iterator
+         * is the internal ht->iterator and should not be freed. */
+        AXIS2_FREE(env->allocator, hi);
+    }
+}
+
 /*
  * Expanding a hash table
  */
