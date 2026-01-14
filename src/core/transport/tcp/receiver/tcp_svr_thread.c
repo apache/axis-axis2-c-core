@@ -145,6 +145,8 @@ axis2_tcp_svr_thread_run(
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "Worker not ready yet."
                 " Cannot serve the request");
             axutil_network_handler_close_socket(env, socket);
+            /* AXIS2C-1482: Sleep briefly to avoid busy-loop when worker isn't ready */
+            AXIS2_USLEEP(10000);  /* 10ms */
             continue;
         }
         arg_list = AXIS2_MALLOC(env->allocator, sizeof(axis2_tcp_svr_thd_args_t));

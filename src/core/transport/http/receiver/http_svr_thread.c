@@ -126,6 +126,10 @@ axis2_http_svr_thread_run(
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
                 "Worker not ready yet. Cannot serve the request");
             axutil_network_handler_close_socket(env, socket);
+            /* AXIS2C-1482: Sleep briefly to avoid busy-loop when worker isn't ready.
+             * Without this, the server spins at 100% CPU accepting and closing
+             * connections while waiting for the worker to become available. */
+            AXIS2_USLEEP(10000);  /* 10ms */
             continue;
         }
 
