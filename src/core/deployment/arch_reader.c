@@ -102,6 +102,10 @@ axis2_arch_reader_process_svc_grp(
         repos_path = axis2_dep_engine_get_svc_dir(dep_engine, env);
         svc_grp_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR, file_name,
             AXIS2_PATH_SEP_STR, AXIS2_SVC_XML, NULL);
+        /* AXIS2C-1491: axis2_dep_engine_get_svc_dir returns an allocated string,
+         * unlike axis2_dep_engine_get_repos_path which returns an internal pointer.
+         * Free the allocated string to prevent memory leak. */
+        AXIS2_FREE(env->allocator, repos_path);
     }
 
     if(!svc_grp_xml)
@@ -266,6 +270,10 @@ axis2_arch_reader_read_module_arch(
         repos_path = axis2_dep_engine_get_module_dir(dep_engine, env);
         module_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR, file_name,
             AXIS2_PATH_SEP_STR, AXIS2_MODULE_XML, NULL);
+        /* AXIS2C-1491: axis2_dep_engine_get_module_dir returns an allocated string,
+         * unlike axis2_dep_engine_get_repos_path which returns an internal pointer.
+         * Free the allocated string to prevent memory leak. */
+        AXIS2_FREE(env->allocator, repos_path);
     }
 
     if(!module_xml)
