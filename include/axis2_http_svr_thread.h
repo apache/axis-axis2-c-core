@@ -101,11 +101,13 @@ extern "C"
 
     /**
      * @param env pointer to environment struct
+     * @param addr server address to bind to, or NULL for INADDR_ANY (all interfaces)
      * @param port
      */
     AXIS2_EXTERN axis2_http_svr_thread_t *AXIS2_CALL
     axis2_http_svr_thread_create(
         const axutil_env_t * env,
+        const axis2_char_t * addr,
         int port);
 
 	AXIS2_EXTERN int AXIS2_CALL

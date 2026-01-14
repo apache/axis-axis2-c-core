@@ -37,6 +37,7 @@ typedef struct axis2_http_server_impl
     axis2_http_svr_thread_t *svr_thread;
     int port;
 	axis2_char_t *svr_ip;
+    axis2_char_t *addr;  /* AXIS2C-1484: Server bind address, NULL for INADDR_ANY */
     axis2_conf_ctx_t *conf_ctx;
     axis2_conf_ctx_t *conf_ctx_private;
     axis2_bool_t is_application_client_side;
@@ -143,6 +144,7 @@ axis2_http_server_create(
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
 	server_impl->svr_ip = NULL;
+    server_impl->addr = NULL;
     server_impl->is_application_client_side = AXIS2_FALSE;
 
     server_impl->http_server.ops = &http_transport_receiver_ops_var;
@@ -200,6 +202,8 @@ axis2_http_server_create_with_file(
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
 	server_impl->svr_ip = NULL;
+    server_impl->addr = NULL;
+    server_impl->is_application_client_side = AXIS2_FALSE;
     server_impl->http_server.ops = &http_transport_receiver_ops_var;
 
     if(file)
@@ -261,6 +265,13 @@ axis2_http_server_free(
         server_impl->conf_ctx_private = NULL;
     }
 
+    /* AXIS2C-1484: Free bind address if set */
+    if(server_impl->addr)
+    {
+        AXIS2_FREE(env->allocator, server_impl->addr);
+        server_impl->addr = NULL;
+    }
+
     /**
      * Do not free this. It may own to some other object
      */
@@ -298,6 +309,23 @@ axis2_http_server_init(
     {
         server_impl->port = atoi(port_str);
     }
+
+    /* AXIS2C-1484: Read server bind address from config */
+    param = (axutil_param_t *)axutil_param_container_get_param(
+        axis2_transport_in_desc_param_container(in_desc, env), env, AXIS2_ADDR_STRING);
+    if(param)
+    {
+        axis2_char_t *addr_str = axutil_param_get_value(param, env);
+        if(addr_str)
+        {
+            if(server_impl->addr)
+            {
+                AXIS2_FREE(env->allocator, server_impl->addr);
+            }
+            server_impl->addr = axutil_strdup(env, addr_str);
+        }
+    }
+
     return AXIS2_SUCCESS;
 }
 
@@ -310,7 +338,8 @@ axis2_http_server_start(
     axis2_http_worker_t *worker = NULL;
 	
     server_impl = AXIS2_INTF_TO_IMPL(server);
-    server_impl->svr_thread = axis2_http_svr_thread_create(env, server_impl->port);
+    server_impl->svr_thread = axis2_http_svr_thread_create(env, server_impl->addr,
+        server_impl->port);
     if(!server_impl->svr_thread)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "unable to create server thread for port %d",

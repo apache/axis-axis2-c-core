@@ -53,6 +53,7 @@ axis2_svr_thread_worker_func(
 axis2_http_svr_thread_t *AXIS2_CALL
 axis2_http_svr_thread_create(
     const axutil_env_t * env,
+    const axis2_char_t * addr,
     int port)
 {
     axis2_http_svr_thread_t *svr_thread = NULL;
@@ -70,7 +71,7 @@ axis2_http_svr_thread_create(
 
     svr_thread->port = port;
     svr_thread->listen_socket = (int)axutil_network_handler_create_server_socket(env,
-        svr_thread->port);
+        addr, svr_thread->port);
     if(-1 == svr_thread->listen_socket)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Http server thread socket creation failed.");

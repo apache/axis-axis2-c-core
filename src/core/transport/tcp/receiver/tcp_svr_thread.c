@@ -91,7 +91,7 @@ axis2_tcp_svr_thread_create(
     svr_thread->stopped = AXIS2_FALSE;
     svr_thread->port = port;
     svr_thread->listen_socket = (int)axutil_network_handler_create_server_socket(env,
-        svr_thread->port);
+        NULL, svr_thread->port);
     if(-1 == svr_thread->listen_socket)
     {
         axis2_tcp_svr_thread_free((axis2_tcp_svr_thread_t *)svr_thread, env);

@@ -1116,6 +1116,8 @@ extern "C"
 
     #define AXIS2_PORT_STRING "port"
 
+    #define AXIS2_ADDR_STRING "addr"
+
     #define AXIS2_DEFAULT_HOST_ADDRESS "127.0.0.1"
 
     #define AXIS2_DEFAULT_SVC_PATH "/axis2/services/"

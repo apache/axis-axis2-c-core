@@ -505,7 +505,7 @@ server_funct(
     env = thread_data->env;
 
     listen_socket = (int)axutil_network_handler_create_server_socket
-        (env, session_impl->listen_port);
+        (env, NULL, session_impl->listen_port);
     if (-1 == listen_socket)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,

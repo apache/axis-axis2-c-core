@@ -50,6 +50,7 @@ extern "C"
 
     /**
      * creates a server socket for a given port
+     * @param addr IP address to bind to, or NULL for INADDR_ANY (all interfaces)
      * @param port port of the socket to be bound
      * @return creates server socket
      */
@@ -57,6 +58,7 @@ extern "C"
 
     axutil_network_handler_create_server_socket(
         const axutil_env_t * env,
+        const axis2_char_t * addr,
         int port);
 
     /**

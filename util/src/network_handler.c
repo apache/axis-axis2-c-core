@@ -120,6 +120,7 @@ axutil_network_handler_open_socket(
 AXIS2_EXTERN axis2_socket_t AXIS2_CALL
 axutil_network_handler_create_server_socket(
     const axutil_env_t *env,
+    const axis2_char_t *addr,
     int port)
 {
     axis2_socket_t sock = AXIS2_INVALID_SOCKET;
@@ -167,6 +168,29 @@ axutil_network_handler_create_server_socket(
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     sock_addr.sin_port = htons((axis2_unsigned_short_t)port);
+
+    /* AXIS2C-1484: If addr is specified, bind to that specific address only */
+    if(addr != NULL)
+    {
+        sock_addr.sin_addr.s_addr = inet_addr(addr);
+        if(sock_addr.sin_addr.s_addr == AXIS2_INADDR_NONE)
+        {
+            /* addr may be a hostname, try to resolve it */
+            struct hostent *lphost = NULL;
+            lphost = gethostbyname(addr);
+            if(lphost)
+            {
+                sock_addr.sin_addr.s_addr = ((struct in_addr *)lphost->h_addr)->s_addr;
+            }
+            else
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Failed to resolve server bind address: %s", addr);
+                return AXIS2_INVALID_SOCKET;
+            }
+        }
+    }
 
     /* Bind the socket to our port number */
     if(bind(sock, (struct sockaddr *)&sock_addr, sizeof(sock_addr)) < 0)
