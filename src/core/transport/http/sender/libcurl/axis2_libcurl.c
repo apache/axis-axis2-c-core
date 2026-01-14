@@ -1057,6 +1057,9 @@ axis2_libcurl_set_proxy_options(
  *
  * CURLOPT_SSL_VERIFYHOST - long enum whether to verify the server identity
  * CURLOPT_SSL_VERIFYPEER - long boolean whether to verify the server certificate
+ * CURLOPT_CAINFO - path to CA certificate file (SERVER_CERT)
+ * CURLOPT_SSLCERT - path to client certificate file (KEY_FILE)
+ * CURLOPT_KEYPASSWD - passphrase for encrypted private key (SSL_PASSPHRASE)
  */
 static axis2_status_t
 axis2_libcurl_set_ssl_options(
@@ -1065,8 +1068,12 @@ axis2_libcurl_set_ssl_options(
     axis2_msg_ctx_t * msg_ctx)
 {
     axutil_property_t *property = NULL;
+    axutil_param_t *param = NULL;
     axis2_char_t *verify_peer = NULL;
     axis2_char_t *verify_host = NULL;
+    axis2_char_t *server_cert = NULL;
+    axis2_char_t *key_file = NULL;
+    axis2_char_t *passphrase = NULL;
 
     property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_SSL_VERIFY_PEER);
     if (property)
@@ -1093,6 +1100,70 @@ axis2_libcurl_set_ssl_options(
     if (verify_host)
     {
         curl_easy_setopt(handler, CURLOPT_SSL_VERIFYHOST, AXIS2_ATOI(verify_host));
+    }
+
+    /* AXIS2C-1550: Add support for SSL certificates from axis2.xml */
+
+    /* SERVER_CERT - CA certificate for verifying the server */
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_SSL_SERVER_CERT);
+    if (property)
+    {
+        server_cert = (axis2_char_t *)axutil_property_get_value(property, env);
+    }
+    if (!server_cert)
+    {
+        param = axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_SSL_SERVER_CERT);
+        if (param)
+        {
+            server_cert = (axis2_char_t *)axutil_param_get_value(param, env);
+        }
+    }
+    if (server_cert)
+    {
+        curl_easy_setopt(handler, CURLOPT_CAINFO, server_cert);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "SSL CA certificate: %s", server_cert);
+    }
+
+    /* KEY_FILE - client certificate (and optionally key) for client authentication */
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_SSL_KEY_FILE);
+    if (property)
+    {
+        key_file = (axis2_char_t *)axutil_property_get_value(property, env);
+    }
+    if (!key_file)
+    {
+        param = axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_SSL_KEY_FILE);
+        if (param)
+        {
+            key_file = (axis2_char_t *)axutil_param_get_value(param, env);
+        }
+    }
+    if (key_file)
+    {
+        curl_easy_setopt(handler, CURLOPT_SSLCERT, key_file);
+        /* Also set as key file - combined PEM files contain both cert and key */
+        curl_easy_setopt(handler, CURLOPT_SSLKEY, key_file);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "SSL client certificate: %s", key_file);
+    }
+
+    /* SSL_PASSPHRASE - passphrase for encrypted private key */
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
+    if (property)
+    {
+        passphrase = (axis2_char_t *)axutil_property_get_value(property, env);
+    }
+    if (!passphrase)
+    {
+        param = axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
+        if (param)
+        {
+            passphrase = (axis2_char_t *)axutil_param_get_value(param, env);
+        }
+    }
+    if (passphrase)
+    {
+        curl_easy_setopt(handler, CURLOPT_KEYPASSWD, passphrase);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "SSL passphrase configured");
     }
 
     return AXIS2_SUCCESS;
