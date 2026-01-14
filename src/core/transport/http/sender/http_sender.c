@@ -214,7 +214,8 @@ axis2_http_sender_create(
     }
 
     memset(sender, 0, sizeof(axis2_http_sender_t));
-    sender->http_version = (axis2_char_t *)AXIS2_HTTP_HEADER_PROTOCOL_11;
+    /* AXIS2C-1217: Use strdup to allocate http_version since it's freed in axis2_http_sender_free */
+    sender->http_version = axutil_strdup(env, AXIS2_HTTP_HEADER_PROTOCOL_11);
     sender->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
     /* unlike the java impl we don't have a default om output
      * it should be explicitly set and it's a MUST
@@ -459,17 +460,17 @@ axis2_http_sender_send(
     {
         sender->client = axis2_http_client_create(env, url);
 
-        /* Fail when creating the client*/
-        if(sender->client && sender->keep_alive)
-        {
-            /* While using keepalive the client must be kept for future use*/
-            if(connection_map)
-                axis2_http_sender_connection_map_add(sender, connection_map, env, msg_ctx);
-        }
-        else
+        /* AXIS2C-1217: Check for client creation failure separately from keep_alive logic */
+        if(!sender->client)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "sender->client creation failed for url %s", url);
             return AXIS2_FAILURE;
+        }
+
+        /* While using keepalive the client must be kept for future use */
+        if(sender->keep_alive && connection_map)
+        {
+            axis2_http_sender_connection_map_add(sender, connection_map, env, msg_ctx);
         }
     }
     else
@@ -1784,6 +1785,11 @@ axis2_http_sender_set_http_version(
     const axutil_env_t * env,
     axis2_char_t * version)
 {
+    /* AXIS2C-1217: Free the old http_version before replacing it to prevent memory leak */
+    if(sender->http_version)
+    {
+        AXIS2_FREE(env->allocator, sender->http_version);
+    }
     sender->http_version = axutil_strdup(env, version);
     if(!sender->http_version)
     {
