@@ -21,6 +21,7 @@
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_header.h>
 #include <axiom_soap_header_block.h>
+#include <axiom_soap_builder.h>
 #include <axis2_op.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
@@ -71,8 +72,27 @@ axutil_log_in_handler_invoke(
 
     if(soap_envelope)
     {
-        /* ensure SOAP builder state is in sync */
+        /* AXIS2C-1662: ensure SOAP builder state is in sync and fully loaded */
         axiom_soap_envelope_get_body(soap_envelope, env);
+
+        /* Force complete parsing of the SOAP envelope.
+         * This is needed for chunked streams (e.g., SOAP faults) where
+         * the stream may not be fully parsed yet. */
+        {
+            axiom_soap_builder_t *soap_builder = axiom_soap_envelope_get_soap_builder(soap_envelope, env);
+            axiom_node_t *base_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
+
+            if(soap_builder && base_node)
+            {
+                while(!axiom_node_is_complete(base_node, env))
+                {
+                    if(axiom_soap_builder_next(soap_builder, env) == AXIS2_FAILURE)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
         ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
         if(ret_node)
@@ -81,7 +101,7 @@ axutil_log_in_handler_invoke(
             om_str = axiom_node_to_string(ret_node, env);
             if(om_str)
             {
-                AXIS2_LOG_INFO(env->log, "Input message: %s", om_str);
+                AXIS2_LOG_INFO(env->log, "Input message: \n%s\n", om_str);
                 AXIS2_FREE(env->allocator, om_str);
             }
         }
