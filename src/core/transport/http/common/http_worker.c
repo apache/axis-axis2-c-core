@@ -299,6 +299,8 @@ axis2_http_worker_process_request(
         status = axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
         axis2_http_simple_response_free(response, env);
         response = NULL;
+        /* AXIS2C-1227: Free msg_ctx to prevent memory leak on early return */
+        axis2_msg_ctx_free(msg_ctx, env);
         return status;
     }
 
@@ -1015,6 +1017,10 @@ axis2_http_worker_process_request(
 
             if(!engine)
             {
+                /* AXIS2C-1227: Free resources before early return to prevent memory leaks */
+                axis2_msg_ctx_free(msg_ctx, env);
+                axutil_url_free(request_url, env);
+                axutil_string_free(soap_action_str, env);
                 return AXIS2_FALSE;
             }
 
@@ -1282,6 +1288,14 @@ axis2_http_worker_process_request(
                         if (!temp)
                         {
                             AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            /* AXIS2C-1227: Free resources before early return to prevent memory leaks */
+                            if (content_type)
+                            {
+                                AXIS2_FREE(env->allocator, content_type);
+                            }
+                            axis2_msg_ctx_free(msg_ctx, env);
+                            axutil_url_free(request_url, env);
+                            axutil_string_free(soap_action_str, env);
                             return AXIS2_FALSE;
                         }
 
