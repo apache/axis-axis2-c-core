@@ -32,10 +32,12 @@
 #include <axutil_log.h>
 
 /**
- * @brief HTTP/2 JSON Service Handler - processes pure JSON requests
+ * @brief HTTP/2 JSON Service Handler - processes pure JSON requests (internal)
+ * Note: This is the internal implementation with full context parameters.
+ * The JSON-direct entry point is bigdata_h2_service_invoke_json() below.
  */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-bigdata_h2_service_invoke_json(
+bigdata_h2_service_invoke_json_internal(
     axis2_svc_t *svc,
     const axutil_env_t *env,
     const axis2_char_t *json_request,
@@ -392,4 +394,86 @@ axis2_bigdata_h2_service_create(
     bigdata_h2_service_init(svc, env);
 
     return svc;
+}
+
+/**
+ * @brief JSON-direct service invoke function
+ *
+ * This function matches the signature expected by the JSON-direct service loader
+ * in axis2_json_rpc_msg_recv.c. The function name MUST match:
+ *   <ServiceClass>_invoke_json
+ * where ServiceClass is from services.xml parameter.
+ *
+ * Expected signature: json_object* func(const axutil_env_t *env, json_object *json_request)
+ */
+AXIS2_EXTERN json_object* AXIS2_CALL
+bigdata_h2_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request)
+{
+    const char *json_request_str = NULL;
+    axis2_char_t *json_response_str = NULL;
+    json_object *json_response = NULL;
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "BigDataH2Service: JSON-direct invoke called");
+
+    if (!json_request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "BigDataH2Service: No JSON request object provided");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "error",
+                              json_object_new_string("No JSON request provided"));
+        return json_response;
+    }
+
+    /* Convert json_object to string for processing */
+    json_request_str = json_object_to_json_string(json_request);
+    if (!json_request_str)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "BigDataH2Service: Failed to convert JSON request to string");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "error",
+                              json_object_new_string("Failed to convert JSON request"));
+        return json_response;
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "BigDataH2Service: Processing JSON request: %.100s...", json_request_str);
+
+    /* Call the existing JSON processing function */
+    json_response_str = bigdata_h2_service_process_json_only(env, json_request_str);
+    if (!json_response_str)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "BigDataH2Service: Service processing returned NULL");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "error",
+                              json_object_new_string("Service processing failed"));
+        return json_response;
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "BigDataH2Service: Service response: %.100s...", json_response_str);
+
+    /* Parse the response string back to json_object */
+    json_response = json_tokener_parse(json_response_str);
+    if (!json_response)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                       "BigDataH2Service: Failed to parse response JSON");
+        json_response = json_object_new_object();
+        json_object_object_add(json_response, "error",
+                              json_object_new_string("Failed to parse response JSON"));
+    }
+
+    /* Free the response string (it was allocated by bigdata_h2_service_process_json_only) */
+    AXIS2_FREE(env->allocator, json_response_str);
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                   "BigDataH2Service: JSON-direct invoke completed successfully");
+
+    return json_response;
 }

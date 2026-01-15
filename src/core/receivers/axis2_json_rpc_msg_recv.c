@@ -286,110 +286,67 @@ try_json_direct_service_loading(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_DIRECT] CRITICAL - Service name extracted: '%s'", service_name);
-
-    // CRITICAL: Extract service class name from ServiceClass parameter - this is where corruption occurs
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_DIRECT] CRITICAL - About to extract ServiceClass parameter from impl_class_param=%p", impl_class_param);
-
-    service_class_name = (const axis2_char_t*)axutil_param_get_value(impl_class_param, env);
-
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_DIRECT] CRITICAL - ServiceClass extraction result: service_class_name=%p", service_class_name);
-
-    if (!service_class_name) {
-        // Fallback: use service name as class name
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[JSON_DIRECT] CRITICAL - No ServiceClass parameter found for '%s' - using service name as class name", service_name);
-        service_class_name = service_name;
-    } else {
-        // GENERIC CORRUPTION DETECTION: Check if ServiceClass parameter contains corrupted data
-        axis2_bool_t is_corrupted = AXIS2_FALSE;
-        size_t class_name_len = strlen(service_class_name);
-        axis2_bool_t has_underscore = AXIS2_FALSE;
-
-        // Check for non-printable characters or obvious corruption patterns
-        if (service_class_name) {
-            for (int i = 0; service_class_name[i] != '\0'; i++) {
-                if (!isprint(service_class_name[i]) || (unsigned char)service_class_name[i] > 127) {
-                    is_corrupted = AXIS2_TRUE;
-                    break;
-                }
-                if (service_class_name[i] == '_') {
-                    has_underscore = AXIS2_TRUE;
-                }
-            }
-        }
-
-        // ADDITIONAL CORRUPTION CHECKS:
-        // 1. ServiceClass should be at least 5 characters (e.g., "x_svc" minimum)
-        // 2. ServiceClass should contain underscore (snake_case naming convention)
-        // 3. ServiceClass should not be uppercase only (CamelCase would indicate corruption)
-        if (!is_corrupted && class_name_len < 5) {
-            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-                "[JSON_DIRECT] CORRUPTION_DETECTED - ServiceClass too short (%d chars): '%s'",
-                (int)class_name_len, service_class_name);
-            is_corrupted = AXIS2_TRUE;
-        }
-        if (!is_corrupted && !has_underscore && class_name_len > 0) {
-            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-                "[JSON_DIRECT] CORRUPTION_DETECTED - ServiceClass missing underscore: '%s'",
-                service_class_name);
-            is_corrupted = AXIS2_TRUE;
-        }
-
-        if (is_corrupted) {
-            // GENERIC SAFE CONVERSION: Convert CamelCase service name to snake_case
-            char* converted_name = (char*)AXIS2_MALLOC(env->allocator, strlen(service_name) * 2 + 1);
-            if (converted_name) {
-                int j = 0;
-                for (int i = 0; service_name[i] != '\0'; i++) {
-                    if (i > 0 && isupper(service_name[i])) {
-                        converted_name[j++] = '_';
-                    }
-                    converted_name[j++] = tolower(service_name[i]);
-                }
-                converted_name[j] = '\0';
-                service_class_name = converted_name;
-
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                    "[JSON_DIRECT] GENERIC_CORRUPTION_FIX - Detected corruption, converted '%s' to '%s'",
-                    service_name, service_class_name);
-            } else {
-                // Fallback if allocation fails
-                service_class_name = service_name;
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                    "[JSON_DIRECT] ALLOCATION_FAILED - Using service name as fallback");
-            }
-        } else {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                "[JSON_DIRECT] PARAMETER_VALID - Using ServiceClass parameter as provided");
-        }
-    }
-
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-        "[JSON_DIRECT] CRITICAL - Final service class name set (safe logging)");
-
-    // Build library path: /usr/local/axis2c/services/<ServiceName>/lib<serviceclass>.so
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-        "[JSON_DIRECT] Building library path with safe parameters");
+        "[JSON_DIRECT] Service name extracted: '%s'", service_name);
 
-    // Build library path: /usr/local/axis2c/services/ServiceName/libserviceclass.so
-    service_lib_path = AXIS2_MALLOC(env->allocator,
-        strlen("/usr/local/axis2c/services/") + strlen(service_name) +
-        strlen("/lib") + strlen(service_class_name) + strlen(".so") + 1);
+    // CRITICAL FIX: The ServiceClass parameter value is a dll_desc object (set by svc_builder.c:309),
+    // NOT a string. The svc_builder.c extracts the string, creates a dll_desc with the full path,
+    // and replaces the parameter value with the dll_desc pointer.
+    dll_desc = (axutil_dll_desc_t*)axutil_param_get_value(impl_class_param, env);
 
-    if (!service_lib_path) {
+    if (!dll_desc) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[JSON_DIRECT] Failed to allocate memory for service library path");
+            "[JSON_DIRECT] No dll_desc found in ServiceClass parameter for '%s'", service_name);
         return AXIS2_FALSE;
     }
 
-    sprintf(service_lib_path, "/usr/local/axis2c/services/%s/lib%s.so", service_name, service_class_name);
+    // Get the full DLL path from the dll_desc (this was already constructed by svc_builder.c)
+    service_lib_path = axutil_dll_desc_get_name(dll_desc, env);
+    if (!service_lib_path) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[JSON_DIRECT] Failed to get DLL path from dll_desc for '%s'", service_name);
+        return AXIS2_FALSE;
+    }
 
     AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-        "[JSON_DIRECT] constructed path='%s'", service_lib_path);
+        "[JSON_DIRECT] DLL path from dll_desc: '%s'", service_lib_path);
+
+    // Extract service class name from DLL path for function name construction
+    // Path format: /path/to/services/ServiceName/lib<serviceclass>.so
+    // Extract the basename, then strip "lib" prefix and ".so" suffix
+    {
+        const char *basename = strrchr(service_lib_path, '/');
+        if (basename) {
+            basename++; // Skip the '/'
+        } else {
+            basename = service_lib_path;
+        }
+
+        // basename should be "lib<serviceclass>.so"
+        // Skip "lib" prefix (3 chars) and remove ".so" suffix
+        if (strncmp(basename, "lib", 3) == 0) {
+            size_t len = strlen(basename) - 3 - 3; // minus "lib" and ".so"
+            char *extracted_name = (char*)AXIS2_MALLOC(env->allocator, len + 1);
+            if (extracted_name) {
+                strncpy(extracted_name, basename + 3, len); // Skip "lib"
+                extracted_name[len] = '\0';
+                service_class_name = extracted_name;
+                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    "[JSON_DIRECT] Extracted service class name: '%s'", service_class_name);
+            } else {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_DIRECT] Failed to allocate memory for service class name");
+                return AXIS2_FALSE;
+            }
+        } else {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[JSON_DIRECT] DLL name '%s' doesn't start with 'lib' prefix", basename);
+            return AXIS2_FALSE;
+        }
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "[JSON_DIRECT] Ready to load library: '%s'", service_lib_path);
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
         "[JSON_DIRECT] Attempting to load service library: %s", service_lib_path);

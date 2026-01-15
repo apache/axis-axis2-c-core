@@ -64,6 +64,12 @@ libmod_axis2_la_LIBADD   = $(top_builddir)/util/src/libaxutil.la \
 		     $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 		     $(top_builddir)/axiom/src/om/libaxis2_axiom.la
 
+# Add JSON support conditionally when AXIS2_JSON_ENABLED is set
+if AXIS2_JSON_ENABLED
+libmod_axis2_la_LIBADD += $(JSON_LIBS)
+libmod_axis2_la_CPPFLAGS += $(JSON_CFLAGS)
+endif
+
 # Core dependencies:
 # - libaxutil.la (ESSENTIAL - utilities used throughout)
 # - libaxis2_http_common.la (ESSENTIAL - http_out_transport_info functions)

@@ -8,8 +8,11 @@
             Uses pure json-c library (no XML/SOAP dependencies)
         </description>
 
-        <serviceClass>bigdata_h2_service</serviceClass>
-        <parameter name="ServiceClass">libbigdata_h2_service</parameter>
+        <!-- ServiceClass defines the library and function naming:
+             - Library path: lib<ServiceClass>.so -> libbigdata_h2_service.so
+             - Function name: <ServiceClass>_invoke_json -> bigdata_h2_service_invoke_json
+             NOTE: Do NOT include 'lib' prefix - it's added automatically -->
+        <parameter name="ServiceClass">bigdata_h2_service</parameter>
 
         <!-- HTTP/2 transport configuration -->
         <parameter name="transport.h2">

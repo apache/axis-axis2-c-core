@@ -23,8 +23,10 @@ TESTS =
 # HTTP/2 Pure JSON Architecture - HTTP/2 tests removed (no axiom dependencies)
 # Test functionality is handled by HTTP/2-specific test framework
 
-# Only build gtest tests when Google Test is available
+# Only build gtest tests when Google Test is available AND not in HTTP/2 mode
+# HTTP/2 mode doesn't build the receiver/sender libraries that this test needs
 if GTEST_AVAILABLE
+if !WITH_NGHTTP2
 check_PROGRAMS += test_http_transport
 noinst_PROGRAMS += test_http_transport
 TESTS += test_http_transport
@@ -56,5 +58,6 @@ test_http_transport_CPPFLAGS = \
 if AXIS2_JSON_ENABLED
 test_http_transport_LDADD += $(JSON_LIBS)
 test_http_transport_CPPFLAGS += $(JSON_CFLAGS)
+endif
 endif
 endif
