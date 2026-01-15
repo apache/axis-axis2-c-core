@@ -2124,6 +2124,8 @@ axis2_http_transport_utils_get_services_static_wsdl(
                     const axis2_char_t* service_folder = service_provider->get_service_folder_path(service_provider, env, service);
                     wsdl_path = service_folder ? axutil_strcat(env, service_folder, AXIS2_PATH_SEP_STR, svc_name, ".wsdl", NULL) : NULL;
                 }
+                /* AXIS2C-1596: Free hash iterator when breaking early */
+                axutil_hash_index_free(hi, env);
                 break;
             }
 
@@ -2167,6 +2169,20 @@ axis2_http_transport_utils_get_services_static_wsdl(
     else
     {
         wsdl_string = axutil_strdup(env, "Unable to retrieve wsdl for this service");
+    }
+
+    /* AXIS2C-1596: Free URL tokens allocated by axutil_parse_request_url_for_svc_and_op */
+    if(url_tok)
+    {
+        if(url_tok[0])
+        {
+            AXIS2_FREE(env->allocator, url_tok[0]);
+        }
+        if(url_tok[1])
+        {
+            AXIS2_FREE(env->allocator, url_tok[1]);
+        }
+        AXIS2_FREE(env->allocator, url_tok);
     }
 
     return wsdl_string;
