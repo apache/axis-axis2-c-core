@@ -761,7 +761,7 @@ axis2_conf_builder_process_transport_senders(
             if(!trs_dll_att)
             {
                 /* No class attribute - transport is statically linked, skip DLL loading */
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "Transport sender %s has no class attribute - assuming statically linked", name);
                 transport_sender = NULL; /* Will be set by static initialization */
             }

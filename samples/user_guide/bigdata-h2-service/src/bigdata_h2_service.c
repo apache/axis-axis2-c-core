@@ -390,7 +390,7 @@ bigdata_h2_service_process_big_data_set(
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "Processing big data set: dataset_id=%s, size=%ld bytes",
                    request->dataset_id ? request->dataset_id : "unknown",
                    request->dataset_size);
@@ -414,7 +414,7 @@ bigdata_h2_service_process_big_data_set(
     if (axutil_strcmp(request->processing_mode, BIGDATA_H2_MODE_STREAMING) == 0)
     {
         /* Streaming mode for very large datasets (>50MB) */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Using HTTP/2 streaming mode for large dataset");
+        AXIS2_LOG_INFO(env->log, "Using HTTP/2 streaming mode for large dataset");
 
         response->http2_optimized = AXIS2_TRUE;
         response->memory_optimized = AXIS2_TRUE;
@@ -431,7 +431,7 @@ bigdata_h2_service_process_big_data_set(
     else if (axutil_strcmp(request->processing_mode, BIGDATA_H2_MODE_MULTIPLEXING) == 0)
     {
         /* Multiplexing mode for medium datasets (10-50MB) */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Using HTTP/2 multiplexing mode for medium dataset");
+        AXIS2_LOG_INFO(env->log, "Using HTTP/2 multiplexing mode for medium dataset");
 
         response->http2_optimized = AXIS2_TRUE;
         response->memory_optimized = AXIS2_TRUE;
@@ -447,7 +447,7 @@ bigdata_h2_service_process_big_data_set(
     else
     {
         /* Standard mode for smaller datasets (<10MB) */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Using standard processing mode for small dataset");
+        AXIS2_LOG_INFO(env->log, "Using standard processing mode for small dataset");
 
         response->http2_optimized = request->enable_http2_optimization;
         response->memory_optimized = request->enable_memory_optimization;
@@ -501,7 +501,7 @@ bigdata_h2_service_process_big_data_set(
             " in ",
             format_processing_time(response->processing_time_ms, env)));
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "Big data processing completed: %d records, %ld bytes, %ld ms",
                    response->processed_record_count,
                    response->total_processed_bytes,

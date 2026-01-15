@@ -643,14 +643,14 @@ axis2_engine_create_fault_msg_ctx(
 
         if(axis2_msg_ctx_get_is_soap_11(processing_context, env))
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating SOAP 1.1 fault envelope");
+            AXIS2_LOG_INFO(env->log, "Creating SOAP 1.1 fault envelope");
             envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env, code_value,
                 reason_text, AXIOM_SOAP11, NULL, NULL);
 
         }
         else
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating SOAP 1.2 fault envelope");
+            AXIS2_LOG_INFO(env->log, "Creating SOAP 1.2 fault envelope");
             envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env, code_value,
                 reason_text, AXIOM_SOAP12, NULL, NULL);
         }
@@ -694,7 +694,7 @@ axis2_engine_invoke_phases(
     if(phases)
         count = axutil_array_list_size(phases, env);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "Engine: Invoking phases - phases: %p, count: %d", (void*)phases, count);
 
     for(i = 0; (i < count && !(axis2_msg_ctx_is_paused(msg_ctx, env))); i++)

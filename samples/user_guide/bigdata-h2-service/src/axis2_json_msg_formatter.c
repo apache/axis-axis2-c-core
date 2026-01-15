@@ -71,7 +71,7 @@ axis2_json_msg_formatter_create(const axutil_env_t* env)
     struct axis2_json_msg_formatter* json_formatter = NULL;
     axis2_msg_formatter_t* msg_formatter = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating JSON Message Formatter");
+    AXIS2_LOG_INFO(env->log, "Creating JSON Message Formatter");
 
     json_formatter = (struct axis2_json_msg_formatter*)AXIS2_MALLOC(env->allocator,
                                                                    sizeof(struct axis2_json_msg_formatter));
@@ -88,7 +88,7 @@ axis2_json_msg_formatter_create(const axutil_env_t* env)
     axis2_msg_formatter_set_get_content_type(msg_formatter, env, json_msg_formatter_get_content_type);
     axis2_msg_formatter_set_free(msg_formatter, env, json_msg_formatter_free);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON Message Formatter created successfully");
+    AXIS2_LOG_INFO(env->log, "JSON Message Formatter created successfully");
     return msg_formatter;
 }
 
@@ -109,7 +109,7 @@ json_msg_formatter_write_to(
     int json_len = 0;
     int bytes_written = 0;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON Message Formatter: Writing JSON response");
+    AXIS2_LOG_INFO(env->log, "JSON Message Formatter: Writing JSON response");
 
     if (!msg_ctx || !out_stream) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Message context or output stream is null");
@@ -128,7 +128,7 @@ json_msg_formatter_write_to(
         bytes_written = axutil_stream_write(out_stream, env, default_error, json_len);
 
         if (bytes_written > 0) {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                            "Wrote default error response (%d bytes)", bytes_written);
             return AXIS2_SUCCESS;
         }
@@ -146,12 +146,12 @@ json_msg_formatter_write_to(
     bytes_written = axutil_stream_write(out_stream, env, json_response, json_len);
 
     if (bytes_written > 0) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                       "JSON Message Formatter: Successfully wrote %d bytes of JSON response",
                       bytes_written);
 
         /* Log response for debugging */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                        "JSON Response: %s", json_response);
 
         return AXIS2_SUCCESS;
@@ -172,7 +172,7 @@ json_msg_formatter_get_content_type(
     const axutil_env_t* env,
     axis2_msg_ctx_t* msg_ctx)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON Message Formatter: Returning content-type: %s", AXIS2_JSON_CONTENT_TYPE);
 
     return axutil_strdup(env, AXIS2_JSON_CONTENT_TYPE);

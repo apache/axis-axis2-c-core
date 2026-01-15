@@ -758,7 +758,7 @@ axis2_dep_engine_load(
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[dep_engine] populate_conf succeeded, about to set paths");
+    AXIS2_LOG_INFO(env->log, "[dep_engine] populate_conf succeeded, about to set paths");
 
     status = axis2_dep_engine_set_svc_and_module_dir_path(dep_engine, env);
     if(AXIS2_SUCCESS != status)
@@ -767,7 +767,7 @@ axis2_dep_engine_load(
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[dep_engine] set paths succeeded, about to set features");
+    AXIS2_LOG_INFO(env->log, "[dep_engine] set paths succeeded, about to set features");
 
     status = axis2_dep_engine_set_dep_features(dep_engine, env);
     if(AXIS2_SUCCESS != status)
@@ -776,7 +776,7 @@ axis2_dep_engine_load(
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[dep_engine] set features succeeded");
+    AXIS2_LOG_INFO(env->log, "[dep_engine] set features succeeded");
 
     if(dep_engine->repos_listener)
     {

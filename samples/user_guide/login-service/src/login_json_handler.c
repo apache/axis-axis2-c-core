@@ -72,7 +72,7 @@ axis2_login_json_handler_init(const axutil_env_t *env)
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Login JSON handler initialized for HTTP/2 pure JSON processing");
+    AXIS2_LOG_INFO(env->log, "Login JSON handler initialized for HTTP/2 pure JSON processing");
     return AXIS2_SUCCESS;
 }
 
@@ -86,7 +86,7 @@ axis2_login_json_handler_cleanup(const axutil_env_t *env)
     {
         login_json_handler_free(g_login_handler, env);
         g_login_handler = NULL;
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Login JSON handler cleaned up");
+        AXIS2_LOG_INFO(env->log, "Login JSON handler cleaned up");
     }
 }
 
@@ -116,7 +116,7 @@ axis2_login_json_do_login(
         return create_json_error_response(env, "Service not initialized");
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing HTTP/2 pure JSON login request");
+    AXIS2_LOG_INFO(env->log, "Processing HTTP/2 pure JSON login request");
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Login request JSON: %s", json_request);
 
     /* Parse JSON request */
@@ -151,7 +151,7 @@ axis2_login_json_do_login(
     /* Log authentication attempts (without sensitive data) */
     if (login_response->status && axutil_strcmp(login_response->status, LOGIN_STATUS_SUCCESS) == 0)
     {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                        "HTTP/2 pure JSON authentication successful for user: %s",
                        login_request->email ? login_request->email : "unknown");
     }
@@ -260,7 +260,7 @@ login_service_invoke_json(
     axis2_char_t *json_response_str = NULL;
     json_object *json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "LoginService: Processing HTTP/2 JSON request via invoke_json");
 
     /* Initialize handler if needed */

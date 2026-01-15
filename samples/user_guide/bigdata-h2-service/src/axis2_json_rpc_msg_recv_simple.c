@@ -64,15 +64,15 @@ json_rpc_invoke_business_logic(
     const axis2_char_t* operation_name = NULL;
     axis2_char_t* json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON RPC: Processing request");
+    AXIS2_LOG_INFO(env->log, "JSON RPC: Processing request");
 
     /* Check if enableJSONOnly is configured (temporarily bypass for testing) */
     axis2_bool_t json_enabled = is_json_only_enabled(env, in_msg_ctx);
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON enabled check result: %s", json_enabled ? "true" : "false");
+    AXIS2_LOG_INFO(env->log, "JSON enabled check result: %s", json_enabled ? "true" : "false");
 
     /* For now, proceed with JSON processing regardless to test the flow */
     if (!json_enabled) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "enableJSONOnly=false, but proceeding with JSON processing for testing");
+        AXIS2_LOG_INFO(env->log, "enableJSONOnly=false, but proceeding with JSON processing for testing");
     }
 
     /* Get operation name */
@@ -92,7 +92,7 @@ json_rpc_invoke_business_logic(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON RPC: Processing operation %s", operation_name);
+    AXIS2_LOG_INFO(env->log, "JSON RPC: Processing operation %s", operation_name);
 
     /* Simple JSON processing based on operation */
     if (axutil_strcmp(operation_name, "processBigDataSet") == 0) {
@@ -104,7 +104,7 @@ json_rpc_invoke_business_logic(
     }
 
     if (json_response) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON RPC: Response generated");
+        AXIS2_LOG_INFO(env->log, "JSON RPC: Response generated");
         /* Store response for formatter to pick up */
         axutil_property_t* json_prop = axutil_property_create(env);
         axutil_property_set_value(json_prop, env, json_response);
@@ -123,7 +123,7 @@ axis2_json_rpc_msg_recv_simple_create(const axutil_env_t* env)
 {
     axis2_msg_recv_t* msg_recv = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating simple JSON RPC Message Receiver");
+    AXIS2_LOG_INFO(env->log, "Creating simple JSON RPC Message Receiver");
 
     /* Create base raw XML message receiver */
     msg_recv = axis2_raw_xml_in_out_msg_recv_create(env);
@@ -143,6 +143,6 @@ axis2_json_rpc_msg_recv_simple_create(const axutil_env_t* env)
     /* Override business logic with JSON processing */
     axis2_msg_recv_set_invoke_business_logic(msg_recv, env, json_rpc_invoke_business_logic);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Simple JSON RPC Message Receiver created");
+    AXIS2_LOG_INFO(env->log, "Simple JSON RPC Message Receiver created");
     return msg_recv;
 }

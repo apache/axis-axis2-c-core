@@ -958,7 +958,7 @@ axis2_http_transport_utils_process_http_post_request(
 
                 /* Check for processing errors and convert to JSON response */
                 if (status != AXIS2_SUCCESS || env->error->error_number != AXIS2_ERROR_NONE) {
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON processing error detected - converting to JSON response");
+                    AXIS2_LOG_INFO(env->log, "HTTP/2 JSON processing error detected - converting to JSON response");
 
                     /* Create JSON error response directly */
                     axiom_soap_envelope_t *error_envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
@@ -984,7 +984,7 @@ axis2_http_transport_utils_process_http_post_request(
                     axutil_property_set_value(content_type_prop, env, "application/json");
                     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type_prop);
 
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "HTTP/2 JSON error response created successfully");
+                    AXIS2_LOG_INFO(env->log, "HTTP/2 JSON error response created successfully");
                     status = AXIS2_SUCCESS; /* Mark as success since we handled the error */
                 }
             } else {

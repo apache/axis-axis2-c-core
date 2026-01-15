@@ -91,17 +91,17 @@ json_only_invoke_business_logic(
     axis2_char_t* json_response = NULL;
     axutil_property_t* json_response_prop = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON Message Receiver: Processing pure JSON request");
+    AXIS2_LOG_INFO(env->log, "JSON Message Receiver: Processing pure JSON request");
 
     /* Verify this is a JSON stream request */
     if (!is_json_stream_request(env, in_msg_ctx)) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Not a JSON stream request, skipping JSON processing");
+        AXIS2_LOG_INFO(env->log, "Not a JSON stream request, skipping JSON processing");
         return AXIS2_FAILURE;
     }
 
     /* Verify enableJSONOnly is configured */
     if (!is_json_only_enabled(env, in_msg_ctx)) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "enableJSONOnly not configured, skipping JSON processing");
+        AXIS2_LOG_INFO(env->log, "enableJSONOnly not configured, skipping JSON processing");
         return AXIS2_FAILURE;
     }
 
@@ -135,7 +135,7 @@ json_only_invoke_business_logic(
         goto set_response;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON Message Receiver: Processing operation '%s' with JSON data", operation_name);
 
     /* Process JSON based on operation (pure JSON processing) */
@@ -159,7 +159,7 @@ set_response:
         axutil_property_set_value(json_response_prop, env, json_response);
         axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_JSON_RESPONSE_PROPERTY, json_response_prop);
 
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                       "JSON Message Receiver: Successfully processed JSON request, response ready");
         return AXIS2_SUCCESS;
     } else {
@@ -184,7 +184,7 @@ axis2_json_msg_receiver_create(const axutil_env_t* env)
 {
     axis2_msg_recv_t* msg_recv = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating JSON-aware Message Receiver");
+    AXIS2_LOG_INFO(env->log, "Creating JSON-aware Message Receiver");
 
     /* Create base raw XML message receiver */
     msg_recv = axis2_raw_xml_in_out_msg_recv_create(env);
@@ -196,6 +196,6 @@ axis2_json_msg_receiver_create(const axutil_env_t* env)
     /* Override business logic to handle JSON processing */
     axis2_msg_recv_set_invoke_business_logic(msg_recv, env, json_only_invoke_business_logic);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON-aware Message Receiver created successfully");
+    AXIS2_LOG_INFO(env->log, "JSON-aware Message Receiver created successfully");
     return msg_recv;
 }

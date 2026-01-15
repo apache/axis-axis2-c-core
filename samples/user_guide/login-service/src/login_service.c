@@ -321,7 +321,7 @@ login_service_do_login(
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing login request for email: %s",
+    AXIS2_LOG_INFO(env->log, "Processing login request for email: %s",
                    request->email ? request->email : "unknown");
 
     response = login_response_create(env);
@@ -364,7 +364,7 @@ login_service_do_login(
     if (login_service_authenticate_user(env, request->email, request->password))
     {
         /* Authentication successful */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Authentication successful for: %s", request->email);
+        AXIS2_LOG_INFO(env->log, "Authentication successful for: %s", request->email);
 
         if (response->status)
             AXIS2_FREE(env->allocator, response->status);

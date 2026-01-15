@@ -82,7 +82,7 @@ axis2_json_rpc_msg_recv_create(
     axis2_msg_recv_t* msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "Creating JSON RPC Message Receiver (AXIOM-free)");
 
     json_msg_recv = (axis2_json_rpc_msg_recv_t*)AXIS2_MALLOC(env->allocator,
@@ -120,7 +120,7 @@ axis2_json_rpc_msg_recv_create(
                                          axis2_json_rpc_msg_recv_load_and_init_svc);
     axis2_msg_recv_set_free(msg_recv, env, axis2_json_rpc_msg_recv_free);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "JSON RPC Message Receiver created successfully");
 
     return msg_recv;
@@ -147,14 +147,14 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
     axis2_char_t* json_response = NULL;
     axis2_bool_t is_json_only = AXIS2_FALSE;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON RPC Message Receiver: Processing pure JSON request");
 
     /* Check if enableJSONOnly is configured */
     is_json_only = axis2_json_rpc_msg_recv_is_json_only_enabled(env, in_msg_ctx);
     if (!is_json_only)
     {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                        "enableJSONOnly=false, falling back to traditional processing");
         /* Could fall back to traditional XML processing here if needed */
         return AXIS2_FAILURE;
@@ -199,7 +199,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "Processing JSON operation: %s", operation_name);
 
     /* Get JSON stream from message context property (set by JSON builder) */
@@ -238,7 +238,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
     int bytes_read = axutil_stream_read(json_stream, env, json_request, stream_len);
     json_request[bytes_read] = '\0';
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "Read JSON request (%d bytes): %s", bytes_read, json_request);
 
     /* Route to appropriate service operation (pure JSON processing) */
@@ -268,7 +268,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         axutil_property_set_value(json_response_prop, env, json_response);
         axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_JSON_RESPONSE_PROPERTY, json_response_prop);
 
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                        "JSON response set: %s", json_response);
     }
     else
@@ -285,7 +285,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
     /* Cleanup */
     AXIS2_FREE(env->allocator, json_request);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "JSON RPC Message Receiver: Pure JSON processing completed");
 
     return AXIS2_SUCCESS;
@@ -317,13 +317,13 @@ axis2_json_rpc_msg_recv_is_json_only_enabled(
         param_value = (axis2_char_t*)axutil_param_get_value(param, env);
         if (param_value && axutil_strcasecmp(param_value, "true") == 0)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                            "enableJSONOnly=true found for service");
             return AXIS2_TRUE;
         }
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "enableJSONOnly=false or not configured");
     return AXIS2_FALSE;
 }
@@ -338,7 +338,7 @@ axis2_json_rpc_msg_recv_load_and_init_svc(
     const axutil_env_t* env,
     axis2_svc_t* svc)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON RPC Message Receiver: Loading and initializing service");
     return AXIS2_SUCCESS;
 }

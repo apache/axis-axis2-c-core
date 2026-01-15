@@ -647,7 +647,7 @@ axis2_svc_grp_is_module_engaged(
 
 	if(!axis2_svc_grp_is_module_engaged(svc_grp, env, module_qname))
 	{
-		AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Module %s is not engaged to the service group %s",
+		AXIS2_LOG_INFO(env->log, "Module %s is not engaged to the service group %s",
 			axutil_qname_get_localpart(module_qname, env), svc_grp_name);
 		return AXIS2_FAILURE;
 	}

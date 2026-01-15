@@ -174,7 +174,7 @@ axis2_addr_in_handler_invoke(
                 else
                 {
                     /* addressing headers are not present in the SOAP message */
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    AXIS2_LOG_INFO(env->log,
                         "No Addressing Headers present in the IN message. Addressing In Handler cannot do anything.");
                     return AXIS2_SUCCESS; /* no addressing heades means addressing not in use */
                 }

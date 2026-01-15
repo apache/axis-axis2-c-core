@@ -358,7 +358,7 @@ axis2_apache2_worker_process_request(
         if (axis2_apache2_request_processor_is_json_http2_request(request) ||
             strstr(request_processor->get_protocol_id(request_processor, env), "JSON"))
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[APACHE2_WORKER] Using interface-based processing for %s request",
                 request_processor->get_protocol_id(request_processor, env));
 
@@ -384,7 +384,7 @@ axis2_apache2_worker_process_request(
                 else
                 {
                     /* CRITICAL FIX: Process request body using JSON processor */
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    AXIS2_LOG_INFO(env->log,
                         "[APACHE2_WORKER_JSON] Processing request body using JSON processor interface");
 
                     axis2_apache2_processing_result_t body_result =
@@ -399,7 +399,7 @@ axis2_apache2_worker_process_request(
                     }
                     else
                     {
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[APACHE2_WORKER_SUCCESS] JSON request body processed successfully");
                     }
                 }
@@ -763,7 +763,7 @@ axis2_apache2_worker_process_request(
         /*axis2_status_t status = AXIS2_FAILURE;*/
 
         /* ===== INTERFACE PATTERN: REQUEST BODY PROCESSING ===== */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[APACHE2_WORKER] Body processing conditions - use_interface=%d, processor=%p, ctx=%p, method=%d",
             use_interface_processing, request_processor, processing_ctx, request->method_number);
 
@@ -780,7 +780,7 @@ axis2_apache2_worker_process_request(
             }
             else
             {
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "[APACHE2_WORKER] Using interface-based POST request body processing");
 
                 /* Use interface pattern for thread-safe JSON HTTP/2 processing */
@@ -789,7 +789,7 @@ axis2_apache2_worker_process_request(
 
             if (result == AXIS2_APACHE2_PROCESSING_SUCCESS)
             {
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "[APACHE2_WORKER_SUCCESS] Interface-based request body processing succeeded");
                 status = AXIS2_SUCCESS;
 
@@ -804,7 +804,7 @@ axis2_apache2_worker_process_request(
             }
             else if (result == AXIS2_APACHE2_PROCESSING_NOT_HANDLED)
             {
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "[APACHE2_WORKER_DELEGATE] Interface processor delegating to original logic");
                 /* Fallback to original processing */
                 status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
@@ -813,7 +813,7 @@ axis2_apache2_worker_process_request(
             }
             else
             {
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "[APACHE2_WORKER_ERROR] Interface-based request body processing failed");
                 status = AXIS2_FAILURE;
             }
@@ -822,7 +822,7 @@ axis2_apache2_worker_process_request(
         /* ===== ORIGINAL LOGIC: FALLBACK FOR NON-INTERFACE REQUESTS ===== */
         else if(M_POST == request->method_number)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[APACHE2_WORKER_LEGACY] Using original POST request processing");
             status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action,
@@ -830,7 +830,7 @@ axis2_apache2_worker_process_request(
         }
         else
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[APACHE2_WORKER_LEGACY] Using original PUT request processing");
             status = axis2_http_transport_utils_process_http_put_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action,
@@ -1158,10 +1158,10 @@ axis2_apache2_worker_process_request(
                     if (output_header_list)
                     {
                         size = axutil_array_list_size(output_header_list, env);
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[APACHE WORKER] Processing %d HTTP output headers from message context", size);
                     } else {
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[APACHE WORKER] No HTTP output headers found in message context");
                     }
                     while (size)
@@ -1174,10 +1174,10 @@ axis2_apache2_worker_process_request(
                             const axis2_char_t* header_name = axis2_http_header_get_name(output_header, env);
                             const axis2_char_t* header_value = axis2_http_header_get_value(output_header, env);
                             apr_table_set(request->err_headers_out, header_name, header_value);
-                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            AXIS2_LOG_INFO(env->log,
                                 "[APACHE WORKER] Set HTTP header: %s: %s", header_name, header_value);
                         } else {
-                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            AXIS2_LOG_INFO(env->log,
                                 "[APACHE WORKER] WARNING: Failed to get HTTP header at index %d", size);
                         }
                     }
@@ -1269,10 +1269,10 @@ axis2_apache2_worker_process_request(
                     if (output_header_list)
                     {
                         size = axutil_array_list_size(output_header_list, env);
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[APACHE WORKER] Processing %d HTTP output headers from message context", size);
                     } else {
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[APACHE WORKER] No HTTP output headers found in message context");
                     }
                     while (size)
@@ -1285,10 +1285,10 @@ axis2_apache2_worker_process_request(
                             const axis2_char_t* header_name = axis2_http_header_get_name(output_header, env);
                             const axis2_char_t* header_value = axis2_http_header_get_value(output_header, env);
                             apr_table_set(request->err_headers_out, header_name, header_value);
-                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            AXIS2_LOG_INFO(env->log,
                                 "[APACHE WORKER] Set HTTP header: %s: %s", header_name, header_value);
                         } else {
-                            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                            AXIS2_LOG_INFO(env->log,
                                 "[APACHE WORKER] WARNING: Failed to get HTTP header at index %d", size);
                         }
                     }

@@ -149,17 +149,17 @@ try_android_static_service(const axutil_env_t *env,
     json_object *json_response_obj = NULL;
     const char *json_response_str = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[ANDROID_STATIC] Looking up service: %s", service_name);
 
     service_invoke = android_static_service_lookup(service_name);
     if (!service_invoke) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[ANDROID_STATIC] Service '%s' not in static registry", service_name);
         return AXIS2_FALSE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[ANDROID_STATIC] Found service '%s' in static registry", service_name);
 
     /* Parse JSON request */
@@ -171,7 +171,7 @@ try_android_static_service(const axutil_env_t *env,
     }
 
     /* Invoke service */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[ANDROID_STATIC] Invoking %s", service_name);
 
     json_response_obj = service_invoke(env, json_request);
@@ -204,7 +204,7 @@ try_android_static_service(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[ANDROID_STATIC] Service '%s' invoked successfully, response length: %d",
         service_name, (int)strlen(*json_response_out));
 
@@ -275,7 +275,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON_DIRECT] Parameters validated successfully");
 
     // Get service name first
@@ -286,7 +286,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON_DIRECT] Service name extracted: '%s'", service_name);
 
     // CRITICAL FIX: The ServiceClass parameter value is a dll_desc object (set by svc_builder.c:309),
@@ -308,7 +308,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON_DIRECT] DLL path from dll_desc: '%s'", service_lib_path);
 
     // Extract service class name from DLL path for function name construction
@@ -331,7 +331,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
                 strncpy(extracted_name, basename + 3, len); // Skip "lib"
                 extracted_name[len] = '\0';
                 service_class_name = extracted_name;
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "[JSON_DIRECT] Extracted service class name: '%s'", service_class_name);
             } else {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -345,7 +345,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
         }
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON_DIRECT] Ready to load library: '%s'", service_lib_path);
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
@@ -382,7 +382,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
         goto cleanup;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON_DIRECT] Calling %s with JSON request", service_function_name);
 
     // Call the service function
@@ -409,7 +409,7 @@ try_json_direct_service_loading(const axutil_env_t *env,
         goto cleanup;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON_DIRECT] JSON-direct service call successful, response length: %d",
         (int)strlen(*json_response_out));
 
@@ -460,7 +460,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
     axutil_param_t* impl_class_param = NULL;
     void* impl_obj = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JsonRpcMessageReceiver: Revolutionary AXIOM-FREE processing");
+    AXIS2_LOG_INFO(env->log, "JsonRpcMessageReceiver: Revolutionary AXIOM-FREE processing");
 
     // Check if this is a JSON request (Revolutionary: Direct content type check)
     axutil_property_t* prop = axis2_msg_ctx_get_property(in_msg_ctx, env, "Content-Type");
@@ -472,7 +472,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         }
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JsonRpcMessageReceiver: JSON request detected - bypassing AXIOM completely");
+    AXIS2_LOG_INFO(env->log, "JsonRpcMessageReceiver: JSON request detected - bypassing AXIOM completely");
 
     // Set JSON processing mode (Revolutionary: Native Axis2/C flag)
 #ifdef AXIS2_JSON_ENABLED
@@ -503,7 +503,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JsonRpcMessageReceiver: Processing JSON operation '%s'", operation_name);
+    AXIS2_LOG_INFO(env->log, "JsonRpcMessageReceiver: Processing JSON operation '%s'", operation_name);
 
     // Revolutionary: Extract JSON directly from HTTP stream (no XML conversion)
     // CRITICAL FIX: For HTTP/2 requests, check for pre-read JSON_REQUEST_BODY first
@@ -513,7 +513,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         axis2_char_t* pre_read_json = (axis2_char_t*)axutil_property_get_value(json_body_prop, env);
         if (pre_read_json && axutil_strlen(pre_read_json) > 0) {
             json_request = axutil_strdup(env, pre_read_json);
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON_HTTP2_FIX] Using pre-read JSON from HTTP/2 processor (%d bytes): '%.100s%s'",
                 (int)axutil_strlen(json_request),
                 json_request,
@@ -576,7 +576,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
                 json_request[total_size] = '\0';
 
                 if (total_size > 0) {
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                    AXIS2_LOG_INFO(env->log,
                         "[JSON_STREAM_READ] Read JSON from transport stream (%d bytes): '%.100s%s'",
                         (int)total_size, json_request,
                         total_size > 100 ? "..." : "");
@@ -597,11 +597,11 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
                         // Set error response in output message context
                         axis2_msg_ctx_set_status_code(out_msg_ctx, env, 400); // Bad Request
 
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[JSON_VALIDATION_FIX] Returning JSON validation error response");
                     } else {
                         json_object_put(validation_obj); // Free validation object
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                        AXIS2_LOG_INFO(env->log,
                             "[JSON_VALIDATION_FIX] JSON validation passed - proceeding with processing");
                     }
                 }
@@ -619,54 +619,54 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
             "[JSON_FALLBACK] No JSON found in HTTP/2 property or stream - using empty object");
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[JSON_EXTRACT_DEBUG] Extracted JSON from HTTP request: '%s'", json_request);
+    AXIS2_LOG_INFO(env->log, "[JSON_EXTRACT_DEBUG] Extracted JSON from HTTP request: '%s'", json_request);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "JsonRpcMessageReceiver: Starting service parameter processing for operation: %s",
         operation_name ? operation_name : "NULL");
 
     // Revolutionary: Direct service function invocation (AXIOM-FREE)
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: About to extract ServiceClass parameter from service: %p", (void*)svc);
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: Service name: %s",
         axis2_svc_get_name(svc, env) ? axis2_svc_get_name(svc, env) : "NULL");
 
     // Check all service parameters for debugging
     axutil_array_list_t* param_list = axis2_svc_get_all_params(svc, env);
     if (param_list) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Service has parameter list: %p", (void*)param_list);
         int param_count = axutil_array_list_size(param_list, env);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Service has %d parameters", param_count);
     } else {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Service has NO parameter list!");
     }
 
     // FIXED: Use the same constant as working msg_recv.c code
     impl_class_param = axis2_svc_get_param(svc, env, "ServiceClass");  // AXIS2_SERVICE_CLASS = "ServiceClass"
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: ServiceClass parameter object: %p", (void*)impl_class_param);
 
     if (!impl_class_param) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: ServiceClass parameter is NULL - checking alternative parameter names");
         impl_class_param = axis2_svc_get_param(svc, env, "serviceClass");
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Alternative serviceClass parameter: %p", (void*)impl_class_param);
     }
 
     if (impl_class_param) {
         // FIXED: Use exact same pattern as working msg_recv.c - pass parameter object directly to class loader
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Using correct msg_recv.c pattern - passing parameter object directly to class loader");
 
         // Get service name for logging (instead of trying to extract ServiceClass string)
         const axis2_char_t* service_name = axis2_svc_get_name(svc, env);
 
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Loading service implementation: %s",
             service_name ? service_name : "unknown");
 
@@ -677,20 +677,20 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
          * On Android with static linking, try the static service registry first.
          * This avoids dlopen() which won't work with statically linked services.
          */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Android: Trying static service registry for '%s'",
             service_name ? service_name : "unknown");
 
         if (service_name && json_request &&
             try_android_static_service(env, service_name, json_request, &json_response)) {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Android: Static service '%s' invoked successfully",
                 service_name);
             /* json_response is already set, skip to response handling */
             goto response_ready;
         }
 
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Android: Service '%s' not in static registry, trying dynamic loading",
             service_name ? service_name : "unknown");
 #endif
@@ -699,7 +699,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
         impl_obj = axutil_class_loader_create_dll(env, impl_class_param);
 
         if (impl_obj) {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "JsonRpcMessageReceiver: Service loaded successfully - %s",
                 service_name ? service_name : "unknown");
 
@@ -713,19 +713,19 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
                 service_name ? service_name : "unknown", operation_name ? operation_name : "NULL");
 
             axis2_char_t* part1 = axutil_stracat(env, "{\"service\":\"", service_name ? service_name : "unknown");
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[JSON RPC MSG RECV] DEBUG: part1 created: %p", (void*)part1);
+            AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: part1 created: %p", (void*)part1);
 
             if (part1) {
                 axis2_char_t* part2 = axutil_stracat(env, part1, "\",\"operation\":\"");
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[JSON RPC MSG RECV] DEBUG: part2 created: %p", (void*)part2);
+                AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: part2 created: %p", (void*)part2);
 
                 if (part2) {
                     axis2_char_t* part3 = axutil_stracat(env, part2, operation_name ? operation_name : "unknown");
-                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[JSON RPC MSG RECV] DEBUG: part3 created: %p", (void*)part3);
+                    AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: part3 created: %p", (void*)part3);
 
                     if (part3) {
                         json_response = axutil_stracat(env, part3, "\",\"status\":\"success\",\"message\":\"Service loaded correctly\"}");
-                        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "[JSON RPC MSG RECV] DEBUG: json_response created: %p", (void*)json_response);
+                        AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: json_response created: %p", (void*)json_response);
 
                         // Free intermediate strings
                         AXIS2_FREE(env->allocator, part3);
@@ -741,7 +741,7 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
 
             // Fallback: Try JSON-direct service loading pattern for HTTP/2 JSON services
             if (try_json_direct_service_loading(env, svc, impl_class_param, json_request, &json_response)) {
-                AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+                AXIS2_LOG_INFO(env->log,
                     "JsonRpcMessageReceiver: JSON-direct service loaded successfully - %s",
                     service_name ? service_name : "unknown");
             } else {
@@ -761,23 +761,23 @@ response_ready:
         json_response = axutil_strdup(env, "{\"error\":\"Service invocation failed\"}");
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] Generated JSON response (should NOT create SOAP!) - length: %d",
         json_response ? (int)strlen(json_response) : 0);
 
     // Revolutionary: Store pure JSON response (no SOAP envelope)
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: About to check json_response - pointer: %p", (void*)json_response);
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: out_msg_ctx pointer: %p", (void*)out_msg_ctx);
 
     if (json_response) {
         int json_response_len = strlen(json_response);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Setting JSON response properties - Length: %d bytes", json_response_len);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Response content preview (first 100 chars): %.100s", json_response);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Response content end (last 20 chars): %s",
             json_response_len > 20 ? json_response + json_response_len - 20 : json_response);
 
@@ -792,12 +792,12 @@ response_ready:
             }
         }
         if (!has_null_byte) {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] SUCCESS: No null bytes found in JSON response content");
         }
 
         axutil_property_t* json_prop = axutil_property_create(env);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Created property object: %p", (void*)json_prop);
 
         if (!json_prop) {
@@ -806,12 +806,12 @@ response_ready:
         }
 
         axutil_property_set_value(json_prop, env, json_response);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Set property value to json_response: %p", (void*)json_response);
 
         // Verify property was set correctly
         void* prop_value = axutil_property_get_value(json_prop, env);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Verified property value after set: %p", prop_value);
         if (prop_value && prop_value == json_response) {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -821,14 +821,14 @@ response_ready:
                 "[JSON RPC MSG RECV] DEBUG: ERROR: Property value does NOT match json_response pointer!");
         }
 
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: About to set JSON_RESPONSE property in out_msg_ctx: %p", (void*)out_msg_ctx);
         axis2_msg_ctx_set_property(out_msg_ctx, env, "JSON_RESPONSE", json_prop);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Set JSON_RESPONSE property in out_msg_ctx: %p", (void*)out_msg_ctx);
 
         // CRITICAL FIX: Also set JSON_RESPONSE in in_msg_ctx since JSON processor might check that context
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: About to ALSO set JSON_RESPONSE property in in_msg_ctx: %p", (void*)in_msg_ctx);
         if (in_msg_ctx && in_msg_ctx != out_msg_ctx) {
             // Create another property object for in_msg_ctx (don't reuse the same property)
@@ -864,7 +864,7 @@ response_ready:
 
         // Verify the property was actually set in the message context
         axutil_property_t* verification_prop = axis2_msg_ctx_get_property(out_msg_ctx, env, "JSON_RESPONSE");
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Verification - retrieved JSON_RESPONSE property: %p", (void*)verification_prop);
         if (verification_prop) {
             void* verification_value = axutil_property_get_value(verification_prop, env);
@@ -882,33 +882,33 @@ response_ready:
                 "[JSON RPC MSG RECV] DEBUG: CRITICAL ERROR: JSON_RESPONSE property NOT FOUND in out_msg_ctx after setting!");
         }
 
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Set JSON_RESPONSE property in message context");
 
         // Set JSON content type for response
         axutil_property_t* content_type_prop = axutil_property_create(env);
         axutil_property_set_value(content_type_prop, env, axutil_strdup(env, "application/json"));
         axis2_msg_ctx_set_property(out_msg_ctx, env, "Content-Type", content_type_prop);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Set Content-Type property to 'application/json'");
 
         // Set Accept header for HTTP/2 responses to prevent curl binary warning
         axutil_property_t* accept_prop = axutil_property_create(env);
         axutil_property_set_value(accept_prop, env, axutil_strdup(env, "application/json"));
         axis2_msg_ctx_set_property(out_msg_ctx, env, "Accept", accept_prop);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Set Accept property to 'application/json'");
 
         // Add HTTP output headers to ensure they're sent to client
         axutil_array_list_t* output_headers = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
         if (!output_headers) {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Creating new HTTP output headers array");
             output_headers = axutil_array_list_create(env, 4);
             axis2_msg_ctx_set_http_output_headers(out_msg_ctx, env, output_headers);
         } else {
             int existing_count = axutil_array_list_size(output_headers, env);
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Found existing HTTP output headers array with %d headers", existing_count);
         }
 
@@ -916,10 +916,10 @@ response_ready:
         axis2_http_header_t* content_type_header = axis2_http_header_create(env, "Content-Type", "application/json; charset=utf-8");
         if (content_type_header) {
             axutil_array_list_add(output_headers, env, content_type_header);
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Added Content-Type: application/json; charset=utf-8 header to HTTP output headers");
         } else {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Failed to create Content-Type header!");
         }
 
@@ -927,19 +927,19 @@ response_ready:
         axis2_http_header_t* cache_control_header = axis2_http_header_create(env, "Cache-Control", "no-cache");
         if (cache_control_header) {
             axutil_array_list_add(output_headers, env, cache_control_header);
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Added Cache-Control: no-cache header to HTTP output headers");
         } else {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Failed to create Cache-Control header!");
         }
 
         // Log final header count
         int final_header_count = axutil_array_list_size(output_headers, env);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] Final HTTP output headers count: %d", final_header_count);
     } else {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] json_response is NULL - no response to process!");
     }
 
@@ -947,17 +947,17 @@ response_ready:
         AXIS2_FREE(env->allocator, json_request);
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: FINAL COMPLETION STATUS");
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: json_response final pointer: %p", (void*)json_response);
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[JSON RPC MSG RECV] DEBUG: out_msg_ctx final pointer: %p", (void*)out_msg_ctx);
 
     // Final verification of JSON_RESPONSE property before returning
     if (out_msg_ctx) {
         axutil_property_t* final_prop = axis2_msg_ctx_get_property(out_msg_ctx, env, "JSON_RESPONSE");
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[JSON RPC MSG RECV] DEBUG: Final JSON_RESPONSE property check: %p", (void*)final_prop);
     }
 
@@ -978,7 +978,7 @@ axis2_json_rpc_msg_recv_create(const axutil_env_t* env)
     axis2_msg_recv_t* msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating Revolutionary JsonRpcMessageReceiver (AXIOM-FREE)");
+    AXIS2_LOG_INFO(env->log, "Creating Revolutionary JsonRpcMessageReceiver (AXIOM-FREE)");
 
     // Use standard Axis2/C message receiver factory (Revolutionary: No custom struct needed)
     msg_recv = axis2_msg_recv_create(env);
@@ -998,7 +998,7 @@ axis2_json_rpc_msg_recv_create(const axutil_env_t* env)
     axis2_msg_recv_set_invoke_business_logic(msg_recv, env,
         axis2_json_rpc_msg_recv_invoke_business_logic_sync);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Revolutionary JsonRpcMessageReceiver created (Zero AXIOM dependencies)");
+    AXIS2_LOG_INFO(env->log, "Revolutionary JsonRpcMessageReceiver created (Zero AXIOM dependencies)");
 
     return msg_recv;
 }

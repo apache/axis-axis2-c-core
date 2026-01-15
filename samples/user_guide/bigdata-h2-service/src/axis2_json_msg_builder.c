@@ -92,7 +92,7 @@ create_dummy_soap_envelope(const axutil_env_t* env)
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Created dummy SOAP envelope for JSON processing");
+    AXIS2_LOG_INFO(env->log, "Created dummy SOAP envelope for JSON processing");
     return soap_envelope;
 }
 
@@ -106,7 +106,7 @@ axis2_json_msg_builder_create(const axutil_env_t* env)
     struct axis2_json_msg_builder* json_builder = NULL;
     axis2_msg_builder_t* msg_builder = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating JSON Message Builder");
+    AXIS2_LOG_INFO(env->log, "Creating JSON Message Builder");
 
     json_builder = (struct axis2_json_msg_builder*)AXIS2_MALLOC(env->allocator,
                                                                sizeof(struct axis2_json_msg_builder));
@@ -122,7 +122,7 @@ axis2_json_msg_builder_create(const axutil_env_t* env)
     axis2_msg_builder_set_process_document(msg_builder, env, json_msg_builder_process_document);
     axis2_msg_builder_set_free(msg_builder, env, json_msg_builder_free);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON Message Builder created successfully");
+    AXIS2_LOG_INFO(env->log, "JSON Message Builder created successfully");
     return msg_builder;
 }
 
@@ -145,7 +145,7 @@ json_msg_builder_process_document(
     axutil_property_t* json_stream_prop = NULL;
     axutil_property_t* is_json_prop = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON Message Builder: Processing JSON document (content-type: %s)",
                    content_type ? content_type : "unknown");
 
@@ -170,7 +170,7 @@ json_msg_builder_process_document(
     bytes_read = axutil_stream_read(stream, env, json_string, stream_len);
     json_string[bytes_read] = '\0';
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON Message Builder: Read %d bytes of JSON data", bytes_read);
 
     /* Validate JSON format */
@@ -199,7 +199,7 @@ json_msg_builder_process_document(
         return NULL;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "JSON Message Builder: Successfully processed JSON (%d bytes), created dummy envelope",
                   bytes_read);
 

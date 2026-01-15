@@ -99,7 +99,7 @@ axis2_apache2_request_processor_create_soap_impl(
     impl->interface.free_processing_context = axis2_apache2_soap_processor_free_processing_context_impl;
     impl->interface.free = axis2_apache2_soap_processor_free_impl;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "🧽 SOAP PROCESSOR: Created simplified SOAP processor");
+    AXIS2_LOG_INFO(env->log, "🧽 SOAP PROCESSOR: Created simplified SOAP processor");
 
     return (axis2_apache2_request_processor_t*)impl;
 }
@@ -115,7 +115,7 @@ axis2_apache2_soap_processor_process_accept_headers_impl(
     axis2_msg_ctx_t* msg_ctx,
     axis2_apache2_processing_context_t* processing_ctx)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "🧽 SOAP PROCESSOR: Delegating to original apache2_worker.c Accept header processing");
+    AXIS2_LOG_INFO(env->log, "🧽 SOAP PROCESSOR: Delegating to original apache2_worker.c Accept header processing");
 
     /* Return "not handled" so original code path is used */
     return AXIS2_APACHE2_PROCESSING_NOT_HANDLED;
@@ -132,7 +132,7 @@ axis2_apache2_soap_processor_process_request_body_impl(
     axis2_msg_ctx_t* msg_ctx,
     axis2_apache2_processing_context_t* processing_ctx)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "🧽 SOAP PROCESSOR: Delegating to original body processing");
+    AXIS2_LOG_INFO(env->log, "🧽 SOAP PROCESSOR: Delegating to original body processing");
     return AXIS2_APACHE2_PROCESSING_NOT_HANDLED;
 }
 
@@ -144,7 +144,7 @@ axis2_apache2_soap_processor_is_thread_safe_impl(
     axis2_apache2_request_processor_t* processor,
     const axutil_env_t* env)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "⚠️ SOAP PROCESSOR: NOT thread-safe (uses original dangerous patterns)");
+    AXIS2_LOG_INFO(env->log, "⚠️ SOAP PROCESSOR: NOT thread-safe (uses original dangerous patterns)");
     return AXIS2_FALSE;
 }
 
@@ -217,7 +217,7 @@ axis2_apache2_soap_processor_free_impl(
 {
     if (processor)
     {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "🧽 SOAP PROCESSOR: Freeing simplified SOAP processor");
+        AXIS2_LOG_INFO(env->log, "🧽 SOAP PROCESSOR: Freeing simplified SOAP processor");
         AXIS2_FREE(env->allocator, processor);
     }
 }

@@ -101,7 +101,7 @@ extract_json_from_stream(const axutil_env_t* env, axis2_msg_ctx_t* msg_ctx)
     }
 
     json_string[total_size] = '\0';
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON: Extracted %d bytes", (int)total_size);
+    AXIS2_LOG_INFO(env->log, "Native JSON: Extracted %d bytes", (int)total_size);
 
     return json_string;
 }
@@ -123,16 +123,16 @@ native_json_invoke_business_logic(
     axis2_char_t* json_request = NULL;
     axis2_bool_t json_enabled = AXIS2_FALSE;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON Receiver: Processing request (AXIOM-Free)");
+    AXIS2_LOG_INFO(env->log, "Native JSON Receiver: Processing request (AXIOM-Free)");
 
     // Revolutionary: Direct JSON detection via Content-Type (no complex configuration)
     json_enabled = is_json_content_type(env, in_msg_ctx);
     if (!json_enabled) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Not JSON content-type, processing as standard request");
+        AXIS2_LOG_INFO(env->log, "Not JSON content-type, processing as standard request");
         json_enabled = AXIS2_TRUE; // Force JSON processing when enableJSONOnly=true in axis2.xml
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON: enableJSONOnly=true, processing pure JSON");
+    AXIS2_LOG_INFO(env->log, "Native JSON: enableJSONOnly=true, processing pure JSON");
 
     // Set doing_json flag (Axis2/C Native approach - no AXIOM required)
 #ifdef AXIS2_JSON_ENABLED
@@ -157,7 +157,7 @@ native_json_invoke_business_logic(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON: Processing operation '%s'", operation_name);
+    AXIS2_LOG_INFO(env->log, "Native JSON: Processing operation '%s'", operation_name);
 
     // Extract JSON from HTTP stream (Revolutionary: bypass AXIOM completely)
     json_request = extract_json_from_stream(env, in_msg_ctx);
@@ -165,7 +165,7 @@ native_json_invoke_business_logic(
         json_request = axutil_strdup(env, "{}"); // Default empty JSON
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON: Request data: %s", json_request);
+    AXIS2_LOG_INFO(env->log, "Native JSON: Request data: %s", json_request);
 
     // Direct JSON-to-POJO processing (following Axis2/Java Native approach)
     if (axutil_strcmp(operation_name, "processBigDataSet") == 0) {
@@ -184,7 +184,7 @@ native_json_invoke_business_logic(
 
     // Store JSON response for Native JSON formatter (no SOAP envelope)
     if (json_response) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON: Response generated, length: %d", (int)strlen(json_response));
+        AXIS2_LOG_INFO(env->log, "Native JSON: Response generated, length: %d", (int)strlen(json_response));
 
         // Store response for transport layer (Revolutionary: pure JSON output)
         axutil_property_t* json_prop = axutil_property_create(env);
@@ -213,7 +213,7 @@ axis2_native_json_msg_recv_create(const axutil_env_t* env)
 {
     axis2_msg_recv_t* msg_recv = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating Native JSON Message Receiver (AXIOM-Free Revolution)");
+    AXIS2_LOG_INFO(env->log, "Creating Native JSON Message Receiver (AXIOM-Free Revolution)");
 
     // Create base raw XML message receiver (for SOAP fallback compatibility)
     msg_recv = axis2_raw_xml_in_out_msg_recv_create(env);
@@ -233,8 +233,8 @@ axis2_native_json_msg_recv_create(const axutil_env_t* env)
     // Override with Native JSON business logic (Revolutionary approach)
     axis2_msg_recv_set_invoke_business_logic(msg_recv, env, native_json_invoke_business_logic);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON Message Receiver created successfully");
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Revolutionary Features: AXIOM-Free, HTTP/2 Optimized, enableJSONOnly Compatible");
+    AXIS2_LOG_INFO(env->log, "Native JSON Message Receiver created successfully");
+    AXIS2_LOG_INFO(env->log, "Revolutionary Features: AXIOM-Free, HTTP/2 Optimized, enableJSONOnly Compatible");
 
     return msg_recv;
 }

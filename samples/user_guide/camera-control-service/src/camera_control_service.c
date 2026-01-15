@@ -662,7 +662,7 @@ camera_device_start_recording_impl(
     }
 
     /* Log the stub operation */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: Start recording request - clipName: %s, quality: %s, duration: %d, format: %s",
         params->clip_name ? params->clip_name : "default",
         params->quality ? params->quality : "1080p",
@@ -671,7 +671,7 @@ camera_device_start_recording_impl(
 
     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
         "STUB: camera_device_start_recording_impl() - Replace with camera-specific implementation!");
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: See camera_control_service.c for integration examples (OpenCamera JNI, V4L2, IP cameras)");
 
     /*
@@ -709,7 +709,7 @@ camera_device_stop_recording_impl(const axutil_env_t *env)
     }
 
     /* Log the stub operation */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "STUB: Stop recording request");
+    AXIS2_LOG_INFO(env->log, "STUB: Stop recording request");
 
     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
         "STUB: camera_device_stop_recording_impl() - Replace with camera-specific implementation!");
@@ -752,7 +752,7 @@ camera_device_get_status_impl(const axutil_env_t *env)
     status->recording_duration = 0;
     status->last_error = axutil_strdup(env, "none");
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "STUB: Get status request");
+    AXIS2_LOG_INFO(env->log, "STUB: Get status request");
     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
         "This is a stub function; user needs to implement the code for their use case");
 
@@ -785,7 +785,7 @@ camera_device_configure_settings_impl(
     }
 
     /* Log the stub operation */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: Configure settings - resolution: %s, fps: %s, codec: %s, bitrate: %s, audio: %s",
         settings->resolution ? settings->resolution : "default",
         settings->fps ? settings->fps : "30",
@@ -887,7 +887,7 @@ camera_device_sftp_transfer_impl(
     }
 
     /* Log the stub operation */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: SFTP transfer request - file: %s, host: %s@%s:%d, remote_path: %s, key: %s",
         params->local_file_path ? params->local_file_path : "unknown",
         params->username ? params->username : "unknown",
@@ -898,7 +898,7 @@ camera_device_sftp_transfer_impl(
 
     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
         "STUB: camera_device_sftp_transfer_impl() - Replace with SFTP client implementation!");
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: See camera_control_service.c for integration examples (libssh2, system sftp, scp)");
 
     /*
@@ -978,7 +978,7 @@ camera_device_list_files_impl(
     memset(result, 0, sizeof(file_list_result_t));
 
     /* Log the stub operation */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: List files request - pattern: %s, directory: %s",
         params && params->pattern ? params->pattern : "*",
         params && params->directory ? params->directory : "default");
@@ -1080,7 +1080,7 @@ camera_device_delete_files_impl(
     }
 
     /* Log the stub operation */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "STUB: Delete files request - pattern: %s",
         params->pattern);
 
@@ -1128,14 +1128,14 @@ camera_control_service_invoke_json(const axutil_env_t *env,
 
     /* DEBUG: Print the received JSON request */
     const char *json_string = json_object_to_json_string(json_request);
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "[CAMERA_DEBUG] Received JSON request: %s", json_string ? json_string : "NULL");
     printf("[CAMERA_DEBUG] Received JSON request: %s\n", json_string ? json_string : "NULL");
 
     /* Extract action from JSON request */
     if (!json_object_object_get_ex(json_request, "action", &action_obj))
     {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "[CAMERA_DEBUG] json_object_object_get_ex returned FALSE for 'action' key");
         printf("[CAMERA_DEBUG] Failed to find 'action' key in JSON object\n");
         return create_error_response(env, "Missing 'action' parameter");

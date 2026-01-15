@@ -47,7 +47,7 @@ bigdata_h2_service_invoke_json_internal(
     bigdata_h2_response_t *response = NULL;
     axis2_char_t *json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: Processing HTTP/2 JSON request");
 
     if (!json_request)
@@ -131,7 +131,7 @@ bigdata_h2_service_process_json_only(
     bigdata_h2_response_t *response = NULL;
     axis2_char_t *json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: Processing pure JSON request (enableJSONOnly=true)");
 
     if (!json_request)
@@ -173,7 +173,7 @@ bigdata_h2_service_process_json_only(
     bigdata_h2_response_free(response, env);
     bigdata_h2_request_free(request, env);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "BigDataH2Service: Pure JSON processing completed successfully");
 
     return json_response;
@@ -194,7 +194,7 @@ bigdata_h2_service_get_metadata_json_only(
     json_object *operations = json_object_new_array();
     json_object *operation = json_object_new_object();
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: Generating pure JSON metadata (enableJSONOnly=true)");
 
     /* Service information */
@@ -256,7 +256,7 @@ bigdata_h2_service_get_metadata_json_only(
 
     json_object_put(metadata);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "BigDataH2Service: Pure JSON metadata generated successfully");
 
     return result;
@@ -364,7 +364,7 @@ bigdata_h2_service_init(
     axis2_svc_t *svc,
     const axutil_env_t *env)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "BigDataH2Service: Initializing HTTP/2 JSON service");
     return AXIS2_SUCCESS;
 }
@@ -415,7 +415,7 @@ bigdata_h2_service_invoke_json(
     axis2_char_t *json_response_str = NULL;
     json_object *json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: JSON-direct invoke called");
 
     if (!json_request)
@@ -440,7 +440,7 @@ bigdata_h2_service_invoke_json(
         return json_response;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: Processing JSON request: %.100s...", json_request_str);
 
     /* Call the existing JSON processing function */
@@ -455,7 +455,7 @@ bigdata_h2_service_invoke_json(
         return json_response;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: Service response: %.100s...", json_response_str);
 
     /* Parse the response string back to json_object */
@@ -472,7 +472,7 @@ bigdata_h2_service_invoke_json(
     /* Free the response string (it was allocated by bigdata_h2_service_process_json_only) */
     AXIS2_FREE(env->allocator, json_response_str);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "BigDataH2Service: JSON-direct invoke completed successfully");
 
     return json_response;

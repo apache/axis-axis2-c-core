@@ -675,7 +675,7 @@ axis2_op_engage_module(
         {
             /* Ignore the status */
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "Engaging module %s to operaion %s failed. But ignore this.", modname, opname);
         }
         /* module = axis2_module_desc_get_module(moduleref, env); */

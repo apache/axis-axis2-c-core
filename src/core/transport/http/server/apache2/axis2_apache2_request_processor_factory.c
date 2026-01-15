@@ -85,7 +85,7 @@ axis2_apache2_request_processor_factory_create(
         return axis2_apache2_request_processor_create_soap_impl(env);
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "🏭 REQUEST PROCESSOR FACTORY: Request analysis - HTTP2=%s, JSON=%s, SOAP=%s, ThreadSafe=%s",
         analysis->is_http2 ? "YES" : "NO",
         analysis->is_json_content ? "YES" : "NO",
@@ -96,14 +96,14 @@ axis2_apache2_request_processor_factory_create(
     if (analysis->is_http2 && analysis->is_json_content)
     {
         /* HTTP/2 JSON: Use optimized thread-safe processor */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "REQUEST PROCESSOR FACTORY: Creating JSON HTTP/2 processor for thread-safe processing");
         processor = axis2_apache2_request_processor_create_json_impl(env);
     }
     else if (analysis->is_http2)
     {
         /* HTTP/2 non-JSON: Assume modern client, use JSON processor for thread safety */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "🔄 REQUEST PROCESSOR FACTORY: Creating JSON processor for HTTP/2 thread safety (content-type: %s)",
             analysis->content_type ? analysis->content_type : "unknown");
         processor = axis2_apache2_request_processor_create_json_impl(env);
@@ -111,7 +111,7 @@ axis2_apache2_request_processor_factory_create(
     else if (analysis->is_json_content)
     {
         /* HTTP/1.1 JSON: Use SOAP processor for now (safe fallback) */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "⚖️ REQUEST PROCESSOR FACTORY: Using SOAP processor for HTTP/1.1 JSON (safe fallback)");
         processor = axis2_apache2_request_processor_create_soap_impl(env);
     }

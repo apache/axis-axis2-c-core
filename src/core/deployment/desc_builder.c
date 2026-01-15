@@ -974,13 +974,13 @@ axis2_desc_builder_load_msg_recv(
     {
         if (axutil_strcmp(class_name, "axis2_json_rpc_msg_recv") == 0)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[desc_builder] Android static linking: creating axis2_json_rpc_msg_recv directly");
             return axis2_json_rpc_msg_recv_create(env);
         }
         else if (axutil_strcmp(class_name, "axis2_msg_recv") == 0)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "[desc_builder] Android static linking: creating axis2_msg_recv directly");
             return axis2_msg_recv_create(env);
         }

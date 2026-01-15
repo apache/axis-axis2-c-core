@@ -192,7 +192,7 @@ finbench_portfolio_variance_request_create_from_json(
                json_object_is_type(array_obj, json_type_array)) {
         /* Infer n_assets from weights array length */
         request->n_assets = json_object_array_length(array_obj);
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "FinBench: Inferred n_assets=%d from weights array", request->n_assets);
     }
 
@@ -246,7 +246,7 @@ finbench_portfolio_variance_request_create_from_json(
 
         if (first_elem && json_object_is_type(first_elem, json_type_array)) {
             /* 2D array format: [[row0], [row1], ...] */
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "FinBench: Parsing 2D covariance matrix format");
             for (i = 0; i < request->n_assets && i < outer_len; i++) {
                 json_object *row = json_object_array_get_idx(array_obj, i);
@@ -261,7 +261,7 @@ finbench_portfolio_variance_request_create_from_json(
             }
         } else {
             /* Flat array format: [row0_col0, row0_col1, ..., row1_col0, ...] */
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "FinBench: Parsing flat covariance matrix format");
             for (i = 0; i < (int)matrix_size && i < outer_len; i++) {
                 json_object *elem = json_object_array_get_idx(array_obj, i);
@@ -405,7 +405,7 @@ finbench_calculate_portfolio_variance(
 
     response->device_info = finbench_get_device_info(env);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "FinBench: Portfolio variance calculated for %d assets in %ld us "
         "(variance=%.6f, ops=%ld)",
         n, response->calc_time_us, variance, ops);
@@ -751,7 +751,7 @@ finbench_run_monte_carlo(
 
     AXIS2_FREE(env->allocator, final_values);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "FinBench: Monte Carlo completed %d sims × %d periods in %ld us "
         "(%.0f sims/sec, VaR95=%.2f)",
         request->n_simulations, request->n_periods,
@@ -1022,7 +1022,7 @@ financial_benchmark_service_invoke_json(
 
     /* DEBUG: Log received request */
     json_str = json_object_to_json_string(json_request);
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "FinancialBenchmarkService: Received JSON request: %s",
         json_str ? json_str : "NULL");
 
@@ -1037,7 +1037,7 @@ financial_benchmark_service_invoke_json(
         action = json_object_get_string(action_obj);
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
         "FinancialBenchmarkService: Processing action '%s'",
         action ? action : "(none - using request structure)");
 
@@ -1093,14 +1093,14 @@ financial_benchmark_service_invoke_json(
         if (json_object_object_get_ex(json_request, "weights", &temp_obj) &&
             json_object_object_get_ex(json_request, "covariance_matrix", &temp_obj))
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected portfolioVariance request");
             result_str = finbench_portfolio_variance_json_only(env, json_str);
         }
         /* If request has 'n_simulations', it's Monte Carlo */
         else if (json_object_object_get_ex(json_request, "n_simulations", &temp_obj))
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected monteCarlo request");
             result_str = finbench_monte_carlo_json_only(env, json_str);
         }
@@ -1108,7 +1108,7 @@ financial_benchmark_service_invoke_json(
         else if (json_object_object_get_ex(json_request, "n_assets", &temp_obj) &&
                  !json_object_object_get_ex(json_request, "weights", NULL))
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected generateTestData request");
             /* Re-extract n_assets since temp_obj may have been modified by the weights check */
             json_object *n_assets_obj = NULL;
@@ -1119,7 +1119,7 @@ financial_benchmark_service_invoke_json(
         /* Default to metadata */
         else
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Defaulting to metadata");
             result_str = finbench_get_metadata_json(env);
         }

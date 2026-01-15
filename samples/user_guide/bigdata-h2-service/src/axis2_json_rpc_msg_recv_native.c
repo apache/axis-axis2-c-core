@@ -115,7 +115,7 @@ process_json_request(const axutil_env_t* env, axis2_msg_ctx_t* in_msg_ctx,
 {
     axis2_char_t* json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "JSON RPC Native: Processing operation '%s' with pure JSON", operation_name);
 
     /* Route to appropriate service operation (pure JSON processing) */
@@ -157,7 +157,7 @@ write_json_response(const axutil_env_t* env, axis2_msg_ctx_t* out_msg_ctx, const
     bytes_written = axutil_stream_write(output_stream, env, json_response, json_len);
 
     if (bytes_written > 0) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                       "JSON RPC Native: Successfully wrote %d bytes of pure JSON response", bytes_written);
         return AXIS2_SUCCESS;
     } else {
@@ -186,12 +186,12 @@ json_rpc_native_invoke_business_logic(
 
     json_recv = (struct axis2_json_rpc_msg_recv_native*)msg_recv;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON RPC Native: Processing request");
+    AXIS2_LOG_INFO(env->log, "JSON RPC Native: Processing request");
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "DEBUG: JsonRpcMessageReceiver - Starting request processing");
 
     /* Check if this is a JSON stream request (following Axis2/Java pattern) */
     if (!is_json_stream_request(env, in_msg_ctx)) {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                        "JSON RPC Native: Not a JSON stream request, falling back to SOAP processing");
 
         /* Fall back to standard SOAP processing */
@@ -202,7 +202,7 @@ json_rpc_native_invoke_business_logic(
     }
 
     /* This is a JSON request - process with pure JSON (no SOAP/XML) */
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "JSON RPC Native: Processing pure JSON request (bypassing SOAP)");
+    AXIS2_LOG_INFO(env->log, "JSON RPC Native: Processing pure JSON request (bypassing SOAP)");
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "DEBUG: JsonRpcMessageReceiver - Confirmed JSON stream request");
 
     /* Get operation name */
@@ -275,7 +275,7 @@ axis2_json_rpc_msg_recv_native_create(const axutil_env_t* env)
     struct axis2_json_rpc_msg_recv_native* json_recv = NULL;
     axis2_msg_recv_t* msg_recv = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Creating Native JSON RPC Message Receiver");
+    AXIS2_LOG_INFO(env->log, "Creating Native JSON RPC Message Receiver");
 
     json_recv = (struct axis2_json_rpc_msg_recv_native*)AXIS2_MALLOC(env->allocator,
                                                                       sizeof(struct axis2_json_rpc_msg_recv_native));
@@ -295,7 +295,7 @@ axis2_json_rpc_msg_recv_native_create(const axutil_env_t* env)
     axis2_msg_recv_set_invoke_business_logic(msg_recv, env, json_rpc_native_invoke_business_logic);
     /* axis2_msg_recv_set_free(msg_recv, env, json_rpc_native_free); */
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Native JSON RPC Message Receiver created successfully");
+    AXIS2_LOG_INFO(env->log, "Native JSON RPC Message Receiver created successfully");
     return msg_recv;
 }
 

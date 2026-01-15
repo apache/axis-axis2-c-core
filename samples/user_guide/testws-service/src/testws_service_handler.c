@@ -121,7 +121,7 @@ axis2_testws_service_create(const axutil_env_t *env)
         svc_skeleton_impl->func_array = func_array;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestWS Service skeleton created successfully");
+    AXIS2_LOG_INFO(env->log, "TestWS Service skeleton created successfully");
     return svc_skeleton;
 }
 
@@ -168,7 +168,7 @@ testws_service_skeleton_invoke(
         }
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestWS Service invoke: operation=%s",
+    AXIS2_LOG_INFO(env->log, "TestWS Service invoke: operation=%s",
                    op_name ? op_name : "unknown");
 
     /* Route to appropriate operation handler */
@@ -193,7 +193,7 @@ testws_service_skeleton_init(
     axis2_svc_skeleton_t *svc_skeleton,
     const axutil_env_t *env)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestWS Service initialized for HTTP/2 JSON XSS protection demonstration");
+    AXIS2_LOG_INFO(env->log, "TestWS Service initialized for HTTP/2 JSON XSS protection demonstration");
     return AXIS2_SUCCESS;
 }
 
@@ -240,7 +240,7 @@ testws_service_skeleton_free(
         AXIS2_FREE(env->allocator, svc_skeleton_impl);
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestWS Service skeleton freed");
+    AXIS2_LOG_INFO(env->log, "TestWS Service skeleton freed");
 }
 
 /**
@@ -260,7 +260,7 @@ testws_service_do_testws_operation(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing doTestws operation with HTTP/2 JSON XSS demonstration");
+    AXIS2_LOG_INFO(env->log, "Processing doTestws operation with HTTP/2 JSON XSS demonstration");
 
     /* Extract JSON from axiom node */
     json_request = extract_json_from_axiom(env, content_node);
@@ -346,7 +346,7 @@ testws_service_invoke_json(
     testws_response_t *response = NULL;
     axis2_char_t *json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "TestwsService: Processing HTTP/2 JSON request via invoke_json");
 
     if (!json_request)
@@ -389,7 +389,7 @@ testws_service_invoke_json(
         return axutil_strdup(env, "{\"status\":\"ERROR\",\"messageout\":\"\",\"securityDetails\":\"Failed to generate response\"}");
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "TestwsService: Successfully processed JSON request");
 
     return json_response;

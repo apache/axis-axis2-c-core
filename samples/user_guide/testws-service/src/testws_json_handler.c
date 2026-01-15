@@ -72,7 +72,7 @@ axis2_testws_json_handler_init(const axutil_env_t *env)
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestWS JSON handler initialized for HTTP/2 XSS protection demonstration");
+    AXIS2_LOG_INFO(env->log, "TestWS JSON handler initialized for HTTP/2 XSS protection demonstration");
     return AXIS2_SUCCESS;
 }
 
@@ -86,7 +86,7 @@ axis2_testws_json_handler_cleanup(const axutil_env_t *env)
     {
         testws_json_handler_free(g_testws_handler, env);
         g_testws_handler = NULL;
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestWS JSON handler cleaned up");
+        AXIS2_LOG_INFO(env->log, "TestWS JSON handler cleaned up");
     }
 }
 
@@ -116,7 +116,7 @@ axis2_testws_json_do_testws(
         return create_json_error_response(env, "Service not initialized");
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing HTTP/2 pure JSON TestWS XSS demonstration request");
+    AXIS2_LOG_INFO(env->log, "Processing HTTP/2 pure JSON TestWS XSS demonstration request");
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "TestWS request JSON: %s", json_request);
 
     /* Parse JSON request */
@@ -262,7 +262,7 @@ testws_service_invoke_json(
     testws_request_t *request = NULL;
     testws_response_t *response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "TestwsService: Processing HTTP/2 JSON request via invoke_json");
 
     /* Convert json_object to string */
@@ -319,7 +319,7 @@ testws_service_invoke_json(
 
     testws_response_free(response, env);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "TestwsService: Successfully processed request");
+    AXIS2_LOG_INFO(env->log, "TestwsService: Successfully processed request");
 
     return json_response;
 }

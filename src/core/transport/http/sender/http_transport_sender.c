@@ -271,7 +271,7 @@ axis2_http_transport_sender_invoke(
 #ifdef WITH_NGHTTP2
         /* Revolutionary HTTP/2 JSON Architecture: Skip legacy AXIOM-dependent JSON writer
          * JSON processing is handled directly by JsonRpcMessageReceiver - transport just passes through */
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
             "Revolutionary HTTP/2 JSON mode: Bypassing legacy JSON writer, using direct message receiver processing");
         /* Continue with normal SOAP envelope processing - JsonRpcMessageReceiver handles JSON extraction */
 #else

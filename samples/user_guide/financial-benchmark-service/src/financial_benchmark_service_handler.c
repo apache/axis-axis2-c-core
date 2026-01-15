@@ -45,7 +45,7 @@ route_operation(
     const axis2_char_t *operation_name,
     const axis2_char_t *json_request)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "FinancialBenchmarkService: Routing to operation '%s'",
                    operation_name ? operation_name : "unknown");
 
@@ -126,7 +126,7 @@ financial_benchmark_service_invoke_json(
     axis2_op_t *op = NULL;
     axutil_qname_t *op_qname = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "FinancialBenchmarkService: Processing HTTP/2 JSON request");
 
     /* Try to get operation from message context */
@@ -181,7 +181,7 @@ financial_benchmark_service_process_json_only(
     const axutil_env_t *env,
     const axis2_char_t *json_request)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "FinancialBenchmarkService: Processing pure JSON request (enableJSONOnly=true)");
 
     if (!json_request)
@@ -247,9 +247,9 @@ financial_benchmark_service_init(
     axis2_svc_t *svc,
     const axutil_env_t *env)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "FinancialBenchmarkService: Initializing HTTP/2 JSON service");
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "FinancialBenchmarkService: Max assets=%d, Max simulations=%d",
                   FINBENCH_MAX_ASSETS, FINBENCH_MAX_SIMULATIONS);
     return AXIS2_SUCCESS;
@@ -266,7 +266,7 @@ axis2_financial_benchmark_service_create(
 {
     axis2_svc_t *svc = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "FinancialBenchmarkService: Creating service instance");
 
     svc = axis2_svc_create(env);
@@ -283,7 +283,7 @@ axis2_financial_benchmark_service_create(
     /* Initialize the service */
     financial_benchmark_service_init(svc, env);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "FinancialBenchmarkService: Service created successfully");
 
     return svc;
@@ -309,7 +309,7 @@ axis2_remove_instance(
     axis2_svc_t *svc,
     const axutil_env_t *env)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                   "FinancialBenchmarkService: Removing service instance");
 
     if (svc)

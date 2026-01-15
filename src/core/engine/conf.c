@@ -1880,7 +1880,7 @@ axis2_conf_disengage_module(
     }
 	if(!axis2_conf_is_engaged((axis2_conf_t*)conf, env, module_ref))
 	{
-		AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "%s Module is not engaged globally", mod_name);
+		AXIS2_LOG_INFO(env->log, "%s Module is not engaged globally", mod_name);
 		return AXIS2_FAILURE;
 	}
 	if(!conf->all_svcs)

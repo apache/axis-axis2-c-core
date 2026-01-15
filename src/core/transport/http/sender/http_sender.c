@@ -1359,7 +1359,7 @@ axis2_http_sender_send(
         if(sender->keep_alive &&
            sender->keepalive_timeout_retries < AXIS2_HTTP_KEEPALIVE_TIMEOUT_MAX_RETRIES)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_INFO(env->log,
                 "AXIS2C-1568: Keep-alive connection timed out, attempting reconnect (retry %d)",
                 sender->keepalive_timeout_retries + 1);
 

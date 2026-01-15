@@ -121,7 +121,7 @@ axis2_login_service_create(const axutil_env_t *env)
         svc_skeleton_impl->func_array = func_array;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Login Service skeleton created successfully");
+    AXIS2_LOG_INFO(env->log, "Login Service skeleton created successfully");
     return svc_skeleton;
 }
 
@@ -168,7 +168,7 @@ login_service_skeleton_invoke(
         }
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Login Service invoke: operation=%s",
+    AXIS2_LOG_INFO(env->log, "Login Service invoke: operation=%s",
                    op_name ? op_name : "unknown");
 
     /* Route to appropriate operation handler */
@@ -193,7 +193,7 @@ login_service_skeleton_init(
     axis2_svc_skeleton_t *svc_skeleton,
     const axutil_env_t *env)
 {
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Login Service initialized for HTTP/2 JSON processing");
+    AXIS2_LOG_INFO(env->log, "Login Service initialized for HTTP/2 JSON processing");
     return AXIS2_SUCCESS;
 }
 
@@ -240,7 +240,7 @@ login_service_skeleton_free(
         AXIS2_FREE(env->allocator, svc_skeleton_impl);
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Login Service skeleton freed");
+    AXIS2_LOG_INFO(env->log, "Login Service skeleton freed");
 }
 
 /**
@@ -260,7 +260,7 @@ login_service_do_login_operation(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing doLogin operation with HTTP/2 JSON");
+    AXIS2_LOG_INFO(env->log, "Processing doLogin operation with HTTP/2 JSON");
 
     /* Extract JSON from axiom node */
     json_request = extract_json_from_axiom(env, content_node);
@@ -310,7 +310,7 @@ login_service_do_login_operation(
     /* Log successful authentication attempts (without sensitive data) */
     if (login_response->status && axutil_strcmp(login_response->status, LOGIN_STATUS_SUCCESS) == 0)
     {
-        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_INFO(env->log,
                        "HTTP/2 JSON authentication successful for user: %s",
                        login_request->email ? login_request->email : "unknown");
     }
@@ -346,7 +346,7 @@ login_service_invoke_json(
     login_response_t *response = NULL;
     axis2_char_t *json_response = NULL;
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "LoginService: Processing HTTP/2 JSON request via invoke_json");
 
     if (!json_request)
@@ -389,7 +389,7 @@ login_service_invoke_json(
         return axutil_strdup(env, "{\"status\":\"FAILED\",\"message\":\"Failed to generate response\"}");
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_INFO(env->log,
                    "LoginService: Successfully processed JSON request");
 
     return json_response;
