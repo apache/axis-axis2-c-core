@@ -484,15 +484,19 @@ axis2_libxml2_reader_wrapper_free(
 {
     axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
     parser_impl = AXIS2_INTF_TO_IMPL(parser);
-    if(parser_impl->ctx)
-    {
-        AXIS2_FREE(env->allocator, parser_impl->ctx);
-    }
 
+    /* AXIS2C-1222: Close the reader BEFORE freeing ctx.
+     * xmlTextReaderClose triggers the close_input_callback which needs
+     * parser_impl->ctx to still be valid. */
     if(parser_impl->reader)
     {
         xmlTextReaderClose(parser_impl->reader);
         xmlFreeTextReader(parser_impl->reader);
+    }
+
+    if(parser_impl->ctx)
+    {
+        AXIS2_FREE(env->allocator, parser_impl->ctx);
     }
     if(parser_impl->namespace_map)
     {
