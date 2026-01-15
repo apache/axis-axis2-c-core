@@ -165,7 +165,7 @@ axis2_json_read_child_node(
         attr = axiom_attribute_create(env, "nil", "true", ns);
         if (!attr)
         {
-            axiom_attribute_free(attr, env);
+            axiom_namespace_free(ns, env);
             return AXIS2_FAILURE;
         }
 
@@ -176,7 +176,11 @@ axis2_json_read_child_node(
             return AXIS2_FAILURE;
         }
 
-        /* Free the namespace after successful use */
+        /* AXIS2C-1596: Release resources after adding attribute to element.
+         * axiom_element_add_attribute:
+         * - Declares/clones the namespace in the element (so we free original ns)
+         * - Increments attribute refcount (so we release our reference) */
+        axiom_attribute_free(attr, env);
         axiom_namespace_free(ns, env);
 
         break;
