@@ -30,10 +30,6 @@ h2_json_integration_test_SOURCES = h2_json_integration_test.c \
 h2_json_integration_test_LDADD = \
     $(LDFLAGS) \
     $(top_builddir)/util/src/libaxutil.la \
-    $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-    $(top_builddir)/axiom/src/parser/@WRAPPER_DIR@/libaxis2_parser.la \
-    $(top_builddir)/src/core/engine/libaxis2_engine.la \
-    $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
     $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
     $(JSON_LIBS)
 
@@ -52,10 +48,6 @@ h2_performance_benchmark_test_SOURCES = h2_performance_benchmark_test.c \
 h2_performance_benchmark_test_LDADD = \
     $(LDFLAGS) \
     $(top_builddir)/util/src/libaxutil.la \
-    $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-    $(top_builddir)/axiom/src/parser/@WRAPPER_DIR@/libaxis2_parser.la \
-    $(top_builddir)/src/core/engine/libaxis2_engine.la \
-    $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
     $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
     $(JSON_LIBS) \
     -lm
