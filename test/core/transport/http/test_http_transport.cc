@@ -453,6 +453,83 @@ TEST_F(TestHTTPTransport, test_json)
 #endif
 
 
+/**
+ * Test for AXIS2C-1258: SSL/TLS memory leak in http_client_free
+ *
+ * This test verifies that SSL streams are properly cleaned up when
+ * an HTTPS connection is closed. Prior to the fix, axutil_stream_free()
+ * was called for SSL streams, but it doesn't handle AXIS2_STREAM_MANAGED
+ * type properly, resulting in leaked SSL and SSL_CTX resources.
+ *
+ * The fix checks stream_type and calls axis2_ssl_stream_free() for
+ * SSL streams instead of the generic axutil_stream_free().
+ *
+ * To detect memory leaks, run this test under ASAN or valgrind:
+ *   ASAN_OPTIONS=detect_leaks=1 ./test_http_transport --gtest_filter=*AXIS2C_1258*
+ */
+TEST_F(TestHTTPTransport, test_AXIS2C_1258_ssl_stream_cleanup)
+{
+#ifndef AXIS2_SSL_ENABLED
+    GTEST_SKIP() << "SSL not enabled";
+#else
+    axis2_http_client_t *client = NULL;
+    axis2_http_simple_request_t *request = NULL;
+    axis2_http_request_line_t *request_line = NULL;
+    axutil_url_t *url = NULL;
+    axis2_http_header_t *header = NULL;
+    axis2_status_t status;
+    axis2_char_t *test_server_cert = NULL;
+
+    printf("Starting AXIS2C-1258 test (SSL stream cleanup)\n");
+
+    /* Check for AXIS2_TEST_SSL_CERT environment variable for cert path */
+    test_server_cert = getenv("AXIS2_TEST_SSL_CERT");
+    if (!test_server_cert)
+    {
+        /* Default to a common test cert location */
+        test_server_cert = (axis2_char_t *)"/etc/ssl/certs/ca-certificates.crt";
+    }
+
+    /* Create HTTPS request to localhost - connection may fail but cleanup
+     * path is still exercised when we call axis2_http_client_free() */
+    request_line = axis2_http_request_line_create(m_env, "GET", "/", "HTTP/1.0");
+    ASSERT_NE(request_line, nullptr);
+
+    request = axis2_http_simple_request_create(m_env, request_line, NULL, 0, NULL);
+    ASSERT_NE(request, nullptr);
+
+    /* Use localhost HTTPS port - connection will likely fail but that's OK,
+     * we're testing the cleanup path in axis2_http_client_free() */
+    url = axutil_url_create(m_env, "https", "localhost", 9443, NULL);
+    ASSERT_NE(url, nullptr);
+
+    header = axis2_http_header_create(m_env, "Host", "localhost");
+    axis2_http_simple_request_add_header(request, m_env, header);
+
+    client = axis2_http_client_create(m_env, url);
+    ASSERT_NE(client, nullptr);
+
+    /* Set server certificate - required for SSL initialization */
+    axis2_http_client_set_server_cert(client, m_env, test_server_cert);
+
+    /* Try to send - this may fail if no HTTPS server is running, but that's OK.
+     * The important part is that axis2_http_client_free() properly cleans up
+     * any SSL resources that were allocated during the connection attempt. */
+    status = axis2_http_client_send(client, m_env, request, NULL);
+
+    /* Whether send succeeded or failed, free the client.
+     * AXIS2C-1258: This is where the memory leak occurred - SSL streams
+     * weren't properly freed. With the fix, axis2_ssl_stream_free() is
+     * called instead of axutil_stream_free() for SSL streams. */
+    axis2_http_client_free(client, m_env);
+    axis2_http_simple_request_free(request, m_env);
+
+    printf("AXIS2C-1258 test completed - run under ASAN/valgrind to verify no SSL leaks\n");
+    printf("  status=%d (failure is OK - we're testing cleanup path)\n", status);
+    printf("Finished AXIS2C-1258 test ..........\n\n");
+#endif
+}
+
 TEST_F(TestHTTPTransport, test_AXIS2C_1600)
 {
     axis2_simple_http_svr_conn_t* conn = axis2_simple_http_svr_conn_create(
