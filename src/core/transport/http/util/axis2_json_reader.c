@@ -165,7 +165,6 @@ axis2_json_read_child_node(
         attr = axiom_attribute_create(env, "nil", "true", ns);
         if (!attr)
         {
-            axiom_attribute_free(attr, env);
             return AXIS2_FAILURE;
         }
 
@@ -175,6 +174,8 @@ axis2_json_read_child_node(
             axiom_attribute_free(attr, env);
             return AXIS2_FAILURE;
         }
+        /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+        axiom_attribute_free(attr, env);
 
         /* Free the namespace after successful use */
         axiom_namespace_free(ns, env);
