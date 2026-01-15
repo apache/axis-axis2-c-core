@@ -3,14 +3,17 @@
 lib_LTLIBRARIES = libbigdata_h2_service.la
 
 # HTTP/2 JSON Service library
+# Note: bigdata_h2_bridge.c is excluded because it uses the SOAP/AXIOM skeleton API
+# which is disabled in HTTP/2 JSON mode. Services use the JSON-direct pattern instead
+# (bigdata_h2_service_invoke_json entry point).
 libbigdata_h2_service_la_SOURCES = \
     src/bigdata_h2_service.c \
-    src/bigdata_h2_service_handler.c \
-    src/bigdata_h2_bridge.c
+    src/bigdata_h2_service_handler.c
 
 libbigdata_h2_service_la_CPPFLAGS = \
     -I$(top_srcdir)/include \
     -I$(top_srcdir)/util/include \
+    -I$(top_srcdir)/axiom/include \
     -I$(top_srcdir)/src/core/transport/http/util \
     $(JSON_CFLAGS) \
     -DAXIS2_JSON_ENABLED \
