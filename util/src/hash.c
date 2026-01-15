@@ -160,6 +160,13 @@ axutil_hash_first(
     const axutil_env_t *env)
 {
     axutil_hash_index_t *hi;
+
+    /* AXIS2C-1659 FIX: NULL check */
+    if(!ht)
+    {
+        return NULL;
+    }
+
     if(env)
         hi = AXIS2_MALLOC(env->allocator, sizeof(*hi));
     else
@@ -395,6 +402,13 @@ axutil_hash_get(
     axis2_ssize_t klen)
 {
     axutil_hash_entry_t *he;
+
+    /* AXIS2C-1659 FIX: NULL check to prevent segfault in multi-threaded environments */
+    if(!ht || !key || !ht->array)
+    {
+        return NULL;
+    }
+
     he = *axutil_hash_find_entry(ht, key, klen, NULL);
     if(he)
         return (void *)he->val;
@@ -410,6 +424,13 @@ axutil_hash_set(
     const void *val)
 {
     axutil_hash_entry_t **hep;
+
+    /* AXIS2C-1659 FIX: NULL check to prevent segfault in multi-threaded environments */
+    if(!ht || !key || !ht->array)
+    {
+        return;
+    }
+
     hep = axutil_hash_find_entry(ht, key, klen, val);
     if(*hep)
     {
@@ -440,6 +461,11 @@ AXIS2_EXTERN unsigned int AXIS2_CALL
 axutil_hash_count(
     axutil_hash_t *ht)
 {
+    /* AXIS2C-1659 FIX: NULL check */
+    if(!ht)
+    {
+        return 0;
+    }
     return ht->count;
 }
 
