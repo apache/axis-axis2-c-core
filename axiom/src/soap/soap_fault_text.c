@@ -197,6 +197,9 @@ axiom_soap_fault_text_set_lang(
     if(status == AXIS2_SUCCESS)
     {
         fault_text->lang_ns_used = AXIS2_TRUE;
+        /* AXIS2C-1590: Release our reference after adding - element now owns a reference.
+         * The pointer remains valid for get_lang() because the element keeps it alive. */
+        axiom_attribute_free(fault_text->lang_attribute, env);
     }
     else
     {

@@ -333,6 +333,8 @@ axis2_addr_out_handler_invoke(
                                             addr_ns_obj);
                                         axiom_element_add_attribute(reference_ele, env,
                                             reference_attr, reference_node);
+                                        /* AXIS2C-1590: Release our reference after adding */
+                                        axiom_attribute_free(reference_attr, env);
                                         axiom_element_set_text(reference_ele, env,
                                             axiom_element_get_text(temp_ele, env, temp_node),
                                             reference_node);
@@ -535,6 +537,8 @@ axis2_addr_out_handler_invoke(
                             axiom_attribute_set_namespace(om_attr, env, dec_ns);
                         }
                     }
+                    /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+                    axiom_attribute_free(om_attr, env);
                 }
 
             }

@@ -99,6 +99,8 @@ neethi_reference_serialize(
 
     att_uri = axiom_attribute_create(env, NEETHI_URI, neethi_reference->uri, NULL);
     axiom_element_add_attribute(ref_ele, env, att_uri, ref_node);
+    /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+    axiom_attribute_free(att_uri, env);
 
     return AXIS2_SUCCESS;
 }

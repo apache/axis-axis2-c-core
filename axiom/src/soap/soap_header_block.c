@@ -283,6 +283,7 @@ axiom_soap_header_block_set_attribute(
     axutil_qname_t *qn = NULL;
     axiom_namespace_t *om_ns = NULL;
     axiom_element_t *om_ele = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_PARAM_CHECK(env->error, attr_name, AXIS2_FAILURE);
 
@@ -344,7 +345,10 @@ axiom_soap_header_block_set_attribute(
         return AXIS2_FAILURE;
     }
 
-    return axiom_element_add_attribute(om_ele, env, om_attr, header_block->om_ele_node);
+    status = axiom_element_add_attribute(om_ele, env, om_attr, header_block->om_ele_node);
+    /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+    axiom_attribute_free(om_attr, env);
+    return status;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

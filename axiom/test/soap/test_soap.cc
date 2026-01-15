@@ -147,7 +147,14 @@ class TestSOAP: public ::testing::Test
 TEST_F(TestSOAP, test_build_soap) {
 
     const axis2_char_t *uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    /* Try both paths: from source dir (automake) and from .libs (direct run) */
     const char *filename = "../resources/xml/soap/test.xml";
+    FILE *test_file = fopen(filename, "r");
+    if (!test_file) {
+        filename = "../../resources/xml/soap/test.xml";
+    } else {
+        fclose(test_file);
+    }
 
     axiom_stax_builder_t *om_builder = NULL;
 

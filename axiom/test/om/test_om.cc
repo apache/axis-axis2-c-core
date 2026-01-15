@@ -67,7 +67,14 @@ class TestOM: public ::testing::Test
 
 TEST_F(TestOM, test_om_build) {
 
+    /* Try both paths: from source dir (automake) and from .libs (direct run) */
     char *filename = "../resources/xml/om/test.xml";
+    FILE *test_file = fopen(filename, "r");
+    if (!test_file) {
+        filename = "../../resources/xml/om/test.xml";
+    } else {
+        fclose(test_file);
+    }
 
     FILE *f = NULL;
     axiom_element_t *ele1 = NULL;
@@ -286,6 +293,8 @@ TEST_F(TestOM, test_om_serialize) {
     attr1 = axiom_attribute_create(m_env, "title22", NULL, NULL);
 
     axiom_element_add_attribute(ele2, m_env, attr1, node2);
+    /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+    axiom_attribute_free(attr1, m_env);
 
     text1 = axiom_text_create(m_env, node2, "Axis2/C OM HOWTO", &node3);
 
@@ -298,10 +307,14 @@ TEST_F(TestOM, test_om_serialize) {
     attr1 = axiom_attribute_create(m_env, "title", "Mr", ns1);
 
     axiom_element_add_attribute(ele4, m_env, attr1, node6);
+    /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+    axiom_attribute_free(attr1, m_env);
 
     attr2 = axiom_attribute_create(m_env, "name", "Axitoc Oman", ns1);
 
     axiom_element_add_attribute(ele4, m_env, attr2, node6);
+    /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+    axiom_attribute_free(attr2, m_env);
 
     data_source = axiom_data_source_create(m_env, node1, &node6);
     stream = axiom_data_source_get_stream(data_source, m_env);
@@ -386,6 +399,8 @@ TEST_F(TestOM, test_attr_special_chars)
      axiom_element_set_text(element, m_env, "T1 & T2", node);
      attr = axiom_attribute_create(m_env, "name", "A1 & A2", NULL);
      axiom_element_add_attribute(element, m_env, attr, node);
+     /* AXIS2C-1590: Release our reference after adding - element now owns a reference */
+     axiom_attribute_free(attr, m_env);
 
      axis2_char_t * xml = axiom_node_to_string(node, m_env);
 
