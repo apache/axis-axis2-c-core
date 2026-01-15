@@ -746,6 +746,8 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
                     fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to serialize %s request\");\n", op_name);
                     fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
                     fprintf(source_file, "                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "                /* AXIS2C-1519 FIX: Free op_qname before early return */\n");
+                    fprintf(source_file, "                if (op_qname) { axutil_qname_free(op_qname, env); }\n");
                     fprintf(source_file, "                return NULL;\n");
                     fprintf(source_file, "            }\n");
                     fprintf(source_file, "            \n");
@@ -755,6 +757,8 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
                     fprintf(source_file, "                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, \"Failed to invoke %s operation\");\n", op_name);
                     fprintf(source_file, "                /* AXIS2C-1613 FIX: Set error before returning NULL */\n");
                     fprintf(source_file, "                AXIS2_ERROR_SET(env->error, env->error->error_number, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "                /* AXIS2C-1519 FIX: Free op_qname before early return */\n");
+                    fprintf(source_file, "                if (op_qname) { axutil_qname_free(op_qname, env); }\n");
                     fprintf(source_file, "                return NULL;\n");
                     fprintf(source_file, "            }\n");
                     fprintf(source_file, "            \n");
