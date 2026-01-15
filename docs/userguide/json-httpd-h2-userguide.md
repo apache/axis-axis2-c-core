@@ -988,17 +988,16 @@ sudo make install
 # Run the EXACT configure command for your distro as explained below. 
 # This is specifically for Ubuntu 25.10 with apache2-custom
 # --enable-tests is optional, skipped here 
-    ./configure \
-      --prefix=/usr/local/axis2c \
-      --enable-json \
-      --enable-ssl \
-      --enable-libcurl \
-      --with-apache2=/usr/local/apache2 \
-      --with-apr=/usr/include/apr-1.0 \
-      PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
-      CFLAGS="$CFLAGS -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2" \
-      CPPFLAGS="$CPPFLAGS -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2" \
-      LDFLAGS="$LDFLAGS -L/usr/lib/x86_64-linux-gnu"
+     ./configure --prefix=/usr/local/axis2c \
+       --enable-json \
+       --enable-http2 \
+       --with-apache2=/usr/local/apache2/include \
+       --with-apr=/usr/include/apr-1.0 \
+       --enable-libxml2=no \
+       PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
+       CFLAGS="-DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2" \
+       CPPFLAGS="-DAXIS2_JSON_ENABLED -DWITH_NGHTTP2" \
+       LDFLAGS="-L/usr/lib/x86_64-linux-gnu"
 
 # Add Axis2/C to library path (standard Unix paths) , could be in /etc/environment or root .bashrc
 export AXIS2C_HOME=/usr/local/axis2c

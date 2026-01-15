@@ -580,34 +580,32 @@ autoreconf -fiv
 
 # 2. Configure with proper flags
 ./configure --prefix=/usr/local/axis2c \
-    --enable-json \
-    --enable-tests \
-    --enable-ssl \
-    --enable-libcurl \
-    --with-apache2=/usr/local/apache2 \
-    --with-apr=/usr/include/apr-1.0 \
-    --with-gtest=/usr/src/googletest/googletest \
-    PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
-    CFLAGS="$CFLAGS -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2" \
-    CPPFLAGS="$CPPFLAGS -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2" \
-    LDFLAGS="$LDFLAGS -L/usr/lib/x86_64-linux-gnu"
+       --enable-json \
+       --enable-http2 \
+       --enable-tests \
+       --with-apache2=/usr/local/apache2/include \
+       --with-apr=/usr/include/apr-1.0 \
+       --enable-libxml2=no \
+       PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
+       CFLAGS="-DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2" \
+       CPPFLAGS="-DAXIS2_JSON_ENABLED -DWITH_NGHTTP2" \
+       LDFLAGS="-L/usr/lib/x86_64-linux-gnu"
 
 # 3. Clean with enhanced targets (removes .libs/ directories)
 make distclean
 
 # 4. Reconfigure (distclean removes Makefiles)
 ./configure --prefix=/usr/local/axis2c \
-    --enable-json \
-    --enable-tests \
-    --enable-ssl \
-    --enable-libcurl \
-    --with-apache2=/usr/local/apache2 \
-    --with-apr=/usr/include/apr-1.0 \
-    --with-gtest=/usr/src/googletest/googletest \
-    PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
-    CFLAGS="$CFLAGS -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2" \
-    CPPFLAGS="$CPPFLAGS -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2" \
-    LDFLAGS="$LDFLAGS -L/usr/lib/x86_64-linux-gnu"
+       --enable-json \
+       --enable-http2 \
+       --enable-tests \
+       --with-apache2=/usr/local/apache2/include \
+       --with-apr=/usr/include/apr-1.0 \
+       --enable-libxml2=no \
+       PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
+       CFLAGS="-DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2" \
+       CPPFLAGS="-DAXIS2_JSON_ENABLED -DWITH_NGHTTP2" \
+       LDFLAGS="-L/usr/lib/x86_64-linux-gnu"
 
 # 5. Build and install with automatic verification
 sudo make clean
