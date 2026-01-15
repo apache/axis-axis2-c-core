@@ -90,6 +90,14 @@ export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
     --with-openssl=$DEPS
 ```
 
+**Convenience script:** Use `build_android.sh` in the repository root for a complete build:
+
+```bash
+./build_android.sh
+```
+
+This script sets up the toolchain, configures with all required flags, and builds. Edit the script to adjust paths for your NDK installation and dependency locations.
+
 ## Static Service Registry (Android)
 
 ### The Problem
@@ -528,4 +536,4 @@ Key files for Android support:
 
 ---
 
-*Last updated: 2026-01-06*
+*Last updated: 2026-01-14*
