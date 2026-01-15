@@ -144,7 +144,20 @@ axis2_http_client_free(
     {
         if(http_client->data_stream)
         {
+            /* AXIS2C-1258: SSL streams need special cleanup to free SSL/SSL_CTX.
+             * axutil_stream_free() doesn't handle AXIS2_STREAM_MANAGED properly. */
+#ifdef AXIS2_SSL_ENABLED
+            if(http_client->data_stream->stream_type == AXIS2_STREAM_SOCKET)
+            {
+                axutil_stream_free(http_client->data_stream, env);
+            }
+            else
+            {
+                axis2_ssl_stream_free(http_client->data_stream, env);
+            }
+#else
             axutil_stream_free(http_client->data_stream, env);
+#endif
             http_client->data_stream = NULL;
         }
 		axutil_network_handler_close_socket(env, http_client->sockfd);
