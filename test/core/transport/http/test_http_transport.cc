@@ -33,6 +33,7 @@
 #include <axis2_json_reader.h>
 #endif
 #include <axis2_simple_http_svr_conn.h>
+#include <axis2_http_transport_utils.h>
 
 #include "../../../cutest/include/cut_http_server.h"
 
@@ -470,4 +471,137 @@ TEST_F(TestHTTPTransport, test_AXIS2C_1600)
 
     axis2_http_simple_response_free(resp, m_env);
     axis2_simple_http_svr_conn_free(conn, m_env);
+}
+
+/**
+ * Helper function to free a hash map with allocated keys and values
+ */
+static void free_request_params_hash(axutil_hash_t *params, const axutil_env_t *env)
+{
+    if (!params) return;
+
+    axutil_hash_index_t *hi;
+    for (hi = axutil_hash_first(params, env); hi; hi = axutil_hash_next(env, hi))
+    {
+        void *key = NULL;
+        void *val = NULL;
+        axutil_hash_this(hi, (const void **)&key, NULL, &val);
+        if (key) AXIS2_FREE(env->allocator, key);
+        if (val) AXIS2_FREE(env->allocator, val);
+    }
+    axutil_hash_free(params, env);
+}
+
+/**
+ * Test for AXIS2C-1495: POST form-urlencoded last character truncation
+ *
+ * When parsing URL-encoded parameters, the last character of the last
+ * parameter value was being truncated (e.g., "100" became "10").
+ * This test verifies that all characters are preserved.
+ */
+TEST_F(TestHTTPTransport, test_AXIS2C_1495_get_request_params)
+{
+    axutil_hash_t *params = NULL;
+    axis2_char_t *value = NULL;
+
+    printf("Starting AXIS2C-1495 tests (form-urlencoded parameter parsing)\n");
+
+    /* Test case 1: Simple parameters - verify last char not truncated */
+    {
+        axis2_char_t *uri = (axis2_char_t *)axutil_strdup(m_env,
+            "http://localhost/service?tagid=1&transid=1&value=100");
+
+        params = axis2_http_transport_utils_get_request_params(m_env, uri);
+        ASSERT_NE(params, nullptr) << "params should not be NULL";
+
+        value = (axis2_char_t *)axutil_hash_get(params, "tagid", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "1") << "tagid should be '1'";
+
+        value = (axis2_char_t *)axutil_hash_get(params, "transid", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "1") << "transid should be '1'";
+
+        /* This is the key test - "value" should be "100", not "10" */
+        value = (axis2_char_t *)axutil_hash_get(params, "value", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "100") << "AXIS2C-1495: value should be '100', not truncated to '10'";
+
+        printf("  Test 1 passed: value='%s' (expected '100')\n", value);
+
+        /* Clean up - must free keys and values since get_request_params allocates them */
+        free_request_params_hash(params, m_env);
+        AXIS2_FREE(m_env->allocator, uri);
+    }
+
+    /* Test case 2: Single parameter - last char should not be truncated */
+    {
+        axis2_char_t *uri = (axis2_char_t *)axutil_strdup(m_env,
+            "http://localhost/service?name=test");
+
+        params = axis2_http_transport_utils_get_request_params(m_env, uri);
+        ASSERT_NE(params, nullptr);
+
+        value = (axis2_char_t *)axutil_hash_get(params, "name", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "test") << "AXIS2C-1495: name should be 'test', not 'tes'";
+
+        printf("  Test 2 passed: name='%s' (expected 'test')\n", value);
+
+        free_request_params_hash(params, m_env);
+        AXIS2_FREE(m_env->allocator, uri);
+    }
+
+    /* Test case 3: URL-encoded characters */
+    {
+        axis2_char_t *uri = (axis2_char_t *)axutil_strdup(m_env,
+            "http://localhost/service?msg=hello%20world");
+
+        params = axis2_http_transport_utils_get_request_params(m_env, uri);
+        ASSERT_NE(params, nullptr);
+
+        value = (axis2_char_t *)axutil_hash_get(params, "msg", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "hello world") << "URL decoding should work correctly";
+
+        printf("  Test 3 passed: msg='%s' (expected 'hello world')\n", value);
+
+        free_request_params_hash(params, m_env);
+        AXIS2_FREE(m_env->allocator, uri);
+    }
+
+    /* Test case 4: Empty value */
+    {
+        axis2_char_t *uri = (axis2_char_t *)axutil_strdup(m_env,
+            "http://localhost/service?empty=&filled=data");
+
+        params = axis2_http_transport_utils_get_request_params(m_env, uri);
+        ASSERT_NE(params, nullptr);
+
+        value = (axis2_char_t *)axutil_hash_get(params, "empty", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "") << "empty value should be empty string";
+
+        value = (axis2_char_t *)axutil_hash_get(params, "filled", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "data") << "filled should be 'data'";
+
+        printf("  Test 4 passed: empty='', filled='%s'\n", value);
+
+        free_request_params_hash(params, m_env);
+        AXIS2_FREE(m_env->allocator, uri);
+    }
+
+    /* Test case 5: Longer values to ensure no truncation */
+    {
+        axis2_char_t *uri = (axis2_char_t *)axutil_strdup(m_env,
+            "http://localhost/service?longvalue=abcdefghijklmnopqrstuvwxyz");
+
+        params = axis2_http_transport_utils_get_request_params(m_env, uri);
+        ASSERT_NE(params, nullptr);
+
+        value = (axis2_char_t *)axutil_hash_get(params, "longvalue", AXIS2_HASH_KEY_STRING);
+        ASSERT_STREQ(value, "abcdefghijklmnopqrstuvwxyz")
+            << "AXIS2C-1495: long value should not be truncated";
+
+        printf("  Test 5 passed: longvalue='%s'\n", value);
+
+        free_request_params_hash(params, m_env);
+        AXIS2_FREE(m_env->allocator, uri);
+    }
+
+    printf("Finished AXIS2C-1495 tests ..........\n\n");
 }
