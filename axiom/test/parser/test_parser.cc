@@ -16,6 +16,7 @@
 */
 
 #include <gtest/gtest.h>
+#include <cstring>
 
 #include <axiom.h>
 
@@ -81,6 +82,148 @@ TEST_F(TestParser, test_axisc_1453) {
     axiom_node_free_tree(node_input3, m_env);
     AXIS2_FREE(m_env->allocator, output3);
 }
+
+/*
+ * AXIS2C-1222: Test that the close callback is invoked with valid context.
+ *
+ * The bug was that axis2_libxml2_reader_wrapper_free() freed the ctx pointer
+ * BEFORE calling xmlTextReaderClose(), which triggers the close callback.
+ * This caused use-after-free when the close callback tried to access ctx.
+ *
+ * This test verifies the fix: the close callback should be called while
+ * the context is still valid, and should be able to access context data.
+ *
+ * NOTE: This test is only meaningful with libxml2 parser. When using guththila
+ * parser, the close callback mechanism is different (guththila owns and frees
+ * the context directly).
+ */
+
+#ifdef AXIS2_LIBXML2_ENABLED
+
+/* Global flag to track if close callback was invoked (since ctx may be freed) */
+static int g_axis2c_1222_close_called = 0;
+static int g_axis2c_1222_ctx_valid = 0;
+
+/* Test context structure for AXIS2C-1222 */
+struct axis2c_1222_test_ctx {
+    const char *xml_data;
+    int read_pos;
+    int magic;  /* Magic number to verify context validity */
+};
+
+#define AXIS2C_1222_MAGIC 0xDEADBEEF
+
+/* Read callback for AXIS2C-1222 test */
+static int AXIS2_CALL axis2c_1222_read_callback(char *buffer, int size, void *ctx)
+{
+    struct axis2c_1222_test_ctx *test_ctx = (struct axis2c_1222_test_ctx *)ctx;
+
+    /* Verify context is valid */
+    if (test_ctx->magic != AXIS2C_1222_MAGIC) {
+        return -1;  /* Context corrupted */
+    }
+
+    int remaining = strlen(test_ctx->xml_data) - test_ctx->read_pos;
+    if (remaining <= 0) {
+        return 0;  /* EOF */
+    }
+
+    int to_read = (remaining < size - 1) ? remaining : size - 1;
+    memcpy(buffer, test_ctx->xml_data + test_ctx->read_pos, to_read);
+    buffer[to_read] = '\0';
+    test_ctx->read_pos += to_read;
+
+    return to_read;
+}
+
+/* Close callback for AXIS2C-1222 test */
+static int AXIS2_CALL axis2c_1222_close_callback(void *ctx)
+{
+    struct axis2c_1222_test_ctx *test_ctx = (struct axis2c_1222_test_ctx *)ctx;
+
+    g_axis2c_1222_close_called = 1;
+
+    /*
+     * AXIS2C-1222: This is the critical test - the close callback must be
+     * able to access the context. Before the fix, ctx would already be freed
+     * at this point, causing use-after-free (detected by ASAN/valgrind).
+     */
+    if (test_ctx->magic == AXIS2C_1222_MAGIC) {
+        g_axis2c_1222_ctx_valid = 1;
+    }
+
+    return 0;
+}
+
+TEST_F(TestParser, test_axis2c_1222_close_callback_ctx_valid) {
+    printf("\n\n _______ TEST AXIS2C-1222: Close callback context validity _______ \n\n");
+
+    /* Reset global flags */
+    g_axis2c_1222_close_called = 0;
+    g_axis2c_1222_ctx_valid = 0;
+
+    /* Set up test context - reader will take ownership and free it */
+    struct axis2c_1222_test_ctx *test_ctx =
+        (struct axis2c_1222_test_ctx *)AXIS2_MALLOC(m_env->allocator,
+            sizeof(struct axis2c_1222_test_ctx));
+    ASSERT_NE(test_ctx, nullptr);
+
+    test_ctx->xml_data = "<root><child>test data</child></root>";
+    test_ctx->read_pos = 0;
+    test_ctx->magic = AXIS2C_1222_MAGIC;
+
+    /* Create XML reader with IO callbacks */
+    axiom_xml_reader_t *reader = axiom_xml_reader_create_for_io(
+        m_env,
+        axis2c_1222_read_callback,
+        axis2c_1222_close_callback,
+        test_ctx,
+        "UTF-8");
+    ASSERT_NE(reader, nullptr) << "Failed to create XML reader for IO";
+
+    /* Read through the XML to exercise the reader */
+    int event;
+    while ((event = axiom_xml_reader_next(reader, m_env)) > 0) {
+        /* Just consume the events until EOF or error */
+    }
+
+    /*
+     * Free the reader - this is where AXIS2C-1222 bug would manifest.
+     * Before the fix: ctx freed first, then close callback called (use-after-free)
+     * After the fix: close callback called first, then ctx freed
+     *
+     * NOTE: After this call, test_ctx is freed by the reader. Do not access it!
+     */
+    axiom_xml_reader_free(reader, m_env);
+
+    /*
+     * Check the global flags to verify callback behavior.
+     * The critical test is that g_axis2c_1222_ctx_valid is true, meaning
+     * the close callback was able to access the context without use-after-free.
+     */
+    EXPECT_EQ(g_axis2c_1222_close_called, 1)
+        << "AXIS2C-1222: Close callback should have been called";
+    EXPECT_EQ(g_axis2c_1222_ctx_valid, 1)
+        << "AXIS2C-1222: Context should have been valid when close callback was invoked";
+
+    printf("  Close callback was called: %s\n",
+           g_axis2c_1222_close_called ? "YES" : "NO");
+    printf("  Context was valid in callback: %s\n",
+           g_axis2c_1222_ctx_valid ? "YES (no use-after-free)" : "NO (BUG!)");
+
+    printf("\n _______ END TEST AXIS2C-1222 _______ \n\n");
+}
+
+#else /* !AXIS2_LIBXML2_ENABLED */
+
+TEST_F(TestParser, test_axis2c_1222_close_callback_ctx_valid) {
+    printf("\n\n _______ TEST AXIS2C-1222: SKIPPED (libxml2 not enabled) _______ \n\n");
+    /* This test is only relevant for libxml2 parser.
+     * With guththila, the close callback mechanism works differently. */
+    GTEST_SKIP() << "AXIS2C-1222 test requires libxml2 parser";
+}
+
+#endif /* AXIS2_LIBXML2_ENABLED */
 
 /*
  * AXIS2C-1520: Test that UTF-8 diacritic marks are correctly parsed and preserved.
