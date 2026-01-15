@@ -868,7 +868,9 @@ axis2_http_transport_utils_process_http_post_request(
         {
             return AXIS2_FAILURE;
         }
-        axis2_http_transport_utils_on_data_request(buffer, content_length, (void *)callback_ctx);
+        /* AXIS2C-1495: Pass content_length + 1 because on_data_request subtracts 1
+         * to reserve space for null terminator. Without this, last char is truncated. */
+        axis2_http_transport_utils_on_data_request(buffer, content_length + 1, (void *)callback_ctx);
 
         new_url = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * ((int)(strlen(request_uri)
             + strlen(buffer)) + 2));
@@ -1379,7 +1381,9 @@ axis2_http_transport_utils_process_http_put_request(
         {
             return AXIS2_FAILURE;
         }
-        axis2_http_transport_utils_on_data_request(buffer, content_length, (void *)callback_ctx);
+        /* AXIS2C-1495: Pass content_length + 1 because on_data_request subtracts 1
+         * to reserve space for null terminator. Without this, last char is truncated. */
+        axis2_http_transport_utils_on_data_request(buffer, content_length + 1, (void *)callback_ctx);
 
         new_url = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * ((int)(strlen(request_uri)
             + strlen(buffer)) + 2));
