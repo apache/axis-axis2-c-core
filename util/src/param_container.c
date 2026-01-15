@@ -117,6 +117,7 @@ axutil_param_container_add_param(
     axutil_param_t *param)
 {
     axis2_char_t *param_name = NULL;
+    axutil_param_t *existing_param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
@@ -136,8 +137,29 @@ axutil_param_container_add_param(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid param state");
         return AXIS2_FAILURE;
     }
+
+    /* AXIS2C-1664 FIX: Check if param with same name exists and free it to prevent memory leak.
+     * When replacing a value in the hash table, axutil_hash_set() doesn't free the old value,
+     * causing a memory leak. We must explicitly free the old param before setting the new one. */
+    existing_param = (axutil_param_t *)axutil_hash_get(param_container->params, param_name, AXIS2_HASH_KEY_STRING);
+    if(existing_param)
+    {
+        /* Remove from hash table first (set to NULL), then free */
+        axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING, NULL);
+        axutil_param_free(existing_param, env);
+        /* Invalidate params_list since we're modifying the container */
+        if(param_container->params_list)
+        {
+            axutil_array_list_free(param_container->params_list, env);
+            param_container->params_list = NULL;
+        }
+    }
+
     axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING, param);
-	axutil_array_list_add(param_container->params_list, env, param);
+    if(param_container->params_list)
+    {
+        axutil_array_list_add(param_container->params_list, env, param);
+    }
 
     return AXIS2_SUCCESS;
 }
