@@ -392,7 +392,18 @@ axiom_soap_body_convert_fault_to_soap11(
                 axiom_soap_fault_reason_t *fault_reason = NULL;
                 axiom_soap_fault_detail_t *fault_detail = NULL;
                 axiom_soap_fault_role_t *fault_role = NULL;
+
+                /* AXIS2C-1236 FIX: Get ALL fault components FIRST to complete SOAP builder parsing.
+                 * Previously, components were retrieved one at a time, and nodes were freed between
+                 * retrieval calls. This caused use-after-free because the SOAP builder's internal
+                 * last_node pointer could still reference freed memory when the next component was
+                 * retrieved. By getting all components upfront, we ensure the builder completes
+                 * parsing before any nodes are freed. */
                 fault_code = axiom_soap_fault_get_code(soap_fault, env);
+                fault_reason = axiom_soap_fault_get_reason(soap_fault, env);
+                fault_role = axiom_soap_fault_get_role(soap_fault, env);
+                fault_detail = axiom_soap_fault_get_detail(soap_fault, env);
+
                 if(fault_code)
                 {
                     axiom_node_t *fault_code_om_node = NULL;
@@ -440,7 +451,7 @@ axiom_soap_body_convert_fault_to_soap11(
                         }
                     }
                 }
-                fault_reason = axiom_soap_fault_get_reason(soap_fault, env);
+                /* fault_reason already retrieved above */
                 if(fault_reason)
                 {
                     axiom_node_t *fault_reason_om_node = NULL;
@@ -491,7 +502,7 @@ axiom_soap_body_convert_fault_to_soap11(
                     }
                 }
 
-                fault_role = axiom_soap_fault_get_role(soap_fault, env);
+                /* fault_role already retrieved above */
                 if(fault_role)
                 {
                     axiom_node_t *fault_role_om_node = NULL;
@@ -510,7 +521,7 @@ axiom_soap_body_convert_fault_to_soap11(
                     }
                 }
 
-                fault_detail = axiom_soap_fault_get_detail(soap_fault, env);
+                /* fault_detail already retrieved above */
                 if(fault_detail)
                 {
                     axiom_node_t *fault_detail_om_node = NULL;
