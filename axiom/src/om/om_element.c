@@ -476,9 +476,12 @@ axiom_element_declare_namespace(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create key to store namespace");
+            return AXIS2_FAILURE;
         }
         key[0] = '\0';
         axutil_hash_set(om_element->namespaces, key, AXIS2_HASH_KEY_STRING, ns);
+        /* AXIS2C-1635 FIX: Free the key after hash_set copies it internally */
+        AXIS2_FREE(env->allocator, key);
     }
     axiom_namespace_increment_ref(ns, env);
     return AXIS2_SUCCESS;
@@ -1604,9 +1607,12 @@ axiom_element_declare_namespace_assume_param_ownership(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create key to store namespace");
+            return AXIS2_FAILURE;
         }
         key[0] = '\0';
         axutil_hash_set(om_element->namespaces, key, AXIS2_HASH_KEY_STRING, ns);
+        /* AXIS2C-1635 FIX: Free the key after hash_set copies it internally */
+        AXIS2_FREE(env->allocator, key);
     }
     axiom_namespace_increment_ref(ns, env);
     return AXIS2_SUCCESS;
