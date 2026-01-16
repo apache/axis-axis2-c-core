@@ -228,7 +228,11 @@ axis2_listener_manager_stop(
         {
             status = axis2_transport_receiver_stop(tl_state->listener, env);
             if(status == AXIS2_SUCCESS)
+            {
+                /* AXIS2C-1192 FIX: Free tl_state memory before setting pointer to NULL */
+                AXIS2_FREE(env->allocator, tl_state);
                 listener_manager->listener_map[transport] = NULL;
+            }
         }
     }
 
@@ -289,18 +293,23 @@ axis2_listener_manager_worker_func(
 {
     axis2_listener_manager_worker_func_args_t *args_list = NULL;
     const axutil_env_t *th_env = NULL;
+    axis2_transport_receiver_t *listener = NULL;
 
     args_list = (axis2_listener_manager_worker_func_args_t *)data;
     if(!args_list)
         return NULL;
 
     th_env = axutil_init_thread_env(args_list->env);
-    /* Start the protocol server. For examlle if protocol is http axis2_http_server_start function
+    /* AXIS2C-1192 FIX: Save listener pointer before freeing args_list to avoid memory leak */
+    listener = args_list->listener;
+    AXIS2_FREE(args_list->env->allocator, args_list);
+
+    /* Start the protocol server. For example if protocol is http axis2_http_server_start function
      * of the axis2_http_receiver is called.
      */
-    if(args_list->listener)
+    if(listener)
     {
-        axis2_transport_receiver_start(args_list->listener, th_env);
+        axis2_transport_receiver_start(listener, th_env);
     }
     return NULL;
 }
