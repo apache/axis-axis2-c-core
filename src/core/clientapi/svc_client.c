@@ -1197,11 +1197,6 @@ axis2_svc_client_free(
         svc_client->op_client = NULL;
     }
 
-    if(svc_client->options)
-    {
-        axis2_options_free(svc_client->options, env);
-    }
-
     if(svc_client->listener_manager)
     {
         axis2_listener_manager_free(svc_client->listener_manager, env);
@@ -1220,6 +1215,13 @@ axis2_svc_client_free(
     if(svc_client->http_headers)
     {
         axis2_svc_client_set_http_info(svc_client, env, NULL);
+    }
+
+    /* AXIS2C-1635 FIX: Free options LAST because free callbacks for other members
+     * (like conf_ctx) can tap into options during their cleanup. */
+    if(svc_client->options)
+    {
+        axis2_options_free(svc_client->options, env);
     }
 
     AXIS2_FREE(env->allocator, svc_client);
