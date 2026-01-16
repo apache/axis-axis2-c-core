@@ -64,6 +64,9 @@ typedef struct axis2_op_client_worker_func_args
     axis2_callback_t *callback;
     axis2_op_t *op;
     axis2_msg_ctx_t *msg_ctx;
+    /* AXIS2C-1001 FIX: Store svc_ctx to avoid dereferencing op_client in worker thread.
+     * This prevents use-after-free when op_client is freed during async operation. */
+    axis2_svc_ctx_t *svc_ctx;
 } axis2_op_client_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC axis2_op_client_worker_func(
@@ -559,6 +562,8 @@ axis2_op_client_execute(
             arg_list->callback = op_client->callback;
             arg_list->op = op;
             arg_list->msg_ctx = msg_ctx;
+            /* AXIS2C-1001 FIX: Copy svc_ctx to avoid dereferencing op_client in worker thread */
+            arg_list->svc_ctx = op_client->svc_ctx;
 #ifdef AXIS2_SVR_MULTI_THREADED
             if (env->thread_pool)
             {
@@ -696,14 +701,16 @@ axis2_op_client_worker_func(
     th_env = axutil_init_thread_env(args_list->env);
     axis2_callback_increment_ref(args_list->callback, th_env);
 
-    op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->op_client->svc_ctx);
+    /* AXIS2C-1001 FIX: Use args_list->svc_ctx instead of args_list->op_client->svc_ctx
+     * to avoid use-after-free when op_client is freed during async operation. */
+    op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->svc_ctx);
     if(!op_ctx)
     {
         axis2_callback_free(args_list->callback, th_env);
         return NULL;
     }
     axis2_msg_ctx_set_op_ctx(args_list->msg_ctx, th_env, op_ctx);
-    axis2_msg_ctx_set_svc_ctx(args_list->msg_ctx, th_env, args_list->op_client->svc_ctx);
+    axis2_msg_ctx_set_svc_ctx(args_list->msg_ctx, th_env, args_list->svc_ctx);
 
     /* send the request and wait for response */
     response = axis2_op_client_two_way_send(th_env, args_list->msg_ctx);
@@ -714,7 +721,9 @@ axis2_op_client_worker_func(
         /* Here after the code is a subset of what callback receiver do in dual channel case.*/
         axis2_async_result_t *async_result = NULL;
 
-        axis2_op_client_add_msg_ctx(args_list->op_client, th_env, response);
+        /* AXIS2C-1001 FIX: Removed call to axis2_op_client_add_msg_ctx(args_list->op_client, ...)
+         * which was unsafe because op_client may be freed during async operation. The response
+         * is delivered to the user via the callback, so adding it to op_client is not needed. */
         async_result = axis2_async_result_create(th_env, response);
 
         if(args_list->callback)
