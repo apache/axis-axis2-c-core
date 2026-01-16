@@ -38,6 +38,8 @@ struct axutil_hash_entry_t
     const void *key;
     axis2_ssize_t klen;
     const void *val;
+    /* AXIS2C-1632 FIX: Flag to track if key was internally copied and should be freed */
+    axis2_bool_t key_is_copy;
 };
 
 /*
@@ -346,7 +348,26 @@ axutil_hash_find_entry(
         he = AXIS2_MALLOC(ht->env->allocator, sizeof(*he));
     he->next = NULL;
     he->hash = hash;
-    he->key = key;
+    /* AXIS2C-1632 FIX: Copy string keys to avoid dangling pointers and memory leaks.
+     * The hash now manages string key memory internally. */
+    if(klen > 0)
+    {
+        /* String key - copy it */
+        axis2_char_t *key_copy = AXIS2_MALLOC(ht->env->allocator, klen + 1);
+        if(key_copy)
+        {
+            memcpy(key_copy, key, klen);
+            key_copy[klen] = '\0';
+        }
+        he->key = key_copy;
+        he->key_is_copy = AXIS2_TRUE;
+    }
+    else
+    {
+        /* Non-string key or error - store pointer directly */
+        he->key = key;
+        he->key_is_copy = AXIS2_FALSE;
+    }
     he->klen = klen;
     he->val = val;
     *hep = he;
@@ -384,7 +405,23 @@ axutil_hash_copy(
         {
             *new_entry = &new_vals[j++];
             (*new_entry)->hash = orig_entry->hash;
-            (*new_entry)->key = orig_entry->key;
+            /* AXIS2C-1632 FIX: Copy keys for the new hash to avoid sharing pointers */
+            if(orig_entry->klen > 0)
+            {
+                axis2_char_t *key_copy = AXIS2_MALLOC(env->allocator, orig_entry->klen + 1);
+                if(key_copy)
+                {
+                    memcpy(key_copy, orig_entry->key, orig_entry->klen);
+                    key_copy[orig_entry->klen] = '\0';
+                }
+                (*new_entry)->key = key_copy;
+                (*new_entry)->key_is_copy = AXIS2_TRUE;
+            }
+            else
+            {
+                (*new_entry)->key = orig_entry->key;
+                (*new_entry)->key_is_copy = AXIS2_FALSE;
+            }
             (*new_entry)->klen = orig_entry->klen;
             (*new_entry)->val = orig_entry->val;
             new_entry = &((*new_entry)->next);
@@ -439,6 +476,13 @@ axutil_hash_set(
             /* delete entry */
             axutil_hash_entry_t *old = *hep;
             *hep = (*hep)->next;
+            /* AXIS2C-1632 FIX: Free the key if it was internally copied */
+            if(old->key_is_copy && old->key)
+            {
+                AXIS2_FREE(ht->env->allocator, (void*)old->key);
+                old->key = NULL;
+            }
+            old->key_is_copy = AXIS2_FALSE;
             old->next = ht->free;
             ht->free = old;
             --ht->count;
@@ -537,7 +581,23 @@ axutil_hash_merge(
             i = iter->hash & res->max;
             new_vals = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_entry_t));
             new_vals->klen = iter->klen;
-            new_vals->key = iter->key;
+            /* AXIS2C-1632 FIX: Copy keys for merged hash */
+            if(iter->klen > 0)
+            {
+                axis2_char_t *key_copy = AXIS2_MALLOC(env->allocator, iter->klen + 1);
+                if(key_copy)
+                {
+                    memcpy(key_copy, iter->key, iter->klen);
+                    key_copy[iter->klen] = '\0';
+                }
+                new_vals->key = key_copy;
+                new_vals->key_is_copy = AXIS2_TRUE;
+            }
+            else
+            {
+                new_vals->key = iter->key;
+                new_vals->key_is_copy = AXIS2_FALSE;
+            }
             new_vals->val = iter->val;
             new_vals->hash = iter->hash;
             new_vals->next = res->array[i];
@@ -569,7 +629,23 @@ axutil_hash_merge(
             {
                 new_vals = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_entry_t));
                 new_vals->klen = iter->klen;
-                new_vals->key = iter->key;
+                /* AXIS2C-1632 FIX: Copy keys for merged hash */
+                if(iter->klen > 0)
+                {
+                    axis2_char_t *key_copy = AXIS2_MALLOC(env->allocator, iter->klen + 1);
+                    if(key_copy)
+                    {
+                        memcpy(key_copy, iter->key, iter->klen);
+                        key_copy[iter->klen] = '\0';
+                    }
+                    new_vals->key = key_copy;
+                    new_vals->key_is_copy = AXIS2_TRUE;
+                }
+                else
+                {
+                    new_vals->key = iter->key;
+                    new_vals->key_is_copy = AXIS2_FALSE;
+                }
                 new_vals->val = iter->val;
                 new_vals->hash = iter->hash;
                 new_vals->next = res->array[i];
@@ -635,6 +711,11 @@ axutil_hash_free(
             while(current)
             {
                 next = current->next;
+                /* AXIS2C-1632 FIX: Free the key if it was internally copied */
+                if(current->key_is_copy && current->key)
+                {
+                    AXIS2_FREE(env->allocator, (void*)current->key);
+                }
                 AXIS2_FREE(env->allocator, current);
                 current = NULL;
                 current = next;
@@ -647,6 +728,11 @@ axutil_hash_free(
             while(current)
             {
                 next = current->next;
+                /* AXIS2C-1632 FIX: Free the key if it was internally copied */
+                if(current->key_is_copy && current->key)
+                {
+                    AXIS2_FREE(env->allocator, (void*)current->key);
+                }
                 AXIS2_FREE(env->allocator, current);
                 current = NULL;
                 current = next;
@@ -686,6 +772,11 @@ axutil_hash_free_void_arg(
             while(current)
             {
                 next = current->next;
+                /* AXIS2C-1632 FIX: Free the key if it was internally copied */
+                if(current->key_is_copy && current->key)
+                {
+                    AXIS2_FREE(env->allocator, (void*)current->key);
+                }
                 AXIS2_FREE(env->allocator, current);
                 current = next;
             }
