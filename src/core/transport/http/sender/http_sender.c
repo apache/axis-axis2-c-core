@@ -102,6 +102,13 @@ axis2_http_sender_configure_proxy_auth(
     axis2_msg_ctx_t * msg_ctx,
     axis2_http_simple_request_t * request);
 
+/* AXIS2C-1635: Helper to properly remove entry from connection_map and free the strdup'd key */
+static void
+axis2_http_sender_connection_map_remove_entry(
+        axutil_hash_t *connection_map,
+        const axutil_env_t *env,
+        const axis2_char_t *server);
+
 static axis2_status_t
 axis2_http_sender_set_http_auth_type(
     axis2_http_sender_t * sender,
@@ -1372,7 +1379,8 @@ axis2_http_sender_send(
                     axis2_char_t *server = axutil_url_get_server(url, env);
                     if(server)
                     {
-                        axutil_hash_set(connection_map, server, AXIS2_HASH_KEY_STRING, NULL);
+                        /* AXIS2C-1635 FIX: Use helper to properly free the strdup'd key */
+                        axis2_http_sender_connection_map_remove_entry(connection_map, env, server);
                     }
                     axutil_url_free(url, env);
                 }
@@ -3810,6 +3818,37 @@ axis2_http_sender_connection_map_create(
 }
 #endif
 
+/* AXIS2C-1635 FIX: Helper to properly remove entry from connection_map and free the strdup'd key.
+ * The keys in connection_map are strdup'd when added, so we must free them when removing entries. */
+static void
+axis2_http_sender_connection_map_remove_entry(
+        axutil_hash_t *connection_map,
+        const axutil_env_t *env,
+        const axis2_char_t *server)
+{
+    axutil_hash_index_t *hi = NULL;
+    const void *key = NULL;
+    void *val = NULL;
+
+    if(!connection_map || !server)
+    {
+        return;
+    }
+
+    /* Iterate to find the entry and get the actual stored key (which was strdup'd) */
+    for(hi = axutil_hash_first(connection_map, env); hi; hi = axutil_hash_next(env, hi))
+    {
+        axutil_hash_this(hi, &key, NULL, &val);
+        if(key && axutil_strcmp((const axis2_char_t *)key, server) == 0)
+        {
+            /* Found the entry - remove it and free the strdup'd key */
+            axutil_hash_set(connection_map, key, AXIS2_HASH_KEY_STRING, NULL);
+            AXIS2_FREE(env->allocator, (void *)key);
+            break;
+        }
+    }
+}
+
 static void
 axis2_http_sender_connection_map_remove(
         axutil_hash_t *connection_map,
@@ -3819,11 +3858,11 @@ axis2_http_sender_connection_map_remove(
 {
     axutil_property_t *property = NULL;
     axis2_endpoint_ref_t *endpoint = NULL;
-    /** 
+    /**
      * Put the http client into message context with own value true so that it will be freed
      * after response processed
      */
-    property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_TRUE, 
+    property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_TRUE,
             axis2_http_client_free_void_arg, http_client);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, property);
     endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
@@ -3840,7 +3879,8 @@ axis2_http_sender_connection_map_remove(
                 axis2_char_t *server = axutil_url_get_server(url, env);
                 if(server)
                 {
-                    axutil_hash_set(connection_map, server, AXIS2_HASH_KEY_STRING, NULL);
+                    /* AXIS2C-1635 FIX: Use helper to properly free the strdup'd key */
+                    axis2_http_sender_connection_map_remove_entry(connection_map, env, server);
                 }
                 axutil_url_free(url, env);
             }
