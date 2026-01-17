@@ -490,6 +490,9 @@ axiom_text_serialize_namespace(
     return AXIS2_SUCCESS;
 }
 
+/* Threshold for warning about large non-optimized binary content (1 MB) */
+#define AXIOM_TEXT_LARGE_BINARY_THRESHOLD (1024 * 1024)
+
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_text_get_text(
     axiom_text_t * om_text,
@@ -511,6 +514,19 @@ axiom_text_get_text(
                 &data_handler_stream_size);
             if(data_handler_stream)
             {
+                /* AXIS2C-1117: Warn about large non-optimized binary content.
+                 * Base64 encoding inflates data by ~33%, so a 54MB file becomes ~72MB
+                 * of inline XML text. This is inefficient and may cause memory issues.
+                 * Users should enable MTOM optimization for large attachments. */
+                if(data_handler_stream_size > AXIOM_TEXT_LARGE_BINARY_THRESHOLD)
+                {
+                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                        "Large binary content (%lu bytes) being Base64-encoded inline. "
+                        "This is inefficient and may cause memory issues. "
+                        "Consider enabling MTOM optimization for attachments larger than 1MB. "
+                        "See AXIS2C-1117 for details.",
+                        (unsigned long)data_handler_stream_size);
+                }
                 encoded_len = axutil_base64_encode_len((int)data_handler_stream_size);
                 encoded_str = AXIS2_MALLOC(env->allocator, encoded_len + 2);
                 if(encoded_str)
