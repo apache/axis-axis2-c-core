@@ -3920,7 +3920,8 @@ axis2_http_sender_connection_map_add(
                 axis2_char_t *server = axutil_url_get_server(url, env);
                 if(server)
                 {
-                    axutil_hash_set(connection_map, axutil_strdup(env, server), 
+                    /* AXIS2C-1632: Don't strdup keys - hash_set copies them internally. */
+                    axutil_hash_set(connection_map, server,
                         AXIS2_HASH_KEY_STRING, http_client);
                     sender->keep_alive = AXIS2_TRUE;
                 }
@@ -3974,21 +3975,16 @@ axis2_http_sender_connection_map_free(
     const axutil_env_t *env)
 {
     void *val = NULL;
-    const void *key = NULL;
     axutil_hash_index_t *hi = NULL;
     axutil_hash_t *ht = (axutil_hash_t *)cm_void;
 
     for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_char_t *name = NULL;
         axis2_http_client_t *value = NULL;
 
-        axutil_hash_this(hi, &key, NULL, &val);
-        name = (axis2_char_t *) key;
-        if(name)
-        {
-            AXIS2_FREE(env->allocator, name);
-        }
+        axutil_hash_this(hi, NULL, NULL, &val);
+        /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+         * Only free values here. */
         value = (axis2_http_client_t *) val;
         if(value)
         {

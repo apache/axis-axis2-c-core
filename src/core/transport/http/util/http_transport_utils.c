@@ -1769,6 +1769,8 @@ axis2_http_transport_utils_get_request_params(
                 ret = axutil_hash_make(env);
             }
             axutil_hash_set(ret, tmp_name, AXIS2_HASH_KEY_STRING, tmp_value);
+            /* AXIS2C-1632: Free the key after hash_set since hash copies it internally. */
+            AXIS2_FREE(env->allocator, tmp_name);
             tmp_name = NULL;
             tmp_value = NULL;
         }
@@ -1782,6 +1784,9 @@ axis2_http_transport_utils_get_request_params(
         tmp_value = axutil_strdup(env, tmp2);
         axis2_http_transport_utils_strdecode(env, tmp_value, tmp_value);
         axutil_hash_set(ret, tmp_name, AXIS2_HASH_KEY_STRING, tmp_value);
+        /* AXIS2C-1632: Free the key after hash_set since hash copies it internally. */
+        AXIS2_FREE(env->allocator, tmp_name);
+        tmp_name = NULL;
     }
 
     /* AXIS2C-1702: Free the duplicated query string */
@@ -3909,14 +3914,15 @@ axis2_http_transport_utils_get_session(
     {
         /* Generate session and set it in session table */
         session_id = axutil_uuid_gen(env);
-        axutil_hash_set(ht, axutil_strdup(env, "id"), AXIS2_HASH_KEY_STRING, axutil_strdup(env, 
-                    session_id));
+        /* AXIS2C-1632: Don't strdup keys - hash_set copies them internally.
+         * Values still need to be strdup'd since hash doesn't manage value memory. */
+        axutil_hash_set(ht, "id", AXIS2_HASH_KEY_STRING, axutil_strdup(env, session_id));
 
         /* Generate expire time and set it in session table */
         expire_time = axutil_date_time_create_with_offset(env, AXIS2_TRANSPORT_SESSION_EXPIRE_DURATION);
         time_str = axutil_strdup(env, axutil_date_time_serialize_date_time(expire_time, env));
         axutil_date_time_free(expire_time, env);
-        axutil_hash_set(ht, axutil_strdup(env, "expires"), AXIS2_HASH_KEY_STRING, time_str);
+        axutil_hash_set(ht, "expires", AXIS2_HASH_KEY_STRING, time_str);
     
         sprintf(session_value, "%s", "");
 
@@ -4116,7 +4122,8 @@ axis2_http_transport_utils_store_cookie(
                 {
                     if(cookie)
                     {
-                        axutil_hash_set(session_map, axutil_strdup(env, server), AXIS2_HASH_KEY_STRING, 
+                        /* AXIS2C-1632: Don't strdup keys - hash_set copies them internally. */
+                        axutil_hash_set(session_map, server, AXIS2_HASH_KEY_STRING,
                                 axutil_strdup(env, cookie));
                     }
                     else /* We remove any cookie set for this endpoint */
@@ -4126,7 +4133,7 @@ axis2_http_transport_utils_store_cookie(
                         {
                             AXIS2_FREE(env->allocator, cookie);
                         }
-                        axutil_hash_set(session_map, axutil_strdup(env, server), AXIS2_HASH_KEY_STRING, NULL);
+                        axutil_hash_set(session_map, server, AXIS2_HASH_KEY_STRING, NULL);
                     }
                 }
                 axutil_url_free(url, env);

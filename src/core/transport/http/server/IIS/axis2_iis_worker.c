@@ -591,7 +591,8 @@ axis2_iis_worker_read_http_headers(
                 strcpy(szTmpName, pChar);
                 axutil_string_replace(szTmpName, '_', '-');
                 http_header = axis2_http_header_create(env, szTmpName, pOpts + 1);
-                axutil_hash_set(headers, axutil_strdup(env, szTmpName), AXIS2_HASH_KEY_STRING,
+                /* AXIS2C-1632: Don't strdup keys - hash_set copies them internally. */
+                axutil_hash_set(headers, szTmpName, AXIS2_HASH_KEY_STRING,
                     http_header);
                 pChar = pEnd + 1;
             }

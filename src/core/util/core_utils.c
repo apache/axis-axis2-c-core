@@ -385,6 +385,9 @@ axis2_core_utils_calculate_default_module_version(
                         {
                             axutil_hash_set(default_modules, module_name_str, AXIS2_HASH_KEY_STRING,
                                 module_ver_str);
+                            /* AXIS2C-1632: Free the key after hash_set since hash copies it internally. */
+                            AXIS2_FREE(env->allocator, module_name_str);
+                            module_name_str = NULL;
                         }
                         else
                         {
@@ -555,7 +558,7 @@ axis2_core_utils_prepare_rest_mapping(
         }
         memset(mapping_struct, 0, sizeof(axutil_core_utils_map_internal_t));
 
-        mapping_key = axutil_strdup(env, mapping_key);
+        /* AXIS2C-1632: Don't strdup the key - hash_set copies string keys internally. */
         axutil_hash_set(rest_map, mapping_key, AXIS2_HASH_KEY_STRING, mapping_struct);
     }
 

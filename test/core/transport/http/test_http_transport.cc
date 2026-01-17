@@ -560,10 +560,10 @@ static void free_request_params_hash(axutil_hash_t *params, const axutil_env_t *
     axutil_hash_index_t *hi;
     for (hi = axutil_hash_first(params, env); hi; hi = axutil_hash_next(env, hi))
     {
-        void *key = NULL;
         void *val = NULL;
-        axutil_hash_this(hi, (const void **)&key, NULL, &val);
-        if (key) AXIS2_FREE(env->allocator, key);
+        axutil_hash_this(hi, NULL, NULL, &val);
+        /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+         * Only free values here. */
         if (val) AXIS2_FREE(env->allocator, val);
     }
     axutil_hash_free(params, env);

@@ -1717,14 +1717,8 @@ axis2_conf_add_default_module_version(
         {
             return AXIS2_FAILURE;
         }
-        axis2_char_t *new_name = axutil_strdup(env, module_name);
-        if(!new_entry)
-        {
-            AXIS2_FREE(env->allocator, new_entry);
-            return AXIS2_FAILURE;
-        }
-
-        axutil_hash_set(name_to_ver_map, new_name, AXIS2_HASH_KEY_STRING, new_entry);
+        /* AXIS2C-1632: Don't strdup the key - hash_set copies string keys internally. */
+        axutil_hash_set(name_to_ver_map, module_name, AXIS2_HASH_KEY_STRING, new_entry);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
