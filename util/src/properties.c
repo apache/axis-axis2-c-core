@@ -68,7 +68,6 @@ axutil_properties_free(
     axutil_properties_t *properties,
     const axutil_env_t *env)
 {
-    axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
     axutil_hash_index_t *hi = NULL;
 
@@ -76,11 +75,9 @@ axutil_properties_free(
     {
         for(hi = axutil_hash_first(properties->prop_hash, env); hi; hi = axutil_hash_next(env, hi))
         {
-            axutil_hash_this(hi, (void *)&key, NULL, (void *)&value);
-            if(key)
-            {
-                AXIS2_FREE(env->allocator, key);
-            }
+            axutil_hash_this(hi, NULL, NULL, (void *)&value);
+            /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+             * Do not manually free keys here to avoid double-free. */
             if(value)
             {
                 AXIS2_FREE(env->allocator, value);
@@ -121,11 +118,10 @@ axutil_properties_set_property(
     if(old)
     {
         AXIS2_FREE(env->allocator, old);
-        axutil_hash_set(properties->prop_hash, key, AXIS2_HASH_KEY_STRING,
-            axutil_strdup(env, value));
-        return AXIS2_SUCCESS;
     }
-    axutil_hash_set(properties->prop_hash, axutil_strdup(env, key), AXIS2_HASH_KEY_STRING,
+    /* AXIS2C-1632: Don't strdup the key - hash_set copies string keys internally.
+     * Value must still be strdup'd since hash doesn't manage value memory. */
+    axutil_hash_set(properties->prop_hash, key, AXIS2_HASH_KEY_STRING,
         axutil_strdup(env, value));
     return AXIS2_SUCCESS;
 }
@@ -246,6 +242,9 @@ axutil_properties_load(
             {
                 tag = axutil_properties_trunk_and_dup(tag, cur, env);
                 axutil_hash_set(prop_hash, key, AXIS2_HASH_KEY_STRING, tag);
+                /* AXIS2C-1632: Free key after hash_set since hash copies it internally */
+                AXIS2_FREE(env->allocator, key);
+                key = NULL;
             }
             status = LINE_STARTED;
         }
@@ -255,6 +254,9 @@ axutil_properties_load(
         *cur = '\0';
         tag = axutil_properties_trunk_and_dup(tag, cur, env);
         axutil_hash_set(prop_hash, key, AXIS2_HASH_KEY_STRING, tag);
+        /* AXIS2C-1632: Free key after hash_set since hash copies it internally */
+        AXIS2_FREE(env->allocator, key);
+        key = NULL;
         status = LINE_STARTED;
     }
     if(status != LINE_STARTED)

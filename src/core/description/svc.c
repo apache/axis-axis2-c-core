@@ -1266,7 +1266,8 @@ axis2_svc_add_mapping(
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
-    axutil_hash_set(svc->op_action_map, axutil_strdup(env, mapping_key), AXIS2_HASH_KEY_STRING,
+    /* AXIS2C-1632: Don't strdup the key - hash_set copies string keys internally. */
+    axutil_hash_set(svc->op_action_map, mapping_key, AXIS2_HASH_KEY_STRING,
         op_desc);
     return AXIS2_SUCCESS;
 }

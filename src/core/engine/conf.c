@@ -381,16 +381,14 @@ axis2_conf_free(
         {
             axis2_char_t *module_ver = NULL;
             /* Cast to const void** for const-correctness with newer GCC versions */
-            axutil_hash_this(hi, (const void **)&key, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             module_ver = (axis2_char_t *)val;
             if(module_ver)
             {
                 AXIS2_FREE(env->allocator, module_ver);
             }
-            if(key)
-            {
-                AXIS2_FREE(env->allocator, key);
-            }
+            /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+             * Do not manually free keys here to avoid double-free. */
         }
         axutil_hash_free(conf->name_to_version_map, env);
     }

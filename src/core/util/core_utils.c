@@ -410,11 +410,8 @@ axis2_core_utils_calculate_default_module_version(
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Added default module"
                 " version : %s for module : %s", (axis2_char_t *)val, (axis2_char_t *)key_string);
             AXIS2_FREE(env->allocator, val);
-            /* the key stored in the hash is the dynamically allocated module_name,
-             * so to avoid a memleak we have to free it before freeing the hash.
-             * TODO: find a better way to deal with this
-             */
-            AXIS2_FREE(env->allocator, key_string);
+            /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+             * Do not manually free keys here to avoid double-free. */
         }
     }
 
