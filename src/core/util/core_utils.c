@@ -728,13 +728,12 @@ axis2_core_utils_free_rest_map(
 {
 
     axutil_hash_index_t *hi = NULL;
-    const void *key = NULL;
     void *val = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
     for(hi = axutil_hash_first(rest_map, env); hi; hi = axutil_hash_next(env, hi))
     {
-        axutil_hash_this(hi, &key, NULL, &val);
+        axutil_hash_this(hi, NULL, NULL, &val);
 
         if(val)
         {
@@ -753,12 +752,8 @@ axis2_core_utils_free_rest_map(
             }
             AXIS2_FREE(env->allocator, mapping_struct);
         }
-
-        if(key)
-        {
-            AXIS2_FREE(env->allocator, (axis2_char_t *)key);
-            key = NULL;
-        }
+        /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+         * Do not manually free keys here to avoid double-free. */
     }
     axutil_hash_free(rest_map, env);
     return status;

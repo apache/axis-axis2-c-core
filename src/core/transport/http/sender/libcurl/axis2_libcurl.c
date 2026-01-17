@@ -566,8 +566,10 @@ axis2_libcurl_send(
     in_stream = axutil_stream_create_libcurl(env, data->memory, data->size);
     trans_in_property = axutil_property_create(env);
     axutil_property_set_scope(trans_in_property, env, AXIS2_SCOPE_REQUEST);
-    axutil_property_set_free_func(trans_in_property, env,
-        libcurl_stream_free);
+    /* Do not set a custom free_func pointing to libcurl_stream_free.
+     * The libcurl library may be unloaded before the property is freed,
+     * making the function pointer invalid. The default property cleanup
+     * (AXIS2_FREE when own_value is true) correctly frees the stream struct. */
     axutil_property_set_value(trans_in_property, env, in_stream);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN,
         trans_in_property);

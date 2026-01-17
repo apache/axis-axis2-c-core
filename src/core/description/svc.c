@@ -406,19 +406,8 @@ axis2_svc_free(
 
     if(svc->op_action_map)
     {
-        axutil_hash_index_t *hi = NULL;
-        const void *key = NULL;
-
-        for(hi = axutil_hash_first(svc->op_action_map, env); hi; hi = axutil_hash_next(env, hi))
-        {
-            axutil_hash_this(hi, &key, NULL, NULL);
-
-            if(key)
-            {
-                AXIS2_FREE(env->allocator, (axis2_char_t *)key);
-                key = NULL;
-            }
-        }
+        /* AXIS2C-1632: Keys are now freed by axutil_hash_free when key_is_copy is set.
+         * Do not manually free keys here to avoid double-free. */
         axutil_hash_free(svc->op_action_map, env);
     }
 
