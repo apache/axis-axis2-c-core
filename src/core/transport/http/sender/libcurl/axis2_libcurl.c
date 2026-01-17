@@ -118,6 +118,7 @@ axis2_libcurl_send(
     unsigned int buffer_size = 0;
     int content_length = -1;
     axis2_char_t *content_type = NULL;
+    axis2_bool_t content_type_allocated = AXIS2_FALSE; /* AXIS2C-1622: track ownership */
     /*axis2_char_t *content_len = AXIS2_HTTP_HEADER_CONTENT_LENGTH_; */
     const axis2_char_t *char_set_enc = NULL;
     axis2_char_t *content = AXIS2_HTTP_HEADER_CONTENT_TYPE_;
@@ -325,6 +326,8 @@ axis2_libcurl_send(
                 content_type =
                 (axis2_char_t *) axiom_output_get_content_type(om_output,
                     env);
+                /* AXIS2C-1622: content_type from axiom_output is NOT allocated,
+                 * only mark as allocated if we create new strings below */
                 if (AXIS2_TRUE != axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
                 {
                     if (axutil_strcmp(soap_action, ""))
@@ -345,6 +348,7 @@ axis2_libcurl_send(
                             AXIS2_ESC_DOUBLE_QUOTE_STR);
                         AXIS2_FREE (env->allocator, content_type);
                         content_type = temp_content_type;
+                        content_type_allocated = AXIS2_TRUE;
                     }
                 }
             }
@@ -359,6 +363,7 @@ axis2_libcurl_send(
                 axutil_stracat(env, content_type, char_set_enc);
                 AXIS2_FREE(env->allocator, content_type);
                 content_type = temp_content_type;
+                content_type_allocated = AXIS2_TRUE;
             }
             else
             {
@@ -387,6 +392,7 @@ axis2_libcurl_send(
                     AXIS2_SEMI_COLON_STR);
                 AXIS2_FREE(env->allocator, content_type);
                 content_type = temp_content_type;
+                content_type_allocated = AXIS2_TRUE;
             }
         }
         else if (is_soap)
@@ -425,10 +431,12 @@ axis2_libcurl_send(
             if (content_type_value)
             {
                 content_type = content_type_value;
+                /* AXIS2C-1622: content_type_value is from property, NOT allocated by us */
             }
             else
             {
                 content_type = axutil_strdup(env,AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML);
+                content_type_allocated = AXIS2_TRUE;
             }
 
         }
@@ -579,7 +587,13 @@ axis2_libcurl_send(
     }
 
     axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
-    AXIS2_FREE(data->env->allocator, content_type);
+    /* AXIS2C-1622: Only free content_type if we allocated it.
+     * In some cases (MTOM, REST with user content type) it points to
+     * external memory that we must not free. */
+    if (content_type_allocated)
+    {
+        AXIS2_FREE(data->env->allocator, content_type);
+    }
     content_type = axis2_libcurl_get_content_type(data, env);
 
     if (content_type)
