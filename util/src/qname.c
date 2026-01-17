@@ -244,11 +244,15 @@ axutil_qname_to_string(
         return qname->qname_string;
     }
 
+    /* AXIS2C-787: Do not include prefix in serialized string.
+     * QName equality is defined by {namespace_uri}localpart only.
+     * Prefixes are just aliases and should not affect equality or hash lookups.
+     * Format: "localpart" or "localpart|namespace_uri" */
     if(!(qname->namespace_uri) || axutil_strcmp(qname->namespace_uri, "") == 0)
     {
         qname->qname_string = axutil_strdup(env, qname->localpart);
     }
-    else if(!(qname->prefix) || axutil_strcmp(qname->prefix, "") == 0)
+    else
     {
         axis2_char_t *temp_string1 = NULL;
         temp_string1 = axutil_stracat(env, qname->localpart, "|");
@@ -256,30 +260,6 @@ axutil_qname_to_string(
         if(temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);
-        }
-    }
-    else
-    {
-        axis2_char_t *temp_string1 = NULL;
-        axis2_char_t *temp_string2 = NULL;
-        axis2_char_t *temp_string3 = NULL;
-
-        temp_string1 = axutil_stracat(env, qname->localpart, "|");
-        temp_string2 = axutil_stracat(env, temp_string1, qname->namespace_uri);
-        temp_string3 = axutil_stracat(env, temp_string2, "|");
-        qname->qname_string = axutil_stracat(env, temp_string3, qname->prefix);
-
-        if(temp_string1)
-        {
-            AXIS2_FREE(env->allocator, temp_string1);
-        }
-        if(temp_string2)
-        {
-            AXIS2_FREE(env->allocator, temp_string2);
-        }
-        if(temp_string3)
-        {
-            AXIS2_FREE(env->allocator, temp_string3);
         }
     }
     return qname->qname_string;
