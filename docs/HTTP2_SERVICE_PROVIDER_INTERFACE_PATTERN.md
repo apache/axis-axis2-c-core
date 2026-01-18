@@ -93,7 +93,7 @@ The concrete implementation simulates Java interface implementation:
 /* Forward declaration of concrete implementation struct */
 typedef struct axis2_engine_service_provider_impl
 {
-    axis2_http_service_provider_t interface;  /* Interface "inheritance" */
+    axis2_http_service_provider_t interface;  /* Must be first - allows casting */
     /* Private implementation data could go here */
 } axis2_engine_service_provider_impl_t;
 
@@ -348,3 +348,20 @@ This interface pattern delivers:
 ✅ **Testability**: Each component can be independently unit tested
 
 The pattern successfully brings **Java-style polymorphism and interface abstraction to C**, enabling enterprise-grade architecture patterns in a systems programming language.
+
+## 📚 Related Documents
+
+| Document | Description |
+|----------|-------------|
+| [HTTP2_INTERFACE_PATTERN_IMPLEMENTATION.md](HTTP2_INTERFACE_PATTERN_IMPLEMENTATION.md) | Apache2 Request Processor interface for thread-safe HTTP/2 JSON processing |
+| [HTTP11_SOAP_HTTP_CLIENT_C.md](HTTP11_SOAP_HTTP_CLIENT_C.md) | HTTP/1.1 client stream polymorphism and decorator pattern |
+
+### Pattern Comparison
+
+All three documents describe the same C polymorphism technique using "interface as first member":
+
+| Pattern | Interface | Purpose |
+|---------|-----------|---------|
+| **Service Provider** | `axis2_http_service_provider_t` | Decouple HTTP transport from SOAP engine |
+| **Request Processor** | `axis2_apache2_request_processor_t` | Thread-safe HTTP/2 request handling |
+| **Stream** | `axutil_stream_t` | Abstract I/O over socket, SSL, file, buffer |

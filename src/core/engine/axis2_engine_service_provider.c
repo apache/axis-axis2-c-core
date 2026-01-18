@@ -35,7 +35,7 @@
 
 struct axis2_engine_service_provider
 {
-    axis2_http_service_provider_t base;
+    axis2_http_service_provider_t base;  /* Must be first - allows casting */
 };
 
 typedef struct axis2_engine_service_provider axis2_engine_service_provider_t;

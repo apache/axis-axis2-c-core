@@ -25,7 +25,7 @@
 /** SOAP processor implementation structure */
 typedef struct axis2_apache2_soap_processor_impl
 {
-    axis2_apache2_request_processor_t interface;
+    axis2_apache2_request_processor_t interface;  /* Must be first - allows casting */
 } axis2_apache2_soap_processor_impl_t;
 
 /* Forward declarations */

@@ -46,8 +46,7 @@
 /** JSON processor implementation structure */
 typedef struct axis2_apache2_json_processor_impl
 {
-    /** Interface "inheritance" - must be first member */
-    axis2_apache2_request_processor_t interface;
+    axis2_apache2_request_processor_t interface;  /* Must be first - allows casting */
 
     /** Statistics tracking */
     unsigned long requests_processed;
