@@ -120,12 +120,14 @@ axutil_stream_free(
             }
             stream->buffer = NULL;
             stream->len = -1;
+            AXIS2_FREE(env->allocator, stream);
             break;
         }
         case AXIS2_STREAM_FILE:
         {
             stream->fp = NULL;
             stream->len = -1;
+            AXIS2_FREE(env->allocator, stream);
             break;
         }
         case AXIS2_STREAM_SOCKET:
@@ -136,13 +138,43 @@ axutil_stream_free(
             }
             stream->socket = -1;
             stream->len = -1;
+            AXIS2_FREE(env->allocator, stream);
+            break;
+        }
+        case AXIS2_STREAM_MANAGED:
+        {
+            /*
+             * AXIS2C-1480: Managed streams handle their own cleanup.
+             * Convention for managed streams:
+             * - buffer_head: allocated data buffer (freed here)
+             * - buffer: current position (not separately freed)
+             * - fp: if non-NULL, treated as underlying stream to free
+             *
+             * This allows wrapper streams (like prepend streams) to store
+             * their cleanup data in standard fields.
+             */
+            if(stream->buffer_head)
+            {
+                AXIS2_FREE(env->allocator, stream->buffer_head);
+                stream->buffer_head = NULL;
+            }
+            stream->buffer = NULL;
+
+            /* If fp is set, treat it as an underlying stream to free */
+            if(stream->fp)
+            {
+                axutil_stream_t *underlying = (axutil_stream_t *)stream->fp;
+                stream->fp = NULL;
+                axutil_stream_free(underlying, env);
+            }
+
+            AXIS2_FREE(env->allocator, stream);
             break;
         }
         default:
+            AXIS2_FREE(env->allocator, stream);
             break;
     }
-
-    AXIS2_FREE(env->allocator, stream);
 }
 
 void AXIS2_CALL

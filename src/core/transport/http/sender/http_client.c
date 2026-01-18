@@ -35,6 +35,13 @@
 #define AXIS2_HTTP_HEADER_LENGTH 4096
 #define AXIS2_HTTP_STATUS_LINE_LENGTH 512
 
+/*
+ * AXIS2C-1480: Read buffer size for efficient header parsing.
+ * Instead of reading 1 byte at a time (expensive syscall per byte),
+ * we read chunks and scan for CRLF in memory.
+ */
+#define AXIS2_HTTP_READ_BUFFER_SIZE 4096
+
 struct axis2_http_client
 {
     int sockfd;
@@ -63,6 +70,208 @@ struct axis2_http_client
     axis2_bool_t doing_mtom;
     axis2_char_t *mtom_sending_callback_name;
 };
+
+/*
+ * AXIS2C-1480: Prepend stream wrapper for efficient header reading.
+ *
+ * When reading HTTP headers in chunks (instead of byte-by-byte), we may
+ * read beyond the header boundary into the body. This wrapper stream
+ * serves that "leftover" data first before delegating to the underlying
+ * socket/SSL stream.
+ */
+typedef struct axis2_prepend_stream_impl
+{
+    axutil_stream_t stream;         /* Must be first - allows casting */
+    axutil_stream_t *underlying;    /* Original socket/SSL stream */
+    axis2_char_t *prepend_data;     /* Leftover data from header reading */
+    int prepend_pos;                /* Current position in prepend buffer */
+    int prepend_len;                /* Total length of prepend data */
+} axis2_prepend_stream_impl_t;
+
+static int AXIS2_CALL
+axis2_prepend_stream_read(
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
+    void *buffer,
+    size_t count)
+{
+    axis2_prepend_stream_impl_t *impl = (axis2_prepend_stream_impl_t *)stream;
+    int total_read = 0;
+    axis2_char_t *buf = (axis2_char_t *)buffer;
+
+    /* First, return any prepend data */
+    if (impl->prepend_data && impl->prepend_pos < impl->prepend_len)
+    {
+        int available = impl->prepend_len - impl->prepend_pos;
+        int to_copy = (available < (int)count) ? available : (int)count;
+
+        memcpy(buf, impl->prepend_data + impl->prepend_pos, to_copy);
+        impl->prepend_pos += to_copy;
+        total_read = to_copy;
+
+        /* If we've satisfied the request from prepend, return */
+        if (total_read >= (int)count)
+        {
+            return total_read;
+        }
+
+        /* Otherwise, read remainder from underlying stream */
+        buf += to_copy;
+        count -= to_copy;
+    }
+
+    /* Read from underlying stream */
+    if (impl->underlying && impl->underlying->read)
+    {
+        int underlying_read = impl->underlying->read(impl->underlying, env, buf, count);
+        if (underlying_read > 0)
+        {
+            total_read += underlying_read;
+        }
+        else if (total_read == 0)
+        {
+            /* No prepend data and underlying returned error/eof */
+            return underlying_read;
+        }
+    }
+
+    return total_read;
+}
+
+static int AXIS2_CALL
+axis2_prepend_stream_write(
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
+    const void *buffer,
+    size_t count)
+{
+    axis2_prepend_stream_impl_t *impl = (axis2_prepend_stream_impl_t *)stream;
+
+    /* Delegate write to underlying stream */
+    if (impl->underlying && impl->underlying->write)
+    {
+        return impl->underlying->write(impl->underlying, env, buffer, count);
+    }
+    return -1;
+}
+
+static int AXIS2_CALL
+axis2_prepend_stream_skip(
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
+    int count)
+{
+    axis2_prepend_stream_impl_t *impl = (axis2_prepend_stream_impl_t *)stream;
+    int total_skipped = 0;
+
+    /* Skip prepend data first */
+    if (impl->prepend_data && impl->prepend_pos < impl->prepend_len)
+    {
+        int available = impl->prepend_len - impl->prepend_pos;
+        int to_skip = (available < count) ? available : count;
+
+        impl->prepend_pos += to_skip;
+        total_skipped = to_skip;
+        count -= to_skip;
+    }
+
+    /* Skip from underlying stream if needed */
+    if (count > 0 && impl->underlying && impl->underlying->skip)
+    {
+        int underlying_skipped = impl->underlying->skip(impl->underlying, env, count);
+        if (underlying_skipped > 0)
+        {
+            total_skipped += underlying_skipped;
+        }
+    }
+
+    return total_skipped;
+}
+
+static void AXIS2_CALL
+axis2_prepend_stream_free(
+    axutil_stream_t *stream,
+    const axutil_env_t *env)
+{
+    axis2_prepend_stream_impl_t *impl = (axis2_prepend_stream_impl_t *)stream;
+
+    if (impl)
+    {
+        if (impl->prepend_data)
+        {
+            AXIS2_FREE(env->allocator, impl->prepend_data);
+            impl->prepend_data = NULL;
+        }
+        /* Free the underlying stream */
+        if (impl->underlying)
+        {
+            axutil_stream_free(impl->underlying, env);
+            impl->underlying = NULL;
+        }
+        AXIS2_FREE(env->allocator, impl);
+    }
+}
+
+/*
+ * Create a prepend stream wrapper that serves prepend_data first,
+ * then delegates to underlying stream.
+ * Takes ownership of both prepend_data and underlying stream.
+ *
+ * Memory layout for cleanup:
+ * - buffer_head: points to prepend_data (freed by MANAGED handler)
+ * - buffer: current read position in prepend_data
+ * - len: remaining prepend bytes
+ * - fp: stores underlying stream pointer (freed by MANAGED handler)
+ */
+static axutil_stream_t *
+axis2_prepend_stream_create(
+    const axutil_env_t *env,
+    axis2_char_t *prepend_data,
+    int prepend_len,
+    axutil_stream_t *underlying)
+{
+    axis2_prepend_stream_impl_t *impl;
+
+    impl = (axis2_prepend_stream_impl_t *)AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_prepend_stream_impl_t));
+    if (!impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    memset(impl, 0, sizeof(axis2_prepend_stream_impl_t));
+
+    impl->stream.stream_type = AXIS2_STREAM_MANAGED;
+    impl->stream.read = axis2_prepend_stream_read;
+    impl->stream.write = axis2_prepend_stream_write;
+    impl->stream.skip = axis2_prepend_stream_skip;
+    impl->stream.axis2_eof = EOF;
+
+    /*
+     * Store cleanup info in base stream fields for axutil_stream_free():
+     * - buffer_head: prepend_data allocation (freed by MANAGED handler)
+     * - buffer: current position (not separately freed)
+     * - len: remaining prepend bytes
+     * - fp: underlying stream as void* (freed as stream by MANAGED handler)
+     */
+    impl->stream.buffer_head = prepend_data;
+    impl->stream.buffer = prepend_data;
+    impl->stream.len = prepend_len;
+    impl->stream.max_len = prepend_len;
+    impl->stream.fp = (FILE *)underlying;  /* Store stream ptr for cleanup */
+
+    /* Also store in our extended fields for the read/write/skip functions */
+    impl->underlying = underlying;
+    impl->prepend_data = prepend_data;
+    impl->prepend_pos = 0;
+    impl->prepend_len = prepend_len;
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+        "Created prepend stream with %d bytes of prepend data (AXIS2C-1480)", prepend_len);
+
+    return (axutil_stream_t *)impl;
+}
 
 AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
 axis2_http_client_create(
@@ -564,6 +773,13 @@ axis2_http_client_send(
             axutil_http_chunked_stream_free(chunked_stream, env);
         }
     }
+    else
+    {
+        /* No body to send (e.g., GET or POST with Content-Length: 0).
+         * Headers were already written successfully, so return SUCCESS.
+         */
+        status = AXIS2_SUCCESS;
+    }
 
     client->request_sent = AXIS2_TRUE;
     return status;
@@ -578,6 +794,20 @@ axis2_http_client_recieve_header(
     return axis2_http_client_receive_header(client, env);
 }
 
+/*
+ * AXIS2C-1480: Buffered HTTP header reading implementation.
+ *
+ * Previous implementation read 1 byte at a time, causing excessive syscalls.
+ * This implementation reads in chunks (4KB) and scans for CRLF in memory,
+ * dramatically reducing syscall overhead.
+ *
+ * Algorithm:
+ * 1. Read chunks into a local buffer
+ * 2. Scan buffer for CRLF line endings
+ * 3. Extract and process complete lines (status line, headers)
+ * 4. When headers end (\r\n\r\n), any remaining data is body content
+ * 5. Wrap leftover data in a prepend stream for body reading
+ */
 AXIS2_EXTERN int AXIS2_CALL
 axis2_http_client_receive_header(
     axis2_http_client_t * client,
@@ -585,13 +815,16 @@ axis2_http_client_receive_header(
 {
     int status_code = -1;
     axis2_http_status_line_t *status_line = NULL;
-    axis2_char_t str_status_line[AXIS2_HTTP_STATUS_LINE_LENGTH];
-    axis2_char_t tmp_buf[3];
-    axis2_char_t str_header[AXIS2_HTTP_HEADER_LENGTH];
-    int read = 0;
+    axis2_char_t str_line[AXIS2_HTTP_HEADER_LENGTH];  /* Buffer for current line */
+    int str_line_len = 0;
     int http_status = 0;
-    axis2_bool_t end_of_line = AXIS2_FALSE;
     axis2_bool_t end_of_headers = AXIS2_FALSE;
+    axis2_bool_t status_line_parsed = AXIS2_FALSE;
+
+    /* AXIS2C-1480: Read buffer for efficient chunk-based reading */
+    axis2_char_t read_buffer[AXIS2_HTTP_READ_BUFFER_SIZE];
+    int buf_pos = 0;      /* Current read position in buffer */
+    int buf_len = 0;      /* Amount of valid data in buffer */
 
     if(-1 == client->sockfd || !client->data_stream || AXIS2_FALSE == client->request_sent)
     {
@@ -606,117 +839,203 @@ axis2_http_client_receive_header(
         return -1;
     }
 
-    /* read the status line */
-    do
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+        "AXIS2C-1480: Using buffered header reading (chunk size: %d)", AXIS2_HTTP_READ_BUFFER_SIZE);
+
+    /*
+     * Main parsing loop: read chunks, extract lines, process headers
+     */
+    while(!end_of_headers)
     {
-        memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
-        unsigned int str_status_line_length = 0;
-        while((read = axutil_stream_read(client->data_stream, env, tmp_buf, 1)) > 0)
+        /* If buffer is exhausted, read more data */
+        if(buf_pos >= buf_len)
         {
-            /* "read" variable is number of characters read by stream */
-            tmp_buf[read] = '\0';
-            str_status_line_length += read;
-            if (str_status_line_length + 1 > AXIS2_HTTP_STATUS_LINE_LENGTH)
+            int bytes_read = axutil_stream_read(client->data_stream, env,
+                                                read_buffer, AXIS2_HTTP_READ_BUFFER_SIZE);
+
+            if(bytes_read < 0)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum status line length %i",
-                        AXIS2_HTTP_STATUS_LINE_LENGTH);
-                end_of_line = AXIS2_TRUE;
-                break;
+                /* AXIS2C-1568: Distinguish timeout from other errors */
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "http client, response timed out");
+                AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
+                if(status_line)
+                {
+                    axis2_http_status_line_free(status_line, env);
+                }
+                return AXIS2_HTTP_CLIENT_STATUS_TIMEOUT;
             }
-            strcat(str_status_line, tmp_buf);
-            if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
+            else if(bytes_read == 0)
             {
-                end_of_line = AXIS2_TRUE;
-                break;
+                AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_SERVER_SHUTDOWN, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response error, Server Shutdown");
+                if(status_line)
+                {
+                    axis2_http_status_line_free(status_line, env);
+                }
+                return 0;
             }
+
+            buf_pos = 0;
+            buf_len = bytes_read;
         }
 
-        if(read < 0)
+        /* Scan buffer for CRLF, building current line */
+        while(buf_pos < buf_len && !end_of_headers)
         {
-            /* AXIS2C-1568 FIX: Return distinct status code for timeout
-             * This allows http_sender to implement retry logic for keep-alive connections
-             * that have been closed by the server due to idle timeout.
-             */
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "http client, response timed out");
-            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
-            return AXIS2_HTTP_CLIENT_STATUS_TIMEOUT;  /* -2: timeout, distinct from -1: error */
-        }
-        else if(read == 0)
-        {
-            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_SERVER_SHUTDOWN, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response error, Server Shutdown");
-            return 0;
-        }
+            axis2_char_t c = read_buffer[buf_pos++];
 
-        status_line = axis2_http_status_line_create(env, str_status_line);
-        if(!status_line)
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "axis2_http_status_line_create failed for \
-str_status_line %s", str_status_line);
-            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, AXIS2_FAILURE);
-            http_status = 0;
-            continue;
-
-        }
-        http_status = axis2_http_status_line_get_status_code(status_line, env);
-
-    }
-    while(AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
-
-    if(client->response)
-        axis2_http_simple_response_free(client->response, env);
-    client->response = axis2_http_simple_response_create_default(env);
-    axis2_http_simple_response_set_status_line(client->response, env,
-        axis2_http_status_line_get_http_version(status_line, env),
-        axis2_http_status_line_get_status_code(status_line, env),
-        axis2_http_status_line_get_reason_phrase(status_line, env));
-
-    /* now read the headers */
-    memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
-    unsigned int str_header_length = 0;
-    end_of_line = AXIS2_FALSE;
-    while(AXIS2_FALSE == end_of_headers)
-    {
-        while((read = axutil_stream_read(client->data_stream, env, tmp_buf, 1)) > 0)
-        {
-            tmp_buf[read] = '\0';
-            str_header_length += read;
-            if (str_header_length + 1 > AXIS2_HTTP_HEADER_LENGTH)
+            /* Append character to current line */
+            if(str_line_len < AXIS2_HTTP_HEADER_LENGTH - 1)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum header line length %i",
-                        AXIS2_HTTP_HEADER_LENGTH);
-                end_of_line = AXIS2_TRUE;
-                break;
-            }
-            strcat(str_header, tmp_buf);
-            if(0 != strstr(str_header, AXIS2_HTTP_CRLF))
-            {
-                end_of_line = AXIS2_TRUE;
-                break;
-            }
-        }
-        if(AXIS2_TRUE == end_of_line)
-        {
-            if(0 == axutil_strcmp(str_header, AXIS2_HTTP_CRLF))
-            {
-                end_of_headers = AXIS2_TRUE;
+                str_line[str_line_len++] = c;
+                str_line[str_line_len] = '\0';
             }
             else
             {
-                axis2_http_header_t *tmp_header = axis2_http_header_create_by_str(env, str_header);
-                memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
-                if(tmp_header)
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Header line exceeds maximum length %d", AXIS2_HTTP_HEADER_LENGTH);
+                /* Continue to find line end, but truncate */
+            }
+
+            /* Check for CRLF (end of line) */
+            if(str_line_len >= 2 &&
+               str_line[str_line_len - 2] == '\r' &&
+               str_line[str_line_len - 1] == '\n')
+            {
+                /* Complete line found */
+                if(str_line_len == 2)
                 {
-                    axis2_http_simple_response_set_header(client->response, env, tmp_header);
+                    /* Empty line (\r\n) = end of headers */
+                    end_of_headers = AXIS2_TRUE;
                 }
+                else if(!status_line_parsed)
+                {
+                    /* First line is the status line */
+                    status_line = axis2_http_status_line_create(env, str_line);
+                    if(!status_line)
+                    {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "axis2_http_status_line_create failed for: %s", str_line);
+                        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, AXIS2_FAILURE);
+                        http_status = 0;
+                    }
+                    else
+                    {
+                        http_status = axis2_http_status_line_get_status_code(status_line, env);
+                        /* Handle 1xx informational responses - continue reading */
+                        if(http_status >= AXIS2_HTTP_RESPONSE_OK_CODE_VAL)
+                        {
+                            status_line_parsed = AXIS2_TRUE;
+                        }
+                        else
+                        {
+                            /* 1xx response, free and continue */
+                            axis2_http_status_line_free(status_line, env);
+                            status_line = NULL;
+                        }
+                    }
+                }
+                else
+                {
+                    /* Header line */
+                    axis2_http_header_t *tmp_header = axis2_http_header_create_by_str(env, str_line);
+                    if(tmp_header)
+                    {
+                        if(!client->response)
+                        {
+                            client->response = axis2_http_simple_response_create_default(env);
+                            if(status_line)
+                            {
+                                axis2_http_simple_response_set_status_line(client->response, env,
+                                    axis2_http_status_line_get_http_version(status_line, env),
+                                    axis2_http_status_line_get_status_code(status_line, env),
+                                    axis2_http_status_line_get_reason_phrase(status_line, env));
+                            }
+                        }
+                        axis2_http_simple_response_set_header(client->response, env, tmp_header);
+                    }
+                }
+
+                /* Reset line buffer for next line */
+                str_line_len = 0;
+                str_line[0] = '\0';
             }
         }
-        end_of_line = AXIS2_FALSE;
     }
-    axis2_http_simple_response_set_body_stream(client->response, env, client->data_stream);
-    /* Clear our reference since response now owns the stream */
-    client->data_stream = NULL;
+
+    /* Create response if not already created */
+    if(!client->response && status_line)
+    {
+        client->response = axis2_http_simple_response_create_default(env);
+        axis2_http_simple_response_set_status_line(client->response, env,
+            axis2_http_status_line_get_http_version(status_line, env),
+            axis2_http_status_line_get_status_code(status_line, env),
+            axis2_http_status_line_get_reason_phrase(status_line, env));
+    }
+
+    /* Handle case where status line parsing failed - response will be NULL */
+    if(!client->response)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Failed to create HTTP response - status line may be malformed");
+        if(status_line)
+        {
+            axis2_http_status_line_free(status_line, env);
+        }
+        return -1;
+    }
+
+    /*
+     * AXIS2C-1480: Handle leftover data (body bytes read during header parsing)
+     *
+     * If buf_pos < buf_len, we've read beyond the headers into the body.
+     * Create a prepend stream to serve this data first before reading
+     * from the underlying socket stream.
+     */
+    if(buf_pos < buf_len)
+    {
+        int leftover_len = buf_len - buf_pos;
+        axis2_char_t *leftover_data = (axis2_char_t *)AXIS2_MALLOC(env->allocator, leftover_len);
+
+        if(leftover_data)
+        {
+            memcpy(leftover_data, read_buffer + buf_pos, leftover_len);
+
+            axutil_stream_t *body_stream = axis2_prepend_stream_create(env,
+                leftover_data, leftover_len, client->data_stream);
+
+            if(body_stream)
+            {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                    "AXIS2C-1480: %d bytes of body data read during header parsing", leftover_len);
+                axis2_http_simple_response_set_body_stream(client->response, env, body_stream);
+                /* Clear our reference - prepend stream now owns the underlying stream */
+                client->data_stream = NULL;
+            }
+            else
+            {
+                /* Failed to create prepend stream, free leftover and fall back */
+                AXIS2_FREE(env->allocator, leftover_data);
+                axis2_http_simple_response_set_body_stream(client->response, env, client->data_stream);
+                client->data_stream = NULL;
+            }
+        }
+        else
+        {
+            /* Memory allocation failed, fall back to original behavior */
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "AXIS2C-1480: Failed to allocate leftover buffer, body may be incomplete");
+            axis2_http_simple_response_set_body_stream(client->response, env, client->data_stream);
+            client->data_stream = NULL;
+        }
+    }
+    else
+    {
+        /* No leftover data, pass stream directly */
+        axis2_http_simple_response_set_body_stream(client->response, env, client->data_stream);
+        client->data_stream = NULL;
+    }
+
     if(status_line)
     {
         status_code = axis2_http_status_line_get_status_code(status_line, env);
@@ -732,6 +1051,7 @@ str_status_line %s", str_status_line);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response does not contain Content-Type");
         return -1;
     }
+
     return status_code;
 }
 
