@@ -239,6 +239,10 @@ AXIS2_EXTERN int AXIS2_CALL
 axutil_base64_encode_len(
     int len)
 {
+    /* Returns buffer size needed: base64 output size + 1 for null terminator.
+     * Base64 encodes 3 bytes into 4 characters, so output is ceil(len/3)*4.
+     * The +1 is for the null terminator - this returns allocation size, not strlen.
+     * See AXIS2C-976 for discussion of this design choice. */
     return ((len + 2) / 3 * 4) + 1;
 }
 
@@ -285,6 +289,7 @@ axutil_base64_encode(
     }
 
     *p++ = '\0';
+    /* Returns total bytes written including null terminator (allocation size, not strlen) */
     return p - encoded;
 #endif                          /* __OS400__ */
 }
@@ -326,6 +331,7 @@ axutil_base64_encode_binary(
     }
 
     *p++ = '\0';
+    /* Returns total bytes written including null terminator (allocation size, not strlen).
+     * We are sure that the difference lies within the int range. */
     return (int)(p - encoded);
-    /* We are sure that the difference lies within the int range */
 }

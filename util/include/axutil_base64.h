@@ -48,21 +48,25 @@ extern "C"
      */
 
     /*
-     * Given the length of an un-encrypted string, get the length of the
-     * encrypted string.
-     * @param len the length of an unencrypted string.
-     * @return the length of the string after it is encrypted
+     * Given the length of an un-encoded string, get the buffer size needed
+     * to hold the base64-encoded result.
+     * @param len the length of the plain text string to be encoded.
+     * @return the buffer size needed, including space for null terminator.
+     *         This is one more than strlen() would return on the encoded string.
+     *         Use this value for memory allocation: malloc(axutil_base64_encode_len(len))
      */
     AXIS2_EXTERN int AXIS2_CALL
     axutil_base64_encode_len(
         int len);
 
     /*
-     * Encode a text string using base64encoding.
-     * @param coded_dst The destination string for the encoded string.
+     * Encode a text string using base64 encoding.
+     * @param coded_dst The destination buffer for the encoded string.
+     *                  Must be at least axutil_base64_encode_len(len_plain_src) bytes.
      * @param plain_src The original string in plain text
      * @param len_plain_src The length of the plain text string
-     * @return the length of the encoded string
+     * @return the number of bytes written including null terminator.
+     *         This is one more than strlen(coded_dst) would return.
      */
     AXIS2_EXTERN int AXIS2_CALL
     axutil_base64_encode(
@@ -71,11 +75,13 @@ extern "C"
         int len_plain_src);
 
     /*
-     * Encode an EBCDIC string using base64encoding.
-     * @param coded_dst The destination string for the encoded string.
-     * @param plain_src The original string in plain text
-     * @param len_plain_src The length of the plain text string
-     * @return the length of the encoded string
+     * Encode binary data using base64 encoding.
+     * @param coded_dst The destination buffer for the encoded string.
+     *                  Must be at least axutil_base64_encode_len(len_plain_src) bytes.
+     * @param plain_src The binary data to encode
+     * @param len_plain_src The length of the binary data
+     * @return the number of bytes written including null terminator.
+     *         This is one more than strlen(coded_dst) would return.
      */
     AXIS2_EXTERN int AXIS2_CALL
     axutil_base64_encode_binary(
