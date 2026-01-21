@@ -17,19 +17,22 @@ if GTEST_AVAILABLE
 
 # Conditional HTTP/2 tests - only build when HTTP/2 is enabled
 if WITH_NGHTTP2
-TESTS = test_engine test_http_service_provider_interface
-check_PROGRAMS = test_engine test_http_service_provider_interface
-noinst_PROGRAMS = test_engine test_http_service_provider_interface
+TESTS = test_engine test_phase test_http_service_provider_interface
+check_PROGRAMS = test_engine test_phase test_http_service_provider_interface
+noinst_PROGRAMS = test_engine test_phase test_http_service_provider_interface
 else
 # HTTP/1.1 SOAP mode - skip HTTP/2 tests gracefully
-TESTS = test_engine
-check_PROGRAMS = test_engine
-noinst_PROGRAMS = test_engine
+TESTS = test_engine test_phase
+check_PROGRAMS = test_engine test_phase
+noinst_PROGRAMS = test_engine test_phase
 endif
 
 SUBDIRS =
 AM_CFLAGS = -g
 test_engine_SOURCES = test_engine.cc
+
+# AXIS2C-1294: Phase handler duplicate insertion tests
+test_phase_SOURCES = test_phase.cc
 
 # Revolutionary HTTP Service Provider Interface Pattern Test (HTTP/2 only)
 if WITH_NGHTTP2
@@ -38,6 +41,17 @@ endif
 
 
 test_engine_LDADD   =   \
+				../../../util/src/libaxutil.la \
+				../../../axiom/src/om/libaxis2_axiom.la \
+				../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+				$(top_builddir)/src/core/engine/libaxis2_engine.la \
+				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/neethi/src/libneethi.la \
+				$(top_builddir)/$(GTEST)/libgtest.a \
+				$(top_builddir)/$(GTEST)/libgtest_main.a
+
+# AXIS2C-1294: Phase handler duplicate insertion tests
+test_phase_LDADD   =   \
 				../../../util/src/libaxutil.la \
 				../../../axiom/src/om/libaxis2_axiom.la \
 				../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \

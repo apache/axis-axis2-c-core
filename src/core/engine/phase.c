@@ -28,6 +28,13 @@ axis2_phase_add_unique(
     axis2_handler_t * handler);
 
 static axis2_status_t
+axis2_phase_add_unique_at(
+    const axutil_env_t * env,
+    axutil_array_list_t * list,
+    int index,
+    axis2_handler_t * handler);
+
+static axis2_status_t
 axis2_phase_remove_unique(
     const axutil_env_t * env,
     axutil_array_list_t * list,
@@ -700,7 +707,8 @@ axis2_phase_insert_before(
 
             if(!axutil_strcmp(before, handler_name))
             {
-                return axutil_array_list_add_at(phase->handlers, env, i, handler);
+                /* AXIS2C-1294 FIX: Use duplicate-checking insert */
+                return axis2_phase_add_unique_at(env, phase->handlers, i, handler);
             }
         }
     }
@@ -781,7 +789,8 @@ axis2_phase_insert_after(
 
         if(!axutil_strcmp(after, handler_name))
         {
-            return axutil_array_list_add_at(phase->handlers, env, 0, handler);
+            /* AXIS2C-1294 FIX: Use duplicate-checking insert */
+            return axis2_phase_add_unique_at(env, phase->handlers, 0, handler);
         }
     }
 
@@ -823,13 +832,19 @@ axis2_phase_insert_after(
                     return axis2_phase_add_unique(env, phase->handlers, handler);
                 }
                 else
-                    return axutil_array_list_add_at(phase->handlers, env, i + 1, handler);
+                {
+                    /* AXIS2C-1294 FIX: Use duplicate-checking insert */
+                    return axis2_phase_add_unique_at(env, phase->handlers, i + 1, handler);
+                }
             }
         }
     }
 
     if(size > 0)
-        return axutil_array_list_add_at(phase->handlers, env, 0, handler);
+    {
+        /* AXIS2C-1294 FIX: Use duplicate-checking insert */
+        return axis2_phase_add_unique_at(env, phase->handlers, 0, handler);
+    }
     else
     {
         return axis2_phase_add_unique(env, phase->handlers, handler);
@@ -1020,7 +1035,8 @@ axis2_phase_insert_before_and_after(
             {
                 if(after + 1 < size)
                 {
-                    return axutil_array_list_add_at(phase->handlers, env, after + 1, handler);
+                    /* AXIS2C-1294 FIX: Use duplicate-checking insert */
+                    return axis2_phase_add_unique_at(env, phase->handlers, after + 1, handler);
                 }
                 else
                 {
@@ -1237,6 +1253,48 @@ axis2_phase_add_unique(
     }
     if(add_handler)
         axutil_array_list_add(list, env, handler);
+    return AXIS2_SUCCESS;
+}
+
+/**
+ * AXIS2C-1294 FIX: Add handler at specific index with duplicate check.
+ * This prevents the same handler from being inserted multiple times when
+ * using before/after positioning rules.
+ */
+static axis2_status_t
+axis2_phase_add_unique_at(
+    const axutil_env_t * env,
+    axutil_array_list_t * list,
+    int index,
+    axis2_handler_t * handler)
+{
+    int i = 0, size = 0;
+    axis2_bool_t add_handler = AXIS2_TRUE;
+    const axutil_string_t *handler_name = NULL;
+
+    handler_name = axis2_handler_get_name(handler, env);
+    size = axutil_array_list_size(list, env);
+    for(i = 0; i < size; i++)
+    {
+        axis2_handler_t *obj = NULL;
+        const axutil_string_t *obj_name = NULL;
+
+        obj = (axis2_handler_t *)axutil_array_list_get(list, env, i);
+        obj_name = axis2_handler_get_name(obj, env);
+        if(obj == handler)
+        {
+            add_handler = AXIS2_FALSE;
+            break;
+        }
+        else if(!axutil_strcmp(axutil_string_get_buffer(handler_name, env),
+            axutil_string_get_buffer(obj_name, env)))
+        {
+            add_handler = AXIS2_FALSE;
+            break;
+        }
+    }
+    if(add_handler)
+        axutil_array_list_add_at(list, env, index, handler);
     return AXIS2_SUCCESS;
 }
 
