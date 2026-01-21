@@ -210,6 +210,8 @@ AC_ARG_ENABLE(asan, [  --enable-asan
     CFLAGS="$CFLAGS -fsanitize=address -fno-omit-frame-pointer"
     CPPFLAGS="$CPPFLAGS -fsanitize=address -fno-omit-frame-pointer"
     CXXFLAGS="$CXXFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    dnl LDFLAGS must include -fsanitize=address for executables to link correctly
+    LDFLAGS="$LDFLAGS -fsanitize=address"
     ;;
   esac ],[
   AC_MSG_RESULT(no)
