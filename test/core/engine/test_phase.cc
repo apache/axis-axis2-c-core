@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 
 #include <stdio.h>
+#include <vector>
 #include <axutil_env.h>
 #include <axis2_phase.h>
 #include <axis2_handler.h>
@@ -40,17 +41,41 @@ protected:
         m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
         m_error = axutil_error_create(m_allocator);
         m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+        m_handler_descs.clear();
     }
 
     void TearDown()
     {
+        /* Free all tracked handler_descs (which also free their handlers) */
+        for (auto desc : m_handler_descs)
+        {
+            axis2_handler_desc_free(desc, m_env);
+        }
+        m_handler_descs.clear();
         axutil_env_free(m_env);
     }
+
+    /* Track a handler_desc for cleanup */
+    void track_handler_desc(axis2_handler_desc_t *desc)
+    {
+        m_handler_descs.push_back(desc);
+    }
+
+    /* Helper to create a test handler with given name - tracks handler_desc for cleanup */
+    axis2_handler_t *create_test_handler(const axis2_char_t *name);
+
+    /* Helper to create handler with phase rule - tracks handler_desc for cleanup */
+    axis2_handler_t *create_handler_with_rule(
+        const axis2_char_t *name,
+        const axis2_char_t *phase_name,
+        const axis2_char_t *before,
+        const axis2_char_t *after);
 
     axutil_allocator_t *m_allocator = NULL;
     axutil_env_t *m_env = NULL;
     axutil_error_t *m_error = NULL;
     axutil_log_t *m_axis_log = NULL;
+    std::vector<axis2_handler_desc_t *> m_handler_descs;
 };
 
 /* Dummy handler invoke function for testing */
@@ -63,32 +88,30 @@ dummy_handler_invoke(
     return AXIS2_SUCCESS;
 }
 
-/* Helper to create a test handler with given name */
-static axis2_handler_t *
-create_test_handler(
-    const axutil_env_t *env,
-    const axis2_char_t *name)
+axis2_handler_t *
+TestPhase::create_test_handler(const axis2_char_t *name)
 {
     axis2_handler_t *handler = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
     axutil_string_t *handler_name = NULL;
 
-    handler_name = axutil_string_create(env, name);
-    handler_desc = axis2_handler_desc_create(env, handler_name);
-    axutil_string_free(handler_name, env);
+    handler_name = axutil_string_create(m_env, name);
+    handler_desc = axis2_handler_desc_create(m_env, handler_name);
+    axutil_string_free(handler_name, m_env);
 
-    handler = axis2_handler_create(env);
-    axis2_handler_init(handler, env, handler_desc);
-    axis2_handler_set_invoke(handler, env, dummy_handler_invoke);
-    axis2_handler_desc_set_handler(handler_desc, env, handler);
+    handler = axis2_handler_create(m_env);
+    axis2_handler_init(handler, m_env, handler_desc);
+    axis2_handler_set_invoke(handler, m_env, dummy_handler_invoke);
+    axis2_handler_desc_set_handler(handler_desc, m_env, handler);
+
+    /* Track for cleanup in TearDown */
+    track_handler_desc(handler_desc);
 
     return handler;
 }
 
-/* Helper to create handler with phase rule */
-static axis2_handler_t *
-create_handler_with_rule(
-    const axutil_env_t *env,
+axis2_handler_t *
+TestPhase::create_handler_with_rule(
     const axis2_char_t *name,
     const axis2_char_t *phase_name,
     const axis2_char_t *before,
@@ -99,26 +122,29 @@ create_handler_with_rule(
     axis2_phase_rule_t *phase_rule = NULL;
     axutil_string_t *handler_name = NULL;
 
-    handler_name = axutil_string_create(env, name);
-    handler_desc = axis2_handler_desc_create(env, handler_name);
-    axutil_string_free(handler_name, env);
+    handler_name = axutil_string_create(m_env, name);
+    handler_desc = axis2_handler_desc_create(m_env, handler_name);
+    axutil_string_free(handler_name, m_env);
 
-    phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
-    axis2_phase_rule_set_name(phase_rule, env, phase_name);
+    phase_rule = axis2_handler_desc_get_rules(handler_desc, m_env);
+    axis2_phase_rule_set_name(phase_rule, m_env, phase_name);
 
     if (before)
     {
-        axis2_phase_rule_set_before(phase_rule, env, before);
+        axis2_phase_rule_set_before(phase_rule, m_env, before);
     }
     if (after)
     {
-        axis2_phase_rule_set_after(phase_rule, env, after);
+        axis2_phase_rule_set_after(phase_rule, m_env, after);
     }
 
-    handler = axis2_handler_create(env);
-    axis2_handler_init(handler, env, handler_desc);
-    axis2_handler_set_invoke(handler, env, dummy_handler_invoke);
-    axis2_handler_desc_set_handler(handler_desc, env, handler);
+    handler = axis2_handler_create(m_env);
+    axis2_handler_init(handler, m_env, handler_desc);
+    axis2_handler_set_invoke(handler, m_env, dummy_handler_invoke);
+    axis2_handler_desc_set_handler(handler_desc, m_env, handler);
+
+    /* Track for cleanup in TearDown */
+    track_handler_desc(handler_desc);
 
     return handler;
 }
@@ -152,7 +178,7 @@ TEST_F(TestPhase, test_phase_add_handler)
     phase = axis2_phase_create(m_env, "TestPhase");
     ASSERT_NE(phase, nullptr);
 
-    handler = create_test_handler(m_env, "TestHandler");
+    handler = create_test_handler( "TestHandler");
     ASSERT_NE(handler, nullptr);
 
     status = axis2_phase_add_handler(phase, m_env, handler);
@@ -177,7 +203,7 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_basic)
     phase = axis2_phase_create(m_env, "Transport");
     ASSERT_NE(phase, nullptr);
 
-    handler = create_test_handler(m_env, "DiscoveryHandler");
+    handler = create_test_handler( "DiscoveryHandler");
     ASSERT_NE(handler, nullptr);
 
     /* Add handler first time */
@@ -212,7 +238,7 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_with_after_rule)
     ASSERT_NE(phase, nullptr);
 
     /* Create base handler that other handlers reference with "after" */
-    base_handler = create_test_handler(m_env, "addressing_based_dispatcher");
+    base_handler = create_test_handler( "addressing_based_dispatcher");
     ASSERT_NE(base_handler, nullptr);
 
     status = axis2_phase_add_handler(phase, m_env, base_handler);
@@ -221,7 +247,6 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_with_after_rule)
 
     /* Create handler with "after" rule - simulates AXIS2C-1294 scenario */
     after_handler = create_handler_with_rule(
-        m_env,
         "DiscoveryDuplicateInHandler",
         "Transport",
         NULL,                           /* before */
@@ -264,7 +289,7 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_with_before_rule)
     ASSERT_NE(phase, nullptr);
 
     /* Create base handler that other handlers reference with "before" */
-    base_handler = create_test_handler(m_env, "final_handler");
+    base_handler = create_test_handler( "final_handler");
     ASSERT_NE(base_handler, nullptr);
 
     status = axis2_phase_add_handler(phase, m_env, base_handler);
@@ -273,7 +298,6 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_with_before_rule)
 
     /* Create handler with "before" rule */
     before_handler = create_handler_with_rule(
-        m_env,
         "PreFinalHandler",
         "Transport",
         "final_handler",  /* before */
@@ -317,13 +341,13 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_with_before_and_after_rule)
     ASSERT_NE(phase, nullptr);
 
     /* Create first handler */
-    first_handler = create_test_handler(m_env, "FirstHandler");
+    first_handler = create_test_handler( "FirstHandler");
     ASSERT_NE(first_handler, nullptr);
     status = axis2_phase_add_handler(phase, m_env, first_handler);
     ASSERT_EQ(status, AXIS2_SUCCESS);
 
     /* Create last handler */
-    last_handler = create_test_handler(m_env, "LastHandler");
+    last_handler = create_test_handler( "LastHandler");
     ASSERT_NE(last_handler, nullptr);
     status = axis2_phase_add_handler(phase, m_env, last_handler);
     ASSERT_EQ(status, AXIS2_SUCCESS);
@@ -332,7 +356,6 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_with_before_and_after_rule)
 
     /* Create handler with both "before" and "after" rules */
     middle_handler = create_handler_with_rule(
-        m_env,
         "MiddleHandler",
         "Transport",
         "LastHandler",   /* before */
@@ -374,11 +397,11 @@ TEST_F(TestPhase, test_axis2c_1294_no_duplicate_by_name)
     ASSERT_NE(phase, nullptr);
 
     /* Create first handler instance with name */
-    handler1 = create_test_handler(m_env, "SameNameHandler");
+    handler1 = create_test_handler( "SameNameHandler");
     ASSERT_NE(handler1, nullptr);
 
     /* Create second handler instance with the SAME name */
-    handler2 = create_test_handler(m_env, "SameNameHandler");
+    handler2 = create_test_handler( "SameNameHandler");
     ASSERT_NE(handler2, nullptr);
 
     /* Verify they are different instances */
