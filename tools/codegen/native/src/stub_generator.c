@@ -517,8 +517,14 @@ generate_stub_header(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(header_file, "\t#ifdef __cplusplus\n");
     fprintf(header_file, "\t}\n");
     fprintf(header_file, "\t#endif\n");
-    fprintf(header_file, "\t#endif /* AXIS2_STUB_%s_H */\n",
-            axutil_string_toupper(service_name, env));
+    /* AXIS2C-1197 FIX: Capture and free axutil_string_toupper return value */
+    {
+        char *upper_svc_name = axutil_string_toupper(service_name, env);
+        fprintf(header_file, "\t#endif /* AXIS2_STUB_%s_H */\n", upper_svc_name);
+        if (upper_svc_name) {
+            free(upper_svc_name);
+        }
+    }
 
     fclose(header_file);
     AXIS2_FREE(env->allocator, header_path);
@@ -1398,8 +1404,15 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(header_file, "        * This file was auto-generated from WSDL\n");
         fprintf(header_file, "        * by the Apache Axis2/C Native version: 1.0.0\n");
         fprintf(header_file, "        */\n\n");
-        fprintf(header_file, "        #ifndef ADB_%s_H\n", axutil_string_toupper(op_name, env));
-        fprintf(header_file, "        #define ADB_%s_H\n\n", axutil_string_toupper(op_name, env));
+        /* AXIS2C-1197 FIX: Capture and free axutil_string_toupper return value */
+        {
+            char *upper_op = axutil_string_toupper(op_name, env);
+            fprintf(header_file, "        #ifndef ADB_%s_H\n", upper_op);
+            fprintf(header_file, "        #define ADB_%s_H\n\n", upper_op);
+            if (upper_op) {
+                free(upper_op);
+            }
+        }
         fprintf(header_file, "        #include <stdio.h>\n");
         fprintf(header_file, "        #include <axiom.h>\n");
         fprintf(header_file, "        #include <axutil_utils.h>\n");
@@ -1484,7 +1497,14 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(header_file, "        #ifdef __cplusplus\n");
         fprintf(header_file, "        }\n");
         fprintf(header_file, "        #endif\n\n");
-        fprintf(header_file, "        #endif /* ADB_%s_H */\n", axutil_string_toupper(op_name, env));
+        /* AXIS2C-1197 FIX: Capture and free axutil_string_toupper return value */
+        {
+            char *upper_op_end = axutil_string_toupper(op_name, env);
+            fprintf(header_file, "        #endif /* ADB_%s_H */\n", upper_op_end);
+            if (upper_op_end) {
+                free(upper_op_end);
+            }
+        }
 
         fclose(header_file);
 

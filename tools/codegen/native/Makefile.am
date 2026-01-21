@@ -26,7 +26,8 @@ wsdl2c_native_SOURCES = \
     src/main.c \
     src/options.c \
     src/wsdl_parser.c \
-    src/stub_generator.c
+    src/stub_generator.c \
+    src/schema_loader.c
 
 # Include directories
 AM_CPPFLAGS = \
@@ -57,7 +58,7 @@ wsdl2c_native_LDADD = \
     # $(top_builddir)/axiom/src/om/libaxis2_axiom.la
 
 # Headers to install
-include_HEADERS = include/wsdl2c_native.h
+include_HEADERS = include/wsdl2c_native.h include/schema_loader.h
 
 # Install directory for templates (future use)
 # templatesdir = $(datadir)/axis2c/codegen/templates

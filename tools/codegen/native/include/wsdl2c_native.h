@@ -144,6 +144,7 @@ typedef struct axutil_env {
 struct wsdl2c_context;
 struct wsdl2c_options;
 struct wsdl2c_wsdl;
+struct wsdl2c_schema_registry;
 
 /* Simple array list implementation for standalone mode */
 #ifdef STANDALONE_BUILD
@@ -258,6 +259,7 @@ typedef struct wsdl2c_context {
     wsdl2c_wsdl_t *wsdl;         /**< Parsed WSDL information */
     xmlDocPtr doc;               /**< XML document */
     xmlXPathContextPtr xpath_ctx; /**< XPath context */
+    struct wsdl2c_schema_registry *schema_registry; /**< External schema registry */
 } wsdl2c_context_t;
 
 /* Context management functions */

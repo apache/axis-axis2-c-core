@@ -16,6 +16,7 @@
  */
 
 #include "wsdl2c_native.h"
+#include "schema_loader.h"
 #include <string.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -608,12 +609,16 @@ parse_wsdl_schema(wsdl2c_context_t *context, xmlXPathContextPtr xpath_ctx, const
     return AXIS2_SUCCESS;
 }
 
+/* Forward declaration for merging imported types */
+static axis2_status_t merge_imported_types(wsdl2c_context_t *context, const axutil_env_t *env);
+
 /* Main WSDL parsing function */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
 {
     xmlXPathContextPtr xpath_ctx = NULL;
     xmlXPathObjectPtr result = NULL;
+    xmlXPathObjectPtr types_result = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_PARAM_CHECK(env->error, context, AXIS2_FAILURE);
@@ -642,6 +647,13 @@ wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
     context->wsdl = AXIS2_MALLOC(env->allocator, sizeof(wsdl2c_wsdl_t));
     memset(context->wsdl, 0, sizeof(wsdl2c_wsdl_t));
 
+    /* Create schema registry for external import support */
+    context->schema_registry = wsdl2c_schema_registry_create(env, context->options->wsdl_uri);
+    if (!context->schema_registry) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create schema registry");
+        goto cleanup;
+    }
+
     /* Get target namespace */
     result = xmlXPathEvalExpression(BAD_CAST "/wsdl:definitions/@targetNamespace", xpath_ctx);
     if (result && result->nodesetval && result->nodesetval->nodeNr > 0) {
@@ -654,6 +666,58 @@ wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
     if (result) {
         xmlXPathFreeObject(result);
         result = NULL;
+    }
+
+    /* Process WSDL-level imports first */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing WSDL imports...");
+    status = wsdl2c_process_wsdl_imports(
+        context->schema_registry,
+        context->doc,
+        context->options->wsdl_uri,
+        env);
+    if (status != AXIS2_SUCCESS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to process WSDL imports");
+        /* Continue anyway - non-fatal */
+    }
+
+    /* Process schema imports in the types section */
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Processing schema imports...");
+    types_result = xmlXPathEvalExpression(
+        BAD_CAST "//wsdl:types/xsd:schema | //wsdl:types/xs:schema", xpath_ctx);
+    if (types_result && types_result->nodesetval) {
+        int i;
+        AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+            "Found %d schema(s) in WSDL types section",
+            types_result->nodesetval->nodeNr);
+
+        for (i = 0; i < types_result->nodesetval->nodeNr; i++) {
+            xmlNodePtr schema_node = types_result->nodesetval->nodeTab[i];
+            xmlChar *tns = xmlGetProp(schema_node, BAD_CAST "targetNamespace");
+
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "Processing embedded schema %d [namespace: %s]",
+                i + 1, tns ? (const char*)tns : "(none)");
+
+            /* Process imports/includes in this schema */
+            status = wsdl2c_process_schema_imports(
+                context->schema_registry,
+                schema_node,
+                context->options->wsdl_uri,
+                env);
+
+            /* Also parse complex types from embedded schema into registry */
+            wsdl2c_parse_schema_complex_types(
+                context->schema_registry,
+                schema_node,
+                tns ? (const char*)tns : NULL,
+                env);
+
+            if (tns) xmlFree(tns);
+        }
+    }
+    if (types_result) {
+        xmlXPathFreeObject(types_result);
+        types_result = NULL;
     }
 
     /* Parse messages */
@@ -691,12 +755,128 @@ wsdl2c_parse_wsdl(wsdl2c_context_t *context, const axutil_env_t *env)
         goto cleanup;
     }
 
-    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Successfully parsed WSDL: %s",
-                   context->options->wsdl_uri);
+    /* Merge imported types from schema registry into main WSDL structure */
+    status = merge_imported_types(context, env);
+    if (status != AXIS2_SUCCESS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to merge imported types");
+        /* Continue anyway - non-fatal */
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "Successfully parsed WSDL: %s (total types: %d from %d schemas)",
+        context->options->wsdl_uri,
+        axutil_array_list_size(context->wsdl->complex_types, env),
+        context->schema_registry ? context->schema_registry->total_schemas_count : 0);
 
 cleanup:
     if (xpath_ctx) {
         xmlXPathFreeContext(xpath_ctx);
     }
     return status;
+}
+
+/* Merge imported types from schema registry into the main WSDL complex_types list */
+static axis2_status_t merge_imported_types(wsdl2c_context_t *context, const axutil_env_t *env)
+{
+    axutil_array_list_t *imported_types = NULL;
+    int i, count;
+    int merged_count = 0;
+
+    if (!context || !context->schema_registry || !context->wsdl) {
+        return AXIS2_SUCCESS;
+    }
+
+    imported_types = wsdl2c_schema_registry_get_all_types(context->schema_registry, env);
+    if (!imported_types) {
+        return AXIS2_SUCCESS;
+    }
+
+    count = axutil_array_list_size(imported_types, env);
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "Merging %d imported types into WSDL complex_types list", count);
+
+    for (i = 0; i < count; i++) {
+        wsdl2c_complex_type_t *imported_type =
+            (wsdl2c_complex_type_t*)axutil_array_list_get(imported_types, env, i);
+
+        if (!imported_type || !imported_type->name) {
+            continue;
+        }
+
+        /* Check if type already exists in main list (avoid duplicates) */
+        axis2_bool_t exists = AXIS2_FALSE;
+        int j, existing_count = axutil_array_list_size(context->wsdl->complex_types, env);
+        for (j = 0; j < existing_count; j++) {
+            wsdl2c_complex_type_t *existing =
+                (wsdl2c_complex_type_t*)axutil_array_list_get(context->wsdl->complex_types, env, j);
+            if (existing && existing->name &&
+                strcmp(existing->name, imported_type->name) == 0) {
+                exists = AXIS2_TRUE;
+                break;
+            }
+        }
+
+        if (!exists) {
+            /* Create a copy of the imported type for the main list */
+            wsdl2c_complex_type_t *type_copy = AXIS2_MALLOC(env->allocator,
+                sizeof(wsdl2c_complex_type_t));
+            if (!type_copy) {
+                continue;
+            }
+            memset(type_copy, 0, sizeof(wsdl2c_complex_type_t));
+
+            type_copy->name = axutil_strdup(env, imported_type->name);
+            type_copy->c_name = axutil_strdup(env, imported_type->c_name);
+            type_copy->is_empty_sequence = imported_type->is_empty_sequence;
+            type_copy->has_sequence = imported_type->has_sequence;
+            if (imported_type->base_type) {
+                type_copy->base_type = axutil_strdup(env, imported_type->base_type);
+            }
+
+            /* Copy elements */
+            type_copy->elements = axutil_array_list_create(env, 8);
+            if (imported_type->elements) {
+                int k, elem_count = axutil_array_list_size(imported_type->elements, env);
+                for (k = 0; k < elem_count; k++) {
+                    wsdl2c_schema_element_t *src_elem =
+                        (wsdl2c_schema_element_t*)axutil_array_list_get(
+                            imported_type->elements, env, k);
+                    if (!src_elem) continue;
+
+                    wsdl2c_schema_element_t *elem_copy = AXIS2_MALLOC(env->allocator,
+                        sizeof(wsdl2c_schema_element_t));
+                    if (!elem_copy) continue;
+                    memset(elem_copy, 0, sizeof(wsdl2c_schema_element_t));
+
+                    if (src_elem->name) elem_copy->name = axutil_strdup(env, src_elem->name);
+                    if (src_elem->c_name) elem_copy->c_name = axutil_strdup(env, src_elem->c_name);
+                    if (src_elem->type) elem_copy->type = axutil_strdup(env, src_elem->type);
+                    if (src_elem->c_type) elem_copy->c_type = axutil_strdup(env, src_elem->c_type);
+                    if (src_elem->namespace_uri) {
+                        elem_copy->namespace_uri = axutil_strdup(env, src_elem->namespace_uri);
+                    }
+                    elem_copy->is_any_type = src_elem->is_any_type;
+                    elem_copy->is_typeless = src_elem->is_typeless;
+                    elem_copy->is_nillable = src_elem->is_nillable;
+                    elem_copy->min_occurs = src_elem->min_occurs;
+                    elem_copy->max_occurs = src_elem->max_occurs;
+
+                    axutil_array_list_add(type_copy->elements, env, elem_copy);
+                }
+            }
+
+            axutil_array_list_add(context->wsdl->complex_types, env, type_copy);
+            merged_count++;
+
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "Merged imported type: %s (%d elements)",
+                type_copy->name,
+                axutil_array_list_size(type_copy->elements, env));
+        }
+    }
+
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
+        "Merged %d new types from external schemas", merged_count);
+
+    return AXIS2_SUCCESS;
 }

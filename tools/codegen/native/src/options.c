@@ -16,6 +16,7 @@
  */
 
 #include "wsdl2c_native.h"
+#include "schema_loader.h"
 #include <string.h>
 
 /* Note: wsdl2c_operation_t is now defined in wsdl2c_native.h */
@@ -178,9 +179,91 @@ wsdl2c_context_free(wsdl2c_context_t *context, const axutil_env_t *env)
             axutil_array_list_free(context->wsdl->messages, env);
         }
 
+        /* AXIS2C-1197 FIX: Free schema_elements array and its contents */
+        if (context->wsdl->schema_elements) {
+            int i, size = axutil_array_list_size(context->wsdl->schema_elements, env);
+            for (i = 0; i < size; i++) {
+                wsdl2c_schema_element_t* element = (wsdl2c_schema_element_t*)axutil_array_list_get(
+                    context->wsdl->schema_elements, env, i);
+                if (element) {
+                    if (element->name) {
+                        AXIS2_FREE(env->allocator, element->name);
+                    }
+                    if (element->c_name) {
+                        AXIS2_FREE(env->allocator, element->c_name);
+                    }
+                    if (element->type) {
+                        AXIS2_FREE(env->allocator, element->type);
+                    }
+                    if (element->c_type) {
+                        AXIS2_FREE(env->allocator, element->c_type);
+                    }
+                    if (element->namespace_uri) {
+                        AXIS2_FREE(env->allocator, element->namespace_uri);
+                    }
+                    AXIS2_FREE(env->allocator, element);
+                }
+            }
+            axutil_array_list_free(context->wsdl->schema_elements, env);
+        }
+
+        /* AXIS2C-1197 FIX: Free complex_types array and its contents */
+        if (context->wsdl->complex_types) {
+            int i, size = axutil_array_list_size(context->wsdl->complex_types, env);
+            for (i = 0; i < size; i++) {
+                wsdl2c_complex_type_t* complex_type = (wsdl2c_complex_type_t*)axutil_array_list_get(
+                    context->wsdl->complex_types, env, i);
+                if (complex_type) {
+                    if (complex_type->name) {
+                        AXIS2_FREE(env->allocator, complex_type->name);
+                    }
+                    if (complex_type->c_name) {
+                        AXIS2_FREE(env->allocator, complex_type->c_name);
+                    }
+                    if (complex_type->base_type) {
+                        AXIS2_FREE(env->allocator, complex_type->base_type);
+                    }
+                    /* Free elements within complex type */
+                    if (complex_type->elements) {
+                        int j, elem_size = axutil_array_list_size(complex_type->elements, env);
+                        for (j = 0; j < elem_size; j++) {
+                            wsdl2c_schema_element_t* elem = (wsdl2c_schema_element_t*)axutil_array_list_get(
+                                complex_type->elements, env, j);
+                            if (elem) {
+                                if (elem->name) {
+                                    AXIS2_FREE(env->allocator, elem->name);
+                                }
+                                if (elem->c_name) {
+                                    AXIS2_FREE(env->allocator, elem->c_name);
+                                }
+                                if (elem->type) {
+                                    AXIS2_FREE(env->allocator, elem->type);
+                                }
+                                if (elem->c_type) {
+                                    AXIS2_FREE(env->allocator, elem->c_type);
+                                }
+                                if (elem->namespace_uri) {
+                                    AXIS2_FREE(env->allocator, elem->namespace_uri);
+                                }
+                                AXIS2_FREE(env->allocator, elem);
+                            }
+                        }
+                        axutil_array_list_free(complex_type->elements, env);
+                    }
+                    AXIS2_FREE(env->allocator, complex_type);
+                }
+            }
+            axutil_array_list_free(context->wsdl->complex_types, env);
+        }
+
         /* Note: schema_node cleanup would depend on its actual type */
         /* Free the WSDL structure itself */
         AXIS2_FREE(env->allocator, context->wsdl);
+    }
+
+    /* Free the schema registry (external schema import support) */
+    if (context->schema_registry) {
+        wsdl2c_schema_registry_free(context->schema_registry, env);
     }
 
     if (context->doc) {
