@@ -27,37 +27,37 @@ TESTS = h2_json_integration_test h2_performance_benchmark_test
 h2_json_integration_test_SOURCES = h2_json_integration_test.c \
                                    large_json_payload_generator.c
 
+# HTTP/2 JSON tests are standalone - they only need axutil and json-c
+# No engine/axiom/SOAP dependencies per HTTP2_CONDITIONAL_COMPILATION.md
 h2_json_integration_test_LDADD = \
     $(LDFLAGS) \
     $(top_builddir)/util/src/libaxutil.la \
-    $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
     $(JSON_LIBS)
 
+# Minimal includes for standalone HTTP/2 JSON tests
 h2_json_integration_test_CPPFLAGS = \
     -I$(top_srcdir)/include \
-    -I$(top_srcdir)/src/core/transport/http/util \
     -I$(top_srcdir)/util/include \
     $(JSON_CFLAGS) \
-    $(NGHTTP2_CFLAGS) \
     -DAXIS2_H2_JSON_TESTS
 
 # HTTP/2 Performance Benchmark Test
 h2_performance_benchmark_test_SOURCES = h2_performance_benchmark_test.c \
                                         large_json_payload_generator.c
 
+# HTTP/2 JSON tests are standalone - they only need axutil and json-c
+# No engine/axiom/SOAP dependencies per HTTP2_CONDITIONAL_COMPILATION.md
 h2_performance_benchmark_test_LDADD = \
     $(LDFLAGS) \
     $(top_builddir)/util/src/libaxutil.la \
-    $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
     $(JSON_LIBS) \
     -lm
 
+# Minimal includes for standalone HTTP/2 JSON tests
 h2_performance_benchmark_test_CPPFLAGS = \
     -I$(top_srcdir)/include \
-    -I$(top_srcdir)/src/core/transport/http/util \
     -I$(top_srcdir)/util/include \
     $(JSON_CFLAGS) \
-    $(NGHTTP2_CFLAGS) \
     -DAXIS2_H2_PERFORMANCE_TESTS
 
 # Test data files
