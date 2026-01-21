@@ -163,6 +163,10 @@ void* axutil_array_list_get(axutil_array_list_t *list, const axutil_env_t *env, 
 
 /**
  * @brief Command line options structure
+ *
+ * AXIS2C-1330 FIX: Added prefix option to prevent name clashes when using
+ * multiple services that have identical named types. The prefix is prepended
+ * to all generated filenames, type names, and function names.
  */
 typedef struct wsdl2c_options {
     char *wsdl_uri;              /**< WSDL URI or file path */
@@ -170,6 +174,7 @@ typedef struct wsdl2c_options {
     char *package_name;          /**< Package name */
     char *language;              /**< Target language (always "c") */
     char *databinding;           /**< Data binding type (adb, none) */
+    char *prefix;                /**< Prefix for generated names (AXIS2C-1330) */
     axis2_bool_t server_side;    /**< Generate server side code */
     axis2_bool_t service_descriptor; /**< Generate service descriptor */
     axis2_bool_t generate_test;  /**< Generate test cases */

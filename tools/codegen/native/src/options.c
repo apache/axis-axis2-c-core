@@ -97,6 +97,9 @@ wsdl2c_context_free(wsdl2c_context_t *context, const axutil_env_t *env)
         if (context->options->databinding) {
             AXIS2_FREE(env->allocator, context->options->databinding);
         }
+        if (context->options->prefix) {
+            AXIS2_FREE(env->allocator, context->options->prefix);
+        }
         AXIS2_FREE(env->allocator, context->options);
     }
 
@@ -197,6 +200,10 @@ wsdl2c_print_usage(void)
     printf("  -a                       Generate async style code only (Default: off).\n");
     printf("  -s                       Generate sync style code only (Default: off). Takes precedence over -a.\n");
     printf("  -p <pkg1>                Specify a custom package name for the generated code.\n");
+    printf("  -prefix <string>         Prefix for all generated filenames and identifiers (AXIS2C-1330).\n");
+    printf("                           Use this to avoid name clashes when generating code from\n");
+    printf("                           multiple WSDLs that have identical type names.\n");
+    printf("                           Example: -prefix Mapping_ generates Mapping_adb_Coordinate.c\n");
     printf("  -l <language>            Valid languages are c (Default: c).\n");
     printf("  -t                       Generate a test case for the generated code.\n");
     printf("  -ss                      Generate server side code (i.e. skeletons) (Default: off).\n");
@@ -247,6 +254,13 @@ wsdl2c_parse_options(wsdl2c_context_t *context, int argc, char **argv, const axu
                 AXIS2_FREE(env->allocator, context->options->package_name);
             }
             context->options->package_name = axutil_strdup(env, argv[i + 1]);
+            i++; /* Skip the argument */
+        } else if (strcmp(argv[i], "-prefix") == 0 && i + 1 < argc) {
+            /* AXIS2C-1330 FIX: Prefix option to prevent name clashes */
+            if (context->options->prefix) {
+                AXIS2_FREE(env->allocator, context->options->prefix);
+            }
+            context->options->prefix = axutil_strdup(env, argv[i + 1]);
             i++; /* Skip the argument */
         } else if (strcmp(argv[i], "-l") == 0 && i + 1 < argc) {
             if (context->options->language) {
