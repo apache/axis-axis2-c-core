@@ -365,6 +365,33 @@ extern int axis2c_1529_test_count;
 extern adb_test_case_t axis2c_1613_tests[];
 extern int axis2c_1613_test_count;
 
+/* AXIS2C-1182 array add function tests - Correct Array Serialization
+ *
+ * AXIS2C-1182: adb_XXXX_add_ functions failing to produce correct XML
+ * Analysis (2026-01-21): When using adb_Predicate_add_nodes(), the generated
+ * XML produces empty <nodes/> tags instead of separate <nodes>...</nodes>
+ * elements for each item. This is because the struct was using a single
+ * pointer instead of an axutil_array_list_t*.
+ *
+ * Fix: Native generator now:
+ * - Uses axutil_array_list_t* for array elements (maxOccurs > 1)
+ * - Generates add_X() to add items to the array list
+ * - Generates get_X_at() to get item at index
+ * - Generates sizeof_X() to get array size
+ * - Serializes array by looping through list creating separate XML elements
+ * - Deserializes array by collecting repeated elements into the list
+ *
+ * Test scenarios:
+ * - Generated struct uses axutil_array_list_t* for array elements
+ * - add_ function creates and populates array list
+ * - get_at function retrieves items by index
+ * - sizeof_ function returns array size
+ * - Serialization creates multiple XML elements
+ * - Deserialization collects multiple elements into array
+ */
+extern adb_test_case_t axis2c_1182_tests[];
+extern int axis2c_1182_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 

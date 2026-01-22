@@ -903,6 +903,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
                 const char *c_type = "axis2_char_t*"; /* Default to string */
 
+                /* AXIS2C-1182: Check if this is an array element */
+                axis2_bool_t is_array = (elem->max_occurs > 1 || elem->max_occurs == -1);
+
                 /* AXIS2C-1421: Typeless elements are treated as anyType (axiom_node_t*) */
                 if (elem->is_typeless || elem->is_any_type) {
                     c_type = "axiom_node_t*";
@@ -925,21 +928,67 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     }
                 }
 
-                /* Getter - AXIS2C-1330: include prefix */
-                fprintf(header_file, "/**\n");
-                fprintf(header_file, " * Getter for %s\n", elem_name);
-                fprintf(header_file, " */\n");
-                fprintf(header_file, "%s AXIS2_CALL\n", c_type);
-                fprintf(header_file, "%sadb_%s_get_%s(%sadb_%s_t* _this, const axutil_env_t *env);\n\n",
-                        prefix, type_name, elem_name, prefix, type_name);
+                if (is_array) {
+                    /* AXIS2C-1182: Array element - generate array-specific accessors */
 
-                /* Setter - AXIS2C-1330: include prefix */
-                fprintf(header_file, "/**\n");
-                fprintf(header_file, " * Setter for %s\n", elem_name);
-                fprintf(header_file, " */\n");
-                fprintf(header_file, "axis2_status_t AXIS2_CALL\n");
-                fprintf(header_file, "%sadb_%s_set_%s(%sadb_%s_t* _this, const axutil_env_t *env, %s value);\n\n",
-                        prefix, type_name, elem_name, prefix, type_name, c_type);
+                    /* Getter returns the whole array list */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Getter for %s array\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "axutil_array_list_t* AXIS2_CALL\n");
+                    fprintf(header_file, "%sadb_%s_get_%s(%sadb_%s_t* _this, const axutil_env_t *env);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+
+                    /* Setter replaces the whole array list */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Setter for %s array\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "axis2_status_t AXIS2_CALL\n");
+                    fprintf(header_file, "%sadb_%s_set_%s(%sadb_%s_t* _this, const axutil_env_t *env, axutil_array_list_t* value);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+
+                    /* add_ function to add single item */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Add a single item to %s array\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "axis2_status_t AXIS2_CALL\n");
+                    fprintf(header_file, "%sadb_%s_add_%s(%sadb_%s_t* _this, const axutil_env_t *env, %s value);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name, c_type);
+
+                    /* get_at function to get item at index */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Get item at index from %s array\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "%s AXIS2_CALL\n", c_type);
+                    fprintf(header_file, "%sadb_%s_get_%s_at(%sadb_%s_t* _this, const axutil_env_t *env, int index);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+
+                    /* sizeof_ function to get array size */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Get size of %s array\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "int AXIS2_CALL\n");
+                    fprintf(header_file, "%sadb_%s_sizeof_%s(%sadb_%s_t* _this, const axutil_env_t *env);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+                } else {
+                    /* Non-array: standard getter/setter */
+
+                    /* Getter - AXIS2C-1330: include prefix */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Getter for %s\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "%s AXIS2_CALL\n", c_type);
+                    fprintf(header_file, "%sadb_%s_get_%s(%sadb_%s_t* _this, const axutil_env_t *env);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+
+                    /* Setter - AXIS2C-1330: include prefix */
+                    fprintf(header_file, "/**\n");
+                    fprintf(header_file, " * Setter for %s\n", elem_name);
+                    fprintf(header_file, " */\n");
+                    fprintf(header_file, "axis2_status_t AXIS2_CALL\n");
+                    fprintf(header_file, "%sadb_%s_set_%s(%sadb_%s_t* _this, const axutil_env_t *env, %s value);\n\n",
+                            prefix, type_name, elem_name, prefix, type_name, c_type);
+                }
             }
         }
 
@@ -1012,8 +1061,15 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
                 const char *c_type = "axis2_char_t*";
 
+                /* AXIS2C-1182: Check if this is an array element (maxOccurs > 1 or unbounded) */
+                axis2_bool_t is_array = (elem->max_occurs > 1 || elem->max_occurs == -1);
+
+                if (is_array) {
+                    /* AXIS2C-1182: Array elements use axutil_array_list_t* */
+                    c_type = "axutil_array_list_t*";
+                }
                 /* AXIS2C-1421: Typeless elements are treated as anyType (axiom_node_t*) */
-                if (elem->is_typeless || elem->is_any_type) {
+                else if (elem->is_typeless || elem->is_any_type) {
                     c_type = "axiom_node_t*";
                 }
                 else if (elem->type) {
@@ -1076,8 +1132,24 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
 
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
 
+                /* AXIS2C-1182: Check if this is an array element */
+                axis2_bool_t is_array = (elem->max_occurs > 1 || elem->max_occurs == -1);
+
+                if (is_array) {
+                    /* AXIS2C-1182: Free array list and its string contents */
+                    fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        int _arr_i, _arr_size = axutil_array_list_size(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "        for (_arr_i = 0; _arr_i < _arr_size; _arr_i++) {\n");
+                    fprintf(source_file, "            void *_arr_item = axutil_array_list_get(_this->%s, env, _arr_i);\n", elem_name);
+                    fprintf(source_file, "            if (_arr_item) {\n");
+                    fprintf(source_file, "                AXIS2_FREE(env->allocator, _arr_item);\n");
+                    fprintf(source_file, "            }\n");
+                    fprintf(source_file, "        }\n");
+                    fprintf(source_file, "        axutil_array_list_free(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "    }\n");
+                }
                 /* Determine how to free this property based on type */
-                if (elem->type && strstr(elem->type, "base64Binary")) {
+                else if (elem->type && strstr(elem->type, "base64Binary")) {
                     /* AXIS2C-1529: Use axutil_base64_binary_free for base64Binary */
                     fprintf(source_file, "    if (_this->%s) {\n", elem_name);
                     fprintf(source_file, "        axutil_base64_binary_free(_this->%s, env);\n", elem_name);
@@ -1118,6 +1190,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *c_type = "axis2_char_t*";
                 const char *default_val = "NULL";
 
+                /* AXIS2C-1182: Check if this is an array element */
+                axis2_bool_t is_array = (elem->max_occurs > 1 || elem->max_occurs == -1);
+
                 /* AXIS2C-1421: Typeless elements are treated as anyType (axiom_node_t*) */
                 if (elem->is_typeless || elem->is_any_type) {
                     c_type = "axiom_node_t*";
@@ -1146,25 +1221,114 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     }
                 }
 
-                /* Getter - AXIS2C-1330: include prefix */
-                fprintf(source_file, "%s AXIS2_CALL\n", c_type);
-                fprintf(source_file, "%sadb_%s_get_%s(%sadb_%s_t* _this, const axutil_env_t *env)\n",
-                        prefix, type_name, elem_name, prefix, type_name);
-                fprintf(source_file, "{\n");
-                fprintf(source_file, "    AXIS2_ENV_CHECK(env, %s);\n", default_val);
-                fprintf(source_file, "    return _this ? _this->%s : %s;\n", elem_name, default_val);
-                fprintf(source_file, "}\n\n");
+                if (is_array) {
+                    /* AXIS2C-1182: Generate array accessor functions */
 
-                /* Setter - AXIS2C-1330: include prefix */
-                fprintf(source_file, "axis2_status_t AXIS2_CALL\n");
-                fprintf(source_file, "%sadb_%s_set_%s(%sadb_%s_t* _this, const axutil_env_t *env, %s value)\n",
-                        prefix, type_name, elem_name, prefix, type_name, c_type);
-                fprintf(source_file, "{\n");
-                fprintf(source_file, "    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
-                fprintf(source_file, "    AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
-                fprintf(source_file, "    _this->%s = value;\n", elem_name);
-                fprintf(source_file, "    return AXIS2_SUCCESS;\n");
-                fprintf(source_file, "}\n\n");
+                    /* Check if this is a primitive type that needs boxing */
+                    axis2_bool_t is_primitive = (elem->type &&
+                        (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                         strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
+                         strstr(elem->type, "double") || strstr(elem->type, "float")));
+
+                    /* get_ returns the whole array list */
+                    fprintf(source_file, "axutil_array_list_t* AXIS2_CALL\n");
+                    fprintf(source_file, "%sadb_%s_get_%s(%sadb_%s_t* _this, const axutil_env_t *env)\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, NULL);\n");
+                    fprintf(source_file, "    return _this ? _this->%s : NULL;\n", elem_name);
+                    fprintf(source_file, "}\n\n");
+
+                    /* set_ replaces the whole array list */
+                    fprintf(source_file, "axis2_status_t AXIS2_CALL\n");
+                    fprintf(source_file, "%sadb_%s_set_%s(%sadb_%s_t* _this, const axutil_env_t *env, axutil_array_list_t* value)\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "    AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "    _this->%s = value;\n", elem_name);
+                    fprintf(source_file, "    return AXIS2_SUCCESS;\n");
+                    fprintf(source_file, "}\n\n");
+
+                    /* AXIS2C-1182: add_ adds a single item to the array */
+                    fprintf(source_file, "axis2_status_t AXIS2_CALL\n");
+                    fprintf(source_file, "%sadb_%s_add_%s(%sadb_%s_t* _this, const axutil_env_t *env, %s value)\n",
+                            prefix, type_name, elem_name, prefix, type_name, c_type);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "    AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "    if (!_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        _this->%s = axutil_array_list_create(env, 4);\n", elem_name);
+                    fprintf(source_file, "        if (!_this->%s) {\n", elem_name);
+                    fprintf(source_file, "            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "            return AXIS2_FAILURE;\n");
+                    fprintf(source_file, "        }\n");
+                    fprintf(source_file, "    }\n");
+
+                    if (is_primitive) {
+                        /* Box primitive types - allocate memory for the value */
+                        fprintf(source_file, "    %s *_boxed = AXIS2_MALLOC(env->allocator, sizeof(%s));\n", c_type, c_type);
+                        fprintf(source_file, "    if (!_boxed) {\n");
+                        fprintf(source_file, "        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);\n");
+                        fprintf(source_file, "        return AXIS2_FAILURE;\n");
+                        fprintf(source_file, "    }\n");
+                        fprintf(source_file, "    *_boxed = value;\n");
+                        fprintf(source_file, "    return axutil_array_list_add(_this->%s, env, _boxed);\n", elem_name);
+                    } else {
+                        /* Pointer types can be added directly */
+                        fprintf(source_file, "    return axutil_array_list_add(_this->%s, env, value);\n", elem_name);
+                    }
+                    fprintf(source_file, "}\n\n");
+
+                    /* get_at returns a single item at index */
+                    fprintf(source_file, "%s AXIS2_CALL\n", c_type);
+                    fprintf(source_file, "%sadb_%s_get_%s_at(%sadb_%s_t* _this, const axutil_env_t *env, int index)\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, %s);\n", default_val);
+                    fprintf(source_file, "    if (!_this || !_this->%s) return %s;\n", elem_name, default_val);
+
+                    if (is_primitive) {
+                        /* Unbox primitive types - dereference the pointer */
+                        fprintf(source_file, "    %s *_boxed = (%s*)axutil_array_list_get(_this->%s, env, index);\n", c_type, c_type, elem_name);
+                        fprintf(source_file, "    return _boxed ? *_boxed : %s;\n", default_val);
+                    } else {
+                        fprintf(source_file, "    return (%s)axutil_array_list_get(_this->%s, env, index);\n", c_type, elem_name);
+                    }
+                    fprintf(source_file, "}\n\n");
+
+                    /* sizeof_ returns the array size */
+                    fprintf(source_file, "int AXIS2_CALL\n");
+                    fprintf(source_file, "%sadb_%s_sizeof_%s(%sadb_%s_t* _this, const axutil_env_t *env)\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, 0);\n");
+                    fprintf(source_file, "    if (!_this || !_this->%s) return 0;\n", elem_name);
+                    fprintf(source_file, "    return axutil_array_list_size(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "}\n\n");
+                } else {
+                    /* Non-array: standard getter/setter */
+
+                    /* Getter - AXIS2C-1330: include prefix */
+                    fprintf(source_file, "%s AXIS2_CALL\n", c_type);
+                    fprintf(source_file, "%sadb_%s_get_%s(%sadb_%s_t* _this, const axutil_env_t *env)\n",
+                            prefix, type_name, elem_name, prefix, type_name);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, %s);\n", default_val);
+                    fprintf(source_file, "    return _this ? _this->%s : %s;\n", elem_name, default_val);
+                    fprintf(source_file, "}\n\n");
+
+                    /* Setter - AXIS2C-1330: include prefix */
+                    fprintf(source_file, "axis2_status_t AXIS2_CALL\n");
+                    fprintf(source_file, "%sadb_%s_set_%s(%sadb_%s_t* _this, const axutil_env_t *env, %s value)\n",
+                            prefix, type_name, elem_name, prefix, type_name, c_type);
+                    fprintf(source_file, "{\n");
+                    fprintf(source_file, "    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "    AXIS2_PARAM_CHECK(env->error, _this, AXIS2_FAILURE);\n");
+                    fprintf(source_file, "    _this->%s = value;\n", elem_name);
+                    fprintf(source_file, "    return AXIS2_SUCCESS;\n");
+                    fprintf(source_file, "}\n\n");
+                }
             }
         }
 
@@ -1197,46 +1361,110 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
                 const char *xml_name = elem->name;  /* Use original name for XML */
 
+                /* AXIS2C-1182: Check if this is an array element */
+                axis2_bool_t is_array = (elem->max_occurs > 1 || elem->max_occurs == -1);
+
                 fprintf(source_file, "    /* Serialize %s */\n", elem_name);
-                fprintf(source_file, "    if (_this->%s) {\n", elem_name);
-                fprintf(source_file, "        ns = axiom_namespace_create(env, \"\", NULL);\n");
-                fprintf(source_file, "        current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
-                fprintf(source_file, "        if (current_element) {\n");
 
-                /* Handle different types for serialization */
-                if (elem->type && strstr(elem->type, "base64Binary")) {
-                    /* AXIS2C-1529: Memory-safe base64Binary serialization */
-                    fprintf(source_file, "            /* AXIS2C-1529: base64Binary - get encoded value and FREE it after use */\n");
-                    fprintf(source_file, "            text_value = axutil_base64_binary_get_encoded_binary(_this->%s, env);\n", elem_name);
-                    fprintf(source_file, "            if (text_value) {\n");
-                    fprintf(source_file, "                axiom_element_set_text(current_element, env, text_value, current_node);\n");
-                    fprintf(source_file, "                /* AXIS2C-1529 FIX: Free the encoded string to prevent memory leak */\n");
-                    fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
-                    fprintf(source_file, "                text_value = NULL;\n");
-                    fprintf(source_file, "            }\n");
-                } else if (elem->type && strstr(elem->type, "dateTime")) {
-                    fprintf(source_file, "            text_value = axutil_date_time_serialize_date_time(_this->%s, env);\n", elem_name);
-                    fprintf(source_file, "            if (text_value) {\n");
-                    fprintf(source_file, "                axiom_element_set_text(current_element, env, text_value, current_node);\n");
-                    fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
-                    fprintf(source_file, "                text_value = NULL;\n");
-                    fprintf(source_file, "            }\n");
-                } else if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
-                    fprintf(source_file, "            sprintf(tmp_buf, \"%%d\", _this->%s);\n", elem_name);
-                    fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
-                } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
-                    fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s ? \"true\" : \"false\", current_node);\n", elem_name);
-                } else if (elem->type && (strstr(elem->type, "double") || strstr(elem->type, "float"))) {
-                    fprintf(source_file, "            sprintf(tmp_buf, \"%%g\", _this->%s);\n", elem_name);
-                    fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
-                } else if (!elem->is_typeless && !elem->is_any_type) {
-                    /* String type */
-                    fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s, current_node);\n", elem_name);
+                if (is_array) {
+                    /* AXIS2C-1182: Loop through array and serialize each item */
+                    /* Check if this is a primitive type that needs unboxing */
+                    axis2_bool_t is_primitive = (elem->type &&
+                        (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                         strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
+                         strstr(elem->type, "double") || strstr(elem->type, "float")));
+
+                    fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        int _ser_i, _ser_size = axutil_array_list_size(_this->%s, env);\n", elem_name);
+                    fprintf(source_file, "        for (_ser_i = 0; _ser_i < _ser_size; _ser_i++) {\n");
+
+                    if (is_primitive) {
+                        /* Primitive types are boxed - need to unbox and convert to string */
+                        if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
+                            fprintf(source_file, "            int *_arr_item = (int*)axutil_array_list_get(_this->%s, env, _ser_i);\n", elem_name);
+                            fprintf(source_file, "            if (_arr_item) {\n");
+                            fprintf(source_file, "                ns = axiom_namespace_create(env, \"\", NULL);\n");
+                            fprintf(source_file, "                current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
+                            fprintf(source_file, "                if (current_element) {\n");
+                            fprintf(source_file, "                    sprintf(tmp_buf, \"%%d\", *_arr_item);\n");
+                            fprintf(source_file, "                    axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
+                            fprintf(source_file, "                }\n");
+                            fprintf(source_file, "            }\n");
+                        } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
+                            fprintf(source_file, "            axis2_bool_t *_arr_item = (axis2_bool_t*)axutil_array_list_get(_this->%s, env, _ser_i);\n", elem_name);
+                            fprintf(source_file, "            if (_arr_item) {\n");
+                            fprintf(source_file, "                ns = axiom_namespace_create(env, \"\", NULL);\n");
+                            fprintf(source_file, "                current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
+                            fprintf(source_file, "                if (current_element) {\n");
+                            fprintf(source_file, "                    axiom_element_set_text(current_element, env, *_arr_item ? \"true\" : \"false\", current_node);\n");
+                            fprintf(source_file, "                }\n");
+                            fprintf(source_file, "            }\n");
+                        } else if (elem->type && (strstr(elem->type, "double") || strstr(elem->type, "float"))) {
+                            fprintf(source_file, "            double *_arr_item = (double*)axutil_array_list_get(_this->%s, env, _ser_i);\n", elem_name);
+                            fprintf(source_file, "            if (_arr_item) {\n");
+                            fprintf(source_file, "                ns = axiom_namespace_create(env, \"\", NULL);\n");
+                            fprintf(source_file, "                current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
+                            fprintf(source_file, "                if (current_element) {\n");
+                            fprintf(source_file, "                    sprintf(tmp_buf, \"%%g\", *_arr_item);\n");
+                            fprintf(source_file, "                    axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
+                            fprintf(source_file, "                }\n");
+                            fprintf(source_file, "            }\n");
+                        }
+                    } else {
+                        /* String or pointer types - no unboxing needed */
+                        fprintf(source_file, "            axis2_char_t *_arr_item = (axis2_char_t*)axutil_array_list_get(_this->%s, env, _ser_i);\n", elem_name);
+                        fprintf(source_file, "            if (_arr_item) {\n");
+                        fprintf(source_file, "                ns = axiom_namespace_create(env, \"\", NULL);\n");
+                        fprintf(source_file, "                current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
+                        fprintf(source_file, "                if (current_element) {\n");
+                        fprintf(source_file, "                    axiom_element_set_text(current_element, env, _arr_item, current_node);\n");
+                        fprintf(source_file, "                }\n");
+                        fprintf(source_file, "            }\n");
+                    }
+                    fprintf(source_file, "        }\n");
+                    fprintf(source_file, "    }\n\n");
+                } else {
+                    /* Non-array: single element serialization */
+                    fprintf(source_file, "    if (_this->%s) {\n", elem_name);
+                    fprintf(source_file, "        ns = axiom_namespace_create(env, \"\", NULL);\n");
+                    fprintf(source_file, "        current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
+                    fprintf(source_file, "        if (current_element) {\n");
+
+                    /* Handle different types for serialization */
+                    if (elem->type && strstr(elem->type, "base64Binary")) {
+                        /* AXIS2C-1529: Memory-safe base64Binary serialization */
+                        fprintf(source_file, "            /* AXIS2C-1529: base64Binary - get encoded value and FREE it after use */\n");
+                        fprintf(source_file, "            text_value = axutil_base64_binary_get_encoded_binary(_this->%s, env);\n", elem_name);
+                        fprintf(source_file, "            if (text_value) {\n");
+                        fprintf(source_file, "                axiom_element_set_text(current_element, env, text_value, current_node);\n");
+                        fprintf(source_file, "                /* AXIS2C-1529 FIX: Free the encoded string to prevent memory leak */\n");
+                        fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
+                        fprintf(source_file, "                text_value = NULL;\n");
+                        fprintf(source_file, "            }\n");
+                    } else if (elem->type && strstr(elem->type, "dateTime")) {
+                        fprintf(source_file, "            text_value = axutil_date_time_serialize_date_time(_this->%s, env);\n", elem_name);
+                        fprintf(source_file, "            if (text_value) {\n");
+                        fprintf(source_file, "                axiom_element_set_text(current_element, env, text_value, current_node);\n");
+                        fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
+                        fprintf(source_file, "                text_value = NULL;\n");
+                        fprintf(source_file, "            }\n");
+                    } else if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
+                        fprintf(source_file, "            sprintf(tmp_buf, \"%%d\", _this->%s);\n", elem_name);
+                        fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
+                    } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
+                        fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s ? \"true\" : \"false\", current_node);\n", elem_name);
+                    } else if (elem->type && (strstr(elem->type, "double") || strstr(elem->type, "float"))) {
+                        fprintf(source_file, "            sprintf(tmp_buf, \"%%g\", _this->%s);\n", elem_name);
+                        fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
+                    } else if (!elem->is_typeless && !elem->is_any_type) {
+                        /* String type */
+                        fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s, current_node);\n", elem_name);
+                    }
+                    /* anyType/typeless: the axiom_node_t* should be attached as child, not as text */
+
+                    fprintf(source_file, "        }\n");
+                    fprintf(source_file, "    }\n\n");
                 }
-                /* anyType/typeless: the axiom_node_t* should be attached as child, not as text */
-
-                fprintf(source_file, "        }\n");
-                fprintf(source_file, "    }\n\n");
             }
         }
 
@@ -1280,12 +1508,57 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 const char *elem_name = elem->c_name ? elem->c_name : elem->name;
                 const char *xml_name = elem->name;
 
+                /* AXIS2C-1182: Check if this is an array element */
+                axis2_bool_t is_array = (elem->max_occurs > 1 || elem->max_occurs == -1);
+
                 fprintf(source_file, "                %sif (axutil_strcmp(local_name, \"%s\") == 0) {\n",
                         j > 0 ? "else " : "", xml_name);
                 fprintf(source_file, "                    text_value = axiom_element_get_text(current_element, env, current_node);\n");
 
+                if (is_array) {
+                    /* AXIS2C-1182: Collect array elements into axutil_array_list_t */
+                    /* Check if this is a primitive type that needs boxing */
+                    axis2_bool_t is_primitive = (elem->type &&
+                        (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                         strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
+                         strstr(elem->type, "double") || strstr(elem->type, "float")));
+
+                    fprintf(source_file, "                    if (text_value) {\n");
+                    fprintf(source_file, "                        if (!obj->%s) {\n", elem_name);
+                    fprintf(source_file, "                            obj->%s = axutil_array_list_create(env, 4);\n", elem_name);
+                    fprintf(source_file, "                        }\n");
+                    fprintf(source_file, "                        if (obj->%s) {\n", elem_name);
+
+                    if (is_primitive) {
+                        /* Box primitive types when deserializing */
+                        if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
+                            fprintf(source_file, "                            int *_boxed = AXIS2_MALLOC(env->allocator, sizeof(int));\n");
+                            fprintf(source_file, "                            if (_boxed) {\n");
+                            fprintf(source_file, "                                *_boxed = atoi(text_value);\n");
+                            fprintf(source_file, "                                axutil_array_list_add(obj->%s, env, _boxed);\n", elem_name);
+                            fprintf(source_file, "                            }\n");
+                        } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
+                            fprintf(source_file, "                            axis2_bool_t *_boxed = AXIS2_MALLOC(env->allocator, sizeof(axis2_bool_t));\n");
+                            fprintf(source_file, "                            if (_boxed) {\n");
+                            fprintf(source_file, "                                *_boxed = (axutil_strcmp(text_value, \"true\") == 0 || axutil_strcmp(text_value, \"1\") == 0) ? AXIS2_TRUE : AXIS2_FALSE;\n");
+                            fprintf(source_file, "                                axutil_array_list_add(obj->%s, env, _boxed);\n", elem_name);
+                            fprintf(source_file, "                            }\n");
+                        } else if (elem->type && (strstr(elem->type, "double") || strstr(elem->type, "float"))) {
+                            fprintf(source_file, "                            double *_boxed = AXIS2_MALLOC(env->allocator, sizeof(double));\n");
+                            fprintf(source_file, "                            if (_boxed) {\n");
+                            fprintf(source_file, "                                *_boxed = atof(text_value);\n");
+                            fprintf(source_file, "                                axutil_array_list_add(obj->%s, env, _boxed);\n", elem_name);
+                            fprintf(source_file, "                            }\n");
+                        }
+                    } else {
+                        /* String types - store duplicated string */
+                        fprintf(source_file, "                            axutil_array_list_add(obj->%s, env, axutil_strdup(env, text_value));\n", elem_name);
+                    }
+                    fprintf(source_file, "                        }\n");
+                    fprintf(source_file, "                    }\n");
+                }
                 /* Handle different types for deserialization */
-                if (elem->type && strstr(elem->type, "base64Binary")) {
+                else if (elem->type && strstr(elem->type, "base64Binary")) {
                     fprintf(source_file, "                    if (text_value) {\n");
                     fprintf(source_file, "                        axutil_base64_binary_t *b64 = axutil_base64_binary_create(env);\n");
                     fprintf(source_file, "                        if (b64) {\n");
