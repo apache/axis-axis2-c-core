@@ -1229,6 +1229,127 @@ axis2_libcurl_set_connection_options(
 }
 
 /**
+ * axis2_libcurl_debug_callback routes libcurl debug information to the Axis2/C log.
+ * This is called by libcurl when CURLOPT_VERBOSE is enabled and CURLOPT_DEBUGFUNCTION is set.
+ * See: https://curl.se/libcurl/c/CURLOPT_DEBUGFUNCTION.html
+ *
+ * @param handle the curl handle
+ * @param type the type of debug information (text, header in/out, data in/out, SSL)
+ * @param data pointer to the debug data
+ * @param size size of the debug data
+ * @param userptr user pointer (we pass the axutil_env_t)
+ * @return 0 always (required by libcurl)
+ */
+static int
+axis2_libcurl_debug_callback(
+    CURL *handle,
+    curl_infotype type,
+    char *data,
+    size_t size,
+    void *userptr)
+{
+    const axutil_env_t *env = (const axutil_env_t *)userptr;
+    const char *prefix = NULL;
+    char *buffer = NULL;
+
+    /* Avoid unused parameter warning */
+    (void)handle;
+
+    if (!env || !env->log || !data || size == 0)
+    {
+        return 0;
+    }
+
+    /* Determine the prefix based on the info type */
+    switch (type)
+    {
+        case CURLINFO_TEXT:
+            prefix = "[CURL] ";
+            break;
+        case CURLINFO_HEADER_OUT:
+            prefix = "[CURL] >> Header: ";
+            break;
+        case CURLINFO_HEADER_IN:
+            prefix = "[CURL] << Header: ";
+            break;
+        case CURLINFO_DATA_OUT:
+            prefix = "[CURL] >> Data: ";
+            break;
+        case CURLINFO_DATA_IN:
+            prefix = "[CURL] << Data: ";
+            break;
+        case CURLINFO_SSL_DATA_OUT:
+            prefix = "[CURL] >> SSL: ";
+            break;
+        case CURLINFO_SSL_DATA_IN:
+            prefix = "[CURL] << SSL: ";
+            break;
+        default:
+            prefix = "[CURL] ";
+            break;
+    }
+
+    /* For large data transfers, just log the size to avoid flooding the log */
+    if (size > 1024 && (type == CURLINFO_DATA_IN || type == CURLINFO_DATA_OUT ||
+                        type == CURLINFO_SSL_DATA_IN || type == CURLINFO_SSL_DATA_OUT))
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "%s(%zu bytes)", prefix, size);
+        return 0;
+    }
+
+    /* Allocate buffer for null-terminated copy (data may not be null-terminated) */
+    buffer = (char *)AXIS2_MALLOC(env->allocator, size + 1);
+    if (!buffer)
+    {
+        return 0;
+    }
+
+    memcpy(buffer, data, size);
+    buffer[size] = '\0';
+
+    /* Trim trailing newlines for cleaner log output */
+    while (size > 0 && (buffer[size - 1] == '\r' || buffer[size - 1] == '\n'))
+    {
+        buffer[--size] = '\0';
+    }
+
+    if (size > 0)
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "%s%s", prefix, buffer);
+    }
+
+    AXIS2_FREE(env->allocator, buffer);
+    return 0;
+}
+
+/**
+ * axis2_libcurl_set_debug_options enables libcurl verbose logging when Axis2/C
+ * debug logging is enabled. This helps debug HTTP transport issues.
+ * AXIS2C-1371: Axis should log libcurl debug information
+ */
+static axis2_status_t
+axis2_libcurl_set_debug_options(
+    CURL *handler,
+    const axutil_env_t *env)
+{
+    if (!env || !env->log)
+    {
+        return AXIS2_SUCCESS;
+    }
+
+    /* Enable verbose logging only when debug level is active and not USER level */
+    if (env->log->level >= AXIS2_LOG_LEVEL_DEBUG && env->log->level != AXIS2_LOG_LEVEL_USER)
+    {
+        curl_easy_setopt(handler, CURLOPT_VERBOSE, 1L);
+        curl_easy_setopt(handler, CURLOPT_DEBUGFUNCTION, axis2_libcurl_debug_callback);
+        curl_easy_setopt(handler, CURLOPT_DEBUGDATA, (void *)env);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "libcurl verbose logging enabled");
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+/**
  * axis2_libcurl_set_options maps the AXIS2/C options to libcURL options.
  */
 static axis2_status_t
@@ -1237,6 +1358,11 @@ axis2_libcurl_set_options(
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx)
 {
+    /* AXIS2C-1371: Enable debug logging first */
+    if (axis2_libcurl_set_debug_options(handler, env) != AXIS2_SUCCESS)
+    {
+        return AXIS2_FAILURE;
+    }
     if (axis2_libcurl_set_auth_options(handler, env, msg_ctx) != AXIS2_SUCCESS)
     {
         return AXIS2_FAILURE;
