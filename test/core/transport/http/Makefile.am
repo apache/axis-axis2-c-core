@@ -31,6 +31,11 @@ check_PROGRAMS += test_http_transport test_axis2c_1480 test_axis2c_1532
 noinst_PROGRAMS += test_http_transport test_axis2c_1480 test_axis2c_1532
 TESTS += test_http_transport test_axis2c_1480 test_axis2c_1532
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 AM_CFLAGS = -g -pthread
 test_http_transport_SOURCES = test_http_transport.cc
 

@@ -23,6 +23,11 @@ check_PROGRAMS = h2_json_integration_test h2_performance_benchmark_test
 noinst_PROGRAMS = h2_json_integration_test h2_performance_benchmark_test
 TESTS = h2_json_integration_test h2_performance_benchmark_test
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 # HTTP/2 JSON Integration Test
 h2_json_integration_test_SOURCES = h2_json_integration_test.c \
                                    large_json_payload_generator.c

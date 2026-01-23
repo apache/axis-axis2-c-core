@@ -21,6 +21,11 @@ TESTS = test_xpath test_xpath_streaming
 noinst_PROGRAMS = test_xpath test_xpath_streaming
 check_PROGRAMS = test_xpath test_xpath_streaming
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 test_xpath_SOURCES = test_xpath.cc
 test_xpath_streaming_SOURCES = test_xpath_streaming.cc
 

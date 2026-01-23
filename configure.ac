@@ -494,6 +494,7 @@ AC_ARG_ENABLE(asan, [  --enable-asan
     AC_MSG_RESULT(no)
     CFLAGS="$CFLAGS"
     CPPFLAGS="$CPPFLAGS"
+    enable_asan=no
     ;;
   *)
     AC_MSG_RESULT(yes)
@@ -502,12 +503,41 @@ AC_ARG_ENABLE(asan, [  --enable-asan
     CXXFLAGS="$CXXFLAGS -fsanitize=address -fno-omit-frame-pointer"
     dnl LDFLAGS must include -fsanitize=address for executables to link correctly
     LDFLAGS="$LDFLAGS -fsanitize=address"
+    enable_asan=yes
     ;;
   esac ],[
   AC_MSG_RESULT(no)
   CFLAGS="$CFLAGS"
-  CPPFLAGS="$CPPFLAGS"]
+  CPPFLAGS="$CPPFLAGS"
+  enable_asan=no]
 )
+
+dnl Create automake conditional for ASAN
+AM_CONDITIONAL([ENABLE_ASAN], [test "x$enable_asan" = "xyes"])
+
+dnl Detect ASAN library path for test preloading (only when ASAN enabled)
+dnl This is needed because libtool-wrapped tests need LD_PRELOAD to work with ASAN
+ASAN_PRELOAD=""
+if test "x$enable_asan" = "xyes"; then
+    AC_MSG_CHECKING([for ASAN library path])
+    dnl Try common locations for libasan
+    for asan_path in /lib/x86_64-linux-gnu/libasan.so.8 \
+                     /lib/x86_64-linux-gnu/libasan.so.6 \
+                     /lib64/libasan.so.8 \
+                     /lib64/libasan.so.6 \
+                     /usr/lib/libasan.so; do
+        if test -f "$asan_path"; then
+            ASAN_PRELOAD="$asan_path"
+            break
+        fi
+    done
+    if test -n "$ASAN_PRELOAD"; then
+        AC_MSG_RESULT([$ASAN_PRELOAD])
+    else
+        AC_MSG_RESULT([not found - tests may fail])
+    fi
+fi
+AC_SUBST([ASAN_PRELOAD])
 
 
 AC_MSG_CHECKING(whether to enable multi threading)

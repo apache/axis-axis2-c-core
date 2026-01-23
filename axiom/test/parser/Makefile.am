@@ -21,6 +21,11 @@ TESTS = test_parser
 noinst_PROGRAMS = test_parser
 check_PROGRAMS = test_parser
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 test_parser_SOURCES = test_parser.cc
 
 test_parser_LDADD = $(top_builddir)/../util/src/libaxutil.la \

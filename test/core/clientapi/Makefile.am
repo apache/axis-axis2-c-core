@@ -17,6 +17,12 @@ if GTEST_AVAILABLE
 TESTS = test_client test_svc_client_handler_count test_clientapi test_axis2c_1355
 noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_axis2c_1355
 check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_axis2c_1355
+
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 SUBDIRS =
 AM_CFLAGS = -g -pthread
 test_client_SOURCES = test_client.cc

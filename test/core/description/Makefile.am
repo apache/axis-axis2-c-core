@@ -16,6 +16,12 @@
 if GTEST_AVAILABLE
 TESTS = test_description
 noinst_PROGRAMS = test_description
+
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 SUBDIRS =
 AM_CFLAGS = -g -O2
 test_description_SOURCES = test_description.cc

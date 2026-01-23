@@ -21,6 +21,11 @@ TESTS = test_om
 noinst_PROGRAMS = test_om
 check_PROGRAMS = test_om
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 test_om_SOURCES = test_om.cc
 
 test_om_LDADD = $(top_builddir)/../util/src/libaxutil.la \

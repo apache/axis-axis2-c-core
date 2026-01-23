@@ -16,6 +16,12 @@
 if GTEST_AVAILABLE
 TESTS = test_deployment
 noinst_PROGRAMS = test_deployment
+
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 SUBDIRS =
 AM_CFLAGS = $(CFLAGS) -g
 test_deployment_SOURCES = test_deployment.cc

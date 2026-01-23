@@ -22,6 +22,11 @@ noinst_PROGRAMS = test_soap
 check_PROGRAMS = test_soap
 AM_CFLAGS = -g -O2
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 test_soap_SOURCES = test_soap.cc
 
 test_soap_LDADD   =	$(top_builddir)/../util/src/libaxutil.la \

@@ -27,6 +27,11 @@ check_PROGRAMS = test_engine test_phase
 noinst_PROGRAMS = test_engine test_phase
 endif
 
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 SUBDIRS =
 AM_CFLAGS = -g
 test_engine_SOURCES = test_engine.cc

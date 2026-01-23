@@ -17,6 +17,12 @@ if GTEST_AVAILABLE
 TESTS = test_addr
 check_PROGRAMS = test_addr
 noinst_PROGRAMS = test_addr
+
+# ASAN preload for libtool-wrapped test execution
+if ENABLE_ASAN
+TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
+endif
+
 SUBDIRS =
 AM_CFLAGS = -g 
 test_addr_SOURCES = test_addr.cc
