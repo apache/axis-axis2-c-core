@@ -41,23 +41,6 @@ extern "C"
 
 #define AXIS2_ATOI(s) axutil_atoi(s)
 
-    AXIS2_EXTERN uint64_t AXIS2_CALL
-    axutil_strtoul(
-        const char *nptr,
-        char **endptr,
-        int base);
-
-#define AXIS2_STRTOUL(s, e, b) axutil_strtoul(s, e, b)
-
-    AXIS2_EXTERN int64_t AXIS2_CALL
-    axutil_strtol(
-        const char *nptr,
-        char **endptr,
-        int base);
-
-#define AXIS2_STRTOL(s, e, b) axutil_strtol(s, e, b)
-
-
     AXIS2_EXTERN int64_t AXIS2_CALL
     axutil_atol(
         const char *s);
