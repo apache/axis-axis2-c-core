@@ -27,9 +27,9 @@ TESTS =
 # HTTP/2 mode doesn't build the receiver/sender libraries that this test needs
 if GTEST_AVAILABLE
 if !WITH_NGHTTP2
-check_PROGRAMS += test_http_transport test_axis2c_1480
-noinst_PROGRAMS += test_http_transport test_axis2c_1480
-TESTS += test_http_transport test_axis2c_1480
+check_PROGRAMS += test_http_transport test_axis2c_1480 test_axis2c_1532
+noinst_PROGRAMS += test_http_transport test_axis2c_1480 test_axis2c_1532
+TESTS += test_http_transport test_axis2c_1480 test_axis2c_1532
 
 AM_CFLAGS = -g -pthread
 test_http_transport_SOURCES = test_http_transport.cc
@@ -73,6 +73,35 @@ test_axis2c_1480_LDADD = \
 							-lpthread
 
 test_axis2c_1480_CPPFLAGS = \
+			  -I$(top_builddir)/include \
+			  -I ../../../../util/include \
+			  -I ../../../../axiom/include \
+			  -I $(GTEST_DIR)/include
+
+# AXIS2C-1532: Empty parameter value tests
+test_axis2c_1532_SOURCES = test_axis2c_1532.cc
+
+test_axis2c_1532_LDADD = \
+							$(LDFLAGS) \
+							../../../../util/src/libaxutil.la \
+							../../../../axiom/src/om/libaxis2_axiom.la \
+							$(top_builddir)/neethi/src/libneethi.la \
+							../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+							$(top_builddir)/src/core/engine/libaxis2_engine.la \
+							$(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
+							$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
+							$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+							$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
+							$(top_builddir)/$(GTEST)/libgtest.a \
+							$(top_builddir)/$(GTEST)/libgtest_main.a \
+							-lpthread
+
+# Ensure all shared libraries are linked even if not directly referenced by test code.
+# The test only calls axis2_http_transport_utils_get_request_params() which is in
+# libaxis2_http_util, but that library needs symbols from libaxis2_engine.
+test_axis2c_1532_LDFLAGS = -Wl,--no-as-needed
+
+test_axis2c_1532_CPPFLAGS = \
 			  -I$(top_builddir)/include \
 			  -I ../../../../util/include \
 			  -I ../../../../axiom/include \

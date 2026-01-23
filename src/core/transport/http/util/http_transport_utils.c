@@ -1775,7 +1775,11 @@ axis2_http_transport_utils_get_request_params(
             tmp_value = NULL;
         }
     }
-    if(tmp_name && AXIS2_ESC_NULL != *tmp2)
+    /* AXIS2C-1532: Handle the last parameter after the loop ends.
+     * Previously this required *tmp2 != '\0', which skipped parameters with
+     * empty values (e.g., "param1=value1&param2=" would skip param2).
+     * Now we allow empty values - axutil_strdup of an empty string is valid. */
+    if(tmp_name)
     {
         if(!ret)
         {
