@@ -109,6 +109,10 @@ install-data-hook:
 			echo "Skipping $$file - already in correct location"; \
 		fi; \
 	done
+	@echo "Creating axis2.xml symlink at $(DESTDIR)$(prefix) for deployment engine compatibility"
+	@rm -f $(DESTDIR)$(prefix)/axis2.xml 2>/dev/null || true
+	@cd $(DESTDIR)$(prefix) && $(LN_S) share/axis2c/axis2.xml axis2.xml 2>/dev/null || \
+		echo "Note: Could not create axis2.xml symlink (may already exist or different filesystem)"
 	@echo ""
 	@echo "========================================================================"
 	@echo "CRITICAL: Complete Apache Module & Library Deployment Required!"

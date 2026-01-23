@@ -103,8 +103,8 @@
     <!-- ================================================= -->
     <!-- Global Modules  -->
     <!-- ================================================= -->
-    <!-- Comment this to disable Addressing -->
-    <module ref="addressing"/>
+    <!-- Uncomment this to enable Addressing module (requires addressing module to be deployed) -->
+    <!--<module ref="addressing"/>-->
 
 
     <!--Configuring module , providing paramters for modules whether they refer or not-->
