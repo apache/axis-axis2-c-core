@@ -126,6 +126,46 @@ axiom_element_create(
             return NULL;
         }
     }
+    else if (parent)
+    {
+        /* AXIS2C-1275: When creating an element without namespace under a parent that has
+         * a default namespace in scope, we need to explicitly undeclare the default namespace
+         * by adding xmlns="" to the new element. This ensures correct XML namespace semantics
+         * and proper canonicalization for XML signatures.
+         *
+         * This fix is based on the Java Axiom implementation in NSUtil.handleNamespace()
+         * (ws-axiom/mixins/om-mixins/src/main/java/org/apache/axiom/om/impl/common/NSUtil.java)
+         * which adds a default namespace undeclaration when:
+         * - Creating an element (not attribute)
+         * - With no namespace (null)
+         * - Under a parent that has a default namespace with non-empty URI
+         *
+         * See also: TestCreateOMElementWithoutNamespace2.java in Java Axiom test suite
+         */
+        if (axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
+        {
+            axiom_element_t *parent_ele = axiom_node_get_data_element(parent, env);
+            if (parent_ele)
+            {
+                axiom_namespace_t *default_ns = axiom_element_get_default_namespace(parent_ele, env, parent);
+                if (default_ns)
+                {
+                    axis2_char_t *default_uri = axiom_namespace_get_uri(default_ns, env);
+                    if (default_uri && axutil_strcmp(default_uri, "") != 0)
+                    {
+                        /* Parent has a non-empty default namespace - undeclare it with xmlns="" */
+                        axiom_namespace_t *undeclare_ns = axiom_namespace_create(env, "", "");
+                        if (undeclare_ns)
+                        {
+                            axiom_element_declare_namespace(element, env, *node, undeclare_ns);
+                            /* declare_namespace increments ref count, so free our reference */
+                            axiom_namespace_free(undeclare_ns, env);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     return element;
 }

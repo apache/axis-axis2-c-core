@@ -453,3 +453,104 @@ TEST_F(TestOM, test_attribute)
 
 
 }
+
+/**
+ * AXIS2C-1275: Test that creating a child element without namespace under a parent
+ * with a default namespace results in an xmlns="" declaration on the child.
+ *
+ * This test is based on TestCreateOMElementWithoutNamespace2.java from the Java Axiom
+ * test suite (ws-axiom/testing/axiom-testsuite/src/main/java/org/apache/axiom/ts/om/factory/).
+ *
+ * The scenario:
+ *   <parent xmlns="http://example.org/">
+ *     <child xmlns="">text</child>   <!-- should have xmlns="" to undeclare default ns -->
+ *   </parent>
+ *
+ * Without the fix, the child would serialize as <child> without xmlns="", which according
+ * to XML namespace rules would mean the child inherits the parent's default namespace.
+ * This causes XML signature verification failures because the canonicalized form differs.
+ */
+TEST_F(TestOM, test_axis2c_1275_default_namespace_undeclare)
+{
+    axiom_namespace_t *parent_ns = NULL;
+    axiom_element_t *parent_ele = NULL;
+    axiom_element_t *child_ele = NULL;
+    axiom_node_t *parent_node = NULL;
+    axiom_node_t *child_node = NULL;
+    axiom_xml_writer_t *writer = NULL;
+    axiom_output_t *om_output = NULL;
+    axis2_char_t *output_buffer = NULL;
+    axutil_hash_t *child_namespaces = NULL;
+    axiom_namespace_t *undeclare_ns = NULL;
+
+    printf("\nstart test_axis2c_1275_default_namespace_undeclare\n");
+
+    /* Create parent element with default namespace (empty prefix, non-empty URI) */
+    parent_ns = axiom_namespace_create(m_env, "http://example.org/", "");
+    ASSERT_NE(parent_ns, nullptr);
+
+    parent_ele = axiom_element_create(m_env, NULL, "parent", parent_ns, &parent_node);
+    ASSERT_NE(parent_ele, nullptr);
+    ASSERT_NE(parent_node, nullptr);
+
+    /* Create child element WITHOUT namespace under the parent with default namespace */
+    child_ele = axiom_element_create(m_env, parent_node, "child", NULL, &child_node);
+    ASSERT_NE(child_ele, nullptr);
+    ASSERT_NE(child_node, nullptr);
+
+    /* Verify child element has an empty default namespace (xmlns="") */
+    axiom_namespace_t *child_ns = axiom_element_get_namespace(child_ele, m_env, child_node);
+    /* With our fix, get_namespace returns the xmlns="" undeclaration.
+     * The child is effectively in "no namespace", indicated by empty URI. */
+    ASSERT_NE(child_ns, nullptr);
+    axis2_char_t *child_ns_uri = axiom_namespace_get_uri(child_ns, m_env);
+    ASSERT_NE(child_ns_uri, nullptr);
+    ASSERT_STREQ("", child_ns_uri);  /* Empty URI means no namespace */
+
+    /* Verify child element has xmlns="" namespace declaration */
+    child_namespaces = axiom_element_get_namespaces(child_ele, m_env);
+    ASSERT_NE(child_namespaces, nullptr);
+
+    /* Look for the default namespace declaration (empty prefix key) */
+    undeclare_ns = (axiom_namespace_t *)axutil_hash_get(child_namespaces, "", AXIS2_HASH_KEY_STRING);
+    ASSERT_NE(undeclare_ns, nullptr);
+
+    /* Verify it's an undeclaration (empty prefix, empty URI) */
+    axis2_char_t *undeclare_prefix = axiom_namespace_get_prefix(undeclare_ns, m_env);
+    axis2_char_t *undeclare_uri = axiom_namespace_get_uri(undeclare_ns, m_env);
+    /* Prefix may be NULL or empty string */
+    if (undeclare_prefix != NULL) {
+        ASSERT_STREQ("", undeclare_prefix);
+    }
+    ASSERT_NE(undeclare_uri, nullptr);
+    ASSERT_STREQ("", undeclare_uri);
+
+    /* Set text content for child */
+    axiom_element_set_text(child_ele, m_env, "text", child_node);
+
+    /* Serialize and verify output contains xmlns="" */
+    writer = axiom_xml_writer_create_for_memory(m_env, NULL, AXIS2_TRUE, 0,
+                                                 AXIS2_XML_PARSER_TYPE_BUFFER);
+    ASSERT_NE(writer, nullptr);
+
+    om_output = axiom_output_create(m_env, writer);
+    ASSERT_NE(om_output, nullptr);
+
+    axis2_status_t status = axiom_node_serialize(parent_node, m_env, om_output);
+    ASSERT_EQ(status, AXIS2_SUCCESS);
+
+    output_buffer = (axis2_char_t *)axiom_xml_writer_get_xml(writer, m_env);
+    ASSERT_NE(output_buffer, nullptr);
+
+    printf("Serialized XML: %s\n", output_buffer);
+
+    /* Verify the output contains xmlns="" on the child element */
+    ASSERT_NE(strstr(output_buffer, "xmlns=\"\""), nullptr);
+
+    /* Clean up */
+    axiom_output_free(om_output, m_env);
+    axiom_node_free_tree(parent_node, m_env);
+    axiom_namespace_free(parent_ns, m_env);
+
+    printf("\nend test_axis2c_1275_default_namespace_undeclare\n");
+}
