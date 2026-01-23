@@ -64,7 +64,7 @@ extern "C"
     struct axis2_callback_recv;
 
     /**
-     * Sets the options that is to be used by this operation client. 
+     * Sets the options that is to be used by this operation client.
      * @param op_client pointer to operation client struct
      * @param env pointer to environment struct
      * @param options pointer to options struct to be set
@@ -72,6 +72,20 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_options(
+        axis2_op_client_t * op_client,
+        const axutil_env_t * env,
+        const axis2_options_t * options);
+
+    /**
+     * Sets the options reference without freeing the old options.
+     * This is used internally when svc_client replaces options and has already
+     * freed the old options. Prevents use-after-free (AXIS2C-1355).
+     * @param op_client pointer to operation client struct
+     * @param env pointer to environment struct
+     * @param options pointer to options struct to be set
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_op_client_set_options_ref(
         axis2_op_client_t * op_client,
         const axutil_env_t * env,
         const axis2_options_t * options);

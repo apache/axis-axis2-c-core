@@ -14,14 +14,15 @@
 # limitations under the License.
 # Only build tests when Google Test is available
 if GTEST_AVAILABLE
-TESTS = test_client test_svc_client_handler_count test_clientapi
-noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
-check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
+TESTS = test_client test_svc_client_handler_count test_clientapi test_axis2c_1355
+noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_axis2c_1355
+check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_axis2c_1355
 SUBDIRS =
-AM_CFLAGS = -g -pthread 
+AM_CFLAGS = -g -pthread
 test_client_SOURCES = test_client.cc
 test_clientapi_SOURCES = test_clientapi.cc
 test_svc_client_handler_count_SOURCES = test_svc_client_handler_count.cc
+test_axis2c_1355_SOURCES = test_axis2c_1355.cc
 
 test_clientapi_LDADD   =  \
 				 ../../../util/src/libaxutil.la \
@@ -62,6 +63,18 @@ test_svc_client_handler_count_LDADD   =  \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
 
+# AXIS2C-1355: Use-after-free when replacing svc_client options
+test_axis2c_1355_LDADD   =  \
+				../../../util/src/libaxutil.la \
+				../../../axiom/src/om/libaxis2_axiom.la \
+				../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+				$(top_builddir)/neethi/src/libneethi.la \
+				-lpthread \
+				$(top_builddir)/src/core/engine/libaxis2_engine.la \
+				$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
+				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/$(GTEST)/libgtest.a \
+				$(top_builddir)/$(GTEST)/libgtest_main.a
 
 AM_CPPFLAGS = \
 		 -I$(top_builddir)/include \

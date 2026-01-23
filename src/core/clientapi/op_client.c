@@ -163,6 +163,22 @@ axis2_op_client_set_options(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN void AXIS2_CALL
+axis2_op_client_set_options_ref(
+    axis2_op_client_t * op_client,
+    const axutil_env_t * env,
+    const axis2_options_t * options)
+{
+    (void)env; /* unused but kept for API consistency */
+    /* AXIS2C-1355: Set options pointer without freeing the old one.
+     * This is used when svc_client has already freed the old options
+     * and we just need to update the pointer to prevent use-after-free. */
+    if(op_client)
+    {
+        op_client->options = (axis2_options_t *)options;
+    }
+}
+
 AXIS2_EXTERN const axis2_options_t *AXIS2_CALL
 axis2_op_client_get_options(
     const axis2_op_client_t * op_client,

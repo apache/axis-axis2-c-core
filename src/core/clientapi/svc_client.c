@@ -265,6 +265,16 @@ axis2_svc_client_set_options(
         axis2_options_free(svc_client->options, env);
     }
     svc_client->options = (axis2_options_t *)options;
+
+    /* AXIS2C-1355: Update op_client's options pointer to prevent use-after-free.
+     * The op_client may hold a reference to the old options which we just freed.
+     * We use axis2_op_client_set_options_ref() which updates the pointer without
+     * trying to free (since we already freed the old options above). */
+    if(svc_client->op_client)
+    {
+        axis2_op_client_set_options_ref(svc_client->op_client, env, svc_client->options);
+    }
+
     return AXIS2_SUCCESS;
 }
 
