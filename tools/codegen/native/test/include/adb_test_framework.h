@@ -392,6 +392,30 @@ extern int axis2c_1613_test_count;
 extern adb_test_case_t axis2c_1182_tests[];
 extern int axis2c_1182_test_count;
 
+/* AXIS2C-1506 C Code Generation Tests
+ *
+ * AXIS2C-1506: 3 bugs in C code generation (invalid characters in c tokens,
+ * cyclic inclusion and uppercase-lowercase mismatch)
+ *
+ * This issue from September 2010 reported three bugs in the WSDL2C code generator:
+ * 1. Invalid characters (like '-') in C tokens from type names (e.g., "Temperature-Unit")
+ * 2. Cyclic #include directives in large projects with one file per data type
+ * 3. Uppercase-lowercase enumeration collisions (e.g., 'R' and 'r' both become 'R')
+ *
+ * The native generator handles these by:
+ * 1. Using wsdl2c_sanitize_c_identifier() to replace invalid chars with '_'
+ * 2. Avoiding cross-type includes in headers (using forward declarations)
+ * 3. Treating simpleType enumerations as strings (not C enums)
+ *
+ * Test scenarios:
+ * - Dash character sanitization (eHealth CD-TRANSACTION, CD-HEADING-LAB types)
+ * - Period character sanitization (AXIS2C-1573 coverage)
+ * - No cyclic #include verification
+ * - Case-sensitive enumeration value preservation
+ */
+extern adb_test_case_t axis2c_1506_tests[];
+extern int axis2c_1506_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 

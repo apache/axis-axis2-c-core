@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Test WSDL for AXIS2C-1506: Invalid C identifiers in type names -->
+<!-- This tests:
+     1. Type names with dashes (e.g., "Temperature-Unit" -> "Temperature_Unit")
+     2. Type names with periods (e.g., "Status.Code" -> "Status_Code")
+     3. Type names starting with digits (e.g., "123Type" -> "_123Type")
+     4. Reserved C keyword handling (e.g., "status" -> "status_value")
+-->
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/axis2c1506/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/axis2c1506/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/axis2c1506/">
+
+      <!-- Test 1: Type name with dash (AXIS2C-1506 Bug #1) -->
+      <xsd:simpleType name="Temperature-Unit">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="celsius"/>
+          <xsd:enumeration value="fahrenheit"/>
+          <xsd:enumeration value="kelvin"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <!-- Test 2: Type name with period -->
+      <xsd:simpleType name="Status.Code">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="success"/>
+          <xsd:enumeration value="error"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <!-- Test 3: Element with reserved C keyword name -->
+      <xsd:complexType name="ReservedKeywordType">
+        <xsd:sequence>
+          <xsd:element name="status" type="xsd:string"/>
+          <xsd:element name="type" type="xsd:string"/>
+          <xsd:element name="int" type="xsd:string"/>
+          <xsd:element name="return" type="xsd:string"/>
+          <xsd:element name="void" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- Test 4: Complex type using problematic simple types -->
+      <xsd:complexType name="TemperatureReadingType">
+        <xsd:sequence>
+          <xsd:element name="value" type="xsd:decimal"/>
+          <xsd:element name="unit" type="tns:Temperature-Unit"/>
+          <xsd:element name="status-code" type="tns:Status.Code"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <!-- Request/Response -->
+      <xsd:element name="GetTemperatureRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="location" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetTemperatureResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="reading" type="tns:TemperatureReadingType"/>
+            <xsd:element name="keywords" type="tns:ReservedKeywordType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <message name="GetTemperatureRequestMsg">
+    <part name="body" element="tns:GetTemperatureRequest"/>
+  </message>
+  <message name="GetTemperatureResponseMsg">
+    <part name="body" element="tns:GetTemperatureResponse"/>
+  </message>
+
+  <portType name="TemperaturePortType">
+    <operation name="GetTemperature">
+      <input message="tns:GetTemperatureRequestMsg"/>
+      <output message="tns:GetTemperatureResponseMsg"/>
+    </operation>
+  </portType>
+
+  <binding name="TemperatureSoapBinding" type="tns:TemperaturePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetTemperature">
+      <soap:operation soapAction="urn:test:GetTemperature"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+
+  <service name="TemperatureService">
+    <port name="TemperaturePort" binding="tns:TemperatureSoapBinding">
+      <soap:address location="http://localhost:8080/axis2/services/TemperatureService"/>
+    </port>
+  </service>
+</definitions>
