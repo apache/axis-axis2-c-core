@@ -67,14 +67,24 @@ class TestOM: public ::testing::Test
 
 TEST_F(TestOM, test_om_build) {
 
-    /* Try both paths: from source dir (automake) and from .libs (direct run) */
-    char *filename = "../resources/xml/om/test.xml";
-    FILE *test_file = fopen(filename, "r");
-    if (!test_file) {
-        filename = "../../resources/xml/om/test.xml";
-    } else {
-        fclose(test_file);
+    /* Try multiple paths to find the test file from various working directories */
+    const char *paths[] = {
+        "../resources/xml/om/test.xml",           /* from axiom/test/om/ */
+        "../../resources/xml/om/test.xml",        /* from axiom/test/om/.libs/ */
+        "axiom/test/resources/xml/om/test.xml",   /* from project root */
+        NULL
+    };
+
+    char *filename = NULL;
+    for (int i = 0; paths[i] != NULL; i++) {
+        FILE *test_file = fopen(paths[i], "r");
+        if (test_file) {
+            filename = (char *)paths[i];
+            fclose(test_file);
+            break;
+        }
     }
+    ASSERT_NE(filename, nullptr) << "Could not find test.xml in any expected location";
 
     FILE *f = NULL;
     axiom_element_t *ele1 = NULL;
