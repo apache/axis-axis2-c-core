@@ -206,10 +206,17 @@ axis2_build_client_conf_ctx(
     }
     else
     {
-        AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI,
-            "Provided client repository path %s does not exsist or no "\
-            "permission to read, therefore set axis2c home to DEFAULT_REPO_PATH.",
-            axis2_home);
+        /* AXIS2C-1670: Improved warning message. When client_home is invalid,
+         * we fall back to the current directory which causes the deployment
+         * engine to scan ./modules and ./services. This can cause unexpected
+         * file I/O and performance issues if the application's working directory
+         * contains many files. */
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Client repository path '%s' does not exist or is not readable. "
+            "Falling back to current directory '%s'. This will scan ./modules "
+            "and ./services subdirectories which may cause performance issues. "
+            "Set a valid AXIS2C_HOME or pass a valid client_home path.",
+            axis2_home ? axis2_home : "(null)", DEFAULT_REPO_PATH);
         axis2_home = DEFAULT_REPO_PATH;
         dep_engine = axis2_dep_engine_create(env);
     }
