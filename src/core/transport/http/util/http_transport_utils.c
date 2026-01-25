@@ -2084,7 +2084,6 @@ axis2_http_transport_utils_get_services_static_wsdl(
     axis2_char_t *wsdl_string = NULL;
     axis2_char_t *wsdl_path = NULL;
     axis2_char_t **url_tok = NULL;
-    unsigned int len = 0;
     axis2_char_t *svc_name = NULL;
     axis2_conf_t *conf = NULL;
     axutil_hash_t *services_map = NULL;
@@ -2096,9 +2095,12 @@ axis2_http_transport_utils_get_services_static_wsdl(
     url_tok = axutil_parse_request_url_for_svc_and_op(env, request_url);
     if(url_tok[0])
     {
-        len = (int)strlen(url_tok[0]);
-        /* We are sure that the difference lies within the int range */
-        url_tok[0][len - 5] = 0;
+        /* AXIS2C-1651: Use url_tok[0] directly. The previous code did
+         * url_tok[0][len - 5] = 0 trying to remove "?wsdl", but
+         * axutil_parse_request_url_for_svc_and_op already returns the
+         * service name WITHOUT the query string. The old code caused:
+         * - Memory corruption for service names < 5 chars (negative index)
+         * - Service name truncation for names >= 5 chars (couldn't find service) */
         svc_name = url_tok[0];
     }
 
