@@ -700,7 +700,18 @@ axis2_http_sender_send(
         }
         else
         {
-            path = axutil_strdup(env, axutil_url_get_path(url, env));
+            /* AXIS2C-1626: Check if URL already has a query string (REST without SOAP).
+             * If present, preserve it in the request path. */
+            axis2_char_t *query = axutil_url_get_query(url, env);
+            if(query)
+            {
+                /* query includes the '?' character */
+                path = axutil_strcat(env, axutil_url_get_path(url, env), query, NULL);
+            }
+            else
+            {
+                path = axutil_strdup(env, axutil_url_get_path(url, env));
+            }
         }
 
         if(send_via_get)
