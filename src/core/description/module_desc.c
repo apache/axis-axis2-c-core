@@ -412,7 +412,11 @@ axis2_module_desc_is_param_locked(
     /* checking the locked value of parent */
     if(!module_desc->parent)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_MODULE_DESC, AXIS2_FAILURE);
+        /* Parent not set yet (normal during module loading) - param cannot be
+         * locked at config level, so just return false without setting error.
+         * AXIS2C-1408: Previously this set AXIS2_ERROR_INVALID_STATE_MODULE_DESC
+         * which left the env in an error state even though operation succeeded.
+         */
         return AXIS2_FALSE;
     }
     locked = axis2_conf_is_param_locked(module_desc->parent, env, param_name);
