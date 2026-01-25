@@ -445,7 +445,10 @@ axiom_soap_body_convert_fault_to_soap11(
                                         }
                                     }
                                     axiom_node_free_tree(fault_value_om_node, env);
-                                    axiom_soap_fault_value_set_base_node(fault_value, env, NULL);
+                                    /* AXIS2C-1507: Point to the faultcode element so
+                                     * axiom_soap_fault_value_get_text() continues to work. */
+                                    axiom_soap_fault_value_set_base_node(fault_value, env,
+                                        fault_code_om_node);
                                 }
                             }
                         }
@@ -495,7 +498,10 @@ axiom_soap_body_convert_fault_to_soap11(
                                         }
                                     }
                                     axiom_node_free_tree(fault_text_om_node, env);
-                                    axiom_soap_fault_text_set_base_node(fault_text, env, NULL);
+                                    /* AXIS2C-1507: Point to the faultstring element so
+                                     * axiom_soap_fault_text_get_text() continues to work. */
+                                    axiom_soap_fault_text_set_base_node(fault_text, env,
+                                        fault_reason_om_node);
                                 }
                             }
                         }
