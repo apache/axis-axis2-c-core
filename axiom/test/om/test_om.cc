@@ -554,3 +554,78 @@ TEST_F(TestOM, test_axis2c_1275_default_namespace_undeclare)
 
     printf("\nend test_axis2c_1275_default_namespace_undeclare\n");
 }
+
+/**
+ * AXIS2C-1591: Test that adding a duplicate attribute frees the old one.
+ *
+ * When axiom_element_add_attribute is called with an attribute that has the
+ * same name as an existing attribute, the old attribute should be freed to
+ * prevent a memory leak. Previously, axutil_hash_set would simply overwrite
+ * the pointer without freeing the old attribute.
+ *
+ * This test adds an attribute, then adds another with the same name, and
+ * verifies the new value is stored. With ASAN enabled, any memory leak
+ * from the old attribute not being freed will be detected.
+ */
+TEST_F(TestOM, test_axis2c_1591_duplicate_attribute)
+{
+    axiom_element_t *element = NULL;
+    axiom_node_t *node = NULL;
+    axiom_attribute_t *attr1 = NULL;
+    axiom_attribute_t *attr2 = NULL;
+    axiom_namespace_t *ns = NULL;
+    axis2_char_t *value = NULL;
+
+    printf("\nstart test_axis2c_1591_duplicate_attribute\n");
+
+    /* Create namespace and element */
+    ns = axiom_namespace_create(m_env, "http://test.example.org/", "test");
+    ASSERT_NE(ns, nullptr);
+
+    element = axiom_element_create(m_env, NULL, "testElement", ns, &node);
+    ASSERT_NE(element, nullptr);
+    ASSERT_NE(node, nullptr);
+
+    /* Add first attribute with name "myattr" and value "value1" */
+    attr1 = axiom_attribute_create(m_env, "myattr", "value1", NULL);
+    ASSERT_NE(attr1, nullptr);
+
+    axis2_status_t status = axiom_element_add_attribute(element, m_env, attr1, node);
+    ASSERT_EQ(status, AXIS2_SUCCESS);
+    /* Release our reference - element now owns a reference via increment_ref */
+    axiom_attribute_free(attr1, m_env);
+
+    /* Verify first attribute value */
+    value = axiom_element_get_attribute_value_by_name(element, m_env, "myattr");
+    ASSERT_NE(value, nullptr);
+    ASSERT_STREQ("value1", value);
+
+    /* Add second attribute with SAME name "myattr" but different value "value2"
+     * This should replace the old attribute. Without the AXIS2C-1591 fix,
+     * the old attribute would be leaked. */
+    attr2 = axiom_attribute_create(m_env, "myattr", "value2", NULL);
+    ASSERT_NE(attr2, nullptr);
+
+    status = axiom_element_add_attribute(element, m_env, attr2, node);
+    ASSERT_EQ(status, AXIS2_SUCCESS);
+    /* Release our reference - element now owns a reference via increment_ref */
+    axiom_attribute_free(attr2, m_env);
+
+    /* Verify the attribute value has been updated to the new value */
+    value = axiom_element_get_attribute_value_by_name(element, m_env, "myattr");
+    ASSERT_NE(value, nullptr);
+    ASSERT_STREQ("value2", value);
+
+    /* Verify there is only one attribute (not two) */
+    axutil_hash_t *attrs = axiom_element_get_all_attributes(element, m_env);
+    ASSERT_NE(attrs, nullptr);
+    ASSERT_EQ(axutil_hash_count(attrs), 1);
+
+    /* Clean up - freeing the node tree will free the element and its attributes.
+     * If AXIS2C-1591 is not fixed, ASAN will report a memory leak here because
+     * the old attr1 (with value "value1") was never freed when it was replaced. */
+    axiom_node_free_tree(node, m_env);
+    axiom_namespace_free(ns, m_env);
+
+    printf("\nend test_axis2c_1591_duplicate_attribute\n");
+}

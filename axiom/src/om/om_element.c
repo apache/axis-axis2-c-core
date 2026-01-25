@@ -693,6 +693,17 @@ axiom_element_add_attribute(
     if (qname)
     {
         axis2_char_t *name = axutil_qname_to_string(qname, env);
+
+        /* AXIS2C-1591: Check if attribute with same name already exists.
+         * If so, free the old attribute before adding the new one to prevent
+         * memory leak when hash_set overwrites the existing entry. */
+        axiom_attribute_t *existing_attr = (axiom_attribute_t *)axutil_hash_get(
+            om_element->attributes, name, AXIS2_HASH_KEY_STRING);
+        if (existing_attr)
+        {
+            axiom_attribute_free(existing_attr, env);
+        }
+
         axutil_hash_set(om_element->attributes, name, AXIS2_HASH_KEY_STRING, attribute);
         axiom_attribute_increment_ref(attribute, env);
     }
