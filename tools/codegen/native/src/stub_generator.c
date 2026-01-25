@@ -148,6 +148,129 @@ wsdl2c_sanitize_c_identifier(const axutil_env_t *env, const axis2_char_t *wsdl_n
     return result;
 }
 
+/* AXIS2C-1492 FIX: XSD integer type detection and C type mapping
+ *
+ * XSD defines several integer types with different ranges:
+ * - Signed: byte, short, int, long, integer (arbitrary precision)
+ * - Unsigned: unsignedByte, unsignedShort, unsignedInt, unsignedLong,
+ *             positiveInteger, nonNegativeInteger
+ *
+ * This fix ensures proper C type mapping and conversion functions:
+ * - Unsigned types use unsigned int/uint64_t and strtoul()/strtoull()
+ * - Signed types use int/int64_t and atoi()/strtol()/strtoll()
+ */
+
+/* Check if XSD type is an unsigned integer type */
+axis2_bool_t
+is_unsigned_integer_type(const axis2_char_t *xsd_type)
+{
+    if (!xsd_type) {
+        return AXIS2_FALSE;
+    }
+    /* XSD unsigned integer types */
+    if (strstr(xsd_type, "unsignedInt") ||
+        strstr(xsd_type, "unsignedLong") ||
+        strstr(xsd_type, "unsignedShort") ||
+        strstr(xsd_type, "unsignedByte") ||
+        strstr(xsd_type, "positiveInteger") ||
+        strstr(xsd_type, "nonNegativeInteger")) {
+        return AXIS2_TRUE;
+    }
+    return AXIS2_FALSE;
+}
+
+/* Check if XSD type is a 64-bit integer type (long) */
+axis2_bool_t
+is_64bit_integer_type(const axis2_char_t *xsd_type)
+{
+    if (!xsd_type) {
+        return AXIS2_FALSE;
+    }
+    /* XSD long types (signed and unsigned) */
+    if (strstr(xsd_type, "Long") || strstr(xsd_type, "long") ||
+        strstr(xsd_type, "integer") || strstr(xsd_type, "Integer")) {
+        /* "integer" in XSD is arbitrary precision, map to 64-bit */
+        /* But exclude unsignedInt which contains "int" */
+        if (strstr(xsd_type, "unsignedInt") && !strstr(xsd_type, "unsignedInteg")) {
+            return AXIS2_FALSE;
+        }
+        return AXIS2_TRUE;
+    }
+    return AXIS2_FALSE;
+}
+
+/* Check if XSD type is any integer type (signed or unsigned) */
+axis2_bool_t
+is_integer_type(const axis2_char_t *xsd_type)
+{
+    if (!xsd_type) {
+        return AXIS2_FALSE;
+    }
+    if (strstr(xsd_type, "int") || strstr(xsd_type, "Int") ||
+        strstr(xsd_type, "long") || strstr(xsd_type, "Long") ||
+        strstr(xsd_type, "short") || strstr(xsd_type, "Short") ||
+        strstr(xsd_type, "byte") || strstr(xsd_type, "Byte") ||
+        strstr(xsd_type, "integer") || strstr(xsd_type, "Integer")) {
+        return AXIS2_TRUE;
+    }
+    return AXIS2_FALSE;
+}
+
+/* Get the C type string for an XSD integer type */
+const char*
+get_c_integer_type(const axis2_char_t *xsd_type)
+{
+    if (!xsd_type) {
+        return "int";
+    }
+
+    axis2_bool_t is_unsigned = is_unsigned_integer_type(xsd_type);
+    axis2_bool_t is_64bit = is_64bit_integer_type(xsd_type);
+
+    if (is_64bit) {
+        return is_unsigned ? "uint64_t" : "int64_t";
+    } else {
+        return is_unsigned ? "unsigned int" : "int";
+    }
+}
+
+/* Get the conversion function for deserializing an XSD integer type */
+const char*
+get_integer_deserialize_func(const axis2_char_t *xsd_type)
+{
+    if (!xsd_type) {
+        return "atoi";
+    }
+
+    axis2_bool_t is_unsigned = is_unsigned_integer_type(xsd_type);
+    axis2_bool_t is_64bit = is_64bit_integer_type(xsd_type);
+
+    if (is_64bit) {
+        return is_unsigned ? "strtoull(text_value, NULL, 10)" : "strtoll(text_value, NULL, 10)";
+    } else {
+        return is_unsigned ? "strtoul(text_value, NULL, 10)" : "atoi(text_value)";
+    }
+}
+
+/* Get the printf format specifier for an XSD integer type */
+const char*
+get_integer_format_specifier(const axis2_char_t *xsd_type)
+{
+    if (!xsd_type) {
+        return "%d";
+    }
+
+    axis2_bool_t is_unsigned = is_unsigned_integer_type(xsd_type);
+    axis2_bool_t is_64bit = is_64bit_integer_type(xsd_type);
+
+    if (is_64bit) {
+        /* Use PRIu64/PRId64 macros from inttypes.h, but for simplicity use %llu/%lld */
+        return is_unsigned ? "%llu" : "%lld";
+    } else {
+        return is_unsigned ? "%u" : "%d";
+    }
+}
+
 /* Forward declarations for internal functions */
 static axis2_status_t create_output_directory(const axis2_char_t *path, const axutil_env_t *env);
 static axis2_status_t generate_stub_header(wsdl2c_context_t *context, const axutil_env_t *env);
@@ -912,8 +1035,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 }
                 /* Map XSD types to C types */
                 else if (elem->type) {
-                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
-                        c_type = "int";
+                    /* AXIS2C-1492 FIX: Use helper function for proper integer type mapping */
+                    if (is_integer_type(elem->type)) {
+                        c_type = get_c_integer_type(elem->type);
                     } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
                         c_type = "axis2_bool_t";
                     } else if (strstr(elem->type, "double") || strstr(elem->type, "float")) {
@@ -1073,8 +1197,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     c_type = "axiom_node_t*";
                 }
                 else if (elem->type) {
-                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
-                        c_type = "int";
+                    /* AXIS2C-1492 FIX: Use helper function for proper integer type mapping */
+                    if (is_integer_type(elem->type)) {
+                        c_type = get_c_integer_type(elem->type);
                     } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
                         c_type = "axis2_bool_t";
                     } else if (strstr(elem->type, "double") || strstr(elem->type, "float")) {
@@ -1160,10 +1285,11 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     fprintf(source_file, "        axutil_date_time_free(_this->%s, env);\n", elem_name);
                     fprintf(source_file, "    }\n");
                 } else if (elem->type &&
-                    (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                    (is_integer_type(elem->type) ||
                      strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
-                     strstr(elem->type, "double") || strstr(elem->type, "float"))) {
-                    /* Primitive types don't need freeing */
+                     strstr(elem->type, "double") || strstr(elem->type, "float") ||
+                     strstr(elem->type, "decimal"))) {
+                    /* Primitive types don't need freeing - AXIS2C-1492 */
                 } else if (!elem->is_typeless && !elem->is_any_type) {
                     /* String types need AXIS2_FREE */
                     fprintf(source_file, "    if (_this->%s) {\n", elem_name);
@@ -1199,8 +1325,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     default_val = "NULL";
                 }
                 else if (elem->type) {
-                    if (strstr(elem->type, "int") || strstr(elem->type, "Integer")) {
-                        c_type = "int";
+                    /* AXIS2C-1492 FIX: Use helper function for proper integer type mapping */
+                    if (is_integer_type(elem->type)) {
+                        c_type = get_c_integer_type(elem->type);
                         default_val = "0";
                     } else if (strstr(elem->type, "boolean") || strstr(elem->type, "bool")) {
                         c_type = "axis2_bool_t";
@@ -1225,8 +1352,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     /* AXIS2C-1182: Generate array accessor functions */
 
                     /* Check if this is a primitive type that needs boxing */
+                    /* AXIS2C-1492 FIX: Use helper function for integer type detection */
                     axis2_bool_t is_primitive = (elem->type &&
-                        (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                        (is_integer_type(elem->type) ||
                          strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
                          strstr(elem->type, "double") || strstr(elem->type, "float")));
 
@@ -1369,8 +1497,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 if (is_array) {
                     /* AXIS2C-1182: Loop through array and serialize each item */
                     /* Check if this is a primitive type that needs unboxing */
+                    /* AXIS2C-1492 FIX: Use helper function for integer type detection */
                     axis2_bool_t is_primitive = (elem->type &&
-                        (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                        (is_integer_type(elem->type) ||
                          strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
                          strstr(elem->type, "double") || strstr(elem->type, "float")));
 
@@ -1380,13 +1509,16 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
 
                     if (is_primitive) {
                         /* Primitive types are boxed - need to unbox and convert to string */
-                        if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
-                            fprintf(source_file, "            int *_arr_item = (int*)axutil_array_list_get(_this->%s, env, _ser_i);\n", elem_name);
+                        /* AXIS2C-1492 FIX: Use proper integer type and format specifier */
+                        if (elem->type && is_integer_type(elem->type)) {
+                            const char *int_c_type = get_c_integer_type(elem->type);
+                            const char *int_fmt = get_integer_format_specifier(elem->type);
+                            fprintf(source_file, "            %s *_arr_item = (%s*)axutil_array_list_get(_this->%s, env, _ser_i);\n", int_c_type, int_c_type, elem_name);
                             fprintf(source_file, "            if (_arr_item) {\n");
                             fprintf(source_file, "                ns = axiom_namespace_create(env, \"\", NULL);\n");
                             fprintf(source_file, "                current_element = axiom_element_create(env, parent, \"%s\", ns, &current_node);\n", xml_name);
                             fprintf(source_file, "                if (current_element) {\n");
-                            fprintf(source_file, "                    sprintf(tmp_buf, \"%%d\", *_arr_item);\n");
+                            fprintf(source_file, "                    sprintf(tmp_buf, \"%s\", *_arr_item);\n", int_fmt);
                             fprintf(source_file, "                    axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
                             fprintf(source_file, "                }\n");
                             fprintf(source_file, "            }\n");
@@ -1448,8 +1580,10 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                         fprintf(source_file, "                AXIS2_FREE(env->allocator, text_value);\n");
                         fprintf(source_file, "                text_value = NULL;\n");
                         fprintf(source_file, "            }\n");
-                    } else if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
-                        fprintf(source_file, "            sprintf(tmp_buf, \"%%d\", _this->%s);\n", elem_name);
+                    /* AXIS2C-1492 FIX: Use proper format specifier for integer types */
+                    } else if (elem->type && is_integer_type(elem->type)) {
+                        const char *int_fmt = get_integer_format_specifier(elem->type);
+                        fprintf(source_file, "            sprintf(tmp_buf, \"%s\", _this->%s);\n", int_fmt, elem_name);
                         fprintf(source_file, "            axiom_element_set_text(current_element, env, tmp_buf, current_node);\n");
                     } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
                         fprintf(source_file, "            axiom_element_set_text(current_element, env, _this->%s ? \"true\" : \"false\", current_node);\n", elem_name);
@@ -1518,8 +1652,9 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                 if (is_array) {
                     /* AXIS2C-1182: Collect array elements into axutil_array_list_t */
                     /* Check if this is a primitive type that needs boxing */
+                    /* AXIS2C-1492 FIX: Use helper function for integer type detection */
                     axis2_bool_t is_primitive = (elem->type &&
-                        (strstr(elem->type, "int") || strstr(elem->type, "Integer") ||
+                        (is_integer_type(elem->type) ||
                          strstr(elem->type, "boolean") || strstr(elem->type, "bool") ||
                          strstr(elem->type, "double") || strstr(elem->type, "float")));
 
@@ -1531,10 +1666,13 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
 
                     if (is_primitive) {
                         /* Box primitive types when deserializing */
-                        if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
-                            fprintf(source_file, "                            int *_boxed = AXIS2_MALLOC(env->allocator, sizeof(int));\n");
+                        /* AXIS2C-1492 FIX: Use proper integer type and conversion function */
+                        if (elem->type && is_integer_type(elem->type)) {
+                            const char *int_c_type = get_c_integer_type(elem->type);
+                            const char *int_deser_func = get_integer_deserialize_func(elem->type);
+                            fprintf(source_file, "                            %s *_boxed = AXIS2_MALLOC(env->allocator, sizeof(%s));\n", int_c_type, int_c_type);
                             fprintf(source_file, "                            if (_boxed) {\n");
-                            fprintf(source_file, "                                *_boxed = atoi(text_value);\n");
+                            fprintf(source_file, "                                *_boxed = %s;\n", int_deser_func);
                             fprintf(source_file, "                                axutil_array_list_add(obj->%s, env, _boxed);\n", elem_name);
                             fprintf(source_file, "                            }\n");
                         } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
@@ -1573,9 +1711,11 @@ generate_adb_complex_types(wsdl2c_context_t *context, const axutil_env_t *env)
                     fprintf(source_file, "                            axutil_date_time_deserialize_date_time(obj->%s, env, text_value);\n", elem_name);
                     fprintf(source_file, "                        }\n");
                     fprintf(source_file, "                    }\n");
-                } else if (elem->type && (strstr(elem->type, "int") || strstr(elem->type, "Integer"))) {
+                /* AXIS2C-1492 FIX: Use proper integer conversion function */
+                } else if (elem->type && is_integer_type(elem->type)) {
+                    const char *int_deser_func = get_integer_deserialize_func(elem->type);
                     fprintf(source_file, "                    if (text_value) {\n");
-                    fprintf(source_file, "                        obj->%s = atoi(text_value);\n", elem_name);
+                    fprintf(source_file, "                        obj->%s = %s;\n", elem_name, int_deser_func);
                     fprintf(source_file, "                    }\n");
                 } else if (elem->type && (strstr(elem->type, "boolean") || strstr(elem->type, "bool"))) {
                     fprintf(source_file, "                    if (text_value) {\n");

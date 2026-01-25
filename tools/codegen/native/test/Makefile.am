@@ -44,6 +44,7 @@ adb_test_runner_SOURCES = \
     src/test_axis2c_1613_error_on_null.c \
     src/test_axis2c_1182_array_add_function.c \
     src/test_axis2c_1506_ehealth_schema.c \
+    src/test_axis2c_1492_unsigned_int.c \
     src/axis2_stub_compat.c
 
 # Include directories

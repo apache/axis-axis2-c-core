@@ -416,6 +416,17 @@ extern int axis2c_1182_test_count;
 extern adb_test_case_t axis2c_1506_tests[];
 extern int axis2c_1506_test_count;
 
+/* AXIS2C-1492: Unsigned integer type handling
+ *
+ * Issue: xsd:unsignedInt values above INT_MAX are truncated because
+ * the generated code uses atoi() which returns signed int.
+ *
+ * Fix: Uses proper type mapping (unsigned int, uint64_t) and
+ * conversion functions (strtoul, strtoull) for unsigned types.
+ */
+extern adb_test_case_t axis2c_1492_tests[];
+extern int axis2c_1492_test_count;
+
 /* Global test statistics */
 extern adb_test_stats_t g_test_stats;
 
