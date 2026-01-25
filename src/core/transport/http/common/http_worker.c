@@ -1495,13 +1495,20 @@ axis2_http_worker_process_request(
                         while (size)
                         {
                             axis2_http_header_t *simple_header = NULL;
+                            axis2_http_header_t *header_copy = NULL;
                             size--;
                             simple_header = (axis2_http_header_t *)
                             axutil_array_list_get(output_header_list,
                                 env, size);
+                            /* AXIS2C-1702: Create a copy of the header to avoid double-free.
+                             * The original header is owned by msg_ctx and will be freed there.
+                             * The response needs its own copy to free independently. */
+                            header_copy = axis2_http_header_create(env,
+                                axis2_http_header_get_name(simple_header, env),
+                                axis2_http_header_get_value(simple_header, env));
                             axis2_http_simple_response_set_header(response,
                                 env,
-                                simple_header);
+                                header_copy);
                         }
 
                         if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
@@ -1633,13 +1640,20 @@ axis2_http_worker_process_request(
 
                         while (size)
                         {
-                            axis2_http_header_t *simeple_header = NULL;
+                            axis2_http_header_t *simple_header = NULL;
+                            axis2_http_header_t *header_copy = NULL;
                             size--;
-                            simeple_header = (axis2_http_header_t *)
+                            simple_header = (axis2_http_header_t *)
                             axutil_array_list_get(output_header_list,
                                 env, size);
+                            /* AXIS2C-1702: Create a copy of the header to avoid double-free.
+                             * The original header is owned by msg_ctx and will be freed there.
+                             * The response needs its own copy to free independently. */
+                            header_copy = axis2_http_header_create(env,
+                                axis2_http_header_get_name(simple_header, env),
+                                axis2_http_header_get_value(simple_header, env));
                             axis2_http_simple_response_set_header(response, env,
-                                simeple_header);
+                                header_copy);
                         }
 
                         if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
@@ -1903,6 +1917,11 @@ axis2_http_worker_process_request(
     axutil_url_free(request_url, env);
     axutil_string_free(soap_action_str, env);
     request_url = NULL;
+
+    /* Note: response is freed via out_transport_info when msg_ctx is freed.
+     * The response is attached to msg_ctx at line ~474 via axis2_http_out_transport_info_create().
+     * Early error returns (before that attachment) free the response explicitly. */
+
     return status;
 }
 
