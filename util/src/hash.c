@@ -702,8 +702,15 @@ axutil_hash_free(
     const axutil_env_t *env)
 {
     unsigned int i = 0;
+    const axutil_env_t *free_env = NULL;
+
     if(ht)
     {
+        /* AXIS2C-1447: Use the allocator that was used during hash creation
+         * (stored in ht->env) rather than the passed env parameter.
+         * This ensures memory is freed with the same allocator used to allocate it. */
+        free_env = ht->env ? ht->env : env;
+
         for(i = 0; i <= ht->max; i++)
         {
             axutil_hash_entry_t *next = NULL;
@@ -714,9 +721,9 @@ axutil_hash_free(
                 /* AXIS2C-1632 FIX: Free the key if it was internally copied */
                 if(current->key_is_copy && current->key)
                 {
-                    AXIS2_FREE(env->allocator, (void*)current->key);
+                    AXIS2_FREE(free_env->allocator, (void*)current->key);
                 }
-                AXIS2_FREE(env->allocator, current);
+                AXIS2_FREE(free_env->allocator, current);
                 current = NULL;
                 current = next;
             }
@@ -731,13 +738,15 @@ axutil_hash_free(
                 /* AXIS2C-1632 FIX: Free the key if it was internally copied */
                 if(current->key_is_copy && current->key)
                 {
-                    AXIS2_FREE(env->allocator, (void*)current->key);
+                    AXIS2_FREE(free_env->allocator, (void*)current->key);
                 }
-                AXIS2_FREE(env->allocator, current);
+                AXIS2_FREE(free_env->allocator, current);
                 current = NULL;
                 current = next;
             }
         }
+
+        AXIS2_FREE(free_env->allocator, ht->array);
 
         if(ht->env)
         {
@@ -750,8 +759,7 @@ axutil_hash_free(
             ht->env = NULL;
         }
 
-        AXIS2_FREE(env->allocator, (ht->array));
-        AXIS2_FREE(env->allocator, ht);
+        AXIS2_FREE(free_env->allocator, ht);
     }
     return;
 }
@@ -763,9 +771,15 @@ axutil_hash_free_void_arg(
 {
     unsigned int i = 0;
     axutil_hash_t *ht = (axutil_hash_t *)ht_void;
+    const axutil_env_t *free_env = NULL;
+
     if(ht)
     {
-        for(i = 0; i < ht->max; i++)
+        /* AXIS2C-1447: Use the allocator that was used during hash creation
+         * (stored in ht->env) rather than the passed env parameter. */
+        free_env = ht->env ? ht->env : env;
+
+        for(i = 0; i <= ht->max; i++)
         {
             axutil_hash_entry_t *next = NULL;
             axutil_hash_entry_t *current = ht->array[i];
@@ -775,14 +789,22 @@ axutil_hash_free_void_arg(
                 /* AXIS2C-1632 FIX: Free the key if it was internally copied */
                 if(current->key_is_copy && current->key)
                 {
-                    AXIS2_FREE(env->allocator, (void*)current->key);
+                    AXIS2_FREE(free_env->allocator, (void*)current->key);
                 }
-                AXIS2_FREE(env->allocator, current);
+                AXIS2_FREE(free_env->allocator, current);
                 current = next;
             }
         }
-        AXIS2_FREE(env->allocator, (ht->array));
-        AXIS2_FREE(env->allocator, ht);
+
+        AXIS2_FREE(free_env->allocator, ht->array);
+
+        if(ht->env)
+        {
+            axutil_free_thread_env((axutil_env_t*)(ht->env));
+            ht->env = NULL;
+        }
+
+        AXIS2_FREE(free_env->allocator, ht);
     }
     return;
 }
