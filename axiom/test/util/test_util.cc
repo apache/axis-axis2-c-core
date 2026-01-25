@@ -121,11 +121,21 @@ TEST_F(TestUtil, test_build_and_serialize_om) {
     axiom_node_t *temp_node = NULL;
     axis2_char_t *temp_str = NULL;
 
+    /* Try multiple paths to find test.xml from various working directories */
+    const char *paths[] = {
+        "test.xml",                      /* from axiom/test/util/ */
+        "../util/test.xml",              /* from axiom/test/util/.libs/ */
+        "axiom/test/util/test.xml",      /* from project root */
+        NULL
+    };
+    for (int i = 0; paths[i] != NULL; i++) {
+        f = fopen(paths[i], "r");
+        if (f) break;
+    }
+    ASSERT_NE(f, nullptr) << "Could not find test.xml in any expected location";
+
     names = axutil_array_list_create(m_env, 1);
     axutil_array_list_add(names, m_env, "language");
-
-	f = fopen("test.xml","r");
-    ASSERT_NE(f, nullptr);
 
     xml_reader = axiom_xml_reader_create_for_io(m_env, read_input_callback, close_input_callback, NULL, NULL);
     ASSERT_NE(xml_reader, nullptr);

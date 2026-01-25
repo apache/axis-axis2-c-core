@@ -179,20 +179,36 @@ TEST_F(TestXPath, test_xpath) {
 
     axiom_node_t *test_tree = NULL;
     axis2_char_t *test_tree_str;
-    char *xml_file = "test.xml";
-    char *xpath_file = "test.xpath";
-    char *ns_file = "test.ns";
-    char *cor_file = "results.txt";
     axiom_xpath_context_t *context = NULL;
+
+    /* Try multiple paths to find test files from various working directories */
+    const char *base_paths[] = {
+        "",                          /* from axiom/test/xpath/ */
+        "../xpath/",                 /* from axiom/test/xpath/.libs/ */
+        "axiom/test/xpath/",         /* from project root */
+        NULL
+    };
+
+    char xml_file[256] = "";
+    char xpath_file[256] = "";
+    char ns_file[256] = "";
+    char cor_file[256] = "";
+
+    for (int i = 0; base_paths[i] != NULL; i++) {
+        snprintf(cor_file, sizeof(cor_file), "%sresults.txt", base_paths[i]);
+        fcor = fopen(cor_file, "r");
+        if (fcor) {
+            snprintf(xml_file, sizeof(xml_file), "%stest.xml", base_paths[i]);
+            snprintf(xpath_file, sizeof(xpath_file), "%stest.xpath", base_paths[i]);
+            snprintf(ns_file, sizeof(ns_file), "%stest.ns", base_paths[i]);
+            break;
+        }
+    }
+    ASSERT_NE(fcor, nullptr) << "Could not find test files in any expected location";
 
     /*Create the request */
     /* test_tree = build_test_xml(env); */
     test_tree = read_test_xml(m_env, (axis2_char_t *)xml_file);
-
-    fcor = fopen(cor_file, "r");
-    /*ftemp = fopen("temp.txt", "w");*/
-
-    ASSERT_NE(fcor, nullptr);
 
     ASSERT_NE(test_tree, nullptr);
 
