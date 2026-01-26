@@ -41,6 +41,9 @@
 #include <axis2_http_transport_utils.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_http_transport.h>
+#include <axiom.h>
+#include <axiom_soap.h>
+#include <axutil_stream.h>
 
 #include "../../../cutest/include/cut_http_server.h"
 
@@ -1320,4 +1323,161 @@ TEST_F(TestHTTPTransport, test_AXIS2C_1612_default_user_agent_when_not_set)
     axis2_msg_ctx_free(msg_ctx, m_env);
 
     printf("Finished AXIS2C-1612 default test ..........\n\n");
+}
+
+/**
+ * Test for AXIS2C-1494: Response received from the server is partially erased
+ * when non-ascii characters present in xml tags
+ *
+ * The original bug reported that when a SOAP response contains multiple elements
+ * and some have UTF-8 characters (like French accents), the response gets
+ * truncated. The reporter saw only 4 of 6 elements.
+ *
+ * This test verifies that:
+ * 1. Multiple XML elements with UTF-8 content are fully parsed
+ * 2. UTF-8 characters are preserved correctly
+ * 3. No truncation occurs when non-ASCII characters are present
+ */
+TEST_F(TestHTTPTransport, test_AXIS2C_1494_utf8_response_not_truncated)
+{
+    printf("\n\n _______ TEST AXIS2C-1494: UTF-8 Response Truncation _______ \n\n");
+
+    /*
+     * Create a SOAP response similar to the original bug report:
+     * - 6 NewMessages elements
+     * - Messages 5 and 6 contain French UTF-8 characters (accents)
+     * - The bug caused only 4 messages to be parsed
+     */
+    const char *soap_response =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+        "xmlns:ns1=\"http://test.example.org\">"
+        "<soapenv:Body>"
+        "<ns1:SynchroniseMessagesResponse>"
+        "<NewMessages><ThreadID>1</ThreadID><Content>Message one</Content></NewMessages>"
+        "<NewMessages><ThreadID>2</ThreadID><Content>Message two</Content></NewMessages>"
+        "<NewMessages><ThreadID>3</ThreadID><Content>Message three</Content></NewMessages>"
+        "<NewMessages><ThreadID>4</ThreadID><Content>Message four</Content></NewMessages>"
+        "<NewMessages><ThreadID>5</ThreadID><Content>Message cinq avec accénts français</Content></NewMessages>"
+        "<NewMessages><ThreadID>6</ThreadID><Content>Réponse numéro six été</Content></NewMessages>"
+        "</ns1:SynchroniseMessagesResponse>"
+        "</soapenv:Body>"
+        "</soapenv:Envelope>";
+
+    printf("  Input SOAP response length: %zu bytes\n", strlen(soap_response));
+    printf("  Response contains 6 NewMessages elements\n");
+    printf("  Elements 5 and 6 contain French UTF-8 characters\n\n");
+
+    /* Parse the SOAP response using axiom_node_create_from_buffer
+     * This exercises the same XML parsing code path used by HTTP transport */
+    axiom_node_t *root_node = axiom_node_create_from_buffer(m_env, (axis2_char_t *)soap_response);
+    ASSERT_NE(root_node, nullptr) << "AXIS2C-1494: Failed to parse SOAP response with UTF-8 content";
+
+    /* Navigate to the response body */
+    axiom_element_t *envelope_elem = (axiom_element_t *)axiom_node_get_data_element(root_node, m_env);
+    ASSERT_NE(envelope_elem, nullptr) << "Failed to get envelope element";
+
+    /* Find the Body element */
+    axiom_node_t *body_node = axiom_node_get_first_child(root_node, m_env);
+    while (body_node) {
+        if (axiom_node_get_node_type(body_node, m_env) == AXIOM_ELEMENT) {
+            axiom_element_t *elem = (axiom_element_t *)axiom_node_get_data_element(body_node, m_env);
+            const axis2_char_t *local_name = axiom_element_get_localname(elem, m_env);
+            if (local_name && strcmp(local_name, "Body") == 0) {
+                break;
+            }
+        }
+        body_node = axiom_node_get_next_sibling(body_node, m_env);
+    }
+    ASSERT_NE(body_node, nullptr) << "Failed to find SOAP Body";
+
+    /* Find the SynchroniseMessagesResponse element */
+    axiom_node_t *response_node = axiom_node_get_first_child(body_node, m_env);
+    while (response_node) {
+        if (axiom_node_get_node_type(response_node, m_env) == AXIOM_ELEMENT) {
+            axiom_element_t *elem = (axiom_element_t *)axiom_node_get_data_element(response_node, m_env);
+            const axis2_char_t *local_name = axiom_element_get_localname(elem, m_env);
+            if (local_name && strcmp(local_name, "SynchroniseMessagesResponse") == 0) {
+                break;
+            }
+        }
+        response_node = axiom_node_get_next_sibling(response_node, m_env);
+    }
+    ASSERT_NE(response_node, nullptr) << "Failed to find SynchroniseMessagesResponse";
+
+    /* Count NewMessages elements - the bug caused truncation at element 5 or 6 */
+    int message_count = 0;
+    axiom_node_t *message_node = axiom_node_get_first_child(response_node, m_env);
+
+    while (message_node) {
+        if (axiom_node_get_node_type(message_node, m_env) == AXIOM_ELEMENT) {
+            axiom_element_t *msg_elem = (axiom_element_t *)axiom_node_get_data_element(message_node, m_env);
+            const axis2_char_t *local_name = axiom_element_get_localname(msg_elem, m_env);
+
+            if (local_name && strcmp(local_name, "NewMessages") == 0) {
+                message_count++;
+                printf("  Found NewMessages element #%d\n", message_count);
+
+                /* Find Content child element */
+                axiom_node_t *child = axiom_node_get_first_child(message_node, m_env);
+                while (child) {
+                    if (axiom_node_get_node_type(child, m_env) == AXIOM_ELEMENT) {
+                        axiom_element_t *child_elem = (axiom_element_t *)axiom_node_get_data_element(child, m_env);
+                        const axis2_char_t *child_name = axiom_element_get_localname(child_elem, m_env);
+
+                        if (child_name && strcmp(child_name, "Content") == 0) {
+                            const axis2_char_t *content = axiom_element_get_text(child_elem, m_env, child);
+                            if (content) {
+                                printf("    Content: \"%s\"\n", content);
+
+                                /* Verify UTF-8 content in messages 5 and 6 */
+                                if (message_count == 5) {
+                                    EXPECT_NE(strstr(content, "accénts"), nullptr)
+                                        << "AXIS2C-1494: Message 5 UTF-8 content 'accénts' should be preserved";
+                                    EXPECT_NE(strstr(content, "français"), nullptr)
+                                        << "AXIS2C-1494: Message 5 UTF-8 content 'français' should be preserved";
+                                }
+                                if (message_count == 6) {
+                                    EXPECT_NE(strstr(content, "Réponse"), nullptr)
+                                        << "AXIS2C-1494: Message 6 UTF-8 content 'Réponse' should be preserved";
+                                    EXPECT_NE(strstr(content, "été"), nullptr)
+                                        << "AXIS2C-1494: Message 6 UTF-8 content 'été' should be preserved";
+                                }
+                            }
+                        }
+                    }
+                    child = axiom_node_get_next_sibling(child, m_env);
+                }
+            }
+        }
+        message_node = axiom_node_get_next_sibling(message_node, m_env);
+    }
+
+    printf("\n  Total NewMessages elements found: %d\n", message_count);
+
+    /* The critical assertion: all 6 messages must be parsed */
+    ASSERT_EQ(message_count, 6)
+        << "AXIS2C-1494: All 6 NewMessages elements should be parsed. "
+        << "The bug caused truncation when UTF-8 characters were present.";
+
+    /* Verify round-trip serialization preserves UTF-8 */
+    axis2_char_t *serialized = axiom_node_to_string(root_node, m_env);
+    ASSERT_NE(serialized, nullptr) << "Failed to serialize parsed response";
+
+    printf("\n  Verifying UTF-8 preservation in serialized output...\n");
+    EXPECT_NE(strstr(serialized, "accénts"), nullptr)
+        << "AXIS2C-1494: UTF-8 'accénts' should be preserved in serialization";
+    EXPECT_NE(strstr(serialized, "français"), nullptr)
+        << "AXIS2C-1494: UTF-8 'français' should be preserved in serialization";
+    EXPECT_NE(strstr(serialized, "Réponse"), nullptr)
+        << "AXIS2C-1494: UTF-8 'Réponse' should be preserved in serialization";
+    EXPECT_NE(strstr(serialized, "été"), nullptr)
+        << "AXIS2C-1494: UTF-8 'été' should be preserved in serialization";
+
+    printf("  UTF-8 content verified in serialized output\n");
+
+    AXIS2_FREE(m_env->allocator, serialized);
+    axiom_node_free_tree(root_node, m_env);
+
+    printf("\n _______ END TEST AXIS2C-1494 _______ \n\n");
 }
