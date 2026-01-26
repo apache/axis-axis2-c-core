@@ -39,6 +39,8 @@
 #endif
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_http_transport_utils.h>
+#include <axis2_msg_ctx.h>
+#include <axis2_http_transport.h>
 
 #include "../../../cutest/include/cut_http_server.h"
 
@@ -1220,4 +1222,102 @@ TEST_F(TestHTTPTransport, DISABLED_test_AXIS2C_1480_large_body)
     axis2c_1480_cleanup_mock_server(m_env, ctx);
 
     printf("Finished AXIS2C-1480 large body test ..........\n\n");
+}
+
+/**
+ * Test for AXIS2C-1612: Custom HTTP HEADER USER AGENT
+ *
+ * This test verifies that custom User-Agent strings can be set via
+ * the message context property AXIS2_HTTP_HEADER_USER_AGENT ("User-Agent").
+ * When this property is set, the HTTP transport should use it instead of
+ * the default "Axis2C/<version>" User-Agent string.
+ *
+ * This test validates the property setting/retrieval mechanism. Full
+ * integration testing (verifying the header is actually sent) would require
+ * a mock server that captures request headers.
+ */
+TEST_F(TestHTTPTransport, test_AXIS2C_1612_custom_user_agent_property)
+{
+    axis2_msg_ctx_t *msg_ctx = NULL;
+    axutil_property_t *user_agent_property = NULL;
+    axutil_property_t *retrieved_property = NULL;
+    axis2_char_t *custom_user_agent = (axis2_char_t *)"MyApp/1.0 (Custom User Agent)";
+    axis2_char_t *retrieved_value = NULL;
+
+    printf("Starting AXIS2C-1612 test (custom User-Agent property)\n");
+
+    /* Create a message context */
+    msg_ctx = axis2_msg_ctx_create(m_env, NULL, NULL, NULL);
+    ASSERT_NE(msg_ctx, nullptr) << "Failed to create msg_ctx";
+
+    /* Create property with custom User-Agent value */
+    user_agent_property = axutil_property_create(m_env);
+    ASSERT_NE(user_agent_property, nullptr) << "Failed to create property";
+
+    /* Set the property value - don't let property own it since it's a string literal */
+    axutil_property_set_value(user_agent_property, m_env, custom_user_agent);
+    axutil_property_set_own_value(user_agent_property, m_env, AXIS2_FALSE);
+
+    /* Set the property on msg_ctx using the standard User-Agent key */
+    axis2_msg_ctx_set_property(msg_ctx, m_env, AXIS2_HTTP_HEADER_USER_AGENT, user_agent_property);
+
+    /* Retrieve the property and verify it matches */
+    retrieved_property = (axutil_property_t *)axis2_msg_ctx_get_property(
+        msg_ctx, m_env, AXIS2_HTTP_HEADER_USER_AGENT);
+    ASSERT_NE(retrieved_property, nullptr)
+        << "AXIS2C-1612: User-Agent property should be retrievable from msg_ctx";
+
+    retrieved_value = (axis2_char_t *)axutil_property_get_value(retrieved_property, m_env);
+    ASSERT_NE(retrieved_value, nullptr)
+        << "AXIS2C-1612: User-Agent property value should not be NULL";
+
+    ASSERT_STREQ(retrieved_value, custom_user_agent)
+        << "AXIS2C-1612: Retrieved User-Agent should match set value";
+
+    printf("  Custom User-Agent set: '%s'\n", custom_user_agent);
+    printf("  Retrieved User-Agent:  '%s'\n", retrieved_value);
+    printf("  Property mechanism verified successfully\n");
+
+    /* Verify the default constant is what we expect */
+    printf("  Default User-Agent constant: '%s'\n", AXIS2_USER_AGENT);
+    ASSERT_NE(strstr(AXIS2_USER_AGENT, "Axis2C"), nullptr)
+        << "Default User-Agent should contain 'Axis2C'";
+
+    /* Cleanup - msg_ctx_free will free the property */
+    axis2_msg_ctx_free(msg_ctx, m_env);
+
+    printf("Finished AXIS2C-1612 test ..........\n\n");
+}
+
+/**
+ * Test for AXIS2C-1612: Verify default User-Agent when property not set
+ *
+ * This test verifies that when the User-Agent property is NOT set,
+ * the default value is used (no property should be returned).
+ */
+TEST_F(TestHTTPTransport, test_AXIS2C_1612_default_user_agent_when_not_set)
+{
+    axis2_msg_ctx_t *msg_ctx = NULL;
+    axutil_property_t *retrieved_property = NULL;
+
+    printf("Starting AXIS2C-1612 default User-Agent test\n");
+
+    /* Create a message context without setting User-Agent property */
+    msg_ctx = axis2_msg_ctx_create(m_env, NULL, NULL, NULL);
+    ASSERT_NE(msg_ctx, nullptr);
+
+    /* Try to retrieve User-Agent property - should be NULL (not set) */
+    retrieved_property = (axutil_property_t *)axis2_msg_ctx_get_property(
+        msg_ctx, m_env, AXIS2_HTTP_HEADER_USER_AGENT);
+
+    /* When not set, the transport code falls back to AXIS2_USER_AGENT constant */
+    ASSERT_EQ(retrieved_property, nullptr)
+        << "AXIS2C-1612: When not set, property should be NULL (code uses default)";
+
+    printf("  No custom User-Agent property set\n");
+    printf("  Transport will use default: '%s'\n", AXIS2_USER_AGENT);
+
+    axis2_msg_ctx_free(msg_ctx, m_env);
+
+    printf("Finished AXIS2C-1612 default test ..........\n\n");
 }

@@ -148,7 +148,49 @@ axis2_libcurl_send(
     handler = data->handler;
     curl_easy_reset(handler);
     curl_easy_setopt(handler, CURLOPT_ERRORBUFFER, data->errorbuffer);
-    headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
+
+    /* AXIS2C-1612: Check for custom User-Agent property */
+    {
+        axutil_property_t *user_agent_property = NULL;
+        axis2_char_t *user_agent_value = NULL;
+
+        user_agent_property = (axutil_property_t *)axis2_msg_ctx_get_property(
+            msg_ctx, env, AXIS2_HTTP_HEADER_USER_AGENT);
+
+        if (user_agent_property)
+        {
+            user_agent_value = (axis2_char_t *)axutil_property_get_value(
+                user_agent_property, env);
+        }
+
+        if (user_agent_value)
+        {
+            axis2_char_t *user_agent_header = NULL;
+            int header_len = axutil_strlen(AXIS2_HTTP_HEADER_USER_AGENT) +
+                             axutil_strlen(user_agent_value) + 3;
+
+            user_agent_header = AXIS2_MALLOC(env->allocator,
+                header_len * sizeof(axis2_char_t));
+            if (user_agent_header)
+            {
+                sprintf(user_agent_header, "%s: %s",
+                    AXIS2_HTTP_HEADER_USER_AGENT, user_agent_value);
+                headers = curl_slist_append(headers, user_agent_header);
+                /* curl_slist_append copies the string, so free our copy */
+                AXIS2_FREE(env->allocator, user_agent_header);
+            }
+            else
+            {
+                /* Fallback to default on allocation failure */
+                headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
+            }
+        }
+        else
+        {
+            headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
+        }
+    }
+
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_ACCEPT_);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_EXPECT_);
 

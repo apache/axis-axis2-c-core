@@ -761,8 +761,31 @@ axis2_http_sender_send(
         axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_COOKIE, cookie_str);
     }
 
-    /* User-Agent:Axis2/C header */
-    axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_USER_AGENT, AXIS2_USER_AGENT);
+    /* AXIS2C-1612: User-Agent header - check for custom value */
+    {
+        axutil_property_t *user_agent_property = NULL;
+        axis2_char_t *user_agent_value = NULL;
+
+        user_agent_property = (axutil_property_t *)axis2_msg_ctx_get_property(
+            msg_ctx, env, AXIS2_HTTP_HEADER_USER_AGENT);
+
+        if (user_agent_property)
+        {
+            user_agent_value = (axis2_char_t *)axutil_property_get_value(
+                user_agent_property, env);
+        }
+
+        if (user_agent_value)
+        {
+            axis2_http_sender_util_add_header(env, request,
+                AXIS2_HTTP_HEADER_USER_AGENT, user_agent_value);
+        }
+        else
+        {
+            axis2_http_sender_util_add_header(env, request,
+                AXIS2_HTTP_HEADER_USER_AGENT, AXIS2_USER_AGENT);
+        }
+    }
 
     http_property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_HEADER_PROPERTY);
     if(http_property)
