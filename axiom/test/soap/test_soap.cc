@@ -42,6 +42,8 @@
 #include <axiom_soap_fault_detail.h>
 #include <axiom_soap_fault_role.h>
 #include <axiom_soap_fault_node.h>
+#include <axiom_soap_fault_reason.h>
+#include <axiom_soap_fault_text.h>
 
 FILE *f = NULL;
 int
@@ -477,6 +479,130 @@ TEST_F(TestSOAP, test_soap_fault_value) {
     ASSERT_STREQ(value_text, "env:Receiver");
 
     axiom_soap_envelope_free(soap_envelope, m_env);
+}
+
+/**
+ * Test for AXIS2C-1507: Verify that SOAP 1.2 to 1.1 fault conversion preserves
+ * fault code value and fault reason text accessibility.
+ *
+ * The bug was that after calling axiom_soap_body_convert_fault_to_soap11(),
+ * axiom_soap_fault_value_get_text() and axiom_soap_fault_text_get_text()
+ * returned NULL because the conversion function set the base nodes to NULL
+ * after merging the nested SOAP 1.2 structure into the flat SOAP 1.1 structure.
+ */
+TEST_F(TestSOAP, test_axis2c_1507_soap12_to_soap11_fault_conversion) {
+    /* SOAP 1.2 fault with nested Code/Value and Reason/Text structure */
+    const char *soap12_fault =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">"
+        "  <soapenv:Body>"
+        "    <soapenv:Fault>"
+        "      <soapenv:Code>"
+        "        <soapenv:Value>soapenv:Sender</soapenv:Value>"
+        "      </soapenv:Code>"
+        "      <soapenv:Reason>"
+        "        <soapenv:Text>Test fault message</soapenv:Text>"
+        "      </soapenv:Reason>"
+        "    </soapenv:Fault>"
+        "  </soapenv:Body>"
+        "</soapenv:Envelope>";
+
+    axiom_xml_reader_t *xml_reader = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_soap_builder_t *soap_builder = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_body_t *soap_body = NULL;
+    axiom_soap_fault_t *soap_fault = NULL;
+    axiom_soap_fault_code_t *fault_code = NULL;
+    axiom_soap_fault_value_t *fault_value = NULL;
+    axiom_soap_fault_reason_t *fault_reason = NULL;
+    axiom_soap_fault_text_t *fault_text = NULL;
+    axis2_char_t *value_text = NULL;
+    axis2_char_t *reason_text = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    printf("\n _______ TEST AXIS2C-1507: SOAP 1.2 to 1.1 fault conversion _______ \n");
+
+    xml_reader = axiom_xml_reader_create_for_memory(
+        m_env, (void*)soap12_fault, strlen(soap12_fault), NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
+    ASSERT_NE(xml_reader, nullptr);
+
+    om_builder = axiom_stax_builder_create(m_env, xml_reader);
+    ASSERT_NE(om_builder, nullptr);
+
+    soap_builder = axiom_soap_builder_create(m_env, om_builder,
+        AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+    ASSERT_NE(soap_builder, nullptr);
+
+    soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, m_env);
+    ASSERT_NE(soap_envelope, nullptr);
+
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, m_env);
+    ASSERT_NE(soap_body, nullptr);
+
+    soap_fault = axiom_soap_body_get_fault(soap_body, m_env);
+    ASSERT_NE(soap_fault, nullptr);
+
+    /* Verify we can get fault code/value before conversion */
+    fault_code = axiom_soap_fault_get_code(soap_fault, m_env);
+    ASSERT_NE(fault_code, nullptr);
+
+    fault_value = axiom_soap_fault_code_get_value(fault_code, m_env);
+    ASSERT_NE(fault_value, nullptr);
+
+    value_text = axiom_soap_fault_value_get_text(fault_value, m_env);
+    ASSERT_NE(value_text, nullptr) << "Fault value text should be available before conversion";
+    printf("Before conversion - fault value: %s\n", value_text);
+
+    /* Verify we can get fault reason/text before conversion */
+    fault_reason = axiom_soap_fault_get_reason(soap_fault, m_env);
+    ASSERT_NE(fault_reason, nullptr);
+
+    fault_text = axiom_soap_fault_reason_get_first_soap_fault_text(fault_reason, m_env);
+    ASSERT_NE(fault_text, nullptr);
+
+    reason_text = axiom_soap_fault_text_get_text(fault_text, m_env);
+    ASSERT_NE(reason_text, nullptr) << "Fault reason text should be available before conversion";
+    printf("Before conversion - fault reason: %s\n", reason_text);
+
+    /* Convert SOAP 1.2 fault to SOAP 1.1 structure */
+    status = axiom_soap_body_convert_fault_to_soap11(soap_body, m_env);
+    ASSERT_EQ(status, AXIS2_SUCCESS) << "Fault conversion should succeed";
+
+    /* AXIS2C-1507: After conversion, getters should still return values */
+    /* Re-fetch fault code/value - the objects should still be valid */
+    fault_code = axiom_soap_fault_get_code(soap_fault, m_env);
+    ASSERT_NE(fault_code, nullptr) << "Fault code should still be accessible after conversion";
+
+    fault_value = axiom_soap_fault_code_get_value(fault_code, m_env);
+    ASSERT_NE(fault_value, nullptr) << "Fault value should still be accessible after conversion";
+
+    /* This was returning NULL before the fix */
+    value_text = axiom_soap_fault_value_get_text(fault_value, m_env);
+    ASSERT_NE(value_text, nullptr) <<
+        "AXIS2C-1507: Fault value text should still be available after conversion";
+    ASSERT_TRUE(strstr(value_text, "Sender") != NULL) <<
+        "Fault value should contain 'Sender'";
+    printf("After conversion - fault value: %s\n", value_text);
+
+    /* Re-fetch fault reason/text */
+    fault_reason = axiom_soap_fault_get_reason(soap_fault, m_env);
+    ASSERT_NE(fault_reason, nullptr) << "Fault reason should still be accessible after conversion";
+
+    fault_text = axiom_soap_fault_reason_get_first_soap_fault_text(fault_reason, m_env);
+    ASSERT_NE(fault_text, nullptr) << "Fault text should still be accessible after conversion";
+
+    /* This was also returning NULL before the fix */
+    reason_text = axiom_soap_fault_text_get_text(fault_text, m_env);
+    ASSERT_NE(reason_text, nullptr) <<
+        "AXIS2C-1507: Fault reason text should still be available after conversion";
+    ASSERT_STREQ(reason_text, "Test fault message") <<
+        "Fault reason should be 'Test fault message'";
+    printf("After conversion - fault reason: %s\n", reason_text);
+
+    axiom_soap_envelope_free(soap_envelope, m_env);
+
+    printf("\n _______ END TEST AXIS2C-1507 _______ \n");
 }
 
 /**
