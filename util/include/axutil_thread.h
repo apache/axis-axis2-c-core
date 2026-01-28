@@ -114,9 +114,21 @@ extern "C"
         void *data);
 
     /**
-     * Stop the current thread
-     * @param thd The thread to stop
-     * @return The status of the operation
+     * Exit and clean up a thread.
+     *
+     * @warning This function should only be called by the thread itself to
+     * terminate its own execution. Calling this function from a different
+     * thread to terminate another thread has undefined behavior and may not
+     * work correctly across platforms.
+     *
+     * For threads that need external termination, use cooperative termination:
+     * set a shared flag that the thread periodically checks, then call
+     * axutil_thread_join() to wait for the thread to exit gracefully.
+     *
+     * @param thd The thread to exit (must be the calling thread)
+     * @param allocator The allocator used to free thread resources
+     * @return The status of the operation (note: if called by the thread
+     *         itself, this function does not return)
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_thread_exit(
