@@ -21,7 +21,20 @@
 
 /**
  * @file axutil_thread_pool.h
- * @brief Axis2 thread pool interface
+ * @brief Axis2 thread factory interface
+ *
+ * @note Despite its name, this is a thread factory, not a traditional thread
+ * pool. Each call to axutil_thread_pool_get_thread() creates a new OS thread
+ * rather than retrieving one from a pool of pre-created worker threads.
+ *
+ * This means:
+ * - No thread reuse: every request spawns a new thread
+ * - No work queue: requests are not queued for later execution
+ * - No thread limit: limited only by OS resources
+ * - Potential blocking: thread creation may block if OS resources exhausted
+ *
+ * For high-concurrency scenarios, consider using the HTTP/2 transport which
+ * provides protocol-level multiplexing without requiring a thread per request.
  */
 
 #include <axutil_utils_defines.h>
@@ -34,7 +47,7 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axutil_thread_pool thread pool
+     * @defgroup axutil_thread_pool thread factory
      * @ingroup axis2_util
      * @{
      */
@@ -43,10 +56,15 @@ extern "C"
     struct axutil_env;
 
     /**
-     * Retrives a thread from the thread pool
+     * Creates a new thread to execute the given function.
+     *
+     * @note This creates a new OS thread on each call (thread factory pattern).
+     * It does not retrieve a thread from a pre-allocated pool.
+     *
+     * @param pool the thread factory
      * @param func function to be executed in the new thread
      * @param data arguments to be passed to the function
-     * @return pointer to a thread in ready state.
+     * @return pointer to the newly created thread, or NULL on failure
      */
     AXIS2_EXTERN axutil_thread_t *AXIS2_CALL
     axutil_thread_pool_get_thread(

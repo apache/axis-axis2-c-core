@@ -19,6 +19,13 @@
 #include <axutil_env.h>
 #include <axutil_error_default.h>
 
+/**
+ * Thread factory structure.
+ *
+ * Note: This is a thread factory, not a traditional thread pool. It creates
+ * a new OS thread for each request rather than maintaining a pool of reusable
+ * worker threads. See axutil_thread_pool.h for details.
+ */
 struct axutil_thread_pool
 {
     axutil_allocator_t *allocator;
