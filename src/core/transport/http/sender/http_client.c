@@ -311,10 +311,13 @@ axis2_http_client_create(
     http_client->doing_mtom = AXIS2_FALSE;
     http_client->mtom_sending_callback_name = NULL;
 
-    /* TODO default this to false for now, but this should default
-     * to true in a future version (after 1.8)
+    /*
+     * Enable SSL/TLS hostname validation by default (AXIS2C-1700).
+     * This verifies that the server certificate CN/SAN matches the hostname,
+     * preventing man-in-the-middle attacks. Users with self-signed certificates
+     * or hostname mismatches can disable via AXIS2_SSL_VERIFY_HOST property.
      */
-    http_client->validate_ssl_hostname = AXIS2_FALSE;
+    http_client->validate_ssl_hostname = AXIS2_TRUE;
 
     return http_client;
 }
