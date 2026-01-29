@@ -362,6 +362,19 @@ axis2_libcurl_send(
 
             if (doing_mtom)
             {
+                /*
+                 * AXIS2C-1270: MTOM is broken in libcurl sender. The old API call
+                 * below that would populate output_stream was commented out, but
+                 * the code at lines ~524-525 still tries to use output_stream
+                 * (which remains NULL/0), resulting in empty MTOM request bodies.
+                 *
+                 * The native HTTP sender uses axis2_http_transport_utils_send_mtom_message()
+                 * with mime_parts instead. Fixing this would require rewriting MTOM
+                 * handling in libcurl to use the mime_parts approach.
+                 *
+                 * Workaround: Use native HTTP sender (don't enable --enable-libcurl)
+                 * for SOAP services requiring MTOM attachments.
+                 */
                 /*axiom_output_flush(om_output, env, &output_stream,
                  &output_stream_size);*/
                 axiom_output_flush(om_output, env);
