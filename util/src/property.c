@@ -87,16 +87,19 @@ axutil_property_free(
 
     if(property->value)
     {
-        if(property->scope != AXIS2_SCOPE_APPLICATION)
+        /*
+         * Always free owned value regardless of scope. The scope controls property
+         * lifetime within a context (whether it persists across requests), not
+         * whether the value should be freed during cleanup or replacement.
+         * The previous check for AXIS2_SCOPE_APPLICATION caused memory leaks.
+         */
+        if(property->free_func && property->own_value)
         {
-            if(property->free_func && property->own_value)
-            {
-                property->free_func(property->value, env);
-            }
-            else if(property->own_value)
-            {
-                AXIS2_FREE(env->allocator, property->value);
-            }
+            property->free_func(property->value, env);
+        }
+        else if(property->own_value)
+        {
+            AXIS2_FREE(env->allocator, property->value);
         }
     }
 
@@ -142,16 +145,19 @@ axutil_property_set_value(
 
     if(property->value)
     {
-        if(property->scope != AXIS2_SCOPE_APPLICATION)
+        /*
+         * Always free owned value regardless of scope. The scope controls property
+         * lifetime within a context (whether it persists across requests), not
+         * whether the value should be freed during cleanup or replacement.
+         * The previous check for AXIS2_SCOPE_APPLICATION caused memory leaks.
+         */
+        if(property->free_func && property->own_value)
         {
-            if(property->free_func && property->own_value)
-            {
-                property->free_func(property->value, env);
-            }
-            else if(property->own_value)
-            {
-                AXIS2_FREE(env->allocator, property->value);
-            }
+            property->free_func(property->value, env);
+        }
+        else if(property->own_value)
+        {
+            AXIS2_FREE(env->allocator, property->value);
         }
     }
 

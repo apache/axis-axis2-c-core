@@ -4268,21 +4268,17 @@ axis2_http_transport_utils_session_map_free_void_arg(
     const axutil_env_t *env)
 {
     void *val = NULL;
-    const void *key = NULL;
     axutil_hash_index_t *hi = NULL;
     axutil_hash_t *ht = (axutil_hash_t *)sm_void;
 
+    /* Free the cookie values stored in the hash. The keys (server names) are
+     * freed by axutil_hash_free() since they were stored with AXIS2_HASH_KEY_STRING
+     * which makes internal copies. */
     for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_char_t *name = NULL;
         axis2_char_t *value = NULL;
 
-        axutil_hash_this(hi, &key, NULL, &val);
-        name = (axis2_char_t *) key;
-        if(name)
-        {
-            AXIS2_FREE(env->allocator, name);
-        }
+        axutil_hash_this(hi, NULL, NULL, &val);
         value = (axis2_char_t *) val;
         if(value)
         {
