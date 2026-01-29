@@ -257,25 +257,6 @@ extern "C"
         int socket);
 
     /**
-    *Free stream
-    */
-    AXIS2_EXTERN void AXIS2_CALL
-    axutil_stream_free(
-        axutil_stream_t * stream,
-        const axutil_env_t * env);
-
-    /**
-     * Free stream passed as void pointer. This will be
-     * cast into appropriate type and then pass the cast object
-     * into the module_desc structure's free method
-     */
-
-    AXIS2_EXTERN void AXIS2_CALL
-    axutil_stream_free_void_arg(
-        void *stream,
-        const axutil_env_t * env);
-
-    /**
      * Gets the buffer
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL

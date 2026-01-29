@@ -695,18 +695,6 @@ extern "C"
         const axutil_qname_t * name);
 
     /**
-     * Frees the operation given as a void pointer. This method would cast the 
-     * void parameter to an operation pointer and then call free method.
-     * @param pointer to operation as a void pointer
-     * @param env pointer to environment struct
-     * @return void
-     */
-    AXIS2_EXTERN void AXIS2_CALL
-    axis2_op_free_void_arg(
-        void *op,
-        const axutil_env_t * env);
-
-    /**
      * Gets base description.
      * @param op pointer to message
      * @param env pointer to environment struct

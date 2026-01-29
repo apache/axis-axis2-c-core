@@ -309,18 +309,6 @@ extern "C"
         const axutil_env_t * env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
-    /**
-     * Frees transport out description given as a void pointer.
-     * @param transport_out_dec pointer to transport out description as a 
-     * void pointer 
-     * @param env pointer to environment struct
-     * @return void
-     */
-    AXIS2_EXTERN void AXIS2_CALL
-    axis2_transport_out_desc_free_void_arg(
-        void *transport_out,
-        const axutil_env_t * env);
-
     /** @} */
 
 #ifdef __cplusplus

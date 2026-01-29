@@ -225,9 +225,9 @@ extern "C"
 #  define AXIS2_LOG_TRACE(params, args ...)
 # elif defined HAVE_ISO_VARARGS
 #  define AXIS2_LOG_TRACE(params, ...)
-# elif __STDC__ && __STDC_VERSION > 199901L
+# elif defined(__STDC__) && defined(__STDC_VERSION__) && __STDC_VERSION__ > 199901L
 #  define AXIS2_LOG_TRACE(params, ...)
-# elif WIN32
+# elif defined(WIN32)
 #  define AXIS2_LOG_TRACE axutil_log_impl_log_trace
 # else
 #  define AXIS2_LOG_TRACE axutil_log_impl_log_trace
