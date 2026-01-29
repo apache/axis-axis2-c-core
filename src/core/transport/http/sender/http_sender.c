@@ -1554,7 +1554,6 @@ axis2_http_sender_get_header_info(
     axutil_property_t *property = NULL;
     axis2_char_t *content_type = NULL;
     /*int status_code = 0;*/
-    axis2_bool_t set_cookie_header_present = AXIS2_FALSE;
     axis2_bool_t connection_header_present = AXIS2_FALSE;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -1601,7 +1600,6 @@ axis2_http_sender_get_header_info(
                 {
                     axis2_http_transport_utils_store_cookie(env, msg_ctx, cookie_str);
                 }
-                set_cookie_header_present = AXIS2_TRUE;
             }
 
             if(!axutil_strcasecmp(name, AXIS2_HTTP_HEADER_CONNECTION))
@@ -1642,10 +1640,9 @@ axis2_http_sender_get_header_info(
             } /* End if name is connection */
         } /* End if name of the header present */
     }
-    if(!set_cookie_header_present) /* We need to remove any cookie set previously for this endpoint */
-    {
-        axis2_http_transport_utils_store_cookie(env, msg_ctx, NULL);
-    }
+    /* Note: Cookies should NOT be removed when Set-Cookie header is absent.
+     * Per RFC 6265, cookies persist until they expire or the server explicitly
+     * deletes them with Set-Cookie: name=; Max-Age=0 (AXIS2C-1566) */
     if(!connection_header_present) /* No connection header present */ 
     {
         /** In HTTP1.0 if there is no keep alive header sent back from server we drop the 
