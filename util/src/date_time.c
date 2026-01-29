@@ -789,8 +789,10 @@ axutil_date_time_local_to_utc(
 
     axutil_date_time_t *ret = NULL;
 
-    year = date_time->year;
-    mon = date_time->mon;
+    /* Convert from tm format (years since 1900, 0-indexed months) to actual values
+     * for calculations. The result is converted back to tm format at the end. */
+    year = date_time->year + 1900;
+    mon = date_time->mon + 1;
     day = date_time->day;
     hour = date_time->hour;
     min = date_time->min;
