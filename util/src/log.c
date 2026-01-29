@@ -349,6 +349,13 @@ axutil_log_impl_log_user(
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            /*
+             * Explicit null-termination for Windows compatibility (AXIS2C-1546).
+             * Windows _vsnprintf does not null-terminate when output is truncated,
+             * causing garbage data in logs. POSIX vsnprintf always null-terminates,
+             * so this is harmless on Unix but required on Windows.
+             */
+            value[AXIS2_LEN_VALUE] = '\0';
             va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_USER, file, line);
         }
@@ -375,6 +382,7 @@ axutil_log_impl_log_debug(
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            value[AXIS2_LEN_VALUE] = '\0'; /* Windows null-termination (AXIS2C-1546) */
             va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
         }
@@ -399,6 +407,7 @@ axutil_log_impl_log_info(
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            value[AXIS2_LEN_VALUE] = '\0'; /* Windows null-termination (AXIS2C-1546) */
             va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_INFO, NULL, -1);
         }
@@ -425,6 +434,7 @@ axutil_log_impl_log_warning(
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            value[AXIS2_LEN_VALUE] = '\0'; /* Windows null-termination (AXIS2C-1546) */
             va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_WARNING, file, line);
         }
@@ -449,6 +459,7 @@ axutil_log_impl_log_error(
         va_list ap;
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        value[AXIS2_LEN_VALUE] = '\0'; /* Windows null-termination (AXIS2C-1546) */
         va_end(ap);
         log->ops->write(log, value, AXIS2_LOG_LEVEL_ERROR, file, line);
     }
@@ -472,6 +483,7 @@ axutil_log_impl_log_critical(
         va_list ap;
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        value[AXIS2_LEN_VALUE] = '\0'; /* Windows null-termination (AXIS2C-1546) */
         va_end(ap);
         log->ops->write(log, value, AXIS2_LOG_LEVEL_CRITICAL, file, line);
     }
@@ -556,6 +568,7 @@ axutil_log_impl_log_trace(
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            value[AXIS2_LEN_VALUE] = '\0'; /* Windows null-termination (AXIS2C-1546) */
             va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_TRACE, file, line);
         }
