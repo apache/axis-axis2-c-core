@@ -150,22 +150,40 @@ axis2_ssl_stream_read(
     SSL_set_mode(stream_impl->ssl, SSL_MODE_AUTO_RETRY);
 
     read = SSL_read(stream_impl->ssl, buffer, (int)count);
-    /* We are sure that the difference lies within the int range */
-    switch (SSL_get_error(stream_impl->ssl, read))
+    /*
+     * SSL_read() return values:
+     *   > 0: Success, returns number of bytes read
+     *   = 0: Connection closed cleanly (end-of-stream), not an error
+     *   < 0: Error occurred, call SSL_get_error() for details
+     *
+     * We only check SSL_get_error() for negative returns. A return of 0
+     * indicates end-of-stream and should be passed through to the caller,
+     * not treated as an error (which would cause XML parsing to fail).
+     */
+    if (read < 0)
     {
-        case SSL_ERROR_NONE:
+        switch (SSL_get_error(stream_impl->ssl, read))
+        {
+            case SSL_ERROR_NONE:
+                len = read;
+                break;
+            case SSL_ERROR_ZERO_RETURN:
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SSL Error: Zero return");
+                len = -1;
+                break;
+            case SSL_ERROR_SYSCALL:
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SSL Error: Premature close");
+                len = -1;
+                break;
+            default:
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown SSL Error");
+                len = -1;
+                break;
+        }
+    }
+    else
+    {
         len = read;
-        break;
-        case SSL_ERROR_ZERO_RETURN:
-        len = -1;
-        break;
-        case SSL_ERROR_SYSCALL:
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SSL Error: Premature close");
-        len = -1;
-        break;
-        default:
-        len = -1;
-        break;
     }
     return len;
 }
