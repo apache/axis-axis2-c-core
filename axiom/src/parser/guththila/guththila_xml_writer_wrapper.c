@@ -279,13 +279,19 @@ axiom_xml_writer_create(
     int is_prefix_default,
     int compression)
 {
-    guththila_xml_writer_wrapper_impl_t *writer_impl;
-
     AXIS2_ENV_CHECK(env, NULL);
 
-    writer_impl = (guththila_xml_writer_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(guththila_xml_writer_wrapper_impl_t));
-    return &(writer_impl->writer);
+    /*
+     * File-based XML writer is not implemented for the guththila parser (AXIS2C-1534).
+     * This function previously returned an uninitialized structure causing undefined
+     * behavior. Use axiom_xml_writer_create_for_memory() instead, or build Axis2/C
+     * with libxml2 support if file-based writing is required.
+     */
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        "axiom_xml_writer_create() is not supported with guththila parser. "
+        "Use axiom_xml_writer_create_for_memory() instead.");
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_WRITER, AXIS2_FAILURE);
+    return NULL;
 }
 
 AXIS2_EXTERN axiom_xml_writer_t *AXIS2_CALL

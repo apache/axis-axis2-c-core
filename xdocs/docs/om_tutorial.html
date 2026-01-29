@@ -141,18 +141,18 @@ to parse a double pointer to the node struct as the last parameter of the
 referenced using that pointer.</p><p>Example</p><p><code>axiom_node_t *my_node = NULL;</code></p><p><code>axiom_element_t *my_ele = NULL;</code></p><p><code>my_ele = axiom_element_create(env, NULL, "MY_ELEMENT", NULL,
 &amp;my_node);</code></p><p></p><p>Now if we call the <code>axiom_node_get_node_type</code> function on the
 <code>my_node</code> pointer, it will return <code>AXIOM_ELEMENT</code>.</p><p><b>Code Listing 1</b></p>
-    <div class="source"><pre>axiom_xml_reader_t *xml_reader = NULL;
-axiom_stax_builder_t *om_builder = NULL;
-axiom_soap_builder_t *soap_builder = NULL;
-axiom_soap_envelope_t *soap_envelope = NULL;
+    <div class="source"><pre>axiom_xml_reader_tï¿½*xml_readerï¿½=ï¿½NULL;
+axiom_stax_builder_tï¿½*om_builderï¿½=ï¿½NULL;
+axiom_soap_builder_tï¿½*soap_builderï¿½=ï¿½NULL;
+axiom_soap_envelope_tï¿½*soap_envelopeï¿½=ï¿½NULL;
 
-xml_reader = axiom_xml_reader_create_for_file(env, "test_soap.xml", NULL);
+xml_readerï¿½=ï¿½axiom_xml_reader_create_for_file(env,ï¿½"test_soap.xml", NULL);
 
-om_builder = axiom_stax_builder_create(env, xml_reader);
+om_builderï¿½=ï¿½axiom_stax_builder_create(env,ï¿½xml_reader);
 
-soap_builder = axiom_soap_builder_create(env, om_builder , AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+soap_builderï¿½=ï¿½axiom_soap_builder_create(env,ï¿½om_builderï¿½,ï¿½AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
 
-soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, env);
+soap_envelopeï¿½=ï¿½axiom_soap_builder_get_soap_envelope(soap_builder,ï¿½env);
 
 </pre></div>
   <p>As the example shows, creating an AXIOM from <code>xml_reader</code> is
@@ -366,11 +366,12 @@ axis2_char_t *buffer = NULL;
 
 ..............
 
-xml_writer = axiom_xml_writer_create(env, NULL, 0, 0);
+xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    AXIS2_XML_PARSER_TYPE_BUFFER);
 om_output = axiom_output_create(env, xml_writer);
 
 axiom_soap_envelope_serialize(envelope, env, om_output);
-buffer = (axis2_char_t*)axis2_xml_writer_get_xml(xml_writer, env);
+buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
 printf("%s ", buffer);
 
 </pre></div>
@@ -434,83 +435,83 @@ pointer can be used instead of creating another namespace struct instance to
 minimize memory usage.</p><p></p><p><a id="Complete_Sample"></a></p></div><div class="subsection"><a name="Complete_Code_for_the_AXIOM_Based_Document_Building_and_Serialization"></a><h3>Complete Code for the AXIOM Based Document Building and Serialization</h3><p>The following code segment shows how to use AXIOM for building a document
 completely and then serializing it into text, pushing the output to the
 console.</p><p></p><p><b>Code Listing 10</b></p>
-    <div class="source"><pre>#include &lt;axiom.h&gt;
-#include &lt;axis2_util.h&gt;
-#include &lt;axutil_env.h&gt;
-#include &lt;axutil_log_default.h&gt;
-#include &lt;axutil_error_default.h&gt;
-#include &lt;stdio.h&gt;
+    <div class="source"><pre>#includeï¿½&lt;axiom.h&gt;
+#includeï¿½&lt;axis2_util.h&gt;
+#includeï¿½&lt;axutil_env.h&gt;
+#includeï¿½&lt;axutil_log_default.h&gt;
+#includeï¿½&lt;axutil_error_default.h&gt;
+#includeï¿½&lt;stdio.h&gt;
 
-FILE *f = NULL;
-int read_input_callback(char *buffer, int size, void* ctx)
+FILEï¿½*fï¿½=ï¿½NULL;
+intï¿½read_input_callback(charï¿½*buffer,ï¿½intï¿½size,ï¿½void*ï¿½ctx)
 {
-     fread(buffer, (char), size, f);
+ï¿½ï¿½ï¿½ï¿½ï¿½fread(buffer,ï¿½(char),ï¿½size,ï¿½f);
 }
-int close_input_callback(void *ctx)
+intï¿½close_input_callback(void *ctx)
 {
-     fclose(f);
+ï¿½ï¿½ï¿½ï¿½ï¿½fclose(f);
 }
-axutil_env_t * create_environment()
+axutil_env_tï¿½*ï¿½create_environment()
 {
-    axutil_allocator_t *allocator = NULL;
-    axutil_env_t *env = NULL;
-    axutil_log_t *log = NULL;
+ï¿½ï¿½ï¿½ï¿½axutil_allocator_tï¿½*allocatorï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axutil_env_tï¿½*envï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axutil_log_tï¿½*logï¿½=ï¿½NULL;
 
-    axutil_error_t *error = NULL;
-    allocator = axutil_allocator_init(NULL);
-    log = axutil_log_create(allocator, NULL, NULL);
+ï¿½ï¿½ï¿½ï¿½axutil_error_tï¿½*errorï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½allocatorï¿½=ï¿½axutil_allocator_init(NULL);
+ï¿½ï¿½ï¿½ï¿½logï¿½=ï¿½axutil_log_create(allocator,ï¿½NULL,ï¿½NULL);
 
-    error = axutil_error_create(allocator);
-    env = axutil_env_create_with_error_log(allocator, error, log);
-     env;
+ï¿½ï¿½ï¿½ï¿½errorï¿½=ï¿½axutil_error_create(allocator);
+ï¿½ï¿½ï¿½ï¿½envï¿½=ï¿½axutil_env_create_with_error_log(allocator,ï¿½error, log);
+ï¿½ï¿½ï¿½ï¿½ï¿½env;
 }
 
-build_and_serialize_om(axutil_env_t *env)
+build_and_serialize_om(axutil_env_tï¿½*env)
 {
-    axiom_node_t *root_node = NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_node_tï¿½*root_nodeï¿½=ï¿½NULL;
 
-    axiom_element_t *root_ele = NULL;
-    axiom_document_t *document = NULL;
-    axiom_stax_builder_t *om_builder = NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_element_tï¿½*root_eleï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_document_tï¿½*documentï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_stax_builder_tï¿½*om_builderï¿½=ï¿½NULL;
 
-    axiom_xml_reader_t *xml_reader = NULL;
-    axiom_xml_writer_t *xml_writer = NULL;
-    axiom_output_t *om_output = NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_xml_reader_tï¿½*xml_readerï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_xml_writer_tï¿½*xml_writerï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axiom_output_tï¿½*om_outputï¿½=ï¿½NULL;
 
-    axis2_char_t *buffer = NULL;
-    
-    f = fopen("test.xml","r");
-    xml_reader = axiom_xml_reader_create_for_io(env, read_input_callback,
-                                                    close_input_callback, NULL, NULL);
-    (!xml_reader)
-         -1;
+ï¿½ï¿½ï¿½ï¿½axis2_char_tï¿½*bufferï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½fï¿½=ï¿½fopen("test.xml","r");
+ï¿½ï¿½ï¿½ï¿½xml_readerï¿½=ï¿½axiom_xml_reader_create_for_io(env,ï¿½read_input_callback,
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½close_input_callback,ï¿½NULL,ï¿½NULL);
+ï¿½ï¿½ï¿½ï¿½(!xml_reader)
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-1;
 
-    om_builder = axiom_stax_builder_create(env, xml_reader);
-    (!om_builder)
-    {
-        axiom_xml_reader_free(xml_reader, env);
-         AXIS2_FAILURE;
-    }
-    document = axiom_stax_builder_get_document(om_builder, env);
-    (!document)
-    {
-         axiom_stax_builder_free(om_builder, env);
-         AXIS2_FAILURE;
-    }
-    
-    root_node = axiom_document_get_root_element(document, env);
-    (!root_node)
-    {
-        axiom_stax_builder_free(om_builder, env);
-         AXIS2_FAILURE;
-    }        
-    (root_node)
-    {
-        (axiom_node_get_node_type(root_node, env) == AXIOM_ELEMENT)
-        {
-            root_ele = (axiom_element_t*)axiom_node_get_data_element(root_node, env);
-            (root_ele)
-            {
+ï¿½ï¿½ï¿½ï¿½om_builderï¿½=ï¿½axiom_stax_builder_create(env,ï¿½xml_reader);
+ï¿½ï¿½ï¿½ï¿½(!om_builder)
+ï¿½ï¿½ï¿½ï¿½{
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½axiom_xml_reader_free(xml_reader,ï¿½env);
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AXIS2_FAILURE;
+ï¿½ï¿½ï¿½ï¿½}
+ï¿½ï¿½ï¿½ï¿½documentï¿½=ï¿½axiom_stax_builder_get_document(om_builder, env);
+ï¿½ï¿½ï¿½ï¿½(!document)
+ï¿½ï¿½ï¿½ï¿½{
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ axiom_stax_builder_free(om_builder,ï¿½env);
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AXIS2_FAILURE;
+ï¿½ï¿½ï¿½ï¿½}
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½root_nodeï¿½=ï¿½axiom_document_get_root_element(document,ï¿½env);
+ï¿½ï¿½ï¿½ï¿½(!root_node)
+ï¿½ï¿½ï¿½ï¿½{
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½axiom_stax_builder_free(om_builder,ï¿½env);
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AXIS2_FAILURE;
+ï¿½ï¿½ï¿½ï¿½}ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½(root_node)
+ï¿½ï¿½ï¿½ï¿½{
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(axiom_node_get_node_type(root_node,ï¿½env)ï¿½==ï¿½AXIOM_ELEMENT)
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½root_eleï¿½=ï¿½(axiom_element_t*)axiom_node_get_data_element(root_node,ï¿½env);
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(root_ele)
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{
    printf(" %s" ,axiom_element_get_localname(root_ele, env));
             }
         }
@@ -528,35 +529,35 @@ build_and_serialize_om(axutil_env_t *env)
     buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
 
     printf("The output XML is -&gt;&gt;&gt;&gt;\n %s ", buffer);
-  
-    
-    
-    axiom_output_free(om_output, env);
-    
-    
-    axiom_stax_builder_free(om_builder, env);
-    
-     AXIS2_SUCCESS;
-    
+ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½axiom_output_free(om_output,ï¿½env);
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½axiom_stax_builder_free(om_builder, env);
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½AXIS2_SUCCESS;
+ï¿½ï¿½ï¿½ï¿½
 }
-int main()
+intï¿½main()
 {
-    int status = AXIS2_SUCCESS;
-    
-    axutil_env_t *env = NULL;
-    axutil_allocator_t *allocator = NULL;
-    env = create_environment();
+ï¿½ï¿½ï¿½ï¿½intï¿½statusï¿½=ï¿½AXIS2_SUCCESS;
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½axutil_env_tï¿½*envï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½axutil_allocator_tï¿½*allocatorï¿½=ï¿½NULL;
+ï¿½ï¿½ï¿½ï¿½envï¿½=ï¿½create_environment();
 
-    status = build_and_serialize_om(env);
+ï¿½ï¿½ï¿½ï¿½statusï¿½=ï¿½build_and_serialize_om(env);
 
-    (status == AXIS2_FAILURE)
-    {
-        printf(" build AXIOM failed");
-    }
-    
-    axutil_env_free(env);
-    
-     0;
+ï¿½ï¿½ï¿½ï¿½(statusï¿½==ï¿½AXIS2_FAILURE)
+ï¿½ï¿½ï¿½ï¿½{
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½printf("ï¿½buildï¿½AXIOMï¿½failed");
+ï¿½ï¿½ï¿½ï¿½}
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½axutil_env_free(env);
+ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½0;
 }
 
 
