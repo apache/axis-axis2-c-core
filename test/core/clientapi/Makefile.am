@@ -4,16 +4,20 @@
 # The ASF licenses this file to You under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with
 # the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# Only build tests when Google Test is available
+
+# Only build tests when Google Test is available AND not in HTTP/2 mode
+# These tests depend on HTTP/1.1 transport components (http_sender, http_receiver)
+# which are not built in HTTP/2 JSON mode (WITH_NGHTTP2)
 if GTEST_AVAILABLE
+if !WITH_NGHTTP2
 TESTS = test_client test_svc_client_handler_count test_clientapi test_axis2c_1355
 noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_axis2c_1355
 check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_axis2c_1355
@@ -96,4 +100,7 @@ AM_CPPFLAGS = \
 		 -I ../../../axiom/include \
 		 -I $(GTEST_DIR)/include
 endif
+# endif !WITH_NGHTTP2
+endif
+# endif GTEST_AVAILABLE
 
