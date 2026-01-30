@@ -23,6 +23,7 @@ check_PROGRAMS = test_parser
 
 # ASAN preload for libtool-wrapped test execution
 if ENABLE_ASAN
+AM_LDFLAGS = -fsanitize=address
 TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
 endif
 

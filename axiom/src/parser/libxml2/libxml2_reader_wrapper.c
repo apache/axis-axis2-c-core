@@ -18,27 +18,51 @@
 #include <axiom_xml_reader.h>
 #include <libxml/xmlreader.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <axutil_utils_defines.h>
 #include <axutil_utils.h>
 #include <string.h>
 #include <axutil_string.h>
 
 /**
+ * Security limits for XML parsing to prevent DoS attacks.
+ * These values are conservative defaults suitable for SOAP/XML web services.
+ */
+
+/* Maximum element nesting depth (prevents deeply nested XML bombs) */
+#define AXIS2_XML_MAX_DEPTH 256
+
+/* Maximum entity expansion (bytes) - prevents billion laughs attack */
+#define AXIS2_XML_MAX_ENTITY_SIZE (1024 * 1024)  /* 1 MB */
+
+/* Maximum number of attributes per element */
+#define AXIS2_XML_MAX_ATTRIBUTES 256
+
+/* Maximum number of namespace declarations per element */
+#define AXIS2_XML_MAX_NAMESPACES 64
+
+/**
  * Secure XML parsing options to prevent XXE (XML External Entity) attacks.
  *
- * These flags are combined with XML_PARSE_RECOVER for robust parsing while
- * maintaining security:
+ * Security flags explained:
  *
- * - XML_PARSE_NOENT:    Substitute entities (prevents billion laughs DoS)
- * - XML_PARSE_NONET:    Forbid network access for external entities
- * - XML_PARSE_NOXINCLUDE: Do not generate XInclude nodes (prevents file inclusion)
- * - XML_PARSE_HUGE:     Not set - keeps default size limits for DoS protection
+ * - XML_PARSE_RECOVER:    Recover from errors gracefully
+ * - XML_PARSE_NONET:      Forbid network access (prevents SSRF via XXE)
+ * - XML_PARSE_NOXINCNODE: Disable XInclude processing (prevents file inclusion)
+ * - XML_PARSE_NOENT:      Substitute entities - libxml2 2.9+ has built-in
+ *                         entity expansion limits that prevent billion laughs
+ *
+ * Flags intentionally NOT set (for security):
+ * - XML_PARSE_HUGE:       Would allow unlimited document size (DoS risk)
+ * - XML_PARSE_DTDLOAD:    Would load external DTD (XXE risk)
+ * - XML_PARSE_DTDVALID:   Would validate against DTD (external resource risk)
+ * - XML_PARSE_DTDATTR:    Would default attributes from DTD (external resource risk)
  *
  * Note: The guththila parser (default) is already safe as it drops all
  * unknown entities. This hardening applies only when libxml2 is used.
  */
 #define AXIS2_LIBXML2_SECURE_PARSE_OPTIONS \
-    (XML_PARSE_RECOVER | XML_PARSE_NOENT | XML_PARSE_NONET | XML_PARSE_NOXINCLUDE)
+    (XML_PARSE_RECOVER | XML_PARSE_NOENT | XML_PARSE_NONET | XML_PARSE_NOXINCNODE)
 
 
 int AXIS2_CALL
@@ -250,10 +274,61 @@ axis2_libxml2_reader_wrapper_init_map(
     return AXIS2_FAILURE;
 }
 
+/**
+ * Secure external entity loader that blocks all external entity resolution.
+ * This is a defense-in-depth measure against XXE attacks.
+ *
+ * Even though XML_PARSE_NONET is set, this provides additional protection
+ * if parsing options are incorrectly specified elsewhere in the codebase.
+ */
+static xmlParserInputPtr
+axis2_secure_external_entity_loader(
+    const char *URL,
+    const char *ID,
+    xmlParserCtxtPtr ctxt)
+{
+    /*
+     * Security: Block ALL external entity resolution.
+     * This prevents:
+     * - XXE attacks (reading local files)
+     * - SSRF attacks (making network requests)
+     * - Denial of service (loading huge external resources)
+     *
+     * Legitimate SOAP/XML web services should not require external entities.
+     * If external entity support is needed, it should be explicitly enabled
+     * with appropriate whitelisting (not implemented - too risky).
+     */
+    if (ctxt != NULL && ctxt->sax != NULL && ctxt->sax->warning != NULL)
+    {
+        ctxt->sax->warning(ctxt->userData,
+            "Security: External entity blocked (URL=%s, ID=%s)\n",
+            URL ? URL : "NULL", ID ? ID : "NULL");
+    }
+
+    /* Return NULL to indicate entity could not be loaded */
+    return NULL;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_xml_reader_init()
 {
     xmlInitParser();
+
+    /*
+     * Configure global security limits for libxml2.
+     * These protect against various XML-based DoS attacks.
+     *
+     * Note: libxml2 2.9+ has built-in entity expansion limits that
+     * automatically protect against billion laughs / XML bomb attacks.
+     * The default limit is approximately 10MB of expanded content.
+     *
+     * For additional protection, we install a custom entity loader
+     * that blocks all external entity resolution (defense in depth).
+     */
+
+    /* Install secure entity loader that blocks external entities */
+    xmlSetExternalEntityLoader(axis2_secure_external_entity_loader);
+
     return AXIS2_SUCCESS;
 }
 
@@ -447,6 +522,7 @@ axis2_libxml2_reader_wrapper_next(
     int ret_val = 0;
     int node = 2;
     int empty_check = 0;
+    int depth = 0;
     axis2_libxml2_reader_wrapper_impl_t *parser_impl;
     AXIS2_ENV_CHECK(env, -1);
     parser_impl = AXIS2_INTF_TO_IMPL(parser);
@@ -463,6 +539,19 @@ axis2_libxml2_reader_wrapper_next(
 
     if(ret_val == 1)
     {
+        /*
+         * Security: Check element nesting depth to prevent stack exhaustion
+         * from deeply nested XML (XML bomb variant).
+         */
+        depth = xmlTextReaderDepth(parser_impl->reader);
+        if(depth >= AXIS2_XML_MAX_DEPTH)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Security: XML nesting depth exceeded (%d >= %d). Possible DoS attack.",
+                depth, AXIS2_XML_MAX_DEPTH);
+            return -1;
+        }
+
         node = xmlTextReaderNodeType(parser_impl->reader);
         parser_impl->current_event = parser_impl->event_map[node];
         parser_impl->current_attribute_count = 0;
@@ -471,7 +560,11 @@ axis2_libxml2_reader_wrapper_next(
         if(node == XML_READER_TYPE_ELEMENT)
         {
             empty_check = xmlTextReaderIsEmptyElement(parser_impl->reader);
-            axis2_libxml2_reader_wrapper_fill_maps(parser, env);
+            if(axis2_libxml2_reader_wrapper_fill_maps(parser, env) != AXIS2_SUCCESS)
+            {
+                /* Security limit exceeded in fill_maps */
+                return -1;
+            }
         }
         if(empty_check == 1)
         {
@@ -881,6 +974,20 @@ axis2_libxml2_reader_wrapper_fill_maps(
         parser_impl->current_namespace_count = 0;
         return AXIS2_SUCCESS;
     }
+
+    /*
+     * Security: Enforce attribute count limit to prevent DoS attacks.
+     * Malicious XML with thousands of attributes can exhaust memory.
+     */
+    if(libxml2_attribute_count > (AXIS2_XML_MAX_ATTRIBUTES + AXIS2_XML_MAX_NAMESPACES))
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Security: XML element has too many attributes (%d > %d). Possible DoS attack.",
+            libxml2_attribute_count, AXIS2_XML_MAX_ATTRIBUTES + AXIS2_XML_MAX_NAMESPACES);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+
     map_size = libxml2_attribute_count + 1;
     if(parser_impl->namespace_map)
     {

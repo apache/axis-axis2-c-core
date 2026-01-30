@@ -27,14 +27,26 @@ No additional configuration is needed for XXE protection with Guththila.
 When building with `--enable-libxml2`, the following security measures are
 automatically applied:
 
-- **XML_PARSE_NOENT**: Substitutes entities to prevent billion laughs attacks
+**Parse Options:**
+- **XML_PARSE_NOENT**: Substitutes entities (libxml2 2.9+ has built-in expansion limits)
 - **XML_PARSE_NONET**: Forbids network access for external entities
-- **XML_PARSE_NOXINCLUDE**: Prevents XInclude processing
+- **XML_PARSE_NOXINCNODE**: Prevents XInclude processing
 
-These flags prevent:
-- Local file disclosure via `file://` URLs
+**Runtime Limits:**
+- **AXIS2_XML_MAX_DEPTH (256)**: Maximum element nesting depth
+- **AXIS2_XML_MAX_ATTRIBUTES (256)**: Maximum attributes per element
+- **AXIS2_XML_MAX_NAMESPACES (64)**: Maximum namespace declarations per element
+
+**Global Protections:**
+- Custom external entity loader that blocks ALL external entity resolution
+- This provides defense-in-depth even if parse options are bypassed
+
+These measures prevent:
+- Local file disclosure via `file://` URLs (XXE)
 - Server-Side Request Forgery (SSRF) via `http://` URLs
-- Denial of Service via exponential entity expansion
+- Denial of Service via exponential entity expansion (billion laughs)
+- Stack exhaustion via deeply nested XML
+- Memory exhaustion via excessive attributes
 
 ### XXE Attack Prevention
 

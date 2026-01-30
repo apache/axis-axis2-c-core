@@ -33,6 +33,7 @@ TESTS += test_http_transport test_axis2c_1480 test_axis2c_1532 test_axis2c_1566
 
 # ASAN preload for libtool-wrapped test execution
 if ENABLE_ASAN
+AM_LDFLAGS = -fsanitize=address
 TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
 endif
 

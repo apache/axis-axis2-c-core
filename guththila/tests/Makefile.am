@@ -21,8 +21,11 @@ TESTS = test_guththila test_attribute test_stack test_token
 noinst_PROGRAMS = test_guththila test_attribute test_stack test_token
 check_PROGRAMS = test_guththila test_attribute test_stack test_token
 
-# ASAN preload for libtool-wrapped test execution
+# ASAN support for tests
 if ENABLE_ASAN
+# Ensure test executables are linked with ASAN runtime
+AM_LDFLAGS = -fsanitize=address
+# Preload ASAN for libtool-wrapped test execution
 TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
 endif
 

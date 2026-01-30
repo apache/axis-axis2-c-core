@@ -25,6 +25,7 @@ TESTS = h2_json_integration_test h2_performance_benchmark_test
 
 # ASAN preload for libtool-wrapped test execution
 if ENABLE_ASAN
+AM_LDFLAGS = -fsanitize=address
 TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
 endif
 

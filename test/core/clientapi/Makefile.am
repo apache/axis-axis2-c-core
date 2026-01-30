@@ -20,6 +20,7 @@ check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count test_a
 
 # ASAN preload for libtool-wrapped test execution
 if ENABLE_ASAN
+AM_LDFLAGS = -fsanitize=address
 TESTS_ENVIRONMENT = LD_PRELOAD=$(ASAN_PRELOAD)
 endif
 
