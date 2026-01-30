@@ -456,10 +456,11 @@ axis2_json_reader_read_http2_stream(
     json_object* json_obj = NULL;
     enum json_tokener_error jerr = json_tokener_success;
     int bytes_read = 0;
+    size_t total_bytes_read = 0;  /* Security: track total payload size */
     axis2_status_t status = AXIS2_SUCCESS;
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "🚀 REVOLUTIONARY: HTTP/2 streaming JSON reader - Enhanced breed apart processing");
+        "HTTP/2 streaming JSON reader - processing request");
 
     if (!reader || !stream) {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -475,14 +476,25 @@ axis2_json_reader_read_http2_stream(
         return AXIS2_FAILURE;
     }
 
-    /* REVOLUTIONARY: HTTP/2 streaming processing - handles multiplexed data efficiently */
+    /* HTTP/2 streaming processing - handles multiplexed data efficiently */
     if (enable_streaming) {
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-            "🔥 REVOLUTIONARY: HTTP/2 streaming mode active - Processing multiplexed JSON data");
+            "HTTP/2 streaming mode active - processing multiplexed JSON data");
 
         do {
             bytes_read = axutil_stream_read(stream, env, buffer, sizeof(buffer) - 1);
             if (bytes_read > 0) {
+                /* Security: Enforce maximum payload size to prevent DoS
+                 * (mitigation for CVE-2020-12762 integer overflow in json-c) */
+                total_bytes_read += (size_t)bytes_read;
+                if (total_bytes_read > AXIS2_JSON_MAX_PAYLOAD_SIZE) {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[JSON_READER] Security: HTTP/2 JSON payload exceeds maximum size (%zu > %d bytes)",
+                        total_bytes_read, AXIS2_JSON_MAX_PAYLOAD_SIZE);
+                    json_tokener_free(tokener);
+                    return AXIS2_FAILURE;
+                }
+
                 buffer[bytes_read] = '\0';
 
                 /* Parse incrementally for HTTP/2 stream efficiency */
@@ -494,7 +506,7 @@ axis2_json_reader_read_http2_stream(
                     continue;
                 } else if (jerr != json_tokener_success) {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Revolutionary HTTP/2 JSON streaming parse error: %s",
+                        "HTTP/2 JSON streaming parse error: %s",
                         json_tokener_error_to_str(jerr));
                     status = AXIS2_FAILURE;
                     break;
@@ -506,13 +518,22 @@ axis2_json_reader_read_http2_stream(
         /* Standard processing enhanced for HTTP/2 */
         bytes_read = axutil_stream_read(stream, env, buffer, sizeof(buffer) - 1);
         if (bytes_read > 0) {
+            /* Security: Check payload size even for non-streaming reads */
+            if ((size_t)bytes_read > AXIS2_JSON_MAX_PAYLOAD_SIZE) {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_READER] Security: HTTP/2 JSON payload exceeds maximum size (%d > %d bytes)",
+                    bytes_read, AXIS2_JSON_MAX_PAYLOAD_SIZE);
+                json_tokener_free(tokener);
+                return AXIS2_FAILURE;
+            }
+
             buffer[bytes_read] = '\0';
             json_obj = json_tokener_parse_ex(tokener, buffer, bytes_read);
             jerr = json_tokener_get_error(tokener);
 
             if (jerr != json_tokener_success) {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Revolutionary HTTP/2 JSON parse error: %s",
+                    "HTTP/2 JSON parse error: %s",
                     json_tokener_error_to_str(jerr));
                 status = AXIS2_FAILURE;
             }

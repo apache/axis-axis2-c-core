@@ -127,14 +127,30 @@ axis2_ssl_utils_initialize_ctx(
         return NULL;
     }
 
-    /* Disable insecure SSL protocols (SSLv2, SSLv3) to prevent:
-     * - POODLE attack (CVE-2014-3566)
-     * - DROWN attack (CVE-2016-0800)
-     * - Other SSLv2/v3 vulnerabilities
+    /* Disable insecure SSL/TLS protocols to prevent:
+     * - POODLE attack (CVE-2014-3566) - SSLv3
+     * - DROWN attack (CVE-2016-0800) - SSLv2
+     * - BEAST attack (CVE-2011-3389) - TLS 1.0
+     * - Lucky13 (CVE-2013-0169) - TLS 1.0/1.1 CBC ciphers
+     * - Various TLS 1.0/1.1 weaknesses (RFC 8996 deprecates them)
      * Also enable other security options:
      * - SSL_OP_NO_COMPRESSION: Prevent CRIME attack (CVE-2012-4929)
+     *
+     * TLS 1.2+ is required. Legacy TLS is not supported.
      */
-    SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
+    SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 |
+                        SSL_OP_NO_TLSv1 | SSL_OP_NO_TLSv1_1 |
+                        SSL_OP_NO_COMPRESSION);
+
+    /* Configure secure cipher suites - prefer AEAD ciphers (GCM, ChaCha20)
+     * Excludes: NULL, EXPORT, DES, 3DES, RC4, MD5, PSK, SRP, DSS, SEED, IDEA
+     * Requires: TLS 1.2+ cipher suites with forward secrecy (ECDHE/DHE)
+     */
+    if (!SSL_CTX_set_cipher_list(ctx, "ECDHE+AESGCM:DHE+AESGCM:ECDHE+CHACHA20:DHE+CHACHA20:!aNULL:!MD5:!DSS"))
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "[ssl client] Could not set preferred cipher list, using defaults");
+    }
 
     /* Load our keys and certificates
      * If we need client certificates it has to be done here

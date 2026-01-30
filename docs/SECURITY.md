@@ -77,12 +77,33 @@ in both supported parsers.
 
 ### Protocol Configuration
 
-Axis2/C SSL transport is configured to:
+Axis2/C SSL transport is configured with modern security defaults:
 
-1. **Use TLS 1.2+ by default** (OpenSSL 1.1.0+)
-2. **Disable SSLv2 and SSLv3** to prevent POODLE and DROWN attacks
-3. **Disable compression** to prevent CRIME attacks
-4. **Validate hostnames** against certificate CN/SAN fields
+1. **TLS 1.2+ required** - TLS 1.0 and TLS 1.1 are disabled (RFC 8996 deprecation)
+2. **SSLv2 and SSLv3 disabled** - Prevents POODLE (CVE-2014-3566) and DROWN (CVE-2016-0800)
+3. **Compression disabled** - Prevents CRIME attack (CVE-2012-4929)
+4. **Strong cipher suites** - AEAD ciphers only (GCM, ChaCha20) with forward secrecy
+5. **Hostname validation** - Certificate CN/SAN fields verified against target host
+
+### Cipher Suite Configuration
+
+The following cipher suites are preferred (in order):
+- `ECDHE+AESGCM` - ECDHE key exchange with AES-GCM
+- `DHE+AESGCM` - DHE key exchange with AES-GCM
+- `ECDHE+CHACHA20` - ECDHE with ChaCha20-Poly1305
+- `DHE+CHACHA20` - DHE with ChaCha20-Poly1305
+
+Excluded cipher suites: NULL, EXPORT, DES, 3DES, RC4, MD5, PSK, SRP, DSS, SEED, IDEA
+
+### Disabled Protocols and CVEs Addressed
+
+| Protocol | Status | CVEs Addressed |
+|----------|--------|----------------|
+| SSLv2 | Disabled | DROWN (CVE-2016-0800), many others |
+| SSLv3 | Disabled | POODLE (CVE-2014-3566) |
+| TLS 1.0 | Disabled | BEAST (CVE-2011-3389), Lucky13 (CVE-2013-0169) |
+| TLS 1.1 | Disabled | Various CBC weaknesses, RFC 8996 deprecation |
+| TLS 1.2+ | Enabled | Modern, secure |
 
 ### Certificate Validation
 
@@ -772,3 +793,45 @@ with ASAN enabled. All tests passed with no memory errors detected:
 | JSON Parser | Max payload size | 10 MB (configurable) |
 
 All tests completed with **zero ASAN errors** detected.
+
+## Attack Surface Reduction (Phase 3)
+
+The following deprecated features have been removed to reduce attack surface:
+
+| Feature | Reason for Removal |
+|---------|-------------------|
+| NTLM Authentication | Security vulnerabilities (pass-the-hash, relay attacks), Microsoft deprecating |
+| TCP Transport | Obsolete - HTTP/2 provides multiplexing with full HTTP semantics |
+| CGI Transport | Obsolete deployment model, security concerns with CGI execution |
+| libcurl HTTP Backend | Redundant with native HTTP client, MTOM broken (AXIS2C-1270) |
+
+### Removed Configure Options
+- `--enable-ntlm` / `--enable-heimdal` / `--enable-libntlm`
+- `--enable-tcp`
+- `--enable-cgi`
+- `--enable-libcurl`
+
+## Automated Code Review (Gemini)
+
+Security hardening commits are reviewed using Google Gemini AI for:
+- Memory safety issues (buffer overflows, use-after-free)
+- Input validation gaps
+- SSL/TLS configuration weaknesses
+- Error handling issues
+
+### January 2026 Review Findings (All Addressed)
+
+| Severity | File | Issue | Status |
+|----------|------|-------|--------|
+| MEDIUM | `libxml2_reader_wrapper.c` | Missing error check for `xmlTextReaderDepth()` | ✅ Fixed |
+| MEDIUM | `libxml2_reader_wrapper.c` | Error messages missing source context | ✅ Fixed |
+| MEDIUM | `ssl_utils.c` | TLS 1.0/1.1 enabled | ✅ Fixed (disabled) |
+| MEDIUM | `ssl_utils.c` | No explicit cipher suite config | ✅ Fixed |
+| MEDIUM | `axis2_json_reader.c` | HTTP/2 stream missing size limit | ✅ Fixed |
+| MEDIUM | `http_client.c` | INT_MAX check for size_t to int conversion | ✅ Fixed |
+
+### Recommendations Implemented
+1. TLS 1.2+ required (TLS 1.0/1.1 completely disabled)
+2. Strong cipher suites configured (AEAD with forward secrecy)
+3. JSON payload size limits enforced in HTTP/2 streaming mode
+4. Improved error messages include source context for debugging

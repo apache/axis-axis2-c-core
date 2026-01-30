@@ -112,7 +112,8 @@ axis2_prepend_stream_read(
         /* If we've satisfied the request from prepend, return */
         if (total_read >= count)
         {
-            return (int)total_read;
+            /* Security: Prevent size_t to int truncation */
+            return (total_read > INT_MAX) ? INT_MAX : (int)total_read;
         }
 
         /* Otherwise, read remainder from underlying stream */
@@ -135,7 +136,8 @@ axis2_prepend_stream_read(
         }
     }
 
-    return (int)total_read;
+    /* Security: Prevent size_t to int truncation */
+    return (total_read > INT_MAX) ? INT_MAX : (int)total_read;
 }
 
 static int AXIS2_CALL
