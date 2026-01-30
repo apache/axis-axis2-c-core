@@ -103,16 +103,38 @@ axis2_ssl_utils_initialize_ctx(
         bio_err = BIO_new_fp(stderr, BIO_NOCLOSE);
     }
 
-    /* Create our context */
- # if defined OPENSSL_VERSION_NUMBER && (OPENSSL_VERSION_NUMBER >= 0x1000000fL)
-	
-	meth = SSLv23_method();
- # else
-	
-	meth = SSLv23_method();
-	
- # endif
+    /* Create our context
+     *
+     * Security hardening (CVE prevention):
+     * - Use TLS_client_method() for OpenSSL 1.1.0+ which auto-negotiates
+     *   the highest available TLS version
+     * - For older OpenSSL, use SSLv23_method() but disable SSLv2/SSLv3
+     *   to prevent POODLE and DROWN attacks
+     */
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+    /* OpenSSL 1.1.0+: TLS_client_method() is the modern approach */
+    meth = TLS_client_method();
+#else
+    /* OpenSSL < 1.1.0: SSLv23_method() with protocol restrictions */
+    meth = SSLv23_method();
+#endif
     ctx = SSL_CTX_new(meth);
+
+    if (!ctx)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[ssl client] Failed to create SSL context");
+        return NULL;
+    }
+
+    /* Disable insecure SSL protocols (SSLv2, SSLv3) to prevent:
+     * - POODLE attack (CVE-2014-3566)
+     * - DROWN attack (CVE-2016-0800)
+     * - Other SSLv2/v3 vulnerabilities
+     * Also enable other security options:
+     * - SSL_OP_NO_COMPRESSION: Prevent CRIME attack (CVE-2012-4929)
+     */
+    SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
 
     /* Load our keys and certificates
      * If we need client certificates it has to be done here
