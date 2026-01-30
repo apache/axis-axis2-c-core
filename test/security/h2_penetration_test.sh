@@ -24,9 +24,9 @@
 set -e
 
 # Configuration
-BASE_URL="${1:-https://localhost:8443}"
-BIGDATA_ENDPOINT="${BASE_URL}/axis2/services/BigDataH2Service"
-FINANCIAL_ENDPOINT="${BASE_URL}/axis2/services/FinancialBenchmarkService"
+BASE_URL="${1:-https://localhost}"
+BIGDATA_ENDPOINT="${BASE_URL}/services/BigDataH2Service"
+FINANCIAL_ENDPOINT="${BASE_URL}/services/FinancialBenchmarkService"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 RESULTS_DIR="/tmp/h2_pentest_${TIMESTAMP}"
 CURL_OPTS="--http2 -s -w '\nHTTP_CODE:%{http_code}\nTIME:%{time_total}s\n'"

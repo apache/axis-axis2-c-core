@@ -499,7 +499,8 @@ bigdata_h2_service_process_big_data_set(
         axutil_strcat(env,
             format_size_bytes(request->dataset_size, env),
             " in ",
-            format_processing_time(response->processing_time_ms, env)));
+            format_processing_time(response->processing_time_ms, env),
+            NULL));
 
     AXIS2_LOG_INFO(env->log,
                    "Big data processing completed: %d records, %ld bytes, %ld ms",

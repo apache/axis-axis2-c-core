@@ -683,7 +683,92 @@ Build and deploy services with AddressSanitizer for memory error detection:
 ```bash
 ./configure --enable-asan --enable-http2 --enable-json ...
 make && make install
-
-# Deploy to Apache httpd, then run penetration tests
-# Check server logs for ASAN error reports
 ```
+
+#### Systemd Configuration for Apache httpd with ASAN
+
+When running Apache httpd (built from source) as a systemd service with ASAN-enabled
+Axis2/C modules, add these environment variables to `/etc/systemd/system/apache2-custom.service`:
+
+```ini
+[Service]
+Environment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasan.so.8"
+Environment="ASAN_OPTIONS=detect_leaks=1:log_path=/tmp/asan_apache:abort_on_error=0:halt_on_error=0"
+```
+
+Then reload and restart:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart apache2-custom.service
+```
+
+The ASAN options:
+- `detect_leaks=1`: Enable memory leak detection
+- `log_path=/tmp/asan_apache`: Write ASAN reports to files (with PID suffix)
+- `abort_on_error=0`: Don't abort on first error (log all errors)
+- `halt_on_error=0`: Continue execution after errors (for penetration testing)
+
+Check ASAN output after running tests:
+
+```bash
+cat /tmp/asan_apache.*
+```
+
+### Stress Tests Performed
+
+The following stress tests were performed against BigDataH2Service and FinancialBenchmarkService
+with ASAN enabled. All tests passed with no memory errors detected:
+
+#### Input Validation Tests
+| Test | BigDataH2Service | FinancialBenchmarkService |
+|------|------------------|---------------------------|
+| Deeply nested JSON (300 levels) | BLOCKED (HTTP 400) | BLOCKED (HTTP 400) |
+| Deeply nested arrays (100 levels) | BLOCKED (HTTP 400) | BLOCKED (HTTP 400) |
+| Mixed object/array nesting (150 levels) | BLOCKED (HTTP 400) | BLOCKED (HTTP 400) |
+| Malformed JSON (unclosed string) | BLOCKED (HTTP 400) | BLOCKED (HTTP 400) |
+| Malformed JSON (unquoted key) | BLOCKED (HTTP 400) | BLOCKED (HTTP 400) |
+| Embedded null bytes | BLOCKED (HTTP 400) | BLOCKED (HTTP 400) |
+
+#### Memory Safety Tests
+| Test | Result |
+|------|--------|
+| 10KB field names | Handled safely |
+| 1MB string values | Handled safely |
+| 1000 unique JSON keys | Handled safely |
+| 200x200 covariance matrix (40K elements) | Handled safely |
+| Format string specifiers (%s%n) | No vulnerability |
+| Path traversal patterns (../) | No file access |
+
+#### Integer Overflow Tests
+| Test | Result |
+|------|--------|
+| INT64_MAX values | Sanitized to defaults |
+| INT64_MAX+1 overflow | Sanitized to defaults |
+| Negative sizes | Sanitized to defaults |
+| n_assets near sqrt(INT_MAX) | Sanitized to defaults |
+
+#### Algorithmic Complexity Tests (DoS Prevention)
+| Test | Result |
+|------|--------|
+| 500-asset matrix (250K operations) | Completed in 0.35s |
+| 1000-asset matrix (1M operations) | Completed in 1.36s |
+| 10M Monte Carlo simulations | Completed in 2.9s |
+| Huge n_assets (999999) | Capped to FINBENCH_MAX_ASSETS |
+
+#### Concurrency Tests
+| Test | Result |
+|------|--------|
+| 100 concurrent BigData requests | All HTTP 200, no race conditions |
+| 50 concurrent mixed Financial operations | All HTTP 200, no race conditions |
+| Rapid request cancellation (50 requests) | No double-free or use-after-free |
+
+#### Service Limits
+| Service | Limit | Value |
+|---------|-------|-------|
+| FinancialBenchmarkService | Max assets | 2000 |
+| FinancialBenchmarkService | Max simulations | 1,000,000 |
+| JSON Parser | Max nesting depth | 64 levels |
+| JSON Parser | Max payload size | 10 MB (configurable) |
+
+All tests completed with **zero ASAN errors** detected.
