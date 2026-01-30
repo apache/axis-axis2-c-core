@@ -245,52 +245,16 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   AC_MSG_RESULT(no)
 )
 
-AC_MSG_CHECKING(whether to build heimdal ntlm wrapper library)
-AC_ARG_ENABLE(heimdal, [  --enable-heimdal    
-                          build heimdal ntlm library wrapper (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    NTLM_WRAPPER_DIR=""
-    NTLM_DIR=""
-    NTLM_LIB=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    NTLM_WRAPPER_DIR="heimdal"
-    NTLM_DIR="ntlm"
-    #PKG_CHECK_MODULES(HEIMDAL, heimdal-1.4)
-    CFLAGS="$CFLAGS -DAXIS2_HEIMDAL_ENABLED -DAXIS2_NTLM_ENABLED"
-    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_HEIMDAL_ENABLED -DAXIS2_NTLM_ENABLED"
-    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS"
-    NTLM_LIB="./ntlm/heimdal/libaxis2_ntlm.la"
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
-AC_MSG_CHECKING(whether to build libntlm ntlm wrapper library)
-AC_ARG_ENABLE(libntlm, [  --enable-libntlm    
-                          build libntlm ntlm library wrapper (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    NTLM_WRAPPER_DIR=""
-    NTLM_DIR=""
-    NTLM_LIB=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    NTLM_WRAPPER_DIR="libntlm"
-    NTLM_DIR="ntlm"
-    CFLAGS="$CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
-    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED -DLIBNTLM_CFLAGS"
-    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS $LIBNTLM_LIBS"
-    NTLM_LIB="./ntlm/libntlm/libaxis2_ntlm.la"
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
+dnl NTLM support has been completely removed from Axis2/C.
+dnl NTLM is a legacy protocol with known security vulnerabilities including:
+dnl - Pass-the-hash attacks
+dnl - Relay attacks
+dnl - Weak cryptography (MD4/DES based)
+dnl Microsoft is deprecating NTLM. Use Kerberos, OAuth 2.0, or mTLS instead.
+dnl See: https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637
+NTLM_WRAPPER_DIR=""
+NTLM_DIR=""
+NTLM_LIB=""
 
 
 AC_MSG_CHECKING(whether to build tcp transport)
@@ -820,9 +784,6 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/sender/Makefile \
     src/core/transport/http/sender/ssl/Makefile \
     src/core/transport/http/sender/libcurl/Makefile \
-    src/core/transport/http/sender/ntlm/Makefile \
-    src/core/transport/http/sender/ntlm/heimdal/Makefile \
-    src/core/transport/http/sender/ntlm/libntlm/Makefile \
     src/core/transport/http/receiver/Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
     src/core/transport/http/server/Makefile \

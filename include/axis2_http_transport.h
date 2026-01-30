@@ -999,21 +999,19 @@ extern "C"
       */
     #define AXIS2_PROXY_AUTH_PASSWD "PROXY_AUTH_PASSWD"
     
-    /**
-     * NTLM authentication domain property name
+    /* NTLM authentication has been removed from Axis2/C due to security vulnerabilities.
+     * NTLM is deprecated by Microsoft and has known weaknesses including:
+     * - Pass-the-hash attacks
+     * - Relay attacks
+     * - Weak cryptography (MD4/DES based)
+     * Use Kerberos, OAuth 2.0, or mTLS instead.
+     * See: https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637
+     *
+     * The following NTLM-related constants are retained for API compatibility but are non-functional:
      */
-    #define AXIS2_NTLM_AUTH_DOMAIN "NTLM_AUTH_DOMAIN"
-    
-    /**
-     * NTLM authentication workstation property name
-     */
-    #define AXIS2_NTLM_AUTH_WORKSTATION "NTLM_AUTH_WORKSTATION"
-    
-    /**
-     * NTLM authentication flags property name
-     */
-    #define AXIS2_NTLM_AUTH_FLAGS "NTLM_AUTH_FLAGS"
-
+    #define AXIS2_NTLM_AUTH_DOMAIN "NTLM_AUTH_DOMAIN"       /* DEPRECATED - NTLM removed */
+    #define AXIS2_NTLM_AUTH_WORKSTATION "NTLM_AUTH_WORKSTATION"  /* DEPRECATED - NTLM removed */
+    #define AXIS2_NTLM_AUTH_FLAGS "NTLM_AUTH_FLAGS"         /* DEPRECATED - NTLM removed */
 
     /*    #define AXIS2_HTTP_AUTH_TYPE "HTTP_AUTH_TYPE"*/
 
@@ -1026,9 +1024,10 @@ extern "C"
      * HTTP "Digest" authentication
      */
     #define AXIS2_HTTP_AUTH_TYPE_DIGEST "Digest"
-    
+
     /**
-     * "NTLM" authentication
+     * "NTLM" authentication - DEPRECATED AND REMOVED
+     * This constant is retained for API compatibility but NTLM is no longer functional.
      */
     #define AXIS2_HTTP_AUTH_TYPE_NTLM "NTLM"
 
@@ -1041,9 +1040,10 @@ extern "C"
       * Proxy "Digest" authentication
       */
     #define AXIS2_PROXY_AUTH_TYPE_DIGEST "Digest"
-    
+
     /**
-      * Proxy "NTLM" authentication
+      * Proxy "NTLM" authentication - DEPRECATED AND REMOVED
+      * This constant is retained for API compatibility but NTLM is no longer functional.
       */
     #define AXIS2_PROXY_AUTH_TYPE_NTLM "NTLM"
 

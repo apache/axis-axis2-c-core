@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS = echo math google notify mtom yahoo version mtom_callback session $(NTLM_DIR)
-DIST_SUBDIRS = echo math google notify mtom yahoo version mtom_callback session ntlm
+# NTLM sample removed - NTLM support has been removed from Axis2/C for security reasons
+SUBDIRS = echo math google notify mtom yahoo version mtom_callback session
+DIST_SUBDIRS = echo math google notify mtom yahoo version mtom_callback session
 EXTRA_DIST= Makefile.am

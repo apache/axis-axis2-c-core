@@ -38,7 +38,14 @@
 #include <axiom_soap.h>
 #include <axutil_version.h>
 #include "ssl/ssl_stream.h"
-#include <axis2_ntlm.h>
+/* NTLM support has been completely removed from Axis2/C.
+ * NTLM is a legacy protocol with known security vulnerabilities including:
+ * - Pass-the-hash attacks
+ * - Relay attacks
+ * - Weak cryptography (MD4/DES based)
+ * Microsoft is deprecating NTLM: https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637
+ * Use Kerberos, OAuth 2.0, or mTLS instead.
+ */
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
@@ -146,14 +153,6 @@ axis2_http_sender_configure_http_digest_auth(
     axis2_char_t * header_data);
 
 static axis2_status_t
-axis2_http_sender_configure_http_ntlm_auth(
-    axis2_http_sender_t * sender,
-    const axutil_env_t * env,
-    axis2_msg_ctx_t * msg_ctx,
-    axis2_http_simple_request_t * request,
-    axis2_char_t * header_data);
-
-static axis2_status_t
 axis2_http_sender_configure_proxy_digest_auth(
     axis2_http_sender_t * sender,
     const axutil_env_t * env,
@@ -161,14 +160,7 @@ axis2_http_sender_configure_proxy_digest_auth(
     axis2_http_simple_request_t * request,
     axis2_char_t * header_data);
 
-static axis2_status_t
-axis2_http_sender_configure_proxy_ntlm_auth(
-    axis2_http_sender_t * sender,
-    const axutil_env_t * env,
-    axis2_msg_ctx_t * msg_ctx,
-    axis2_http_simple_request_t * request,
-    axis2_char_t * header_data);
-
+/* NTLM authentication functions removed - see security note at top of file */
 
 #endif
 
@@ -274,7 +266,7 @@ axis2_http_sender_send(
     axutil_url_t *url = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
-    unsigned int buffer_size = 0;
+    size_t buffer_size = 0;
     const axis2_char_t *char_set_enc = NULL;
     axutil_string_t *char_set_enc_str = NULL;
     int status_code = -1;
@@ -282,7 +274,7 @@ axis2_http_sender_send(
     axis2_char_t *content_type = NULL;
     axis2_bool_t content_type_deepl_copy = AXIS2_TRUE;
     axis2_byte_t *output_stream = NULL;
-    int output_stream_size = 0;
+    size_t output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axutil_property_t *dump_property = NULL;
     axutil_param_t *ssl_pp_param = NULL;
@@ -958,7 +950,7 @@ axis2_http_sender_send(
     {
         /* HTTP 1.1 */
         axis2_char_t *header = NULL;
-        int host_len = 0;
+        size_t host_len = 0;
         host_len = axutil_strlen(axutil_url_get_host(url, env));
         header = AXIS2_MALLOC(env->allocator, host_len + 10 * sizeof(axis2_char_t));
         sprintf(header, "%s:%d", axutil_url_get_host(url, env), axutil_url_get_port(url, env));
@@ -1062,8 +1054,7 @@ axis2_http_sender_send(
     }
 
     if(proxy_auth_property_value && (0 == axutil_strcmp(proxy_auth_property_value,
-        AXIS2_PROXY_AUTH_TYPE_DIGEST) || 0 == axutil_strcmp(proxy_auth_property_value,
-            AXIS2_HTTP_AUTH_TYPE_NTLM)))
+        AXIS2_PROXY_AUTH_TYPE_DIGEST)))
     {
         force_proxy_auth = AXIS2_FALSE;
         force_proxy_auth_with_head = AXIS2_TRUE;
@@ -1102,8 +1093,7 @@ axis2_http_sender_send(
     }
 
     if(http_auth_property_value && (0 == axutil_strcmp(http_auth_property_value,
-        AXIS2_HTTP_AUTH_TYPE_DIGEST) || 0 == axutil_strcmp(http_auth_property_value,
-            AXIS2_HTTP_AUTH_TYPE_NTLM)))
+        AXIS2_HTTP_AUTH_TYPE_DIGEST)))
     {
         force_http_auth = AXIS2_FALSE;
         force_http_auth_with_head = AXIS2_TRUE;
@@ -2117,18 +2107,18 @@ axis2_http_sender_configure_http_basic_auth(
     }
     if(uname && passwd)
     {
-        int elen;
-        int plen = axutil_strlen(uname) + axutil_strlen(passwd) + 1;
+        size_t elen;
+        size_t plen = axutil_strlen(uname) + axutil_strlen(passwd) + 1;
         axis2_char_t *to_encode = (axis2_char_t *)(AXIS2_MALLOC(env->allocator,
             sizeof(axis2_char_t) * plen + 1));
         axis2_char_t *encoded = NULL;
         axis2_char_t *auth_str = NULL;
         sprintf(to_encode, "%s:%s", uname, passwd);
-        elen = axutil_base64_encode_len(plen);
+        elen = (size_t)axutil_base64_encode_len((int)plen);
         encoded = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * elen));
         auth_str
             = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (elen + 6)));
-        axutil_base64_encode(encoded, to_encode, plen);
+        axutil_base64_encode(encoded, to_encode, (int)plen);
         sprintf(auth_str, "%s %s", AXIS2_HTTP_AUTH_TYPE_BASIC, encoded);
         axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_AUTHORIZATION, auth_str);
 
@@ -2231,18 +2221,18 @@ axis2_http_sender_configure_proxy_basic_auth(
     }
     if(uname && passwd)
     {
-        int elen;
-        int plen = axutil_strlen(uname) + axutil_strlen(passwd) + 1;
+        size_t elen;
+        size_t plen = axutil_strlen(uname) + axutil_strlen(passwd) + 1;
         axis2_char_t *to_encode = (axis2_char_t *)(AXIS2_MALLOC(env->allocator,
             sizeof(axis2_char_t) * plen + 1));
         axis2_char_t *encoded = NULL;
         axis2_char_t *auth_str = NULL;
         sprintf(to_encode, "%s:%s", uname, passwd);
-        elen = axutil_base64_encode_len(plen);
+        elen = (size_t)axutil_base64_encode_len((int)plen);
         encoded = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * elen));
         auth_str
             = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (elen + 6)));
-        axutil_base64_encode(encoded, to_encode, plen);
+        axutil_base64_encode(encoded, to_encode, (int)plen);
         sprintf(auth_str, "%s %s", AXIS2_PROXY_AUTH_TYPE_BASIC, encoded);
         axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_PROXY_AUTHORIZATION,
             auth_str);
@@ -2343,10 +2333,10 @@ axis2_http_sender_configure_http_digest_auth(
     }
     if(uname && passwd)
     {
-        int elen = 0; /* length of header content */
-        int print_const = 5; /* constant accounts for printing the
+        size_t elen = 0; /* length of header content */
+        size_t print_const = 5; /* constant accounts for printing the
          quoatation marks, comma, and space */
-        int response_length = 32;
+        size_t response_length = 32;
         axis2_char_t *temp = NULL;
         axis2_char_t *alloc_temp = NULL;
         axis2_char_t *algo = AXIS2_HTTP_AUTHORIZATION_REQUEST_ALGORITHM_MD5;
@@ -2398,9 +2388,10 @@ axis2_http_sender_configure_http_digest_auth(
                 temp = axutil_strchr(realm, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - realm + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, realm, (temp - realm));
-                if(alloc_temp)
-                    alloc_temp[temp - realm] = AXIS2_ESC_NULL;
+                alloc_temp[temp - realm] = AXIS2_ESC_NULL;
                 realm = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + axutil_strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM)
@@ -2422,9 +2413,10 @@ axis2_http_sender_configure_http_digest_auth(
                 temp = axutil_strchr(qop, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - qop + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, qop, (temp - qop));
-                if(alloc_temp)
-                    alloc_temp[temp - qop] = AXIS2_ESC_NULL;
+                alloc_temp[temp - qop] = AXIS2_ESC_NULL;
                 qop = alloc_temp;
                 alloc_temp = NULL;
             }
@@ -2440,9 +2432,10 @@ axis2_http_sender_configure_http_digest_auth(
                 temp = axutil_strchr(nonce, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - nonce + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, nonce, (temp - nonce));
-                if(alloc_temp)
-                    alloc_temp[temp - nonce] = AXIS2_ESC_NULL;
+                alloc_temp[temp - nonce] = AXIS2_ESC_NULL;
                 nonce = alloc_temp;
                 alloc_temp = NULL;
 
@@ -2467,9 +2460,10 @@ axis2_http_sender_configure_http_digest_auth(
                 temp = axutil_strchr(opaque, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - opaque + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, opaque, (temp - opaque));
-                if(alloc_temp)
-                    alloc_temp[temp - opaque] = AXIS2_ESC_NULL;
+                alloc_temp[temp - opaque] = AXIS2_ESC_NULL;
                 opaque = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + axutil_strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE)
@@ -2571,195 +2565,7 @@ axis2_http_sender_configure_http_digest_auth(
     return AXIS2_FAILURE;
 }
 
-static axis2_status_t
-axis2_http_sender_configure_http_ntlm_auth(
-    axis2_http_sender_t * sender,
-    const axutil_env_t * env,
-    axis2_msg_ctx_t * msg_ctx,
-    axis2_http_simple_request_t * request,
-    axis2_char_t * header_data)
-{
-
-#ifndef AXIS2_NTLM_ENABLED
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NTLM is not enabled. Please consider building "\
-            "Axis2/C enabling a ntlm client library");
-    return AXIS2_FAILURE;
-#else
-
-    axutil_property_t *http_auth_un = NULL;
-    axutil_property_t *http_auth_pw = NULL;
-    axutil_property_t *ntlm_auth_dm = NULL;
-    axutil_property_t *ntlm_auth_wo = NULL;
-    axutil_property_t *ntlm_auth_fg = NULL;
-    axis2_char_t *uname = NULL;
-    axis2_char_t *passwd = NULL;
-    int flags = 0;
-    axis2_char_t *domain = NULL;
-    axis2_char_t *workstation = NULL;
-
-
-    http_auth_un = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_UNAME);
-    http_auth_pw = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_PASSWD);
-    ntlm_auth_dm = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_NTLM_AUTH_DOMAIN);
-    ntlm_auth_wo = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_NTLM_AUTH_WORKSTATION);
-    ntlm_auth_fg = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_NTLM_AUTH_FLAGS);
-    if(http_auth_un && http_auth_pw)
-    {
-        uname = (axis2_char_t *)axutil_property_get_value(http_auth_un, env);
-        passwd = (axis2_char_t *)axutil_property_get_value(http_auth_pw, env);
-    }
-    if(!uname || !passwd)
-    {
-        axis2_conf_ctx_t *conf_ctx = NULL;
-        axis2_conf_t *conf = NULL;
-        axis2_transport_out_desc_t *trans_desc = NULL;
-        axutil_param_t *http_auth_param = NULL;
-        axutil_hash_t *transport_attrs = NULL;
-
-        conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-        if(conf_ctx)
-        {
-            conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-            if(conf)
-            {
-                trans_desc = axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
-            }
-        }
-        if(trans_desc)
-        {
-            http_auth_param = axutil_param_container_get_param(
-                axis2_transport_out_desc_param_container(trans_desc, env), env,
-                AXIS2_HTTP_AUTHENTICATION);
-            if(http_auth_param)
-            {
-                transport_attrs = axutil_param_get_attributes(http_auth_param, env);
-                if(transport_attrs)
-                {
-                    axutil_generic_obj_t *obj = NULL;
-                    axiom_attribute_t *username_attr = NULL;
-                    axiom_attribute_t *password_attr = NULL;
-
-                    obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_AUTHENTICATION_USERNAME,
-                        AXIS2_HASH_KEY_STRING);
-                    if(obj)
-                    {
-                        username_attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
-                    }
-                    if(username_attr)
-                    {
-                        uname = axiom_attribute_get_value(username_attr, env);
-                    }
-                    obj = NULL;
-
-                    obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_AUTHENTICATION_PASSWORD,
-                        AXIS2_HASH_KEY_STRING);
-                    if(obj)
-                    {
-                        password_attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
-                    }
-                    if(password_attr)
-                    {
-                        passwd = axiom_attribute_get_value(password_attr, env);
-                    }
-                }
-            }
-        }
-    }
-    if(ntlm_auth_fg)
-    {
-        axis2_char_t *temp_flags = (axis2_char_t *) axutil_property_get_value(ntlm_auth_fg, env);
-        if(temp_flags)
-        {
-            flags = atoi(temp_flags);
-        }
-        else
-        {
-            flags = 0;
-        }   
-    }
-    else
-    {
-        flags = 0;
-    }
-    if(ntlm_auth_dm)
-    {
-        domain = (axis2_char_t *)axutil_property_get_value(ntlm_auth_dm, env);
-    }
-    if(ntlm_auth_wo)
-    {
-        workstation = (axis2_char_t *)axutil_property_get_value(ntlm_auth_wo, env);
-    }
-    if(uname && passwd)
-    {
-        int elen = 0;
-        axis2_char_t *auth_str = NULL;
-        axis2_char_t *encoded_message = NULL;
-        axis2_http_header_t *tmp_header = NULL;
-        axis2_ntlm_t *ntlm = NULL;
-        axis2_status_t status = AXIS2_FAILURE;
-
-        ntlm = axis2_ntlm_create(env);
-        if(!header_data || !*header_data) /* NTLM unauthorized received */
-        {
-            /* Ceate type 1(negotiation) header  message */
-             status = axis2_ntlm_auth_create_type1_message(ntlm, env, &encoded_message, &elen, uname, 
-                passwd, flags, domain);
-             /*status = axis2_ntlm_auth_create_type1_message(ntlm, env, &encoded_message, &elen, "nandika", 
-                "nandika", 0, "mydomain", "workstation");*/
-        }
-        else /* NTLM challange received */
-        {
-            /* Create Type3 (authentication) header message */
-             status = axis2_ntlm_auth_create_type3_message(ntlm, env, header_data, 
-                     &encoded_message, &elen, uname, passwd, domain, workstation);
-        }
-        if(status != AXIS2_SUCCESS)
-        {
-            if(encoded_message)
-            {
-                AXIS2_FREE(env->allocator, encoded_message);
-                encoded_message = NULL;
-            }
-            if(ntlm)
-            {
-                axis2_ntlm_free(ntlm, env);
-            }
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "axis2_ntlm_auth_create_type3_message call failed");
-            return status;
-        }
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "encoded_message:%s", encoded_message);
-
-        auth_str
-            = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (elen + 6)));
-        sprintf(auth_str, "%s %s", AXIS2_HTTP_AUTH_TYPE_NTLM, encoded_message);
-        tmp_header = axis2_http_simple_request_get_first_header(request, env,
-            AXIS2_HTTP_HEADER_AUTHORIZATION);
-        if(tmp_header)
-        {
-            axis2_char_t *tmp_header_val = axis2_http_header_get_value(tmp_header, env);
-            if(tmp_header_val)
-            {
-                axis2_http_header_set_value(tmp_header, env, auth_str);
-            }
-        }
-        else
-        {
-            axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_AUTHORIZATION, auth_str);
-        }
-
-
-        AXIS2_FREE(env->allocator, encoded_message);
-        encoded_message = NULL;
-        axis2_ntlm_free(ntlm, env);
-        AXIS2_FREE(env->allocator, auth_str);
-        auth_str = NULL;
-
-        return AXIS2_SUCCESS;
-    }
-    return AXIS2_FAILURE;
-#endif
-} /* axis2_http_sender_configure_http_ntlm_auth */
+/* NTLM authentication removed - see security note at top of file */
 
 static axis2_status_t
 axis2_http_sender_configure_proxy_digest_auth(
@@ -2851,10 +2657,10 @@ axis2_http_sender_configure_proxy_digest_auth(
     }
     if(uname && passwd)
     {
-        int elen = 0; /* length of header content */
-        int print_const = 5; /* constant accounts for printing the
+        size_t elen = 0; /* length of header content */
+        size_t print_const = 5; /* constant accounts for printing the
          quoatation marks, comma, and space */
-        int response_length = 32;
+        size_t response_length = 32;
         axis2_char_t *temp = NULL;
         axis2_char_t *alloc_temp = NULL;
         axis2_char_t *algo = AXIS2_HTTP_AUTHORIZATION_REQUEST_ALGORITHM_MD5;
@@ -2906,9 +2712,10 @@ axis2_http_sender_configure_proxy_digest_auth(
                 temp = axutil_strchr(realm, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - realm + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, realm, (temp - realm));
-                if(alloc_temp)
-                    alloc_temp[temp - realm] = AXIS2_ESC_NULL;
+                alloc_temp[temp - realm] = AXIS2_ESC_NULL;
                 realm = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + axutil_strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM)
@@ -2930,9 +2737,10 @@ axis2_http_sender_configure_proxy_digest_auth(
                 temp = axutil_strchr(qop, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - qop + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, qop, (temp - qop));
-                if(alloc_temp)
-                    alloc_temp[temp - qop] = AXIS2_ESC_NULL;
+                alloc_temp[temp - qop] = AXIS2_ESC_NULL;
                 qop = alloc_temp;
                 alloc_temp = NULL;
             }
@@ -2948,9 +2756,10 @@ axis2_http_sender_configure_proxy_digest_auth(
                 temp = axutil_strchr(nonce, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - nonce + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, nonce, (temp - nonce));
-                if(alloc_temp)
-                    alloc_temp[temp - nonce] = AXIS2_ESC_NULL;
+                alloc_temp[temp - nonce] = AXIS2_ESC_NULL;
                 nonce = alloc_temp;
                 alloc_temp = NULL;
 
@@ -2975,9 +2784,10 @@ axis2_http_sender_configure_proxy_digest_auth(
                 temp = axutil_strchr(opaque, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t)
                     * (temp - opaque + 1)));
+                if(!alloc_temp)
+                    return AXIS2_FAILURE;
                 strncpy(alloc_temp, opaque, (temp - opaque));
-                if(alloc_temp)
-                    alloc_temp[temp - opaque] = AXIS2_ESC_NULL;
+                alloc_temp[temp - opaque] = AXIS2_ESC_NULL;
                 opaque = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + axutil_strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE)
@@ -3094,215 +2904,7 @@ axis2_http_sender_configure_proxy_digest_auth(
     return AXIS2_FAILURE;
 }
 
-static axis2_status_t
-axis2_http_sender_configure_proxy_ntlm_auth(
-    axis2_http_sender_t * sender,
-    const axutil_env_t * env,
-    axis2_msg_ctx_t * msg_ctx,
-    axis2_http_simple_request_t * request,
-    axis2_char_t * header_data)
-{
-#ifndef AXIS2_NTLM_ENABLED
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NTLM is not enabled. Please consider building "\
-            "Axis2/C enabling a ntlm client library");
-    return AXIS2_FAILURE;
-#else
-    axutil_property_t *proxy_auth_un = NULL;
-    axutil_property_t *proxy_auth_pw = NULL;
-    axutil_property_t *ntlm_auth_dm = NULL;
-    axutil_property_t *ntlm_auth_wo = NULL;
-    axutil_property_t *ntlm_auth_fg = NULL;
-    axis2_char_t *uname = NULL;
-    axis2_char_t *passwd = NULL;
-    int flags = 0;
-    axis2_char_t *domain = NULL;
-    axis2_char_t *workstation = NULL;
-
-
-
-    if(!header_data || !*header_data)
-        return AXIS2_FAILURE;
-
-    proxy_auth_un = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_PROXY_AUTH_UNAME);
-    proxy_auth_pw = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_PROXY_AUTH_PASSWD);
-    ntlm_auth_dm = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_NTLM_AUTH_DOMAIN);
-    ntlm_auth_wo = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_NTLM_AUTH_WORKSTATION);
-    ntlm_auth_fg = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_NTLM_AUTH_FLAGS);
-
-    if(proxy_auth_un && proxy_auth_pw)
-    {
-        uname = (axis2_char_t *)axutil_property_get_value(proxy_auth_un, env);
-        passwd = (axis2_char_t *)axutil_property_get_value(proxy_auth_pw, env);
-    }
-    if(!uname || !passwd)
-    {
-        axis2_conf_ctx_t *conf_ctx = NULL;
-        axis2_conf_t *conf = NULL;
-        axis2_transport_out_desc_t *trans_desc = NULL;
-        axutil_param_t *proxy_param = NULL;
-        axutil_hash_t *transport_attrs = NULL;
-
-        conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-        if(conf_ctx)
-        {
-            conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-            if(conf)
-            {
-                trans_desc = axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
-            }
-        }
-        if(trans_desc)
-        {
-            proxy_param = axutil_param_container_get_param(
-                axis2_transport_out_desc_param_container(trans_desc, env), env,
-                AXIS2_HTTP_PROXY_API);
-            if(!proxy_param)
-            {
-                proxy_param = axutil_param_container_get_param(
-                    axis2_transport_out_desc_param_container(trans_desc, env), env,
-                    AXIS2_HTTP_PROXY);
-            }
-            if(proxy_param)
-            {
-                transport_attrs = axutil_param_get_attributes(proxy_param, env);
-
-                if(transport_attrs)
-                {
-                    axutil_generic_obj_t *obj = NULL;
-                    axiom_attribute_t *username_attr = NULL;
-                    axiom_attribute_t *password_attr = NULL;
-
-                    obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_USERNAME,
-                        AXIS2_HASH_KEY_STRING);
-                    if(obj)
-                    {
-                        username_attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
-                    }
-                    if(username_attr)
-                    {
-                        uname = axiom_attribute_get_value(username_attr, env);
-                    }
-
-                    obj = NULL;
-                    obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_PASSWORD,
-                        AXIS2_HASH_KEY_STRING);
-                    if(obj)
-                    {
-                        password_attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
-                    }
-                    if(password_attr)
-                    {
-                        passwd = axiom_attribute_get_value(password_attr, env);
-                    }
-                }
-            }
-        }
-    }
-    if(ntlm_auth_fg)
-    {
-        axis2_char_t *temp_flags = (axis2_char_t *) axutil_property_get_value(ntlm_auth_fg, env);
-        if(temp_flags)
-        {
-            flags = atoi(temp_flags);
-        }
-        else
-        {
-            flags = 0;
-        }   
-    }
-    else
-    {
-        flags = 0;
-    }
-    if(ntlm_auth_dm)
-    {
-        domain = (axis2_char_t *)axutil_property_get_value(ntlm_auth_dm, env);
-    }
-    if(ntlm_auth_wo)
-    {
-        workstation = (axis2_char_t *)axutil_property_get_value(ntlm_auth_wo, env);
-    }
-    if(uname && passwd)
-    {
-        int *elen = NULL;
-        axis2_char_t *auth_str = NULL;
-        axis2_char_t *encoded_message = NULL;
-        axis2_http_header_t *tmp_header = NULL;
-        axis2_ntlm_t *ntlm = NULL;
-        axis2_status_t status = AXIS2_FAILURE;
-
-        ntlm = axis2_ntlm_create(env);
-        if(!header_data || !*header_data) /* NTLM unauthorized received */
-        {
-            /* Ceate type 1(negotiation) header  message */
-             status = axis2_ntlm_auth_create_type1_message(ntlm, env, &encoded_message, elen, uname, 
-                passwd, flags, domain);
-            if(status != AXIS2_SUCCESS)
-            {
-                if(encoded_message)
-                {
-                    AXIS2_FREE(env->allocator, encoded_message);
-                    encoded_message = NULL;
-                }
-                if(ntlm)
-                {
-                    axis2_ntlm_free(ntlm, env);
-                }
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "axis2_ntlm_auth_create_type1_message call failed");
-                return status;
-            }
-        }
-        else /* NTLM challange received */
-        {
-            /* Create Type3 (authentication) header message */
-             status = axis2_ntlm_auth_create_type3_message(ntlm, env, header_data, &encoded_message, 
-                elen, uname, passwd, domain, workstation);
-            if(status != AXIS2_SUCCESS)
-            {
-                if(encoded_message)
-                {
-                    AXIS2_FREE(env->allocator, encoded_message);
-                    encoded_message = NULL;
-                }
-                if(ntlm)
-                {
-                    axis2_ntlm_free(ntlm, env);
-                }
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "axis2_ntlm_auth_create_type3_message call failed");
-                return status;
-            }
-        }
-        auth_str
-            = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (*elen + 6)));
-        sprintf(auth_str, "%s %s", AXIS2_HTTP_AUTH_TYPE_NTLM, encoded_message);
-        tmp_header = axis2_http_simple_request_get_first_header(request, env,
-            AXIS2_HTTP_HEADER_AUTHORIZATION);
-        if(tmp_header)
-        {
-            axis2_char_t *tmp_header_val = axis2_http_header_get_value(tmp_header, env);
-            if(tmp_header_val)
-            {
-                axis2_http_header_set_value(tmp_header, env, auth_str);
-            }
-        }
-        else
-        {
-            axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_AUTHORIZATION, auth_str);
-        }
-
-        AXIS2_FREE(env->allocator, encoded_message);
-        encoded_message = NULL;
-        axis2_ntlm_free(ntlm, env);
-        AXIS2_FREE(env->allocator, auth_str);
-        auth_str = NULL;
-
-        return AXIS2_SUCCESS;
-    }
-    return AXIS2_FAILURE;
-#endif
-} /* configure_proxy_ntlm_auth */
+/* NTLM proxy authentication removed - see security note at top of file */
 
 #endif
 
@@ -3351,8 +2953,7 @@ axis2_http_sender_configure_http_auth(
             auth_type = http_auth_type_property_value;
         }
     }
-    if(!force_http_auth || axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0 ||
-            axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_NTLM) == 0)
+    if(!force_http_auth || axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0)
     {
         axis2_http_header_t *auth_header = NULL;
         axis2_http_simple_response_t *response = NULL;
@@ -3380,8 +2981,7 @@ axis2_http_sender_configure_http_auth(
                 /*Read the realm and the rest stuff now from auth_type_end */
             }
         }
-        if(force_http_auth && (axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) != 0 &&
-                    axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_NTLM) != 0))
+        if(force_http_auth && axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) != 0)
         {
             auth_type = NULL;
         }
@@ -3397,15 +2997,11 @@ axis2_http_sender_configure_http_auth(
             status = axis2_http_sender_configure_http_digest_auth(sender, env, msg_ctx, request,
                 auth_type_end);
         }
-        else if(axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_NTLM) == 0)
-        {
-            status = axis2_http_sender_configure_http_ntlm_auth(sender, env, msg_ctx, request, 
-                    auth_type_end);
-        }
         else
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not"
-                "supported", auth_type);
+            /* NTLM support removed - use Kerberos, OAuth 2.0, or mTLS instead */
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not "
+                "supported (NTLM has been removed for security reasons)", auth_type);
         }
     }
     else
@@ -3503,14 +3099,11 @@ axis2_http_sender_configure_proxy_auth(
             status = axis2_http_sender_configure_proxy_digest_auth(sender, env, msg_ctx, request,
                 auth_type_end);
         }
-        else if(axutil_strcasecmp(auth_type, AXIS2_PROXY_AUTH_TYPE_NTLM) == 0)
-        {
-            status = axis2_http_sender_configure_proxy_ntlm_auth(sender, env, msg_ctx, request,
-                auth_type_end);
-        }
         else
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not supported", auth_type);
+            /* NTLM support removed - use Kerberos, OAuth 2.0, or mTLS instead */
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not supported "
+                "(NTLM has been removed for security reasons)", auth_type);
         }
     }
     else
@@ -3570,13 +3163,11 @@ axis2_http_sender_set_http_auth_type(
         {
             status = axis2_msg_ctx_set_auth_type(msg_ctx, env, AXIS2_HTTP_AUTH_TYPE_DIGEST);
         }
-        if(axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_NTLM) == 0)
-        {
-            status = axis2_msg_ctx_set_auth_type(msg_ctx, env, AXIS2_HTTP_AUTH_TYPE_NTLM);
-        }
         else
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not supported", auth_type);
+            /* NTLM support removed - use Kerberos, OAuth 2.0, or mTLS instead */
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not supported "
+                "(NTLM has been removed for security reasons)", auth_type);
         }
     }
     else
@@ -3636,13 +3227,11 @@ axis2_http_sender_set_proxy_auth_type(
         {
             status = axis2_msg_ctx_set_auth_type(msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_DIGEST);
         }
-        else if(axutil_strcasecmp(auth_type, AXIS2_PROXY_AUTH_TYPE_NTLM) == 0)
-        {
-            status = axis2_msg_ctx_set_auth_type(msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_NTLM);
-        }
         else
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not supported", auth_type);
+            /* NTLM support removed - use Kerberos, OAuth 2.0, or mTLS instead */
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not supported "
+                "(NTLM has been removed for security reasons)", auth_type);
         }
     }
     else

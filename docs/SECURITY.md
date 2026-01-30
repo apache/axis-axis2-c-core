@@ -93,15 +93,14 @@ To ensure proper certificate validation:
 
 ## HTTP Authentication
 
-Axis2/C supports multiple HTTP authentication schemes:
+Axis2/C supports HTTP authentication schemes for securing web service communications.
 
 ### Supported Schemes
 
-| Scheme | Build Flag | Security Level | Use Case |
-|--------|-----------|----------------|----------|
-| Basic | (default) | Low | Internal networks with TLS only |
-| Digest | (default) | Medium | When Basic is insufficient |
-| NTLM | `--enable-heimdal` or `--enable-libntlm` | Medium | Windows/AD environments |
+| Scheme | Status | Security Level | Use Case |
+|--------|--------|----------------|----------|
+| Basic | Supported | Low | Internal networks with TLS only |
+| Digest | Supported | Medium | When Basic is insufficient |
 
 ### Security Considerations
 
@@ -111,8 +110,26 @@ Axis2/C supports multiple HTTP authentication schemes:
 2. **Digest Authentication**: More secure than Basic as passwords are hashed,
    but vulnerable to man-in-the-middle without TLS.
 
-3. **NTLM Authentication**: Windows-specific. Requires Heimdal or libntlm library.
-   Provides single sign-on in Windows domains.
+### NTLM Authentication - REMOVED
+
+**NTLM support has been completely removed from Axis2/C.**
+
+Microsoft is deprecating NTLM:
+- [The evolution of Windows authentication](https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637)
+
+NTLM had critical security vulnerabilities including:
+- Pass-the-hash attacks
+- NTLM relay attacks
+- Weak cryptographic algorithms (MD4/DES based)
+- Session hijacking vulnerabilities
+
+**Recommended alternatives:**
+- **Kerberos** - For Windows/Active Directory environments
+- **OAuth 2.0/OpenID Connect** - For modern web applications
+- **Mutual TLS (mTLS)** - For service-to-service communication
+- **SAML** - For enterprise SSO scenarios
+
+The `--enable-heimdal` and `--enable-libntlm` configure options have been removed.
 
 ### Configuration Example
 

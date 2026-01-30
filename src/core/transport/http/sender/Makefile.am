@@ -12,8 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS=ssl libcurl $(NTLM_DIR)
-DIST_SUBDIRS=ssl libcurl ntlm
+# NTLM support has been removed - see docs/SECURITY.md
+SUBDIRS=ssl libcurl
+DIST_SUBDIRS=ssl libcurl
 lib_LTLIBRARIES = libaxis2_http_sender.la
 
 
@@ -50,7 +51,6 @@ libaxis2_http_sender_la_LIBADD = $(top_builddir)/src/core/transport/http/common/
 				 				 $(top_builddir)/axiom/src/om/libaxis2_axiom.la\
 				 				 $(top_builddir)/util/src/libaxutil.la\
 								 $(top_builddir)/src/core/engine/libaxis2_engine.la\
-								 ${NTLM_LIB}\
 								 $(LIBCURL_LIBS)\
 								 $(SSL_LIBS)
 
