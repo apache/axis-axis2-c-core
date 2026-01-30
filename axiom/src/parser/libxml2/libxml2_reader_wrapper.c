@@ -544,11 +544,18 @@ axis2_libxml2_reader_wrapper_next(
          * from deeply nested XML (XML bomb variant).
          */
         depth = xmlTextReaderDepth(parser_impl->reader);
-        if(depth >= AXIS2_XML_MAX_DEPTH)
+        if(depth < 0)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Security: XML nesting depth exceeded (%d >= %d). Possible DoS attack.",
-                depth, AXIS2_XML_MAX_DEPTH);
+                "Error: xmlTextReaderDepth returned error (%d). Aborting parsing.", depth);
+            return -1;
+        }
+        if(depth >= AXIS2_XML_MAX_DEPTH)
+        {
+            const xmlChar *base_uri = xmlTextReaderConstBaseUri(parser_impl->reader);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Security: XML nesting depth exceeded (%d >= %d) in %s. Possible DoS attack.",
+                depth, AXIS2_XML_MAX_DEPTH, base_uri ? (const char*)base_uri : "unknown source");
             return -1;
         }
 
@@ -981,8 +988,10 @@ axis2_libxml2_reader_wrapper_fill_maps(
      */
     if(libxml2_attribute_count > (AXIS2_XML_MAX_ATTRIBUTES + AXIS2_XML_MAX_NAMESPACES))
     {
+        const xmlChar *elem_name = xmlTextReaderConstLocalName(parser_impl->reader);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Security: XML element has too many attributes (%d > %d). Possible DoS attack.",
+            "Security: XML element '%s' has too many attributes (%d > %d). Possible DoS attack.",
+            elem_name ? (const char*)elem_name : "unknown",
             libxml2_attribute_count, AXIS2_XML_MAX_ATTRIBUTES + AXIS2_XML_MAX_NAMESPACES);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
