@@ -658,3 +658,32 @@ Do not report security issues via public GitHub issues or mailing lists.
 ### HTTP/2 Security
 - [nghttp2 Security Advisories](https://github.com/nghttp2/nghttp2/security)
 - [HTTP/2 (RFC 7540) Security Considerations](https://datatracker.ietf.org/doc/html/rfc7540#section-10)
+
+## HTTP/2 Penetration Testing
+
+For HTTP/2 JSON web services (Axis2/C 2.0.0+), a dedicated penetration test script is available:
+
+```bash
+# Run against deployed services
+./test/security/h2_penetration_test.sh https://localhost:8443
+
+# Tests include:
+# - Deeply nested JSON (stack exhaustion)
+# - Huge string values (memory exhaustion)
+# - Malformed JSON variants
+# - Integer overflow conditions
+# - Concurrent request handling
+# - HTTP/2 header overflow
+```
+
+### Running with ASAN (Recommended)
+
+Build and deploy services with AddressSanitizer for memory error detection:
+
+```bash
+./configure --enable-asan --enable-http2 --enable-json ...
+make && make install
+
+# Deploy to Apache httpd, then run penetration tests
+# Check server logs for ASAN error reports
+```
