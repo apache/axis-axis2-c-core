@@ -22,6 +22,29 @@
 
 #define AXIS2_JSON_XSI_URI "http://www.w3.org/2001/XMLSchema-instance"
 
+/**
+ * JSON Security Hardening Constants
+ *
+ * These limits protect against DoS attacks:
+ * - CVE-2020-12762: Integer overflow in json-c with large JSON files
+ * - CVE-2024-57699: Stack exhaustion with deeply nested JSON (json-smart)
+ *
+ * AXIS2_JSON_MAX_DEPTH: Maximum nesting depth for JSON objects/arrays.
+ *   Default json-c depth is 32. We use 64 for reasonable API flexibility
+ *   while preventing stack exhaustion attacks. Adjust based on service needs.
+ *
+ * AXIS2_JSON_MAX_PAYLOAD_SIZE: Maximum JSON payload size in bytes.
+ *   Prevents memory exhaustion from extremely large JSON documents.
+ *   10MB default allows large but reasonable payloads.
+ */
+#ifndef AXIS2_JSON_MAX_DEPTH
+#define AXIS2_JSON_MAX_DEPTH 64
+#endif
+
+#ifndef AXIS2_JSON_MAX_PAYLOAD_SIZE
+#define AXIS2_JSON_MAX_PAYLOAD_SIZE (10 * 1024 * 1024)  /* 10 MB */
+#endif
+
 struct axis2_json_reader
 {
     json_object* json_obj;
@@ -229,10 +252,14 @@ axis2_json_reader_create_for_stream(
 
         axis2_char_t buffer[512];
         int readed;
-        struct json_tokener* tokener = json_tokener_new();
+        /* Security: Use json_tokener_new_ex() with depth limit to prevent
+         * stack exhaustion attacks from deeply nested JSON (similar to CVE-2024-57699).
+         * Default depth is 32; we allow up to AXIS2_JSON_MAX_DEPTH (64). */
+        struct json_tokener* tokener = json_tokener_new_ex(AXIS2_JSON_MAX_DEPTH);
         enum json_tokener_error error;
         json_object* json_obj = NULL;
         int read_attempts = 0;
+        size_t total_bytes_read = 0;
 
         reader->json_obj = NULL;
         reader->axiom_node = NULL;
@@ -263,6 +290,19 @@ axis2_json_reader_create_for_stream(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "[JSON_READER] Stream read returned 0 bytes, breaking");
                 break;
+            }
+
+            /* Security: Enforce maximum payload size to prevent DoS via large JSON
+             * (mitigation for CVE-2020-12762 integer overflow in json-c) */
+            total_bytes_read += (size_t)readed;
+            if (total_bytes_read > AXIS2_JSON_MAX_PAYLOAD_SIZE)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[JSON_READER] Security: JSON payload exceeds maximum size (%zu > %d bytes)",
+                    total_bytes_read, AXIS2_JSON_MAX_PAYLOAD_SIZE);
+                json_tokener_free(tokener);
+                AXIS2_FREE(env->allocator, reader);
+                return NULL;
             }
 
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -302,12 +342,25 @@ axis2_json_reader_create_for_memory(
         const axis2_char_t* json_string,
         int json_string_size)
 {
-    axis2_json_reader_t* reader =
-            (axis2_json_reader_t*)AXIS2_MALLOC(env->allocator,
+    axis2_json_reader_t* reader = NULL;
+
+    /* Security: Enforce maximum payload size to prevent DoS via large JSON
+     * (mitigation for CVE-2020-12762 integer overflow in json-c) */
+    if (json_string_size > AXIS2_JSON_MAX_PAYLOAD_SIZE)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[JSON_READER] Security: JSON payload exceeds maximum size (%d > %d bytes)",
+            json_string_size, AXIS2_JSON_MAX_PAYLOAD_SIZE);
+        return NULL;
+    }
+
+    reader = (axis2_json_reader_t*)AXIS2_MALLOC(env->allocator,
                                                sizeof(struct axis2_json_reader));
     if (reader)
     {
-        struct json_tokener* tokener = json_tokener_new();
+        /* Security: Use json_tokener_new_ex() with depth limit to prevent
+         * stack exhaustion attacks from deeply nested JSON (similar to CVE-2024-57699). */
+        struct json_tokener* tokener = json_tokener_new_ex(AXIS2_JSON_MAX_DEPTH);
 
         reader->axiom_node = NULL;
         reader->json_obj = json_tokener_parse_ex(tokener, json_string, json_string_size);
@@ -411,8 +464,10 @@ axis2_json_reader_read_http2_stream(
         return AXIS2_FAILURE;
     }
 
-    /* Create streaming tokener for HTTP/2 multiplexed data */
-    tokener = json_tokener_new();
+    /* Create streaming tokener for HTTP/2 multiplexed data
+     * Security: Use json_tokener_new_ex() with depth limit to prevent
+     * stack exhaustion attacks from deeply nested JSON (similar to CVE-2024-57699). */
+    tokener = json_tokener_new_ex(AXIS2_JSON_MAX_DEPTH);
     if (!tokener) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create HTTP/2 JSON streaming tokener");
         return AXIS2_FAILURE;
