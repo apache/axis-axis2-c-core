@@ -34,7 +34,6 @@ gcc -shared -fPIC \
     -I/usr/include/json-c \
     -DAXIS2_GUTHTHILA_ENABLED \
     -DAXIS2_SVR_MULTI_THREADED \
-    -DAXIS2_LIBCURL_ENABLED \
     -DAXIS2_JSON_ENABLED \
     -DWITH_NGHTTP2 \
     -DENABLE_JSON_ONLY \

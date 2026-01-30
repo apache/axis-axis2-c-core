@@ -47,11 +47,8 @@
  * Use Kerberos, OAuth 2.0, or mTLS instead.
  */
 
-#ifdef AXIS2_LIBCURL_ENABLED
-#include "libcurl/axis2_libcurl.h"
-#else
+/* libcurl backend removed (January 2026) - using native HTTP client only */
 #define CLIENT_NONCE_LENGTH 8
-#endif
 
 /* AXIS2C-1568: Constants AXIS2_HTTP_CLIENT_STATUS_TIMEOUT (-2) and
  * AXIS2_HTTP_KEEPALIVE_TIMEOUT_MAX_RETRIES are defined in axis2_http_transport.h
@@ -70,7 +67,7 @@ struct axis2_http_sender
     unsigned int keepalive_timeout_retries;
 };
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static void
 axis2_http_sender_add_header_list(
     axis2_http_simple_request_t * request,
@@ -164,7 +161,7 @@ axis2_http_sender_configure_proxy_digest_auth(
 
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
@@ -185,7 +182,7 @@ axis2_http_sender_connection_map_add(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_http_client_t *
 axis2_http_sender_connection_map_get(
         axutil_hash_t *connection_map, 
@@ -249,7 +246,7 @@ axis2_http_sender_free(
     return;
 }
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_send(
     axis2_http_sender_t * sender,
@@ -1827,7 +1824,7 @@ axis2_http_sender_set_http_version(
     return AXIS2_SUCCESS;
 }
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static void
 axis2_http_sender_add_header_list(
     axis2_http_simple_request_t * request,
@@ -1954,7 +1951,7 @@ axis2_http_sender_configure_proxy(
 }
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_status_t
 axis2_http_sender_configure_server_cert(
     axis2_http_sender_t * sender,
@@ -1991,7 +1988,7 @@ axis2_http_sender_configure_server_cert(
 }
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_status_t
 axis2_http_sender_configure_key_file(
     axis2_http_sender_t * sender,
@@ -2028,7 +2025,7 @@ axis2_http_sender_configure_key_file(
 }
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_status_t
 axis2_http_sender_configure_http_basic_auth(
     axis2_http_sender_t * sender,
@@ -2250,7 +2247,7 @@ axis2_http_sender_configure_proxy_basic_auth(
 }
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_status_t
 axis2_http_sender_configure_http_digest_auth(
     axis2_http_sender_t * sender,
@@ -2908,7 +2905,7 @@ axis2_http_sender_configure_proxy_digest_auth(
 
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_status_t
 axis2_http_sender_configure_http_auth(
     axis2_http_sender_t * sender,
@@ -3115,7 +3112,7 @@ axis2_http_sender_configure_proxy_auth(
 }
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_status_t
 axis2_http_sender_set_http_auth_type(
     axis2_http_sender_t * sender,
@@ -3242,20 +3239,7 @@ axis2_http_sender_set_proxy_auth_type(
 }
 #endif
 
-#ifdef AXIS2_LIBCURL_ENABLED
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_libcurl_http_send (axis2_libcurl_t * curl,
-    axis2_http_sender_t * sender,
-    const axutil_env_t * env,
-    axis2_msg_ctx_t * msg_ctx,
-    axiom_soap_envelope_t * out,
-    const axis2_char_t * str_url,
-    const axis2_char_t * soap_action)
-{
-    return axis2_libcurl_send (curl, sender->om_output,
-        env, msg_ctx, out, str_url, soap_action);
-}
-#endif
+/* libcurl backend removed (January 2026) - using native HTTP client only */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_sender_get_param_string(
@@ -3412,7 +3396,7 @@ axis2_http_sender_get_so_timeout(
     return AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 }
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
@@ -3551,7 +3535,7 @@ axis2_http_sender_connection_map_add(
     }
 }
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static axis2_http_client_t *
 axis2_http_sender_connection_map_get(
         axutil_hash_t *connection_map, 
@@ -3588,7 +3572,7 @@ axis2_http_sender_connection_map_get(
 }
 #endif
 
-#ifndef AXIS2_LIBCURL_ENABLED
+/* Native HTTP client (libcurl removed) */
 static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,

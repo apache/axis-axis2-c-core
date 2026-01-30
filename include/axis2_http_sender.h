@@ -38,9 +38,7 @@
 #include <axiom_soap_envelope.h>
 #include <axis2_http_simple_request.h>
 
-#ifdef AXIS2_LIBCURL_ENABLED
-#include <curl/curl.h>
-#endif
+/* libcurl backend removed (January 2026) - using native HTTP client only */
 
 #ifdef __cplusplus
 extern "C"
@@ -74,20 +72,6 @@ extern "C"
         axis2_http_simple_request_t * request,
         axis2_char_t * header_name,
         const axis2_char_t * header_value);
-
-#ifdef AXIS2_LIBCURL_ENABLED
-    typedef struct axis2_libcurl axis2_libcurl_t;
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_libcurl_http_send(
-        axis2_libcurl_t * curl,
-        axis2_http_sender_t * sender,
-        const axutil_env_t * env,
-        axis2_msg_ctx_t * msg_ctx,
-        axiom_soap_envelope_t * out,
-        const axis2_char_t * str_url,
-        const axis2_char_t * soap_action);
-#endif
 
     /**
      * @param sender sender

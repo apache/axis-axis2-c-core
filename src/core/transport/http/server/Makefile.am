@@ -12,9 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# REVOLUTIONARY HTTP/2 JSON: Only Apache server needed for production HTTP/2 JSON system
-SUBDIRS=@APACHE2BUILD@ ${CGI_DIR}
+# HTTP/2 JSON: Only Apache server needed for production HTTP/2 JSON system
+# CGI transport removed (January 2026) - obsolete, use mod_axis2 instead
+SUBDIRS=@APACHE2BUILD@
 
-# REVOLUTIONARY: simple_axis2_server eliminated - depends on eliminated HTTP sender library
 # HTTP/2 JSON system only needs Apache integration (mod_axis2)
-EXTRA_DIST=IIS CGI
+EXTRA_DIST=IIS

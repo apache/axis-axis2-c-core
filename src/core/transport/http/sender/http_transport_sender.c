@@ -31,9 +31,7 @@
 #include <axiom_soap_fault_detail.h>
 #include <axis2_msg_ctx.h>
 
-#ifdef AXIS2_LIBCURL_ENABLED
-#include "libcurl/axis2_libcurl.h"
-#endif
+/* libcurl backend removed (January 2026) - using native HTTP client only */
 
 #ifdef AXIS2_JSON_ENABLED
 #ifndef WITH_NGHTTP2
@@ -55,9 +53,6 @@ typedef struct axis2_http_transport_sender_impl
     int connection_timeout;
     int so_timeout;
     axis2_bool_t keep_alive;
-#ifdef AXIS2_LIBCURL_ENABLED
-    axis2_libcurl_t *libcurl;
-#endif
 } axis2_http_transport_sender_impl_t;
 
 #define AXIS2_WS_RM_ANONYMOUS_URL "http://docs.oasis-open.org/ws-rx/wsmc/200702/anonymous?id="
@@ -125,16 +120,6 @@ axis2_http_transport_sender_create(
     transport_sender_impl->keep_alive = AXIS2_TRUE;
     transport_sender_impl->transport_sender.ops = &http_transport_sender_ops_var;
 
-#ifdef AXIS2_LIBCURL_ENABLED
-    transport_sender_impl->libcurl = axis2_libcurl_create(env);
-    if (!transport_sender_impl->libcurl)
-    {
-        AXIS2_FREE(env->allocator, transport_sender_impl);
-        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-#endif
-
     return &(transport_sender_impl->transport_sender);
 }
 
@@ -157,13 +142,6 @@ axis2_http_transport_sender_free(
         AXIS2_FREE(env->allocator, transport_sender_impl->http_version);
         transport_sender_impl->http_version = NULL;
     }
-
-#ifdef AXIS2_LIBCURL_ENABLED
-    if (transport_sender_impl->libcurl)
-    {
-        axis2_libcurl_free(transport_sender_impl->libcurl, env);
-    }
-#endif
 
     AXIS2_FREE(env->allocator, transport_sender_impl);
     return;
@@ -870,16 +848,9 @@ axis2_http_transport_sender_write_message(
     }
     AXIS2_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
 
-#ifdef AXIS2_LIBCURL_ENABLED
-    AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "using axis2 libcurl http sender.");
-    status =
-    axis2_libcurl_http_send(AXIS2_INTF_TO_IMPL(transport_sender)->libcurl,
-        sender, env, msg_ctx, out, url, soap_action);
-#else
+    /* Native HTTP client (libcurl backend removed January 2026) */
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "using axis2 native http sender.");
     status = AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url, soap_action);
-#endif
-
 
     /* if the send was not successful, do not process any response */
     if(status != AXIS2_SUCCESS)

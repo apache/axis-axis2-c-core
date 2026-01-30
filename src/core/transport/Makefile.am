@@ -20,7 +20,7 @@ else
 H2_DIR =
 endif
 
-SUBDIRS=http $(H2_DIR) $(TCP_DIR)
-DIST_SUBDIRS=http h2 tcp
+SUBDIRS=http $(H2_DIR)
+DIST_SUBDIRS=http h2
 EXTRA_DIST=Makefile.am
 

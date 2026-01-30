@@ -245,49 +245,25 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   AC_MSG_RESULT(no)
 )
 
-dnl NTLM support has been completely removed from Axis2/C.
-dnl NTLM is a legacy protocol with known security vulnerabilities including:
-dnl - Pass-the-hash attacks
-dnl - Relay attacks
-dnl - Weak cryptography (MD4/DES based)
-dnl Microsoft is deprecating NTLM. Use Kerberos, OAuth 2.0, or mTLS instead.
-dnl See: https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637
-NTLM_WRAPPER_DIR=""
-NTLM_DIR=""
-NTLM_LIB=""
-
-
-AC_MSG_CHECKING(whether to build tcp transport)
-AC_ARG_ENABLE(tcp, [  --enable-tcp
-                          build tcp transport (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    TCP_DIR="tcp"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
-AC_MSG_CHECKING(whether to use cgi transport)
-AC_ARG_ENABLE(cgi, [  --enable-cgi
-                          build cgi transport (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    CGI_DIR="CGI"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
+dnl ============================================================================
+dnl REMOVED FEATURES - Attack Surface Reduction (January 2026)
+dnl ============================================================================
+dnl The following features have been completely removed from Axis2/C:
+dnl
+dnl 1. NTLM Authentication - Security vulnerabilities (pass-the-hash, relay attacks)
+dnl    Microsoft is deprecating NTLM. Use Kerberos, OAuth 2.0, or mTLS instead.
+dnl    See: https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637
+dnl
+dnl 2. TCP Transport (--enable-tcp) - Rarely used, HTTP/2 is the modern replacement
+dnl    Raw SOAP over TCP is obsolete. Use HTTPS with HTTP/2 instead.
+dnl
+dnl 3. CGI Transport (--enable-cgi) - Obsolete deployment model
+dnl    Use Apache mod_axis2 module instead for better performance and security.
+dnl
+dnl 4. libcurl Backend (--enable-libcurl) - Redundant with native HTTP client
+dnl    Native HTTP client is mature and well-tested. HTTP/2 uses nghttp2.
+dnl    libcurl had broken MTOM support (AXIS2C-1270).
+dnl ============================================================================
 
 AC_MSG_CHECKING(whether to use apache2 as server transport)
 AC_ARG_WITH(apache2,
@@ -560,27 +536,7 @@ AC_ARG_WITH(openssl,
   AC_MSG_RESULT(no)
 )
 
-AC_MSG_CHECKING(whether to use libcurl)
-AC_ARG_ENABLE(libcurl, [  --enable-libcurl  
-                          enable libcurl based client transport (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    CFLAGS="$CFLAGS"
-    CPPFLAGS="$CPPFLAGS"
-    libcurl_enabled=false
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS -DAXIS2_LIBCURL_ENABLED"
-    CPPFLAGS="$CPPFLAGS -DAXIS2_LIBCURL_ENABLED"
-    libcurl_enabled=true
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  CFLAGS="$CFLAGS"
-  CPPFLAGS="$CPPFLAGS"
-)
+dnl libcurl backend removed - see REMOVED FEATURES section above
 
 AC_MSG_CHECKING(whether to use JSON)
 AC_ARG_ENABLE(json, [  --enable-json
@@ -742,31 +698,19 @@ fi
 AM_CONDITIONAL(GTEST_AVAILABLE, test x$gtest_available = xtrue)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
-AC_SUBST(NTLM_CFLAGS)
-AC_SUBST(NTLM_LDFLAGS)
 AC_SUBST(WRAPPER_DIR)
-AC_SUBST(NTLM_WRAPPER_DIR)
-AC_SUBST(NTLM_LIB)
-AC_SUBST(NTLM_DIR)
-AC_SUBST(TCP_DIR)
-AC_SUBST(CGI_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(ZLIBBUILD)
 AC_SUBST(NATIVE_CODEGEN_DIR)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
-AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_JSON_ENABLED, test x$json_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_HTTP2_ENABLED, test x$http2_enabled = xtrue)
 AM_CONDITIONAL(WITH_NGHTTP2, test x$http2_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_APACHE2_ENABLED, test x$APACHE2BUILD = xapache2)
 AM_CONDITIONAL(AXIS2_NATIVE_CODEGEN_ENABLED, test x$native_codegen_enabled = xtrue)
 
-export NTLM_LDFLAGS
 export WRAPPER_DIR
-export NTLM_WRAPPER_DIR
-export NTLM_LIB
-export NTLM_DIR
 export prefix 
 
 AC_CONFIG_FILES([Makefile \
@@ -783,17 +727,10 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/util/Makefile \
     src/core/transport/http/sender/Makefile \
     src/core/transport/http/sender/ssl/Makefile \
-    src/core/transport/http/sender/libcurl/Makefile \
     src/core/transport/http/receiver/Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
     src/core/transport/http/server/Makefile \
     src/core/transport/http/server/apache2/Makefile \
-    src/core/transport/tcp/Makefile \
-    src/core/transport/tcp/sender/Makefile \
-    src/core/transport/tcp/receiver/Makefile \
-    src/core/transport/tcp/server/Makefile \
-    src/core/transport/tcp/server/simple_tcp_server/Makefile \
-	src/core/transport/http/server/CGI/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \
@@ -813,8 +750,6 @@ AC_CONFIG_FILES([Makefile \
     test/core/security/Makefile \
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
-    tools/tcpmon/Makefile \
-    tools/tcpmon/src/Makefile \
     tools/md5/Makefile \
     tools/md5/src/Makefile \
     tools/codegen/Makefile \

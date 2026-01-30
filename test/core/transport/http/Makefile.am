@@ -151,28 +151,4 @@ endif
 endif
 endif
 
-# AXIS2C-1371: libcurl debug logging tests
-# These tests verify that libcurl verbose logging is properly integrated
-if GTEST_AVAILABLE
-if AXIS2_LIBCURL_ENABLED
-check_PROGRAMS += test_libcurl_debug
-noinst_PROGRAMS += test_libcurl_debug
-TESTS += test_libcurl_debug
-
-test_libcurl_debug_SOURCES = test_libcurl_debug.cc
-
-test_libcurl_debug_LDADD = \
-							$(LDFLAGS) \
-							../../../../util/src/libaxutil.la \
-							$(top_builddir)/$(GTEST)/libgtest.a \
-							$(top_builddir)/$(GTEST)/libgtest_main.a \
-							-lcurl \
-							-lpthread
-
-test_libcurl_debug_CPPFLAGS = \
-			  -I$(top_builddir)/include \
-			  -I ../../../../util/include \
-			  -I $(GTEST_DIR)/include \
-			  -DAXIS2_LIBCURL_ENABLED
-endif
-endif
+# libcurl debug logging tests removed (January 2026) - libcurl backend removed

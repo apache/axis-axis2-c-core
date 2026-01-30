@@ -4,30 +4,22 @@
 # The ASF licenses this file to You under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with
 # the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# NTLM support has been removed - see docs/SECURITY.md
-SUBDIRS=ssl libcurl
-DIST_SUBDIRS=ssl libcurl
+
+# Removed features (January 2026 - attack surface reduction):
+# - NTLM authentication - security vulnerabilities
+# - libcurl backend - redundant with native HTTP client
+
+SUBDIRS=ssl
+DIST_SUBDIRS=ssl
 lib_LTLIBRARIES = libaxis2_http_sender.la
-
-
-
-if AXIS2_LIBCURL_ENABLED
-LIBCURL_SOURCES=libcurl/axis2_libcurl.c\
-                libcurl/libcurl_stream.c 
-LIBCURL_LIBS=-lssl -lcrypto -lcurl -ldl -lz
-else
-LIBCURL_SOURCES=
-LIBCURL_LIBS=
-endif
-
 
 if AXIS2_SSL_ENABLED
 SSL_SOURCES = ssl/ssl_stream.c\
@@ -43,15 +35,13 @@ endif
 libaxis2_http_sender_la_SOURCES = http_transport_sender.c \
                                   http_sender.c \
                                   http_client.c \
-								  $(SSL_SOURCES) \
-								  $(LIBCURL_SOURCES)
+								  $(SSL_SOURCES)
 
 libaxis2_http_sender_la_LIBADD = $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la\
                                  $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la\
 				 				 $(top_builddir)/axiom/src/om/libaxis2_axiom.la\
 				 				 $(top_builddir)/util/src/libaxutil.la\
 								 $(top_builddir)/src/core/engine/libaxis2_engine.la\
-								 $(LIBCURL_LIBS)\
 								 $(SSL_LIBS)
 
 
@@ -60,7 +50,6 @@ libaxis2_http_sender_la_LDFLAGS = -version-info $(VERSION_NO)
 libaxis2_http_sender_la_CPPFLAGS = -I$(top_srcdir)/include \
 								   -I$(top_srcdir)/src/core/transport\
 								   -I$(top_srcdir)/src/core/transport/http \
-								   -I$(top_srcdir)/src/core/transport/http/sender/libcurl \
 								   -I$(top_srcdir)/src/core/description \
 								   -I$(top_srcdir)/src/core/context \
 								   -I$(top_srcdir)/src/core/phaseresolver \

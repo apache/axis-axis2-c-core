@@ -32,7 +32,8 @@ GTEST_SUBDIR =
 endif
 
 # HTTP/2 uses pure JSON architecture while HTTP/1.1 maintains SOAP support via axiom
-SUBDIRS = $(GTEST_SUBDIR) util $(GUTHTHILA_DIR) axiom neethi src include ides tools/tcpmon tools/md5 tools/codegen $(TESTDIR)
+# tcpmon removed (January 2026) - TCP transport obsolete, use HTTP/2 instead
+SUBDIRS = $(GTEST_SUBDIR) util $(GUTHTHILA_DIR) axiom neethi src include ides tools/md5 tools/codegen $(TESTDIR)
 include_HEADERS=$(top_srcdir)/include/*.h
 # Install configuration files and documentation
 # For in-tree builds, skip installing files that are already in the correct location
@@ -62,7 +63,6 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type f -name axis2c-sample-src-${PACKAGE_VERSION}.tar.gz`
 	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
 	rm -rf `find $(distdir)/ -type f -name config.status`
-	rm -rf $(distdir)/tools/tcpmon/src/tcpmon
 	rm -rf $(distdir)/tools/md5/src/md5
 	find $(distdir) -name "makefile" | xargs sed -i "s/\/WX//g"
 	sh dist.sh
