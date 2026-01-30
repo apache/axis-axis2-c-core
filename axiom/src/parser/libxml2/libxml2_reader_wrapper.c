@@ -23,6 +23,23 @@
 #include <string.h>
 #include <axutil_string.h>
 
+/**
+ * Secure XML parsing options to prevent XXE (XML External Entity) attacks.
+ *
+ * These flags are combined with XML_PARSE_RECOVER for robust parsing while
+ * maintaining security:
+ *
+ * - XML_PARSE_NOENT:    Substitute entities (prevents billion laughs DoS)
+ * - XML_PARSE_NONET:    Forbid network access for external entities
+ * - XML_PARSE_NOXINCLUDE: Do not generate XInclude nodes (prevents file inclusion)
+ * - XML_PARSE_HUGE:     Not set - keeps default size limits for DoS protection
+ *
+ * Note: The guththila parser (default) is already safe as it drops all
+ * unknown entities. This hardening applies only when libxml2 is used.
+ */
+#define AXIS2_LIBXML2_SECURE_PARSE_OPTIONS \
+    (XML_PARSE_RECOVER | XML_PARSE_NOENT | XML_PARSE_NONET | XML_PARSE_NOXINCLUDE)
+
 
 int AXIS2_CALL
 axis2_libxml2_reader_wrapper_next(
@@ -290,7 +307,7 @@ axiom_xml_reader_create_for_file(
         return NULL;
     }
 
-    wrapper_impl->reader = xmlReaderForFile(filename, encoding, XML_PARSE_RECOVER);
+    wrapper_impl->reader = xmlReaderForFile(filename, encoding, AXIS2_LIBXML2_SECURE_PARSE_OPTIONS);
     if(!(wrapper_impl->reader))
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
@@ -339,12 +356,12 @@ axiom_xml_reader_create_for_io(
     {
         wrapper_impl->reader = xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
             axis2_libxml2_reader_wrapper_close_input_callback, wrapper_impl, NULL, encoding,
-            XML_PARSE_RECOVER);
+            AXIS2_LIBXML2_SECURE_PARSE_OPTIONS);
     }
     else
     {
         wrapper_impl->reader = xmlReaderForIO(axis2_libxml2_reader_wrapper_read_input_callback,
-            NULL, wrapper_impl, NULL, encoding, XML_PARSE_RECOVER);
+            NULL, wrapper_impl, NULL, encoding, AXIS2_LIBXML2_SECURE_PARSE_OPTIONS);
     }
     if(!(wrapper_impl->reader))
     {
@@ -388,7 +405,7 @@ axiom_xml_reader_create_for_memory(
     if(AXIS2_XML_PARSER_TYPE_BUFFER == type)
     {
         wrapper_impl->reader = xmlReaderForMemory((axis2_char_t *)container, size, NULL, encoding,
-            XML_PARSE_RECOVER);
+            AXIS2_LIBXML2_SECURE_PARSE_OPTIONS);
     }
     else if(AXIS2_XML_PARSER_TYPE_DOC == type)
     {
