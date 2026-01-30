@@ -3891,6 +3891,15 @@ axis2_http_transport_utils_get_session(
     axis2_char_t *header_value = NULL;
     axutil_date_time_t *expire_time = NULL;
     axis2_char_t session_value[256];
+    /* Use size_t (C89/ANSI C standard) for buffer tracking instead of int:
+     * - Unsigned type prevents negative index bugs
+     * - Matches sizeof() return type for correct bounds comparisons
+     * - Avoids signed/unsigned comparison warnings that can mask real bugs
+     * Previously this code used sprintf() in a loop without bounds checking,
+     * which could overflow the fixed-size stack buffer with malicious input.
+     */
+    size_t session_value_len = 0;
+    const size_t session_value_max = sizeof(session_value) - 1;
     axis2_http_out_transport_info_t *out_info = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
@@ -3930,31 +3939,42 @@ axis2_http_transport_utils_get_session(
         axutil_date_time_free(expire_time, env);
         axutil_hash_set(ht, "expires", AXIS2_HASH_KEY_STRING, time_str);
     
-        sprintf(session_value, "%s", "");
+        session_value[0] = '\0';
+        session_value_len = 0;
 
-        /* Note that in addition to storing the values in the session table into a string, we also 
-         * free the session table entries in the following loop,  because we are going to store them 
+        /* Note that in addition to storing the values in the session table into a string, we also
+         * free the session table entries in the following loop,  because we are going to store them
          * into the session database.
          */
         for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
         {
             axis2_char_t *name = NULL;
             axis2_char_t *value = NULL;
-            int len = -1;
+            int written = 0;
 
             axutil_hash_this(hi, &key, NULL, &val);
             name = (axis2_char_t *) key;
             value = (axis2_char_t *) val;
-            if(name)
+            if(name && session_value_len < session_value_max)
             {
-                len = axutil_strlen(session_value);
-                sprintf(session_value + len, "%s=", name); 
+                written = snprintf(session_value + session_value_len,
+                                   session_value_max - session_value_len + 1,
+                                   "%s=", name);
+                if (written > 0)
+                {
+                    session_value_len += (size_t)written;
+                }
                 AXIS2_FREE(env->allocator, name);
             }
-            if(value)
+            if(value && session_value_len < session_value_max)
             {
-                len = axutil_strlen(session_value);
-                sprintf(session_value + len, "%s;", value); 
+                written = snprintf(session_value + session_value_len,
+                                   session_value_max - session_value_len + 1,
+                                   "%s;", value);
+                if (written > 0)
+                {
+                    session_value_len += (size_t)written;
+                }
                 AXIS2_FREE(env->allocator, value);
             }
         }
@@ -4001,8 +4021,21 @@ axis2_http_transport_utils_get_session(
             }
         }
     }
-    header_value = AXIS2_MALLOC(env->allocator, 256 * sizeof(axis2_char_t));
-    sprintf(header_value, "ID=%s; expires=%s;", session_id, time_str);
+    /* Allocate enough for "ID=" + session_id + "; expires=" + time_str + ";" + null */
+    {
+        size_t header_size = 256;
+        if (session_id && time_str)
+        {
+            header_size = axutil_strlen(session_id) + axutil_strlen(time_str) + 20;
+        }
+        header_value = AXIS2_MALLOC(env->allocator, header_size);
+        if (header_value)
+        {
+            snprintf(header_value, header_size, "ID=%s; expires=%s;",
+                     session_id ? session_id : "",
+                     time_str ? time_str : "");
+        }
+    }
 
     /* Free the session hash table here */
     axutil_hash_free(ht, env);

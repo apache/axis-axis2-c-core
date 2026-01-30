@@ -626,23 +626,26 @@ axis2_http_client_send(
             request, env);
         axis2_char_t *path = axis2_http_request_line_get_uri(request_line, env);
 
-        host_port_str = AXIS2_MALLOC(env->allocator, axutil_strlen(host) + axutil_strlen(path) + 20
-            * sizeof(axis2_char_t));
-
-        if(!host_port_str)
+        /* Buffer size: "http://" (7) + host + ":" (1) + port (max 5) + path + null (1) + margin */
         {
-            axutil_network_handler_close_socket(env, client->sockfd);
-            client->sockfd = -1;
-            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Memory allocation failed for host %s and %s path", host, path);
+            size_t host_port_size = axutil_strlen(host) + axutil_strlen(path) + 20;
+            host_port_str = AXIS2_MALLOC(env->allocator, host_port_size);
 
-            return AXIS2_FAILURE;
+            if(!host_port_str)
+            {
+                axutil_network_handler_close_socket(env, client->sockfd);
+                client->sockfd = -1;
+                AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Memory allocation failed for host %s and %s path", host, path);
+
+                return AXIS2_FAILURE;
+            }
+
+            snprintf(host_port_str, host_port_size, "http://%s:%d%s",
+                     host, axutil_url_get_port(client->url, env), path);
         }
-
-        sprintf(host_port_str, "http://%s:%d%s", host, axutil_url_get_port(client->url, env), path);
-        str_request_line = AXIS2_MALLOC(env->allocator, axutil_strlen(host_port_str) + 20
-            * sizeof(axis2_char_t));
+        str_request_line = AXIS2_MALLOC(env->allocator, axutil_strlen(host_port_str) + 20);
 
         if(!str_request_line)
         {
@@ -656,8 +659,13 @@ axis2_http_client_send(
             return AXIS2_FAILURE;
         }
 
-        sprintf(str_request_line, "%s %s %s\r\n", axis2_http_request_line_get_method(request_line,
-            env), host_port_str, axis2_http_request_line_get_http_version(request_line, env));
+        {
+            size_t request_line_size = axutil_strlen(host_port_str) + 20;
+            snprintf(str_request_line, request_line_size, "%s %s %s\r\n",
+                     axis2_http_request_line_get_method(request_line, env),
+                     host_port_str,
+                     axis2_http_request_line_get_http_version(request_line, env));
+        }
 
         AXIS2_FREE(env->allocator, host_port_str);
         host_port_str = NULL;
@@ -1147,10 +1155,17 @@ axis2_http_client_set_proxy(
         return AXIS2_FAILURE;
     }
 
-    client->proxy_host_port = AXIS2_MALLOC(env->allocator, axutil_strlen(proxy_host) + 10
-        * sizeof(axis2_char_t));
-
-    sprintf(client->proxy_host_port, "%s:%d", proxy_host, proxy_port);
+    /* Buffer size: host + ":" + max 5-digit port + null terminator
+     * Max port is 65535 (5 digits), so we need host_len + 1 + 5 + 1 = host_len + 7
+     * Using 10 extra bytes for safety margin */
+    {
+        size_t buf_size = axutil_strlen(proxy_host) + 10;
+        client->proxy_host_port = AXIS2_MALLOC(env->allocator, buf_size);
+        if (client->proxy_host_port)
+        {
+            snprintf(client->proxy_host_port, buf_size, "%s:%d", proxy_host, proxy_port);
+        }
+    }
     client->proxy_enabled = AXIS2_TRUE;
     return AXIS2_SUCCESS;
 }
@@ -1240,7 +1255,26 @@ axis2_http_client_connect_ssl_host(
         return AXIS2_FAILURE;
     }
 
-    /* AXIS2C-1312/1555: Build CONNECT request with optional proxy authentication */
+    /* AXIS2C-1312/1555: Build CONNECT request with optional proxy authentication
+     *
+     * HTTP/1.0 is intentionally used here (not HTTP/1.1) for the CONNECT tunnel:
+     *
+     * 1. CONNECT establishes a raw TCP tunnel through the proxy - once the proxy
+     *    returns "200 Connection established", all subsequent bytes are passed
+     *    through verbatim as encrypted SSL/TLS traffic. HTTP semantics end here.
+     *
+     * 2. HTTP/1.0 is simpler and more compatible:
+     *    - No Host header required (HTTP/1.1 mandates it)
+     *    - No chunked transfer encoding complications
+     *    - No persistent connection semantics to manage
+     *    - Better compatibility with older/simpler proxy servers
+     *
+     * 3. HTTP/1.1 features (keep-alive, pipelining, chunked encoding) provide
+     *    zero benefit for a tunnel that immediately carries encrypted traffic.
+     *
+     * Using HTTP/1.1 would require: "CONNECT host:port HTTP/1.1\r\nHost: host:port\r\n\r\n"
+     * with no advantage over the simpler HTTP/1.0 form.
+     */
     if(client->proxy_auth_username && client->proxy_auth_password)
     {
         /* Build Basic authentication header for proxy */
@@ -1252,7 +1286,11 @@ axis2_http_client_connect_ssl_host(
         credentials_len = axutil_strlen(client->proxy_auth_username) +
                           axutil_strlen(client->proxy_auth_password) + 2;
         credentials = AXIS2_MALLOC(env->allocator, credentials_len);
-        sprintf(credentials, "%s:%s", client->proxy_auth_username, client->proxy_auth_password);
+        if (credentials)
+        {
+            snprintf(credentials, credentials_len, "%s:%s",
+                     client->proxy_auth_username, client->proxy_auth_password);
+        }
 
         /* Base64 encode the credentials */
         encoded_len = axutil_base64_encode_len(axutil_strlen(credentials));
@@ -1266,23 +1304,41 @@ axis2_http_client_connect_ssl_host(
 
         if(encoded)
         {
-            int connect_len = axutil_strlen(host) + axutil_strlen(encoded) + 100;
+            /* size_t (C89/ANSI C) is used for buffer sizes instead of int because:
+             * 1. It's unsigned - buffer sizes are never negative
+             * 2. It matches malloc/strlen return types - no truncation on 64-bit
+             * 3. Prevents integer overflow vulnerabilities where large int values
+             *    wrap negative, causing small allocations followed by buffer overflow
+             */
+            size_t connect_len = axutil_strlen(host) + axutil_strlen(encoded) + 100;
             connect_string = AXIS2_MALLOC(env->allocator, connect_len);
-            sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\nProxy-Authorization: Basic %s\r\n\r\n",
-                    host, port, encoded);
+            if (connect_string)
+            {
+                snprintf(connect_string, connect_len,
+                         "CONNECT %s:%d HTTP/1.0\r\nProxy-Authorization: Basic %s\r\n\r\n",
+                         host, port, encoded);
+            }
             AXIS2_FREE(env->allocator, encoded);
         }
         else
         {
             /* Fallback to no auth if encoding fails */
-            connect_string = AXIS2_MALLOC(env->allocator, axutil_strlen(host) + 30);
-            sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+            size_t fallback_len = axutil_strlen(host) + 50;
+            connect_string = AXIS2_MALLOC(env->allocator, fallback_len);
+            if (connect_string)
+            {
+                snprintf(connect_string, fallback_len, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+            }
         }
     }
     else
     {
-        connect_string = AXIS2_MALLOC(env->allocator, axutil_strlen(host) + 30);
-        sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+        size_t connect_len = axutil_strlen(host) + 50;
+        connect_string = AXIS2_MALLOC(env->allocator, connect_len);
+        if (connect_string)
+        {
+            snprintf(connect_string, connect_len, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
+        }
     }
     axutil_stream_write(tmp_stream, env, connect_string, axutil_strlen(connect_string)
         * sizeof(axis2_char_t));
