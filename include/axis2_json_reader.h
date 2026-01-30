@@ -54,7 +54,7 @@ AXIS2_EXTERN axis2_json_reader_t* AXIS2_CALL
 axis2_json_reader_create_for_memory(
         const axutil_env_t* env,
         const axis2_char_t* json_string,
-        int json_string_size);
+        size_t json_string_size);
 
 
 /**

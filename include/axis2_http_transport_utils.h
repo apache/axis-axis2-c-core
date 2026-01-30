@@ -78,8 +78,8 @@ extern "C"
 	{
 		/** HTTP Content type */
 		axis2_char_t *content_type;
-		/** HTTP Content length */
-		int content_length;
+		/** HTTP Content length (size_t for security - prevents integer overflow) */
+		size_t content_length;
 		/** Input message context */
 		axis2_msg_ctx_t *msg_ctx;
 		
@@ -131,8 +131,8 @@ extern "C"
 		void *response_data;
 		/** HTTP content type */
 		axis2_char_t *content_type;
-		/** Response data length */
-		int response_data_length;
+		/** Response data length (size_t for security - prevents integer overflow) */
+		size_t response_data_length;
 		/** content language */
 		axis2_char_t *content_language;
 		/** output headers list */
@@ -282,7 +282,7 @@ extern "C"
         axutil_stream_t * in_stream,
         axutil_stream_t * out_stream,
         const axis2_char_t * content_type,
-        const int content_length,
+        const size_t content_length,
         axutil_string_t * soap_action_header,
         const axis2_char_t * request_uri);
 
@@ -307,7 +307,7 @@ extern "C"
         axutil_stream_t * in_stream,
         axutil_stream_t * out_stream,
         const axis2_char_t * content_type,
-        const int content_length,
+        const size_t content_length,
         axutil_string_t * soap_action_header,
         const axis2_char_t * request_uri);
 

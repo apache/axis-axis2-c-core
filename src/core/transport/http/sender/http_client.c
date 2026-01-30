@@ -58,7 +58,7 @@ struct axis2_http_client
     axis2_char_t *server_cert;
     axis2_char_t *key_file;
     axis2_char_t *req_body;
-    int req_body_size;
+    size_t req_body_size;
     axis2_bool_t validate_ssl_hostname;
 
     /* AXIS2C-1312/1555: Proxy authentication for HTTPS CONNECT */
@@ -84,8 +84,8 @@ typedef struct axis2_prepend_stream_impl
     axutil_stream_t stream;         /* Must be first - allows casting */
     axutil_stream_t *underlying;    /* Original socket/SSL stream */
     axis2_char_t *prepend_data;     /* Leftover data from header reading */
-    int prepend_pos;                /* Current position in prepend buffer */
-    int prepend_len;                /* Total length of prepend data */
+    size_t prepend_pos;             /* Current position in prepend buffer */
+    size_t prepend_len;             /* Total length of prepend data */
 } axis2_prepend_stream_impl_t;
 
 static int AXIS2_CALL
@@ -96,23 +96,23 @@ axis2_prepend_stream_read(
     size_t count)
 {
     axis2_prepend_stream_impl_t *impl = (axis2_prepend_stream_impl_t *)stream;
-    int total_read = 0;
+    size_t total_read = 0;
     axis2_char_t *buf = (axis2_char_t *)buffer;
 
     /* First, return any prepend data */
     if (impl->prepend_data && impl->prepend_pos < impl->prepend_len)
     {
-        int available = impl->prepend_len - impl->prepend_pos;
-        int to_copy = (available < (int)count) ? available : (int)count;
+        size_t available = impl->prepend_len - impl->prepend_pos;
+        size_t to_copy = (available < count) ? available : count;
 
         memcpy(buf, impl->prepend_data + impl->prepend_pos, to_copy);
         impl->prepend_pos += to_copy;
         total_read = to_copy;
 
         /* If we've satisfied the request from prepend, return */
-        if (total_read >= (int)count)
+        if (total_read >= count)
         {
-            return total_read;
+            return (int)total_read;
         }
 
         /* Otherwise, read remainder from underlying stream */
@@ -126,7 +126,7 @@ axis2_prepend_stream_read(
         int underlying_read = impl->underlying->read(impl->underlying, env, buf, count);
         if (underlying_read > 0)
         {
-            total_read += underlying_read;
+            total_read += (size_t)underlying_read;
         }
         else if (total_read == 0)
         {
@@ -135,7 +135,7 @@ axis2_prepend_stream_read(
         }
     }
 
-    return total_read;
+    return (int)total_read;
 }
 
 static int AXIS2_CALL
@@ -227,7 +227,7 @@ static axutil_stream_t *
 axis2_prepend_stream_create(
     const axutil_env_t *env,
     axis2_char_t *prepend_data,
-    int prepend_len,
+    size_t prepend_len,
     axutil_stream_t *underlying)
 {
     axis2_prepend_stream_impl_t *impl;
@@ -827,15 +827,15 @@ axis2_http_client_receive_header(
     int status_code = -1;
     axis2_http_status_line_t *status_line = NULL;
     axis2_char_t str_line[AXIS2_HTTP_HEADER_LENGTH];  /* Buffer for current line */
-    int str_line_len = 0;
+    size_t str_line_len = 0;
     int http_status = 0;
     axis2_bool_t end_of_headers = AXIS2_FALSE;
     axis2_bool_t status_line_parsed = AXIS2_FALSE;
 
     /* AXIS2C-1480: Read buffer for efficient chunk-based reading */
     axis2_char_t read_buffer[AXIS2_HTTP_READ_BUFFER_SIZE];
-    int buf_pos = 0;      /* Current read position in buffer */
-    int buf_len = 0;      /* Amount of valid data in buffer */
+    size_t buf_pos = 0;   /* Current read position in buffer */
+    size_t buf_len = 0;   /* Amount of valid data in buffer */
 
     if(-1 == client->sockfd || !client->data_stream || AXIS2_FALSE == client->request_sent)
     {
@@ -887,7 +887,7 @@ axis2_http_client_receive_header(
             }
 
             buf_pos = 0;
-            buf_len = bytes_read;
+            buf_len = (size_t)bytes_read;
         }
 
         /* Scan buffer for CRLF, building current line */
@@ -1005,7 +1005,7 @@ axis2_http_client_receive_header(
      */
     if(buf_pos < buf_len)
     {
-        int leftover_len = buf_len - buf_pos;
+        size_t leftover_len = buf_len - buf_pos;
         axis2_char_t *leftover_data = (axis2_char_t *)AXIS2_MALLOC(env->allocator, leftover_len);
 
         if(leftover_data)
@@ -1018,7 +1018,7 @@ axis2_http_client_receive_header(
             if(body_stream)
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "AXIS2C-1480: %d bytes of body data read during header parsing", leftover_len);
+                    "AXIS2C-1480: %zu bytes of body data read during header parsing", leftover_len);
                 axis2_http_simple_response_set_body_stream(client->response, env, body_stream);
                 /* Clear our reference - prepend stream now owns the underlying stream */
                 client->data_stream = NULL;
@@ -1280,8 +1280,8 @@ axis2_http_client_connect_ssl_host(
         /* Build Basic authentication header for proxy */
         axis2_char_t *credentials = NULL;
         axis2_char_t *encoded = NULL;
-        int credentials_len;
-        int encoded_len;
+        size_t credentials_len;
+        size_t encoded_len;
 
         credentials_len = axutil_strlen(client->proxy_auth_username) +
                           axutil_strlen(client->proxy_auth_password) + 2;
@@ -1344,15 +1344,15 @@ axis2_http_client_connect_ssl_host(
         * sizeof(axis2_char_t));
 
     memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
-    unsigned int str_status_line_length = 0;
+    size_t str_status_line_length = 0;
     end_of_line = AXIS2_FALSE;
     while((read = axutil_stream_read(tmp_stream, env, tmp_buf, 1)) > 0)
     {
         tmp_buf[read] = '\0';
-        str_status_line_length += read;
+        str_status_line_length += (size_t)read;
         if (str_status_line_length + 1 > AXIS2_HTTP_STATUS_LINE_LENGTH)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum status line length %i",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum status line length %d",
                     AXIS2_HTTP_STATUS_LINE_LENGTH);
             end_of_line = AXIS2_TRUE;
             break;
@@ -1400,16 +1400,16 @@ axis2_http_client_connect_ssl_host(
     /* We need to empty the stream before we return
      */
     memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
-    unsigned int str_header_length = 0;
+    size_t str_header_length = 0;
     while(AXIS2_FALSE == end_of_response)
     {
         while((read = axutil_stream_read(tmp_stream, env, tmp_buf, 1)) > 0)
         {
             tmp_buf[read] = '\0';
-            str_header_length += read;
+            str_header_length += (size_t)read;
             if (str_header_length + 1 > AXIS2_HTTP_HEADER_LENGTH)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum header line length %i",
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum header line length %d",
                         AXIS2_HTTP_HEADER_LENGTH);
                 end_of_line = AXIS2_TRUE;
                 break;

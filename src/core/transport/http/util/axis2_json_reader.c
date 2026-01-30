@@ -340,7 +340,7 @@ AXIS2_EXTERN axis2_json_reader_t* AXIS2_CALL
 axis2_json_reader_create_for_memory(
         const axutil_env_t* env,
         const axis2_char_t* json_string,
-        int json_string_size)
+        size_t json_string_size)
 {
     axis2_json_reader_t* reader = NULL;
 
@@ -349,7 +349,7 @@ axis2_json_reader_create_for_memory(
     if (json_string_size > AXIS2_JSON_MAX_PAYLOAD_SIZE)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[JSON_READER] Security: JSON payload exceeds maximum size (%d > %d bytes)",
+            "[JSON_READER] Security: JSON payload exceeds maximum size (%zu > %d bytes)",
             json_string_size, AXIS2_JSON_MAX_PAYLOAD_SIZE);
         return NULL;
     }
@@ -387,6 +387,8 @@ axis2_json_reader_free(
         axis2_json_reader_t* reader,
         const axutil_env_t* env)
 {
+    if (!reader || !env)
+        return;
     if (reader->json_obj)
         json_object_put(reader->json_obj);
     AXIS2_FREE(env->allocator, reader);
@@ -554,13 +556,15 @@ axis2_json_reader_generate_http2_response(
     json_object* capabilities_array = NULL;
     const char* response_str = NULL;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "🚀 REVOLUTIONARY: Generating HTTP/2 direct JSON response - A breed apart from SOAP");
-
     if (!env || !service_name || !response_json_str) {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        if (env) {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        }
         return AXIS2_FAILURE;
     }
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+        "Generating HTTP/2 direct JSON response");
 
     /* Create revolutionary HTTP/2 JSON response */
     response_obj = json_object_new_object();
@@ -637,12 +641,12 @@ axis2_json_reader_validate_http2_request(
 {
     (void)service_name; /* Reserved for future service-specific validation */
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "🔥 REVOLUTIONARY: HTTP/2 JSON validation - Enhanced breed apart processing");
-
     if (!env || !json_obj) {
         return AXIS2_FALSE;
     }
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+        "HTTP/2 JSON validation in progress");
 
     /* Basic JSON structure validation */
     if (!json_object_is_type(json_obj, json_type_object)) {
