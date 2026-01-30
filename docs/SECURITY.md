@@ -835,3 +835,57 @@ Security hardening commits are reviewed using Google Gemini AI for:
 2. Strong cipher suites configured (AEAD with forward secrecy)
 3. JSON payload size limits enforced in HTTP/2 streaming mode
 4. Improved error messages include source context for debugging
+
+## OSS-Fuzz Integration
+
+Apache Axis2/C includes fuzz testing infrastructure for integration with
+[OSS-Fuzz](https://github.com/google/oss-fuzz), Google's continuous fuzzing
+service for open source projects.
+
+### Fuzz Targets
+
+The `fuzz/` directory contains libFuzzer-compatible targets:
+
+| Target | Component Tested | Security Focus |
+|--------|------------------|----------------|
+| `fuzz_xml_parser.c` | AXIOM XML/SOAP parsing | XXE, XML bombs, buffer overflows |
+| `fuzz_json_parser.c` | JSON parsing (HTTP/2 mode) | DoS (CVE-2020-12762), integer overflows |
+| `fuzz_http_header.c` | HTTP header/request/status parsing | Header injection, buffer overflows |
+| `fuzz_url_parser.c` | URL parsing | SSRF, malformed URL handling |
+
+### Running Fuzz Tests Locally
+
+```bash
+# Build with fuzzing instrumentation
+export CC=clang
+export CFLAGS="-fsanitize=address,fuzzer-no-link -g"
+./configure --prefix=/usr/local
+make && make install
+
+# Compile and run a fuzz target
+clang -fsanitize=address,fuzzer \
+    -I/usr/local/include/axis2-2.0.0 \
+    -I/usr/local/include/axis2-2.0.0/platforms \
+    fuzz/fuzz_http_header.c \
+    -L/usr/local/lib -laxis2_http_sender -laxutil \
+    -o fuzz_http_header
+
+./fuzz_http_header fuzz/corpus/http/ -max_total_time=300
+```
+
+### OSS-Fuzz Project Files
+
+Ready-to-submit project files are in `fuzz/oss-fuzz/`:
+- `Dockerfile` - Build environment with dependencies
+- `build.sh` - Compilation script for all fuzz targets
+- `project.yaml` - Project metadata for Google
+
+### Seed Corpus
+
+Initial test cases in `fuzz/corpus/` help the fuzzer explore code paths:
+- `corpus/xml/` - SOAP envelopes, elements with namespaces
+- `corpus/json/` - Valid JSON objects, arrays, nested structures
+- `corpus/http/` - HTTP request lines, headers, status lines
+- `corpus/url/` - HTTP/HTTPS URLs with various components
+
+For complete setup instructions, see [docs/OSS-Fuzz.md](OSS-Fuzz.md).

@@ -1,0 +1,27 @@
+# Project metadata for OSS-Fuzz
+# See: https://google.github.io/oss-fuzz/getting-started/new-project-guide/
+
+homepage: "https://axis.apache.org/axis2/c/core/"
+language: c
+primary_contact: "dev@axis.apache.org"
+auto_ccs:
+  - "security@apache.org"
+
+# Supported fuzzing engines
+fuzzing_engines:
+  - libfuzzer
+  - afl
+  - honggfuzz
+
+# Supported sanitizers
+sanitizers:
+  - address
+  - undefined
+  - memory
+
+# Main repository
+main_repo: "https://github.com/apache/axis-axis2-c-core.git"
+
+# Vendor - Apache Software Foundation
+vendor_ccs:
+  - "security@apache.org"
