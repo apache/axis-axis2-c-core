@@ -121,8 +121,11 @@ axis2_callback_invoke_on_complete(
 
     callback->envelope = axis2_async_result_get_envelope(result, env);
     callback->msg_ctx = axis2_async_result_get_result(result, env);
-    axis2_msg_ctx_increment_ref(callback->msg_ctx, env); /* this will be set in opclient's msgctx
-                                                            map and will be deleted from there */
+    if (callback->msg_ctx)
+    {
+        axis2_msg_ctx_increment_ref(callback->msg_ctx, env); /* this will be set in opclient's msgctx
+                                                                map and will be deleted from there */
+    }
 
     status = callback->on_complete(callback, env);
 
