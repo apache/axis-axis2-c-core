@@ -42,7 +42,10 @@ extern "C"
         const axutil_env_t * env,
         SSL_CTX * ctx,
         axis2_socket_t socket,
-        axis2_char_t * host);
+        axis2_char_t * host,
+        axis2_bool_t check_host);
+
+
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ssl_utils_cleanup_ssl(

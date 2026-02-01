@@ -210,7 +210,8 @@ axis2_ssl_utils_initialize_ssl(
     const axutil_env_t * env,
     SSL_CTX * ctx,
     axis2_socket_t socket,
-    axis2_char_t * host)
+    axis2_char_t * host,
+    axis2_bool_t check_host)
 {
     SSL *ssl = NULL;
     BIO *sbio = NULL;
@@ -233,6 +234,11 @@ axis2_ssl_utils_initialize_ssl(
             (int)socket);
         SSL_free(ssl);
         return NULL;
+    }
+
+    if (host)
+    {
+        SSL_set_tlsext_host_name(ssl, host);
     }
 
     SSL_set_bio(ssl, sbio, sbio);
@@ -284,8 +290,9 @@ axis2_ssl_utils_initialize_ssl(
                 if (ASN1_STRING_cmp(peer_sig, client_sig) == 0)
                 {
                     if (peer_cert) {
-                        /* if the caller passed a hostname, verify it against the cert */
-                        if (host) {
+                        /* if the caller passed a hostname and host checking is enabled,
+                         * verify it against the cert */
+                        if (host && check_host) {
                             if (X509_check_host(peer_cert, host, strlen(host), 0, NULL) == 1) {
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                         "[ssl client] peer name matches certificate CN/SAN");

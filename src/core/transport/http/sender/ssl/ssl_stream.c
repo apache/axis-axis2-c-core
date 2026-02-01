@@ -70,7 +70,8 @@ axutil_stream_create_ssl(
     axis2_char_t * server_cert,
     axis2_char_t * key_file,
     axis2_char_t * ssl_pp,
-    axis2_char_t * host)
+    axis2_char_t * host,
+    axis2_bool_t check_host)
 {
     ssl_stream_impl_t *stream_impl = NULL;
 
@@ -97,7 +98,7 @@ axutil_stream_create_ssl(
         return NULL;
     }
     stream_impl->ssl = axis2_ssl_utils_initialize_ssl(env, stream_impl->ctx,
-        stream_impl->socket, host);
+        stream_impl->socket, host, check_host);
     if (!stream_impl->ssl)
     {
         axis2_ssl_stream_free((axutil_stream_t *) stream_impl, env);
