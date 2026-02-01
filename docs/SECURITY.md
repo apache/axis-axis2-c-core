@@ -601,6 +601,44 @@ pkg-config --modversion libnghttp2
 - Use distribution packages where possible (apt, yum) for automatic security updates
 - Subscribe to security mailing lists for critical dependencies
 
+### CVE Monitoring (Library Responsibility)
+
+Axis2/C maintains a **monthly CVE checker** via GitHub Actions (`.github/workflows/cve-check.yml`) that:
+
+1. Queries NVD for CVEs affecting Axis2/C dependencies
+2. Creates GitHub issues when new CVEs are discovered
+3. Triggers updates to the minimum versions table above
+
+**Responsibility Chain:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Axis2/C (Library) - This Repository                        │
+│  ─────────────────────────────────────────                  │
+│  • Monthly CVE checker monitors dependencies                │
+│  • Maintainers update SECURITY.md minimum versions          │
+│  • Advisory: "Use OpenSSL 3.2.1+ for CVE-XXXX"              │
+│                          │                                  │
+│                          ▼                                  │
+│  All downstream applications see the advisory               │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Downstream Applications (e.g., Kanaha)                     │
+│  ─────────────────────────────────────                      │
+│  • OWASP Dependency-Check scans actual build artifacts      │
+│  • CI fails if critical CVEs exist in shipped binaries      │
+│  • Developers rebuild deps and release patched versions     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Why this model:**
+- Axis2/C is distributed as source code (no binaries since 2009)
+- Library maintainers track CVEs and advise minimum versions
+- Application maintainers (who ship binaries) act on CVE findings
+- Separation of "awareness" (library) from "action" (application)
+
 ## WS-Security (Rampart)
 
 Axis2/C supports WS-Security through the Apache Rampart/C module, which provides:
