@@ -159,14 +159,12 @@ axis2_http_sender_configure_proxy_digest_auth(
 
 /* NTLM authentication functions removed - see security note at top of file */
 
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
-#endif
 
 static void
 axis2_http_sender_connection_map_remove(
@@ -193,7 +191,6 @@ static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
     const axutil_env_t *env);
-#endif
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
@@ -1504,7 +1501,6 @@ axis2_http_sender_send(
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_sender_send");
     return AXIS2_FAILURE;
 }
-#endif
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_chunked(
@@ -1949,7 +1945,6 @@ axis2_http_sender_configure_proxy(
     }
     return AXIS2_SUCCESS;
 }
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axis2_status_t
@@ -1986,7 +1981,6 @@ axis2_http_sender_configure_server_cert(
 
     return status;
 }
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axis2_status_t
@@ -2023,7 +2017,6 @@ axis2_http_sender_configure_key_file(
 
     return status;
 }
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axis2_status_t
@@ -2245,7 +2238,6 @@ axis2_http_sender_configure_proxy_basic_auth(
     }
     return AXIS2_FAILURE;
 }
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axis2_status_t
@@ -2903,7 +2895,6 @@ axis2_http_sender_configure_proxy_digest_auth(
 
 /* NTLM proxy authentication removed - see security note at top of file */
 
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axis2_status_t
@@ -3110,7 +3101,6 @@ axis2_http_sender_configure_proxy_auth(
 
     return status;
 }
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static axis2_status_t
@@ -3237,7 +3227,6 @@ axis2_http_sender_set_proxy_auth_type(
     }
     return status;
 }
-#endif
 
 /* libcurl backend removed (January 2026) - using native HTTP client only */
 
@@ -3420,7 +3409,6 @@ axis2_http_sender_connection_map_create(
     }
     return connection_map;
 }
-#endif
 
 /* AXIS2C-1635 FIX: Helper to properly remove entry from connection_map and free the strdup'd key.
  * The keys in connection_map are strdup'd when added, so we must free them when removing entries. */
@@ -3570,7 +3558,6 @@ axis2_http_sender_connection_map_get(
     }
     return http_client;
 }
-#endif
 
 /* Native HTTP client (libcurl removed) */
 static void AXIS2_CALL
@@ -3597,4 +3584,3 @@ axis2_http_sender_connection_map_free(
     }
     axutil_hash_free(ht, env);
 }
-#endif
