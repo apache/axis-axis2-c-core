@@ -17,4 +17,4 @@
 SUBDIRS=@APACHE2BUILD@
 
 # HTTP/2 JSON system only needs Apache integration (mod_axis2)
-EXTRA_DIST=IIS
+# IIS/ISAPI integration removed (February 2026) - unmaintained since 2009

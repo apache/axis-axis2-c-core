@@ -171,21 +171,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "mod_axis2_IIS"=.\mod_axis2_IIS\mod_axis2_IIS.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name axis2_http_sender
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "neethi"=.\neethi\neethi.dsp - Package Owner=<4>
 
 Package=<5>
