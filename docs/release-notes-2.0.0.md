@@ -166,18 +166,37 @@ Version 2.0.0 is a major release that includes 17 years of accumulated fixes and
 
 ## Removed Features
 
-The following features have been removed in version 2.0.0:
+The following features have been removed in version 2.0.0 as part of security hardening ([AXIS2C-1708](https://issues.apache.org/jira/browse/AXIS2C-1708)) and deprecation cleanup:
+
+- **NTLM Authentication** (`--enable-heimdal`, `--enable-libntlm`): Removed due to critical security vulnerabilities including pass-the-hash attacks, NTLM relay attacks, and weak cryptography. Microsoft is deprecating NTLM in Windows systems. Use Kerberos, OAuth 2.0, or mutual TLS instead.
+
+- **TCP Transport** (`--enable-tcp`): Obsolete transport that lacks HTTP semantics (no Content-Length, chunked encoding, headers, status codes). Incompatible with TLS (requires HTTP for ALPN negotiation) and web infrastructure (proxies, load balancers, firewalls expect HTTP). Use HTTP/2 instead, which provides multiplexing benefits with full HTTP semantics.
+
+- **CGI Transport** (`--enable-cgi`): Obsolete deployment model with security concerns and performance overhead of process-per-request. Use mod_axis2 with Apache httpd instead.
+
+- **libcurl HTTP Backend** (`--enable-libcurl`): Redundant with native HTTP client implementation. MTOM was broken with libcurl ([AXIS2C-1270](https://issues.apache.org/jira/browse/AXIS2C-1270)). HTTP/2 support uses nghttp2 instead.
+
+- **AMQP Transport** (`--with-qpid`): Unmaintained since 2010. Apache Qpid C++ is in maintenance mode. Modern messaging systems use REST APIs, gRPC, or native AMQP 1.0 clients. ([AXIS2C-1641](https://issues.apache.org/jira/browse/AXIS2C-1641))
 
 - **IIS/ISAPI Integration**: Unmaintained since 2009. Windows users should use WSL2 with Apache httpd instead.
-- **AMQP Transport**: Experimental feature that was never fully completed.
 
 ## Upgrade Notes
 
 ### Breaking Changes
 
-1. **SSL/TLS Peer Validation**: SSL/TLS peer name validation is now enabled by default (AXIS2C-1700). Applications that previously connected to servers with invalid certificates will now fail. To restore the old behavior (not recommended), disable peer verification in your SSL configuration.
+1. **SSL/TLS Peer Validation**: SSL/TLS peer name validation is now enabled by default ([AXIS2C-1700](https://issues.apache.org/jira/browse/AXIS2C-1700)). Applications that previously connected to servers with invalid certificates will now fail. To restore the old behavior (not recommended), disable peer verification in your SSL configuration.
 
-2. **IIS Support Removed**: Applications using IIS integration must migrate to Apache httpd (running natively or via WSL2 on Windows).
+2. **NTLM Authentication Removed**: Applications using NTLM authentication must migrate to Kerberos (for Windows/AD environments), OAuth 2.0/OpenID Connect (for modern applications), or mutual TLS (for service-to-service communication).
+
+3. **TCP Transport Removed**: Applications using raw TCP transport (`AXIS2_TRANSPORT_TCP`) must migrate to HTTP/1.1 or HTTP/2 transport. HTTP/2 provides similar multiplexing benefits with full HTTP semantics and TLS support.
+
+4. **CGI Deployment Removed**: Applications deployed via CGI must migrate to mod_axis2 with Apache httpd or the standalone axis2_http_server.
+
+5. **libcurl Backend Removed**: Applications that explicitly enabled libcurl (`--enable-libcurl`) will now use the native HTTP client. This should be transparent for most use cases.
+
+6. **AMQP Transport Removed**: Applications using AMQP transport must migrate to alternative messaging solutions or REST-based APIs.
+
+7. **IIS Support Removed**: Applications using IIS integration must migrate to Apache httpd (running natively or via WSL2 on Windows).
 
 ### New Dependencies
 
