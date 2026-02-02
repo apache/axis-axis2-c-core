@@ -3,6 +3,8 @@
 This document provides security guidelines and best practices for deploying
 and developing with Apache Axis2/C.
 
+**Jira Reference:** [AXIS2C-1708](https://issues.apache.org/jira/browse/AXIS2C-1708) - Security hardening initiative tracking the methodology, planning, and progress of the security improvements documented here.
+
 ## XML Parser Security
 
 ### Recommended Parser Configuration
