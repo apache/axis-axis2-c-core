@@ -78,7 +78,7 @@ Axis2/C uses a modular architecture:
 
 - [GitHub Repository](https://github.com/apache/axis-axis2-c-core)
 - [Mailing Lists](community/mailing-lists.md)
-- [Issue Tracker](community/issues.md)
+- [Issue Tracker](https://issues.apache.org/jira/projects/AXIS2C/summary)
 - [Contributing Guide](community/contributing.md)
 
 ## License
