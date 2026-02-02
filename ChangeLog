@@ -1,5 +1,19 @@
+Axis2/C (2.0.0)
+   * HTTP/2 transport support for JSON requests (AXIS2C-1707)
+   * JSON support via json-c library (AXIS2C-1645)
+   * SNI (Server Name Indication) support (AXIS2C-1706)
+   * Modern security hardening - SSL/TLS peer validation by default (AXIS2C-1708)
+   * Native C WSDL2C code generator
+   * Enhanced REST support (AXIS2C-1636)
+   * Clone method for axiom_node (AXIS2C-677)
+   * Server bind to custom address support (AXIS2C-1383, AXIS2C-1484)
+   * 115 bug fixes including memory leaks, SSL handling, code generation
+   * Removed: IIS/ISAPI integration (unmaintained since 2009)
+   * Removed: AMQP transport (experimental, unmaintained)
+-- Apache Axis2/C Team, 2026
+
 Axis2/C (1.7.0)
-   * HTTP Session support 
+   * HTTP Session support
    * HTTP KeepAlive support
    * Performance improvement to Guththila Parser
    * Transport URL support
