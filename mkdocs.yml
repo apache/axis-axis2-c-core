@@ -103,6 +103,7 @@ nav:
     - Mailing Lists: community/mailing-lists.md
     - Issue Tracker: community/issues.md
     - Contributing: community/contributing.md
+    - Release Process: community/release-process.md
     - License: community/license.md
     - Legal: HTTP2_LEGAL.md
   - Legacy:
