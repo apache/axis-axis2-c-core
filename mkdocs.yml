@@ -1,0 +1,97 @@
+site_name: Apache Axis2/C
+site_description: HTTP/2 JSON-RPC web services framework for C with legacy SOAP support
+site_url: https://axis.apache.org/axis2/c/core/
+repo_url: https://github.com/apache/axis-axis2-c-core
+repo_name: apache/axis-axis2-c-core
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - tags
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/apache/axis-axis2-c-core
+    - icon: fontawesome/solid/envelope
+      link: https://axis.apache.org/axis2/c/core/mail-lists.html
+  generator: false
+
+copyright: Copyright &copy; 2005-2026 The Apache Software Foundation
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+    - Building from Source: getting-started/building.md
+  - User Guide:
+    - Overview: guide/overview.md
+    - Configuration: guide/axis2-xml.md
+    - Services: guide/services.md
+    - Clients: guide/clients.md
+  - HTTP/2 & JSON:
+    - Overview: HTTP2_JSON_REVOLUTION_STATE.md
+    - Migration Guide: AXIS2C_HTTP2_MIGRATION_STATE.md
+    - JSON Request Path: HTTP2_JSON_REQUEST_CODE_PATH.md
+    - Android Support: HTTP2_ANDROID.md
+    - Apache Worker: HTTP2_APACHE2_WORKER.md
+    - Configuration: HTTP2_AXIS2_DOT_XML.md
+  - Security:
+    - Security Guide: SECURITY.md
+    - OSS-Fuzz Integration: OSS-Fuzz.md
+  - Developer Guide:
+    - Architecture: guide/architecture.md
+    - Coding Conventions: guide/coding-conventions.md
+    - Build System: BUILD_SYSTEM_HTTP2_CHANGES.md
+    - Conditional Compilation: HTTP2_CONDITIONAL_COMPILATION.md
+    - Library Loading: HTTP2_LIBRARY_LOADING.md
+    - Interface Patterns: HTTP2_INTERFACE_PATTERN_IMPLEMENTATION.md
+    - SPI Pattern: HTTP2_SERVICE_PROVIDER_INTERFACE_PATTERN.md
+  - API Reference:
+    - Doxygen API: api/index.md
+  - Downloads:
+    - Releases: downloads.md
+  - Community:
+    - Mailing Lists: community/mailing-lists.md
+    - Issue Tracker: community/issues.md
+    - Contributing: community/contributing.md
+    - License: community/license.md

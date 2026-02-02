@@ -10,6 +10,9 @@ deploy/
 build/
 **/build/
 
+# MkDocs generated site
+site/
+
 # CMake build artifacts
 CMakeCache.txt
 CMakeFiles/
@@ -135,3 +138,4 @@ log.txt
 ehthumbs.db
 Thumbs.db
 neethi/test/test
+mkdocs-venv/
