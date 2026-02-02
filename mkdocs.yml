@@ -68,10 +68,13 @@ nav:
     - Configuration: guide/axis2-xml.md
     - Services: guide/services.md
     - Clients: guide/clients.md
+    - JSON/HTTP2 Samples: userguide/json-httpd-h2-userguide.md
   - HTTP/2 & JSON:
     - Overview: HTTP2_JSON_REVOLUTION_STATE.md
     - Migration Guide: AXIS2C_HTTP2_MIGRATION_STATE.md
     - JSON Request Path: HTTP2_JSON_REQUEST_CODE_PATH.md
+    - Response Handling: HTTP2_RESPONSE.md
+    - Services.xml: HTTP2_SERVICES_DOT_XML.md
     - Android Support: HTTP2_ANDROID.md
     - Apache Worker: HTTP2_APACHE2_WORKER.md
     - Configuration: HTTP2_AXIS2_DOT_XML.md
@@ -86,12 +89,18 @@ nav:
     - Library Loading: HTTP2_LIBRARY_LOADING.md
     - Interface Patterns: HTTP2_INTERFACE_PATTERN_IMPLEMENTATION.md
     - SPI Pattern: HTTP2_SERVICE_PROVIDER_INTERFACE_PATTERN.md
+    - Unit Tests: HTTP2_UNIT_TESTS.md
+    - Threading Debug: HTTP2_THREADING_DEBUG.md
   - API Reference:
     - Doxygen API: api/index.md
   - Downloads:
     - Releases: downloads.md
+    - Release Notes 2.0.0: release-notes-2.0.0.md
   - Community:
     - Mailing Lists: community/mailing-lists.md
     - Issue Tracker: community/issues.md
     - Contributing: community/contributing.md
     - License: community/license.md
+    - Legal: HTTP2_LEGAL.md
+  - Legacy:
+    - SOAP/HTTP 1.1 Client: HTTP11_SOAP_HTTP_CLIENT_C.md

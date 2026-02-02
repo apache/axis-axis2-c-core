@@ -2,7 +2,7 @@
 
 ## 📖 **Related Documentation**
 
-**For practical deployment and testing examples**, see the comprehensive [Apache Axis2/C HTTP/2 JSON User Guide](docs/userguide/json-httpd-h2-userguide.md) which provides:
+**For practical deployment and testing examples**, see the comprehensive [Apache Axis2/C HTTP/2 JSON User Guide](userguide/json-httpd-h2-userguide.md) which provides:
 - Complete build and installation instructions
 - Apache httpd configuration with HTTP/2 and SSL/TLS
 - Three fully implemented service examples (BigData, Authentication, XSS Protection)
@@ -46,7 +46,7 @@ Following the comprehensive HTTP/2 unit testing documented in `docs/HTTP2_UNIT_T
 
 This performance comparison is based on **equivalent service implementations** across both platforms, using identical JSON payloads and processing logic. The analysis is derived from comprehensive build logs, test execution results, and benchmarking data collected from both implementations.
 
-**📋 Implementation Reference**: The Axis2/C services analyzed here are fully implemented and documented in the [HTTP/2 JSON User Guide](docs/userguide/json-httpd-h2-userguide.md), including complete source code, build instructions, and testing examples.
+**📋 Implementation Reference**: The Axis2/C services analyzed here are fully implemented and documented in the [HTTP/2 JSON User Guide](userguide/json-httpd-h2-userguide.md), including complete source code, build instructions, and testing examples.
 
 #### **Test Environment Specifications**
 - **Hardware**: Linux 6.17.0-6-generic #6-Ubuntu SMP system
@@ -742,7 +742,7 @@ The implementation achieves all original migration goals while **avoiding the ar
 
 ## 🚀 **Next Steps: Implementation and Deployment**
 
-To implement and deploy these HTTP/2 JSON services in your environment, follow the comprehensive [Apache Axis2/C HTTP/2 JSON User Guide](docs/userguide/json-httpd-h2-userguide.md) which provides:
+To implement and deploy these HTTP/2 JSON services in your environment, follow the comprehensive [Apache Axis2/C HTTP/2 JSON User Guide](userguide/json-httpd-h2-userguide.md) which provides:
 
 - **Complete source code** for all three demonstration services analyzed in this document
 - **Step-by-step build instructions** with dependency management

@@ -63,11 +63,11 @@ This guide covers five **fully implemented** service demonstrations:
 
 **⚠️ Protocol Requirement**: These services are **HTTP/2-only** for performance optimization. HTTP/1.1 requests will receive **HTTP 426 "Upgrade Required"** responses. Always use `curl --http2` for testing.
 
-More documentation concerning Axis2/C and JSON can be found in the [JSON Support documentation](json_support.html) and [HTTP/2 Transport documentation](http2-transport.html).
+More documentation concerning Axis2/C and JSON can be found in the [HTTP/2 JSON Architecture](../AXIS2C_HTTP2_MIGRATION_STATE.md) and [HTTP/2 Configuration](../HTTP2_AXIS2_DOT_XML.md).
 
 ## 🔗 **Related Technical Documentation**
 
-**For comprehensive technical architecture and performance analysis**, see [Axis2/C HTTP/2 Pure JSON Architecture - Migration State](../../AXIS2C_HTTP2_MIGRATION_STATE.md) which provides:
+**For comprehensive technical architecture and performance analysis**, see [Axis2/C HTTP/2 Pure JSON Architecture - Migration State](../AXIS2C_HTTP2_MIGRATION_STATE.md) which provides:
 - Detailed performance comparison vs Axis2/Java (memory, speed, build time)
 - HTTP/2 transport architecture and multiplexing analysis
 - JSON-C integration patterns and optimization techniques
@@ -80,7 +80,7 @@ This user guide focuses on **practical implementation and deployment**, while th
 
 This user guide is written for **Axis2/C 2.0.0**, which introduces comprehensive HTTP/2 support and enterprise web service capabilities. This guide covers building from source and deploying the demonstration services.
 
-The Axis2/C source can be obtained from the [official Apache Git repository](https://github.com/apache/axis-axis2-c-core) or as a [source distribution download](../download.html). For production deployments, we recommend using the tagged v2.0.0 release. The [Installation Guide](installationguide.html) provides additional build instructions for various platforms.
+The Axis2/C source can be obtained from the [official Apache Git repository](https://github.com/apache/axis-axis2-c-core) or as a [source distribution download](../downloads.md). For production deployments, we recommend using the tagged v2.0.0 release. The [Installation Guide](../getting-started/installation.md) provides additional build instructions for various platforms.
 
 The source code for this guide provides a complete Apache httpd configuration and Axis2/C service implementation for enterprise big data processing with HTTP/2 optimization.
 
@@ -1296,7 +1296,7 @@ curl -sk --http2 \
 
 ### CameraControlService Testing (Generic Camera Control with SFTP)
 
-**⚠️ Stub Implementation Notice**: The CameraControlService provides stub implementations that log operations but do not perform actual camera or SFTP operations. Users must implement camera-specific integration functions. See [Implementation Guide](../../samples/user_guide/camera-control-service/IMPLEMENTATION_GUIDE.md) for detailed examples.
+**⚠️ Stub Implementation Notice**: The CameraControlService provides stub implementations that log operations but do not perform actual camera or SFTP operations. Users must implement camera-specific integration functions. See the implementation guide at `samples/user_guide/camera-control-service/IMPLEMENTATION_GUIDE.md` in the source tree for detailed examples.
 
 **Test start recording (stub implementation):**
 ```bash
@@ -1500,7 +1500,7 @@ json_object* bigdata_h2_service_invoke_json(
     axis2_msg_ctx_t *msg_ctx);
 ```
 
-**For comprehensive technical analysis and performance benchmarks** that demonstrate why these C implementations achieve 30% latency reduction, 70% memory savings, and 162% faster build times compared to Java, see the [Axis2/C HTTP/2 Migration State](../AXIS2C_HTTP2_MIGRATION_STATE.md) document.
+**For comprehensive technical analysis and performance benchmarks** that demonstrate why these C implementations achieve 30% latency reduction, 70% memory savings, and 162% faster build times compared to Java, see the [Axis2/C HTTP/2 JSON Architecture](../AXIS2C_HTTP2_MIGRATION_STATE.md) document.
 
 ## Resources
 

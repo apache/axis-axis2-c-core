@@ -121,22 +121,19 @@ The documentation site uses [MkDocs](https://www.mkdocs.org/) with the Material 
 ### Setup
 
 ```bash
-# Create a Python virtual environment
+# Create a Python virtual environment and install dependencies
 python3 -m venv mkdocs-venv
-source mkdocs-venv/bin/activate
-
-# Install MkDocs and theme
-pip install mkdocs mkdocs-material
+./mkdocs-venv/bin/pip install mkdocs mkdocs-material
 ```
 
 ### Preview Locally
 
 ```bash
 # Start the development server
-mkdocs serve
+./mkdocs-venv/bin/mkdocs serve
 
 # Or specify a different port
-mkdocs serve -a localhost:8080
+./mkdocs-venv/bin/mkdocs serve -a localhost:8080
 ```
 
 Then open [http://localhost:8000](http://localhost:8000) in your browser. The site auto-reloads when you edit Markdown files.
@@ -145,7 +142,7 @@ Then open [http://localhost:8000](http://localhost:8000) in your browser. The si
 
 ```bash
 # Generate static HTML in site/ directory
-mkdocs build
+./mkdocs-venv/bin/mkdocs build
 ```
 
 ### Documentation Structure
@@ -162,9 +159,9 @@ docs/
 
 ## Communication
 
-- **Mailing List**: [java-dev@axis.apache.org](mailto:java-dev@axis.apache.org)
-- **GitHub Issues**: For bug reports and feature requests
-- **GitHub Discussions**: For questions and ideas
+- **Developer List**: [c-dev@axis.apache.org](mailto:c-dev@axis.apache.org)
+- **User List**: [c-user@axis.apache.org](mailto:c-user@axis.apache.org)
+- **Jira**: [issues.apache.org/jira/projects/AXIS2C](https://issues.apache.org/jira/projects/AXIS2C) for bug reports and feature requests
 
 ## License
 
