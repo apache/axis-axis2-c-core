@@ -2,6 +2,18 @@
 
 We welcome contributions to Apache Axis2/C! This guide explains how to get involved.
 
+## The Apache Way
+
+> "The Apache Way is primarily about Community, Merit, and Openness, backed up by Pragmatism and Charity."
+
+Apache projects operate through community consensus and meritocracy. Contributions are valued, and consistent contributors earn recognition and responsibility within the project.
+
+### Becoming a Committer
+
+If you have a significant stake in Apache Axis2/C—whether your organization depends on it for production systems, or you're actively contributing improvements—consider the path to becoming a committer. All Apache releases require a minimum of **3 binding votes** from Project Management Committee (PMC) members, so having committed contributors ensures the project can continue to release updates.
+
+For more information, see: [Becoming a Committer](https://community.apache.org/contributors/becomingacommitter.html)
+
 ## Ways to Contribute
 
 - **Bug Reports** - Report issues you encounter
