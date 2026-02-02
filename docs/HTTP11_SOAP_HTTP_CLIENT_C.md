@@ -101,7 +101,6 @@ Different server environments require custom stream adapters:
 | Server | Stream Adapter | Description |
 |--------|---------------|-------------|
 | Apache httpd | `apache2_stream.c` | Wraps Apache bucket brigades |
-| Microsoft IIS | `axis2_iis_stream.c` | ISAPI extension I/O |
 | CGI | `axis2_cgi_stream.c` | stdin/stdout for CGI |
 | Standalone | `simple_http_svr_conn.c` | Direct socket I/O |
 

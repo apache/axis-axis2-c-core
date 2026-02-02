@@ -1,10 +1,10 @@
 # Issue Tracker
 
-## GitHub Issues
+## Apache Jira
 
-Apache Axis2/C uses GitHub Issues for bug tracking and feature requests:
+Apache Axis2/C uses Apache Jira for bug tracking and feature requests:
 
-- **Issue Tracker**: [github.com/apache/axis-axis2-c-core/issues](https://github.com/apache/axis-axis2-c-core/issues)
+- **Issue Tracker**: [issues.apache.org/jira/projects/AXIS2C](https://issues.apache.org/jira/projects/AXIS2C/summary)
 
 ## Reporting Bugs
 
@@ -60,23 +60,23 @@ For new features:
 
 **Do not report security vulnerabilities through public issues.**
 
-See [Security Policy](../SECURITY.md) for responsible disclosure procedures.
+Apache Axis2/C follows the Apache Software Foundation security policy for reporting vulnerabilities. Please refer to the official ASF security documentation:
 
-## Legacy JIRA
+- [ASF Security Team](https://www.apache.org/security/) - Official procedures for reporting security issues to Apache projects
 
-Historical issues may be found in the Apache JIRA (read-only):
+## Browsing Issues
 
-- [AXIS2C JIRA](https://issues.apache.org/jira/browse/AXIS2C)
+You can browse existing issues directly:
 
-Note: New issues should be filed on GitHub, not JIRA.
+- [All Issues](https://issues.apache.org/jira/browse/AXIS2C)
 
 ## Contributing Fixes
 
 If you'd like to fix an issue yourself:
 
-1. Comment on the issue to claim it
+1. Comment on the Jira issue to claim it
 2. Fork the repository
 3. Create a branch for your fix
-4. Submit a pull request
+4. Submit a pull request referencing the Jira issue
 
 See [Contributing Guide](contributing.md) for details.

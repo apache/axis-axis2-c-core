@@ -31,18 +31,17 @@ The `INSTALL` file covers:
    - Running samples
 
 2. **Getting Axis2/C Working on Windows**
-   - Prerequisites
-   - Build options (Guththila, libxml2, SSL, libcurl, zlib)
-   - Compiling the source
+   - WSL2 (recommended)
+   - Legacy native build (unsupported since 2009)
 
 3. **Apache2 Web Server Integration (mod_axis2)**
    - Building from source
    - Deploying in Apache2
    - HTTP/2 support
 
-4. **IIS Integration (mod_axis2_IIS)**
+4. **CGI Deployment**
 
-5. **CGI Deployment**
+Note: IIS integration was removed in 2026 due to being unmaintained since 2009.
 
 ## Prerequisites
 

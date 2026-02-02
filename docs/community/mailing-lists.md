@@ -8,19 +8,19 @@ Apache Axis2/C uses mailing lists for community discussion, development coordina
 
 For users of Axis2/C - questions, help, and general discussion.
 
-- **Subscribe**: [java-user-subscribe@axis.apache.org](mailto:java-user-subscribe@axis.apache.org)
-- **Unsubscribe**: [java-user-unsubscribe@axis.apache.org](mailto:java-user-unsubscribe@axis.apache.org)
-- **Post**: [java-user@axis.apache.org](mailto:java-user@axis.apache.org)
-- **Archive**: [lists.apache.org](https://lists.apache.org/list.html?java-user@axis.apache.org)
+- **Subscribe**: [c-user-subscribe@axis.apache.org](mailto:c-user-subscribe@axis.apache.org)
+- **Unsubscribe**: [c-user-unsubscribe@axis.apache.org](mailto:c-user-unsubscribe@axis.apache.org)
+- **Post**: [c-user@axis.apache.org](mailto:c-user@axis.apache.org)
+- **Archive**: [lists.apache.org](https://lists.apache.org/list.html?c-user@axis.apache.org)
 
 ### Developer List
 
 For Axis2/C development discussion - patches, design, releases.
 
-- **Subscribe**: [java-dev-subscribe@axis.apache.org](mailto:java-dev-subscribe@axis.apache.org)
-- **Unsubscribe**: [java-dev-unsubscribe@axis.apache.org](mailto:java-dev-unsubscribe@axis.apache.org)
-- **Post**: [java-dev@axis.apache.org](mailto:java-dev@axis.apache.org)
-- **Archive**: [lists.apache.org](https://lists.apache.org/list.html?java-dev@axis.apache.org)
+- **Subscribe**: [c-dev-subscribe@axis.apache.org](mailto:c-dev-subscribe@axis.apache.org)
+- **Unsubscribe**: [c-dev-unsubscribe@axis.apache.org](mailto:c-dev-unsubscribe@axis.apache.org)
+- **Post**: [c-dev@axis.apache.org](mailto:c-dev@axis.apache.org)
+- **Archive**: [lists.apache.org](https://lists.apache.org/list.html?c-dev@axis.apache.org)
 
 ### Commits List
 
@@ -31,7 +31,7 @@ Automated notifications of code commits.
 
 ## How to Subscribe
 
-1. Send an empty email to the subscribe address (e.g., `java-user-subscribe@axis.apache.org`)
+1. Send an empty email to the subscribe address (e.g., `c-user-subscribe@axis.apache.org`)
 2. Reply to the confirmation email
 3. You will receive a welcome message confirming your subscription
 
@@ -44,14 +44,8 @@ Automated notifications of code commits.
 
 ## Alternative Channels
 
-### GitHub Discussions
-
-For quick questions and community interaction:
-
-- [GitHub Discussions](https://github.com/apache/axis-axis2-c-core/discussions)
-
-### GitHub Issues
+### Apache Jira
 
 For bug reports and feature requests:
 
-- [Issue Tracker](https://github.com/apache/axis-axis2-c-core/issues)
+- [Issue Tracker](https://issues.apache.org/jira/projects/AXIS2C/summary)

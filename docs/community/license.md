@@ -195,7 +195,7 @@ Axis2/C may include or link to third-party libraries with their own licenses:
 |---------|---------|
 | OpenSSL | Apache 2.0 / OpenSSL License |
 | nghttp2 | MIT License |
-| Jansson | MIT License |
+| json-c | MIT License |
 | libxml2 | MIT License |
 | APR | Apache 2.0 |
 

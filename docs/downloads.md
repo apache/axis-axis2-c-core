@@ -60,24 +60,24 @@ Axis2/C requires these dependencies:
 |---------|---------|---------|----------|
 | OpenSSL | 1.1.1+ | TLS/SSL support | Yes |
 | nghttp2 | 1.40+ | HTTP/2 protocol | For HTTP/2 |
-| Jansson | 2.12+ | JSON parsing | For JSON-RPC |
+| json-c | 0.18+ | JSON parsing | For JSON-RPC |
 | libxml2 | 2.9+ | XML/SOAP parsing | For SOAP |
 
 ### Installing Dependencies
 
 **Ubuntu/Debian:**
 ```bash
-sudo apt install libssl-dev libnghttp2-dev libjansson-dev libxml2-dev
+sudo apt install libssl-dev libnghttp2-dev libjson-c-dev libxml2-dev
 ```
 
 **Fedora/RHEL:**
 ```bash
-sudo dnf install openssl-devel nghttp2-devel jansson-devel libxml2-devel
+sudo dnf install openssl-devel nghttp2-devel json-c-devel libxml2-devel
 ```
 
 **macOS (Homebrew):**
 ```bash
-brew install openssl nghttp2 jansson libxml2
+brew install openssl nghttp2 json-c libxml2
 ```
 
 ## Verification
