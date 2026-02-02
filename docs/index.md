@@ -22,7 +22,7 @@ Apache Axis2/C is a high-performance web services framework written in C. Origin
 
 - [WS-Security via Rampart/C](https://axis.apache.org/axis2/c/rampart/) - XML Signature, Encryption, SAML
 - WS-Addressing, WS-Policy
-- WSDL 1.1/2.0 support
+- WSDL 1.1/2.0 support with [native WSDL2C code generator](guide/codegen.md)
 - MTOM/XOP binary attachments
 
 **Note:** A Rampart/C 2.0.0 release is planned to accompany Axis2/C 2.0.0, but this may be the final release. The [WS-Security 1.0 specification](http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0.pdf) (OASIS 2004) is mature and considered legacy technology in 2026, with most new applications using TLS, OAuth 2.0, or JWT for security.
