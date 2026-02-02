@@ -55,11 +55,11 @@ This pure json-c approach for both transports provides:
 
 This guide covers five **fully implemented** service demonstrations:
 
-1. **[BigDataH2Service](#bigdatah2service---http2-big-data-processing-service)**: HTTP/2 big data processing with streaming optimization
-2. **[LoginService](#loginservice---user-authentication-service)**: User authentication with JWT token generation
-3. **[TestwsService](#testwsservice---xss-protection-demonstration)**: XSS protection demonstration with HTML encoding
-4. **[CameraControlService](#cameracontrolservice---generic-camera-control-service)**: Generic camera control with SFTP file transfer using user-implementable stub functions
-5. **[FinancialBenchmarkService](#financialbenchmarkservice---financial-computation-benchmark)**: Financial computation benchmarks demonstrating native C performance for O(n²) matrix operations
+1. **[BigDataH2Service](#bigdata-h2-service-testing)**: HTTP/2 big data processing with streaming optimization
+2. **[LoginService](#login-service-testing)**: User authentication with JWT token generation
+3. **[TestwsService](#testws-service-testing-xss-protection-demonstration)**: XSS protection demonstration with HTML encoding
+4. **[CameraControlService](#cameracontrolservice-testing-generic-camera-control-with-sftp)**: Generic camera control with SFTP file transfer using user-implementable stub functions
+5. **[FinancialBenchmarkService](#financialbenchmarkservice-testing-financial-computation-benchmark)**: Financial computation benchmarks demonstrating native C performance for O(n²) matrix operations
 
 **⚠️ Protocol Requirement**: These services are **HTTP/2-only** for performance optimization. HTTP/1.1 requests will receive **HTTP 426 "Upgrade Required"** responses. Always use `curl --http2` for testing.
 
@@ -1512,11 +1512,11 @@ json_object* bigdata_h2_service_invoke_json(
 - [Apache httpd SSL/TLS Guide](https://httpd.apache.org/docs/2.4/ssl/)
 
 ### Source Code and Examples
-- [BigDataH2Service Source Code](../../samples/user_guide/bigdata-h2-service/) - HTTP/2 big data processing
-- [LoginService Source Code](../../samples/user_guide/login-service/) - User authentication with JWT tokens
-- [TestwsService Source Code](../../samples/user_guide/testws-service/) - XSS protection demonstration
-- [CameraControlService Source Code](../../samples/user_guide/camera-control-service/) - Generic camera control with SFTP file transfer and user-implementable stub functions
-- [FinancialBenchmarkService Source Code](../../samples/user_guide/financial-benchmark-service/) - Financial computation benchmarks (O(n²) matrix operations, Monte Carlo VaR)
+- [BigDataH2Service Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/bigdata-h2-service/) - HTTP/2 big data processing
+- [LoginService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/login-service/) - User authentication with JWT tokens
+- [TestwsService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/testws-service/) - XSS protection demonstration
+- [CameraControlService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/camera-control-service/) - Generic camera control with SFTP file transfer and user-implementable stub functions
+- [FinancialBenchmarkService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/financial-benchmark-service/) - Financial computation benchmarks (O(n²) matrix operations, Monte Carlo VaR)
 
 ### Security Resources
 - [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
