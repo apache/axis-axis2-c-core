@@ -67,6 +67,7 @@ Axis2/C uses a modular architecture:
 - **[Getting Started](getting-started/installation.md)** - Installation and quick start
 - **[User Guide](guide/overview.md)** - Configuration and usage
 - **[HTTP/2 & JSON](HTTP2_JSON_REVOLUTION_STATE.md)** - Modern protocol support
+- **[Android Support](HTTP2_ANDROID.md)** - Cross-compilation and mobile deployment
 - **[Security Guide](SECURITY.md)** - TLS and security hardening
 - **[Developer Guide](guide/architecture.md)** - Architecture and internals
 
