@@ -520,13 +520,13 @@ location /axis2/ {
 ### Reference Implementation
 
 For a working example of these security patterns applied to an Android camera
-control system, see the Kanaha project's security documentation:
+control system, see the [Kanaha](https://github.com/robertlazarski/kanaha) project's security documentation:
 
 - [Kanaha SECURITY.md](https://github.com/robertlazarski/kanaha/blob/main/docs/SECURITY.md) -
   mTLS configuration, audit logging, Apache httpd hardening, user-agent filtering,
   certificate revocation procedures
 
-**Note:** Kanaha is an independent project (GPLv3 licensed due to OpenCamera
+**Note:** [Kanaha](https://github.com/robertlazarski/kanaha) is an independent project (GPLv3 licensed due to OpenCamera
 dependency) and is not affiliated with Apache Software Foundation. It demonstrates
 production deployment patterns for the CameraControlService sample in
 `samples/user_guide/camera-control-service/`.

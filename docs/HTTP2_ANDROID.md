@@ -498,11 +498,16 @@ class SecurityValidator {
 
 ### Security Headers Reference
 
-See the Kanaha project's `docs/SECURITY.md` for complete security documentation including:
+See the [Kanaha](https://github.com/robertlazarski/kanaha) project's `docs/SECURITY.md` for complete security documentation including:
 - mTLS configuration
 - Certificate revocation (CRL)
 - Audit logging
 - Apache httpd security headers
+
+**Note:** [Kanaha](https://github.com/robertlazarski/kanaha) is an independent project (GPLv3 licensed due to OpenCamera
+dependency) and is not affiliated with Apache Software Foundation. It demonstrates
+production deployment patterns for the CameraControlService sample in
+`samples/user_guide/camera-control-service/`.
 
 ## Summary Table
 
@@ -527,7 +532,7 @@ Key files for Android support:
 - `src/core/transport/http/server/apache2/mod_axis2.c` - Android init, logging
 - `src/core/transport/http/server/apache2/apache2_worker.c` - Request processing
 
-**Application (Kanaha example):**
+**Application ([Kanaha](https://github.com/robertlazarski/kanaha) example):**
 - `app/src/main/cpp/axis2c/camera_control_service.c` - Service impl with secure IPC
 - `app/src/main/java/org/kanaha/camera/CameraControlReceiver.java` - Java receiver with SecurityValidator
 - `app/src/main/assets/apache/httpd.conf` - Apache security config
