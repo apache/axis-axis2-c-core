@@ -84,6 +84,9 @@ nav:
   - Developer Guide:
     - Architecture: guide/architecture.md
     - Coding Conventions: guide/coding-conventions.md
+    - Code Generation: guide/codegen.md
+    - Linux Packaging: guide/packaging.md
+    - Known Limitations: guide/known-limitations.md
     - Build System: BUILD_SYSTEM_HTTP2_CHANGES.md
     - Conditional Compilation: HTTP2_CONDITIONAL_COMPILATION.md
     - Library Loading: HTTP2_LIBRARY_LOADING.md
