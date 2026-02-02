@@ -107,3 +107,4 @@ nav:
     - Legal: HTTP2_LEGAL.md
   - Legacy:
     - SOAP/HTTP 1.1 Client: HTTP11_SOAP_HTTP_CLIENT_C.md
+    - Rampart/C WS-Security: legacy/rampart.md
