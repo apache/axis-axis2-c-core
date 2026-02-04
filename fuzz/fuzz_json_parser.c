@@ -17,11 +17,25 @@
 
 /**
  * @file fuzz_json_parser.c
- * @brief OSS-Fuzz target for Axis2/C JSON parser
+ * @brief OSS-Fuzz target for json-c parsing (HTTP/2 Pure JSON Architecture)
  *
- * Tests the json-c integration in Axis2/C HTTP/2 JSON mode.
- * Targets: CVE-2020-12762 (integer overflow), stack exhaustion,
- * malformed JSON handling.
+ * This fuzzer tests the HTTP/2 JSON processing path in Axis2/C:
+ * - HTTP/2 mode uses json_tokener_parse() directly from json-c
+ * - Returns json_object* (no AXIOM/XML conversion)
+ * - Used by axis2_h2_transport_utils.c for HTTP/2 JSON services
+ *
+ * For HTTP/1.1 JSON processing (JSON->AXIOM conversion),
+ * see fuzz_json_reader.c which tests axis2_json_reader.
+ *
+ * Architecture:
+ * - HTTP/2:   JSON -> json_tokener_parse() -> json_object* (this fuzzer)
+ * - HTTP/1.1: JSON -> axis2_json_reader -> axiom_node_t* (fuzz_json_reader)
+ *
+ * Attack vectors tested:
+ * - CVE-2020-12762 (integer overflow in json-c)
+ * - Stack exhaustion from deeply nested structures
+ * - Malformed JSON handling
+ * - Memory exhaustion from large payloads
  */
 
 #include <stdint.h>
@@ -29,74 +43,62 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <axutil_env.h>
-#include <axutil_allocator.h>
-#include <axutil_error_default.h>
-#include <axutil_log_default.h>
-#include <axis2_json_reader.h>
-
-/* Persistent environment for efficiency (reused across fuzzer iterations) */
-static axutil_env_t *g_env = NULL;
-
-/**
- * One-time initialization (called by libFuzzer)
- */
-int LLVMFuzzerInitialize(int *argc, char ***argv)
-{
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    if (!allocator) return -1;
-
-    axutil_error_t *error = axutil_error_create(allocator);
-    axutil_log_t *log = axutil_log_create(allocator, NULL, NULL);
-
-    g_env = axutil_env_create_with_error_log(allocator, error, log);
-    if (!g_env) return -1;
-
-    /* Suppress log output during fuzzing */
-    axutil_log_set_level(g_env, AXIS2_LOG_LEVEL_CRITICAL);
-
-    return 0;
-}
+#include <json-c/json.h>
 
 /**
  * Main fuzzer entry point - called millions of times with random data
  */
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
-    if (!g_env || size == 0 || size > 10 * 1024 * 1024) {
+    struct json_tokener *tok = NULL;
+    struct json_object *root = NULL;
+
+    if (size == 0 || size > 10 * 1024 * 1024) {
         return 0;  /* Skip empty or oversized inputs */
     }
 
-    /* Create JSON reader from arbitrary input bytes */
-    axis2_json_reader_t *reader = axis2_json_reader_create_for_memory(
-        g_env, (void *)data, (int)size);
+    /* Create JSON tokener with depth limit to prevent stack exhaustion */
+    tok = json_tokener_new_ex(32);  /* Max depth of 32 */
+    if (!tok) {
+        return 0;
+    }
 
-    if (reader) {
-        /* Attempt to parse - should handle any input without crashing */
-        json_object *root = axis2_json_reader_get_root(reader, g_env);
+    /* Attempt to parse - should handle any input without crashing */
+    root = json_tokener_parse_ex(tok, (const char *)data, (int)size);
 
-        /* If parsing succeeded, try to access the structure */
-        if (root) {
-            /* Exercise various json-c operations */
-            json_type type = json_object_get_type(root);
-            (void)type;  /* Prevent unused warning */
+    /* If parsing succeeded, exercise the structure */
+    if (root) {
+        /* Exercise various json-c operations */
+        enum json_type type = json_object_get_type(root);
+        (void)type;
 
-            if (json_object_is_type(root, json_type_object)) {
-                json_object_object_foreach(root, key, val) {
-                    (void)key;
-                    (void)val;
-                }
-            } else if (json_object_is_type(root, json_type_array)) {
-                size_t len = json_object_array_length(root);
-                for (size_t i = 0; i < len && i < 100; i++) {
-                    json_object *item = json_object_array_get_idx(root, i);
-                    (void)item;
-                }
+        if (json_object_is_type(root, json_type_object)) {
+            struct json_object_iterator it = json_object_iter_begin(root);
+            struct json_object_iterator end = json_object_iter_end(root);
+            int count = 0;
+            while (!json_object_iter_equal(&it, &end) && count < 100) {
+                const char *key = json_object_iter_peek_name(&it);
+                struct json_object *val = json_object_iter_peek_value(&it);
+                (void)key;
+                (void)val;
+                json_object_iter_next(&it);
+                count++;
+            }
+        } else if (json_object_is_type(root, json_type_array)) {
+            size_t len = json_object_array_length(root);
+            for (size_t i = 0; i < len && i < 100; i++) {
+                struct json_object *item = json_object_array_get_idx(root, i);
+                (void)item;
             }
         }
 
-        axis2_json_reader_free(reader, g_env);
+        /* Test serialization */
+        const char *str = json_object_to_json_string(root);
+        (void)str;
+
+        json_object_put(root);  /* Free JSON object */
     }
 
+    json_tokener_free(tok);
     return 0;
 }

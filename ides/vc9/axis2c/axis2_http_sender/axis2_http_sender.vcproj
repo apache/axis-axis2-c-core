@@ -142,7 +142,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axutil.lib axis2_parser.lib axis2_engine.lib  ssleay32MT.lib  libeay32MT.lib  libcurl_imp.lib axiom.lib"
+				AdditionalDependencies="axutil.lib axis2_parser.lib axis2_engine.lib  ssleay32MT.lib  libeay32MT.lib  axiom.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="false"
 				SubSystem="2"
@@ -228,37 +228,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="libcurl"
-				>
-				<File
-					RelativePath="..\..\..\..\src\core\transport\http\sender\libcurl\axis2_libcurl.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\core\transport\http\sender\libcurl\axis2_libcurl.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\core\transport\http\sender\libcurl\libcurl_stream.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\core\transport\http\sender\libcurl\libcurl_stream.h"
-					>
-				</File>
-			</Filter>
 			<Filter
-				Name="ntlm"
-				>
-				<File
-					RelativePath="..\..\..\..\src\core\transport\http\sender\ntlm\heimdal\heimdal_ntlm_wrapper.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\core\transport\http\sender\ntlm\ntlm.c"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"

@@ -123,48 +123,8 @@ AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient. default=no],
   DICLIENT_DIR=""
 )
 
-AC_MSG_CHECKING(whether to build heimdal ntlm wrapper library)
-AC_ARG_ENABLE(heimdal, [  --enable-heimdal    
-                          build heimdal ntlm library wrapper (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    NTLM_WRAPPER_DIR=""
-    NTLM_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    NTLM_WRAPPER_DIR="heimdal"
-    NTLM_DIR="ntlm"
-    #PKG_CHECK_MODULES(HEIMDAL, heimdal-1.4)
-    CFLAGS="$CFLAGS -DAXIS2_HEIMDAL_ENABLED -DAXIS2_NTLM_ENABLED"
-    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_HEIMDAL_ENABLED -DAXIS2_NTLM_ENABLED"
-    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS"
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
-AC_MSG_CHECKING(whether to build libntlm ntlm wrapper library)
-AC_ARG_ENABLE(libntlm, [  --enable-libntlm    
-                          build libntlm ntlm library wrapper (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    NTLM_WRAPPER_DIR=""
-    NTLM_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    NTLM_WRAPPER_DIR="libntlm"
-    NTLM_DIR="ntlm"
-    CFLAGS="$CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
-    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
-    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS"
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
+dnl NTLM authentication removed - see SECURITY.md
+dnl Use Kerberos, OAuth 2.0, or mutual TLS instead
 
 AC_MSG_CHECKING(To Use Axis2 C . This is a compulsory module to build Axis2 C samples)
 AC_ARG_WITH(axis2,
@@ -204,7 +164,7 @@ AC_SUBST(APRINC)
 AC_SUBST(AXIS2INC)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
-AC_SUBST(NTLM_DIR)
+dnl AC_SUBST(NTLM_DIR) - NTLM removed
 AC_SUBST(DICLIENT_DIR)
 
 AC_CONFIG_FILES([Makefile \
@@ -229,7 +189,6 @@ AC_CONFIG_FILES([Makefile \
     client/google/Makefile \
     client/yahoo/Makefile \
     client/session/Makefile \
-    client/ntlm/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     mtom_caching_callback/Makefile \

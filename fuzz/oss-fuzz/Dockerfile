@@ -29,4 +29,10 @@ RUN apt-get update && apt-get install -y \
 RUN git clone --depth 1 https://github.com/apache/axis-axis2-c-core.git axis2c
 
 WORKDIR axis2c
+
+# Generate configure script from autotools
+RUN ./autogen.sh
+
+# Copy build script and fuzz targets (allows testing local changes)
 COPY build.sh $SRC/
+COPY fuzz_*.c fuzz/

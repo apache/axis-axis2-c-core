@@ -813,7 +813,7 @@ axis2_http_sender_send(
 
         if(AXIS2_FALSE == sender->chunked)
         {
-            axis2_char_t tmp_buf[10];
+            axis2_char_t tmp_buf[20];
             if(!buffer)
             {
                 buffer_size = output_stream_size;
@@ -821,7 +821,7 @@ axis2_http_sender_send(
 
             if(buffer_size)
             {
-                sprintf(tmp_buf, "%d", buffer_size);
+                snprintf(tmp_buf, sizeof(tmp_buf), "%d", buffer_size);
                 axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                     tmp_buf);
             }
@@ -942,12 +942,13 @@ axis2_http_sender_send(
 
     if(0 == axutil_strcasecmp(sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
-        /* HTTP 1.1 */
+        /* HTTP 1.1 - Host header format: "host:port" */
         axis2_char_t *header = NULL;
-        size_t host_len = 0;
-        host_len = axutil_strlen(axutil_url_get_host(url, env));
-        header = AXIS2_MALLOC(env->allocator, host_len + 10 * sizeof(axis2_char_t));
-        sprintf(header, "%s:%d", axutil_url_get_host(url, env), axutil_url_get_port(url, env));
+        size_t header_size = 0;
+        /* Buffer: host + ":" + max 5-digit port + null = host_len + 7, using 10 for margin */
+        header_size = axutil_strlen(axutil_url_get_host(url, env)) + 10;
+        header = AXIS2_MALLOC(env->allocator, header_size);
+        snprintf(header, header_size, "%s:%d", axutil_url_get_host(url, env), axutil_url_get_port(url, env));
         axis2_http_sender_util_add_header(env, request, AXIS2_HTTP_HEADER_HOST, header);
         AXIS2_FREE(env->allocator, header);
         header = NULL;

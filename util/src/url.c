@@ -131,6 +131,13 @@ axutil_url_parse_string(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, str_url, NULL);
 
+    /* Sanity check: reject extremely long URLs (max 8KB is generous) */
+    if(axutil_strlen(str_url) > 8192)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+        return NULL;
+    }
+
     tmp_url_str = axutil_strdup(env, str_url);
     if(!tmp_url_str)
     {
@@ -145,6 +152,18 @@ axutil_url_parse_string(
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
+
+    /* Validate protocol length (max 10 chars covers http, https, file, ftp, etc.) */
+    {
+        size_t protocol_len = host - tmp_url_str;
+        if(protocol_len == 0 || protocol_len > 10)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+            AXIS2_FREE(env->allocator, tmp_url_str);
+            return NULL;
+        }
+    }
+
     if(axutil_strlen(host) < 3 * sizeof(axis2_char_t))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
@@ -161,6 +180,20 @@ axutil_url_parse_string(
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
+
+    /* Validate hostname length (RFC 1035: max 253 chars for FQDN).
+     * Find hostname end (at ':', '/', '?', '#', or end of string) */
+    {
+        size_t host_len = strcspn(host, ":/?#");
+        if(host_len > 253)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Hostname exceeds maximum length");
+            AXIS2_FREE(env->allocator, tmp_url_str);
+            return NULL;
+        }
+    }
+
     /* if the url is file:// thing we need the protocol and
      * path only
      */
@@ -211,6 +244,17 @@ axutil_url_parse_string(
     else
     {
         *port_str++ = '\0';
+        /* Validate port string length before atoi to prevent integer overflow.
+         * Valid ports are 0-65535, so max 5 digits. Reject if > 5 digit chars. */
+        {
+            size_t port_len = strspn(port_str, "0123456789");
+            if(port_len > 5 || port_len == 0)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+                AXIS2_FREE(env->allocator, tmp_url_str);
+                return NULL;
+            }
+        }
         path = strchr(port_str, '/');
         if(!path)
         {
@@ -240,6 +284,16 @@ axutil_url_parse_string(
         if(!path)
         {
             port = AXIS2_ATOI(port_str);
+        }
+        /* Validate port range (0-65535) */
+        if(port < 0 || port > 65535)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+            AXIS2_FREE(env->allocator, tmp_url_str);
+            return NULL;
+        }
+        if(!path)
+        {
             /* here we have protocol + host + port + def path */
             ret = axutil_url_create(env, protocol, host, port, "/");
             AXIS2_FREE(env->allocator, tmp_url_str);
@@ -321,7 +375,7 @@ axutil_url_to_external_form(
     if(url->port != 0 && url->port != axutil_uri_port_of_scheme(url->protocol))
     {
         print_port = AXIS2_TRUE;
-        sprintf(port_str, "%d", url->port);
+        snprintf(port_str, sizeof(port_str), "%d", url->port);
         len += axutil_strlen(port_str) + 1; /* +1 is for ':' */
     }
 
@@ -405,12 +459,12 @@ axutil_url_set_host(
                 && (!url->protocol || url->port != axutil_uri_port_of_scheme(url->protocol)))
         {
             print_port = AXIS2_TRUE;
-            sprintf(port_str, "%d", url->port);
+            snprintf(port_str, sizeof(port_str), "%d", url->port);
             len += axutil_strlen(port_str) + 1; /* +1 is for ':' */
         }
 
         url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len + 1);
-        sprintf(url->server, "%s%s%s",
+        snprintf(url->server, len + 1, "%s%s%s",
                 url->host,
                 (print_port) ? ":" : "",
                 (print_port) ? port_str : "");
@@ -494,12 +548,12 @@ axutil_url_get_server(
             && (!url->protocol || url->port != axutil_uri_port_of_scheme(url->protocol)))
     {
         print_port = AXIS2_TRUE;
-        sprintf(port_str, "%d", url->port);
+        snprintf(port_str, sizeof(port_str), "%d", url->port);
         len += axutil_strlen(port_str) + 1; /* +1 is for ':' */
     }
 
     url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len + 1); /* +1 is for '/0' */
-    sprintf(url->server, "%s%s%s",
+    snprintf(url->server, len + 1, "%s%s%s",
             url->host,
             (print_port) ? ":" : "",
             (print_port) ? port_str : "");
@@ -520,6 +574,10 @@ axutil_url_set_port(
     if(url->port == port)
         return AXIS2_SUCCESS;
 
+    /* Validate port range (0-65535) */
+    if(port < 0 || port > 65535)
+        return AXIS2_FAILURE;
+
     url->port = port;
     if(url->server)
     {
@@ -534,12 +592,12 @@ axutil_url_set_port(
                 && (!url->protocol || url->port != axutil_uri_port_of_scheme(url->protocol)))
         {
             print_port = AXIS2_TRUE;
-            sprintf(port_str, "%d", url->port);
+            snprintf(port_str, sizeof(port_str), "%d", url->port);
             len += axutil_strlen(port_str) + 1; /* +1 is for ':' */
         }
 
         url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len + 1);
-        sprintf(url->server, "%s%s%s",
+        snprintf(url->server, len + 1, "%s%s%s",
                 url->host,
                 (print_port) ? ":" : "",
                 (print_port) ? port_str : "");

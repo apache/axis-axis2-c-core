@@ -150,7 +150,7 @@ axis2_http_response_writer_print_int(
     int i)
 {
     axis2_char_t int_str[12];
-    sprintf(int_str, "%10d", i);
+    snprintf(int_str, sizeof(int_str), "%d", i);
     return axis2_http_response_writer_print_str(response_writer, env, int_str);
 }
 

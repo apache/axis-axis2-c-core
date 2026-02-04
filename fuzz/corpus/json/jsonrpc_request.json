@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","method":"authenticate","params":{"email":"test@example.com","password":"secret123"},"id":1}

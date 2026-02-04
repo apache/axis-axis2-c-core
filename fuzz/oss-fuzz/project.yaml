@@ -1,11 +1,14 @@
 # Project metadata for OSS-Fuzz
 # See: https://google.github.io/oss-fuzz/getting-started/new-project-guide/
+#
+# Project name: axis2c (distinct from apache-axis2 which is Axis2/Java)
 
 homepage: "https://axis.apache.org/axis2/c/core/"
 language: c
-primary_contact: "dev@axis.apache.org"
+primary_contact: "robertlazarski@gmail.com"
 auto_ccs:
   - "security@apache.org"
+  - "dev@axis.apache.org"
 
 # Supported fuzzing engines
 fuzzing_engines:

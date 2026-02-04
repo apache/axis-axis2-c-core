@@ -64,9 +64,7 @@
         <parameter name="exposeHeaders" locked="true">false</parameter>
     </transportReceiver-->
   
-    <!--transportReceiver name="tcp" class="axis2_tcp_receiver">
-        <parameter name="port" locked="false">6060</parameter>
-    </transportReceiver-->
+    <!-- TCP transport removed (January 2026) - use HTTP/2 instead -->
 
 
     <!-- ================================================= -->
@@ -93,11 +91,7 @@
     <parameter name="SSL_PASSPHRASE">passphrase</parameter>
     -->
 
-    <!-- Uncomment this one with the appropriate papameters to enable the TCP transport Sender-->
-    <!--transportSender name="tcp" class="axis2_tcp_sender">
-        <parameter name="PROTOCOL" locked="false">TCP</parameter>
-        <parameter name="xml-declaration" insert="false"/>
-    </transportSender-->
+    <!-- TCP transport removed (January 2026) - use HTTP/2 instead -->
 
 
     <!-- ================================================= -->

@@ -49,7 +49,10 @@ int LLVMFuzzerInitialize(int *argc, char ***argv)
     g_env = axutil_env_create_with_error_log(allocator, error, log);
     if (!g_env) return -1;
 
-    axutil_log_set_level(g_env, AXIS2_LOG_LEVEL_CRITICAL);
+    /* Suppress log output during fuzzing */
+    if (g_env->log) {
+        g_env->log->level = AXIS2_LOG_LEVEL_CRITICAL;
+    }
     return 0;
 }
 

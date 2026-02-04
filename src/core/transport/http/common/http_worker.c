@@ -748,12 +748,12 @@ axis2_http_worker_process_request(
 
             if(body_string)
             {
-                axis2_char_t str_len[10];
+                axis2_char_t str_len[20];
                 if(!is_head)
                 {
                     axis2_http_simple_response_set_body_string(response, env, body_string);
                 }
-                sprintf(str_len, "%d", axutil_strlen(body_string));
+                snprintf(str_len, sizeof(str_len), "%d", (int)axutil_strlen(body_string));
                 cont_len = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
             }
@@ -986,12 +986,12 @@ axis2_http_worker_process_request(
 
             if(body_string)
             {
-                axis2_char_t str_len[10];
+                axis2_char_t str_len[20];
                 if(!is_head)
                 {
                     axis2_http_simple_response_set_body_string(response, env, body_string);
                 }
-                sprintf(str_len, "%d", axutil_strlen(body_string));
+                snprintf(str_len, sizeof(str_len), "%d", (int)axutil_strlen(body_string));
                 cont_len = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
             }
@@ -1136,10 +1136,10 @@ axis2_http_worker_process_request(
 
         if (body_string)
         {
-            axis2_char_t str_len[10];
+            axis2_char_t str_len[20];
             axis2_http_simple_response_set_body_string(response, env,
                 body_string);
-            sprintf(str_len, "%d", axutil_strlen(body_string));
+            snprintf(str_len, sizeof(str_len), "%d", (int)axutil_strlen(body_string));
             cont_len = axis2_http_header_create(env,
                 AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                 str_len);
@@ -1323,10 +1323,10 @@ axis2_http_worker_process_request(
                             axis2_http_simple_response_set_header(response, env, cont_type);
                             if (body_string)
                             {
-                                axis2_char_t str_len[10];
+                                axis2_char_t str_len[20];
                                 axis2_http_simple_response_set_body_string(response, env,
                                     body_string);
-                                sprintf(str_len, "%d", axutil_strlen(body_string));
+                                snprintf(str_len, sizeof(str_len), "%d", (int)axutil_strlen(body_string));
                                 cont_len =
                                     axis2_http_header_create(env,
                                         AXIS2_HTTP_HEADER_CONTENT_LENGTH,
@@ -1386,10 +1386,10 @@ axis2_http_worker_process_request(
                     axis2_http_simple_response_set_header(response, env, cont_type);
                     if (body_string)
                     {
-                        axis2_char_t str_len[10];
+                        axis2_char_t str_len[20];
                         axis2_http_simple_response_set_body_string(response, env,
                             body_string);
-                        sprintf(str_len, "%d", axutil_strlen(body_string));
+                        snprintf(str_len, sizeof(str_len), "%d", (int)axutil_strlen(body_string));
                         cont_len = axis2_http_header_create(env,
                             AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                             str_len);
@@ -1439,10 +1439,10 @@ axis2_http_worker_process_request(
 
                     if (body_string)
                     {
-                        axis2_char_t str_len[10];
+                        axis2_char_t str_len[20];
                         axis2_http_simple_response_set_body_string(response, env,
                             body_string);
-                        sprintf(str_len, "%d", axutil_strlen(body_string));
+                        snprintf(str_len, sizeof(str_len), "%d", (int)axutil_strlen(body_string));
                         cont_len = axis2_http_header_create(env,
                             AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                             str_len);
@@ -2000,13 +2000,13 @@ axis2_http_worker_set_response_headers(
             {
                 if(0 != content_length)
                 {
-                    axis2_char_t content_len_str[10];
+                    axis2_char_t content_len_str[20];
                     axis2_http_header_t *content_len_hdr = NULL;
 
 					/* Adds more 2 to http content length to involve CR and LF chars */
 					content_length += 2;
 
-                    sprintf(content_len_str, "%d", content_length);
+                    snprintf(content_len_str, sizeof(content_len_str), "%d", content_length);
                     content_len_hdr = axis2_http_header_create(env,
                         AXIS2_HTTP_HEADER_CONTENT_LENGTH, content_len_str);
                     axis2_http_simple_response_set_header(simple_response, env, content_len_hdr);

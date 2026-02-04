@@ -878,54 +878,29 @@ Security hardening commits are reviewed using Google Gemini AI for:
 
 ## OSS-Fuzz Integration
 
-Apache Axis2/C includes fuzz testing infrastructure for integration with
-[OSS-Fuzz](https://github.com/google/oss-fuzz), Google's continuous fuzzing
-service for open source projects.
+Apache Axis2/C includes comprehensive fuzz testing infrastructure for integration with [OSS-Fuzz](https://github.com/google/oss-fuzz), Google's continuous fuzzing service for open source projects.
 
 ### Fuzz Targets
 
-The `fuzz/` directory contains libFuzzer-compatible targets:
-
-| Target | Component Tested | Security Focus |
-|--------|------------------|----------------|
-| `fuzz_xml_parser.c` | AXIOM XML/SOAP parsing | XXE, XML bombs, buffer overflows |
-| `fuzz_json_parser.c` | JSON parsing (HTTP/2 mode) | DoS (CVE-2020-12762), integer overflows |
-| `fuzz_http_header.c` | HTTP header/request/status parsing | Header injection, buffer overflows |
+| Target | Component | Security Focus |
+|--------|-----------|----------------|
+| `fuzz_xml_parser.c` | Guththila XML parser | XXE, XML bombs, buffer overflows |
+| `fuzz_json_parser.c` | HTTP/2 JSON (json-c) | CVE-2020-12762, integer overflows |
+| `fuzz_json_reader.c` | HTTP/1.1 JSON (AXIOM) | JSON→AXIOM conversion bugs |
+| `fuzz_http_header.c` | HTTP header parsing | Header injection, buffer overflows |
 | `fuzz_url_parser.c` | URL parsing | SSRF, malformed URL handling |
 
-### Running Fuzz Tests Locally
+### Quick Start
 
 ```bash
-# Build with fuzzing instrumentation
-export CC=clang
-export CFLAGS="-fsanitize=address,fuzzer-no-link -g"
-./configure --prefix=/usr/local
-make && make install
-
-# Compile and run a fuzz target
-clang -fsanitize=address,fuzzer \
-    -I/usr/local/include/axis2-2.0.0 \
-    -I/usr/local/include/axis2-2.0.0/platforms \
-    fuzz/fuzz_http_header.c \
-    -L/usr/local/lib -laxis2_http_sender -laxutil \
-    -o fuzz_http_header
-
-./fuzz_http_header fuzz/corpus/http/ -max_total_time=300
+cd /path/to/oss-fuzz
+sudo python3 infra/helper.py build_fuzzers --sanitizer address axis2c /path/to/axis-axis2-c-core
+sudo python3 infra/helper.py run_fuzzer axis2c fuzz_xml_parser -- -max_total_time=60
 ```
 
-### OSS-Fuzz Project Files
+### Documentation
 
-Ready-to-submit project files are in `fuzz/oss-fuzz/`:
-- `Dockerfile` - Build environment with dependencies
-- `build.sh` - Compilation script for all fuzz targets
-- `project.yaml` - Project metadata for Google
+For complete setup instructions, build details, and troubleshooting:
 
-### Seed Corpus
-
-Initial test cases in `fuzz/corpus/` help the fuzzer explore code paths:
-- `corpus/xml/` - SOAP envelopes, elements with namespaces
-- `corpus/json/` - Valid JSON objects, arrays, nested structures
-- `corpus/http/` - HTTP request lines, headers, status lines
-- `corpus/url/` - HTTP/HTTPS URLs with various components
-
-For complete setup instructions, see [docs/OSS-Fuzz.md](OSS-Fuzz.md).
+- **[OSS-FUZZ.md](OSS-FUZZ.md)** - Comprehensive fuzzing guide
+- **[JSON_HTTP11_VS_HTTP2.md](JSON_HTTP11_VS_HTTP2.md)** - JSON fuzzer architecture details

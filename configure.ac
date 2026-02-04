@@ -553,7 +553,7 @@ AC_ARG_ENABLE(json, [  --enable-json
     CFLAGS="$CFLAGS $JSON_CFLAGS -DAXIS2_JSON_ENABLED"
     CPPFLAGS="$CPPFLAGS $JSON_LIBS -DAXIS2_JSON_ENABLED"
     json_enabled=true
-    PKG_CHECK_MODULES([JSON], [json-c >= 0.18])
+    PKG_CHECK_MODULES([JSON], [json-c >= 0.11])
     ;;
   esac ],
   AC_MSG_RESULT(no)

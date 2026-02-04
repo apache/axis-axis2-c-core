@@ -83,12 +83,18 @@ const char* json_tokener_error_to_str(enum json_tokener_error error)
         return "error_parse_string";
     case json_tokener_error_parse_comment:
         return "error_parse_comment";
+#if defined(JSON_C_VERSION_NUM) && JSON_C_VERSION_NUM >= ((0 << 16) | (14 << 8))
     case json_tokener_error_parse_utf8_string:
         return "error_parse_utf8_string";
+#endif
+#if defined(JSON_C_VERSION_NUM) && JSON_C_VERSION_NUM >= ((0 << 16) | (14 << 8))
     case json_tokener_error_memory:
         return "error_memory";
     case json_tokener_error_size:
         return "error_size";
+#endif
+    default:
+        break;
     }
     return "UNKNOWN";
 }
@@ -389,6 +395,9 @@ axis2_json_reader_free(
 {
     if (!reader || !env)
         return;
+    /* Free the AXIOM tree created during axis2_json_reader_read() */
+    if (reader->axiom_node)
+        axiom_node_free_tree(reader->axiom_node, env);
     if (reader->json_obj)
         json_object_put(reader->json_obj);
     AXIS2_FREE(env->allocator, reader);
@@ -402,6 +411,23 @@ axis2_json_reader_read(
 {
     json_object* json_root = NULL;
     const char* json_root_name = NULL;
+
+    if (!reader || !env)
+        return AXIS2_FAILURE;
+
+    if (!reader->json_obj)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+
+    /* json_object_object_foreach requires an object type */
+    if (json_object_get_type(reader->json_obj) != json_type_object)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "JSON root must be an object, not array or primitive");
+        return AXIS2_FAILURE;
+    }
 
     /* free existing om tree */
     if (reader->axiom_node)
