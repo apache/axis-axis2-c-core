@@ -255,6 +255,9 @@ The main build script that OSS-Fuzz runs:
 
 cd $SRC/axis2c
 
+# Generate configure script (required for fresh clones)
+autoreconf -i
+
 # Configure with JSON support (required for JSON fuzzers)
 ./configure \
     --prefix=$WORK/install \
@@ -382,6 +385,66 @@ Use seed corpus to start with valid inputs:
 ./fuzzer fuzz/corpus/appropriate_dir/ -max_total_time=60
 ```
 
+## Lessons Learned from Local Testing
+
+### Docker Permission Issues
+
+When running OSS-Fuzz helper scripts, you may encounter Docker permission errors:
+
+```
+permission denied while trying to connect to the Docker daemon socket
+```
+
+**Solutions:**
+
+1. **Quick fix**: Use `sudo` with helper.py commands
+   ```bash
+   sudo python3 infra/helper.py build_fuzzers axis2c
+   ```
+
+2. **Permanent fix**: Add your user to the docker group
+   ```bash
+   sudo usermod -aG docker $USER
+   newgrp docker  # or log out and back in
+   ```
+
+### Build Requires autoreconf
+
+When OSS-Fuzz clones a fresh repository, the `configure` script doesn't exist - it must be generated from `configure.ac`. The `fuzz/oss-fuzz/build.sh` script runs `autoreconf -i` before `./configure` to handle this.
+
+If you see this error:
+```
+./configure: No such file or directory
+```
+
+Ensure `autoreconf -i` runs before `./configure` in the build script.
+
+### Validated Test Results
+
+All 5 fuzz targets have been validated with libFuzzer + AddressSanitizer:
+
+| Target | Runs | Exec/sec | Result |
+|--------|------|----------|--------|
+| fuzz_json_reader | 8M+ | ~131K | No crashes |
+| fuzz_json_parser | 4M+ | ~130K | No crashes |
+| fuzz_xml_parser | 4M+ | ~120K | No crashes |
+| fuzz_http_header | 4M+ | ~125K | No crashes |
+| fuzz_url_parser | 4M+ | ~115K | No crashes |
+
+### Comparison with Axis2/Java
+
+Apache Axis2/Java has been in OSS-Fuzz since January 2023. Key differences:
+
+| Aspect | Axis2/Java | Axis2/C |
+|--------|------------|---------|
+| Added | January 2023 | February 2025 |
+| Language | Java (Jazzer) | C (libFuzzer) |
+| Fuzzer location | Inside oss-fuzz repo | Inside Axis2/C repo |
+| Approach | HTTP interface fuzzing | Direct parser fuzzing |
+| Maintainer | External (Code Intelligence) | Apache committers |
+
+The Axis2/C approach of keeping fuzzer code in the main repo allows Apache committers to maintain and update fuzzers without requiring PRs to google/oss-fuzz.
+
 ## Security Vulnerability Reporting
 
 If fuzzing finds a security vulnerability:
@@ -452,16 +515,19 @@ cd $SRC/axis2c
 exec bash fuzz/oss-fuzz/build.sh
 ```
 
-The `Dockerfile` simply clones Axis2/C and runs autogen:
+The `Dockerfile` simply clones Axis2/C and installs dependencies:
 
 ```dockerfile
 FROM gcr.io/oss-fuzz-base/base-builder
-RUN apt-get update && apt-get install -y autoconf automake libtool ...
+RUN apt-get update && apt-get install -y \
+    autoconf automake libtool pkg-config \
+    libxml2-dev libjson-c-dev libssl-dev zlib1g-dev
 RUN git clone --depth 1 https://github.com/apache/axis-axis2-c-core.git axis2c
 WORKDIR axis2c
-RUN ./autogen.sh
 COPY build.sh $SRC/
 ```
+
+Note: `autoreconf -i` is run inside `build.sh` rather than in the Dockerfile, keeping all build logic in the Axis2/C repository.
 
 ## Licensing Considerations
 

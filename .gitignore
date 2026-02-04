@@ -92,6 +92,10 @@ samples/**/*.o
 samples/**/*.lo
 samples/**/*.la
 
+# Google Test source files (copied for building unit tests)
+**/gtest/gtest-all.cc
+**/gtest/gtest_main.cc
+
 # Test resources
 guththila/tests/resources/
 
