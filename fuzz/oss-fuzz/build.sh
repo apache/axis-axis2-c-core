@@ -19,6 +19,9 @@ cd $SRC/axis2c
 # Provide defaults for potentially unset variables
 : "${LDFLAGS:=}"
 
+# Generate configure script from autotools
+autoreconf -i
+
 # Configure with fuzzing flags
 # --enable-json is required for axis2_json_reader library
 ./configure \
