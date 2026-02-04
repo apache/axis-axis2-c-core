@@ -454,8 +454,9 @@ TEST_F(TestHTTPTransport, test_json)
         }
         AXIS2_FREE(m_env->allocator, xml_str);
 
+        /* axis2_json_reader_free now frees the axiom_node tree internally,
+         * so we don't need to call axiom_node_free_tree separately */
         axis2_json_reader_free(json_reader, m_env);
-        axiom_node_free_tree(root_node, m_env);
     }
 
     printf("JSON tests passed: %d, failed: %d\n", passed, failed);

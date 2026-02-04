@@ -209,7 +209,7 @@ TEST_F(JSONSecurityTest, ArrayHandling) {
     json_object *obj = json_tokener_parse(array_json);
     ASSERT_NE(obj, nullptr) << "JSON array should parse";
     EXPECT_TRUE(json_object_is_type(obj, json_type_array));
-    EXPECT_EQ(json_object_array_length(obj), 5);
+    EXPECT_EQ(json_object_array_length(obj), (size_t)5);
 
     json_object_put(obj);
 }

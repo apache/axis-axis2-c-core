@@ -58,7 +58,7 @@ protected:
  * Test axutil_strdup with NULL input
  */
 TEST_F(BufferSafetyTest, StrdupNullSafe) {
-    axis2_char_t *result = axutil_strdup(env, NULL);
+    axis2_char_t *result = (axis2_char_t *)axutil_strdup(env, NULL);
     EXPECT_EQ(result, nullptr) << "strdup(NULL) should return NULL safely";
 }
 
@@ -66,7 +66,7 @@ TEST_F(BufferSafetyTest, StrdupNullSafe) {
  * Test axutil_strdup with empty string
  */
 TEST_F(BufferSafetyTest, StrdupEmptyString) {
-    axis2_char_t *result = axutil_strdup(env, "");
+    axis2_char_t *result = (axis2_char_t *)axutil_strdup(env, "");
     ASSERT_NE(result, nullptr) << "strdup(\"\") should succeed";
     EXPECT_STREQ(result, "") << "Result should be empty string";
     AXIS2_FREE(env->allocator, result);
@@ -77,7 +77,7 @@ TEST_F(BufferSafetyTest, StrdupEmptyString) {
  */
 TEST_F(BufferSafetyTest, StrdupNormalString) {
     const char *test_str = "Hello, World!";
-    axis2_char_t *result = axutil_strdup(env, test_str);
+    axis2_char_t *result = (axis2_char_t *)axutil_strdup(env, test_str);
     ASSERT_NE(result, nullptr) << "strdup should succeed";
     EXPECT_STREQ(result, test_str) << "Result should match input";
     AXIS2_FREE(env->allocator, result);
@@ -88,14 +88,14 @@ TEST_F(BufferSafetyTest, StrdupNormalString) {
  */
 TEST_F(BufferSafetyTest, StracatNullSafe) {
     /* Both NULL */
-    axis2_char_t *result1 = axutil_stracat(env, NULL, NULL);
+    axis2_char_t *result1 = (axis2_char_t *)axutil_stracat(env, NULL, NULL);
     /* Result behavior may vary - just ensure no crash */
 
     /* First NULL */
-    axis2_char_t *result2 = axutil_stracat(env, NULL, "test");
+    axis2_char_t *result2 = (axis2_char_t *)axutil_stracat(env, NULL, "test");
 
     /* Second NULL */
-    axis2_char_t *result3 = axutil_stracat(env, "test", NULL);
+    axis2_char_t *result3 = (axis2_char_t *)axutil_stracat(env, "test", NULL);
 
     /* Clean up any allocated results */
     if (result1) AXIS2_FREE(env->allocator, result1);
@@ -110,7 +110,7 @@ TEST_F(BufferSafetyTest, StracatNullSafe) {
  * Test axutil_stracat with normal strings
  */
 TEST_F(BufferSafetyTest, StracatNormalStrings) {
-    axis2_char_t *result = axutil_stracat(env, "Hello, ", "World!");
+    axis2_char_t *result = (axis2_char_t *)axutil_stracat(env, "Hello, ", "World!");
     ASSERT_NE(result, nullptr) << "stracat should succeed";
     EXPECT_STREQ(result, "Hello, World!") << "Concatenation should work";
     AXIS2_FREE(env->allocator, result);
@@ -127,7 +127,7 @@ TEST_F(BufferSafetyTest, LongStringHandling) {
     memset(long_str, 'A', len);
     long_str[len] = '\0';
 
-    axis2_char_t *result = axutil_strdup(env, long_str);
+    axis2_char_t *result = (axis2_char_t *)axutil_strdup(env, long_str);
     ASSERT_NE(result, nullptr) << "Long string strdup should succeed";
     EXPECT_EQ(strlen(result), len) << "Length should be preserved";
 
@@ -140,7 +140,7 @@ TEST_F(BufferSafetyTest, LongStringHandling) {
  */
 TEST_F(BufferSafetyTest, NullEnvHandling) {
     /* These should not crash even with NULL env */
-    axis2_char_t *result = axutil_strdup(NULL, "test");
+    axis2_char_t *result = (axis2_char_t *)axutil_strdup(NULL, "test");
     /* Result is undefined but should not crash */
     if (result) {
         /* Can't free without env, but test passed if we got here */
