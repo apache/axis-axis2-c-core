@@ -71,6 +71,7 @@ nav:
     - JSON/HTTP2 Samples: userguide/json-httpd-h2-userguide.md
   - HTTP/2 & JSON:
     - Overview: HTTP2_JSON_REVOLUTION_STATE.md
+    - HTTP/1.1 vs HTTP/2 JSON: JSON_HTTP11_VS_HTTP2.md
     - Migration Guide: AXIS2C_HTTP2_MIGRATION_STATE.md
     - JSON Request Path: HTTP2_JSON_REQUEST_CODE_PATH.md
     - Response Handling: HTTP2_RESPONSE.md
@@ -80,7 +81,7 @@ nav:
     - Configuration: HTTP2_AXIS2_DOT_XML.md
   - Security:
     - Security Guide: SECURITY.md
-    - OSS-Fuzz Integration: OSS-Fuzz.md
+    - OSS-Fuzz Integration: OSS-FUZZ.md
   - Developer Guide:
     - Architecture: guide/architecture.md
     - Coding Conventions: guide/coding-conventions.md
