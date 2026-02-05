@@ -13,7 +13,7 @@ This migration document focuses on **technical architecture and performance anal
 
 ---
 
-## 🧪 **Latest HTTP/2 Regression Test Results (December 10, 2025)**
+## 🧪 **Latest HTTP/2 Regression Test Results (February 5, 2026)**
 
 ### **Surgical Testing Approach - Confirmed Operational Status**
 
@@ -49,12 +49,12 @@ This performance comparison is based on **equivalent service implementations** a
 **📋 Implementation Reference**: The Axis2/C services analyzed here are fully implemented and documented in the [HTTP/2 JSON User Guide](userguide/json-httpd-h2-userguide.md), including complete source code, build instructions, and testing examples.
 
 #### **Test Environment Specifications**
-- **Hardware**: Linux 6.17.0-6-generic #6-Ubuntu SMP system
-- **Test Period**: November 28-30, 2025 (Initial), December 10, 2025 (Latest Regression Testing)
+- **Hardware**: Linux 6.17.0-8-generic #8-Ubuntu SMP system
+- **Test Period**: November 28-30, 2025 (Initial), February 5, 2026 (Latest Regression Testing)
 - **Measurement Tools**: Google Test framework, HTTP/2 unit tests (h2_json_integration_test, h2_performance_benchmark_test), AddressSanitizer profiling, HTTP/2 transport benchmarks
 - **Payload Sizes**: 1KB to 50MB JSON datasets
 - **Concurrent Load**: Up to 10 simultaneous HTTP/2 streams
-- **Latest Test Results**: ✅ 2/2 HTTP/2 unit tests PASSING (December 10, 2025)
+- **Latest Test Results**: ✅ 2/2 HTTP/2 unit tests PASSING (February 5, 2026)
 - **Regression Status**: ✅ HTTP/2 JSON functionality confirmed operational
 - **Expected Test Behavior**: ✅ Axiom tests correctly fail in HTTP/2 JSON-only mode
 
@@ -155,14 +155,14 @@ Source: axis2-java-core/log.txt (lines 950600-950694)
 
 **Performance Benchmarking Results** (Source: `src/core/transport/h2/test/h2_performance_benchmark_test.log`):
 
-| Performance Metric | Target | Latest Results (December 10, 2025) | Evidence Location | Status |
+| Performance Metric | Target | Latest Results (February 5, 2026) | Evidence Location | Status |
 |-------------------|--------|-------------------------------------|-------------------|---------|
-| **Latency Reduction** | 25% vs HTTP/1.1 | **25.0% improvement** (12ms → 9ms) | h2_performance_benchmark_test.log:16-18 | ✅ **MET** |
-| **JSON Processing Speed** | 35% improvement (10MB) | **39.9% improvement** (163ms → 98ms) | h2_performance_benchmark_test.log:28-30 | ✅ **EXCEEDED** |
+| **Latency Reduction** | 25% vs HTTP/1.1 | **27.3% improvement** (11ms → 8ms) | h2_performance_benchmark_test.log:16-18 | ✅ **EXCEEDED** |
+| **JSON Processing Speed** | 35% improvement (10MB) | **39.9% improvement** (158ms → 95ms) | h2_performance_benchmark_test.log:28-30 | ✅ **EXCEEDED** |
 | **Memory Efficiency** | 15% reduction | **16.7% improvement** (12MB → 10MB) | h2_performance_benchmark_test.log:41-43 | ✅ **EXCEEDED** |
-| **Connection Multiplexing** | 50% overhead reduction | **50.0% improvement** (117748ms → 58874ms) | h2_performance_benchmark_test.log:54-56 | ✅ **MET** |
-| **JSON Throughput** | 20+ MB/s | **72.89 MB/s** (outstanding performance) | h2_performance_benchmark_test.log:31 | 🚀 **REVOLUTIONARY** |
-| **Scalability Profile** | Multi-payload support | **Excellent scaling** (97.66 MB/s peak @ 100KB) | h2_performance_benchmark_test.log:67-70 | ✅ **EXCEEDED** |
+| **Connection Multiplexing** | 50% overhead reduction | **50.0% improvement** (99572ms → 49786ms) | h2_performance_benchmark_test.log:54-56 | ✅ **MET** |
+| **JSON Throughput** | 20+ MB/s | **75.20 MB/s** (outstanding performance) | h2_performance_benchmark_test.log:31 | 🚀 **REVOLUTIONARY** |
+| **Scalability Profile** | Multi-payload support | **Excellent scaling** (100.00 MB/s peak @ 1MB) | h2_performance_benchmark_test.log:67-70 | ✅ **EXCEEDED** |
 | **Overall Test Results** | 5/5 benchmarks | **5/5 benchmarks PASSED** | h2_performance_benchmark_test.log:78 | ✅ **ALL TARGETS MET** |
 | **Memory Constraint** | 2GB heap | **10MB usage for 10MB payload** (efficient) | h2_performance_benchmark_test.log:42 | ✅ **EXCEEDED** |
 
@@ -188,16 +188,16 @@ Source: axis2-java-core/log.txt (lines 950600-950694)
 
 **JSON Processing Throughput Analysis**:
 ```
-Axis2/C Scalability Profile (December 10, 2025 benchmark results):
-• 1KB payload:   0 ms processing (0.00 MB/s)   - Near-instantaneous for small payloads
-• 100KB payload: 1 ms processing (97.66 MB/s)  - Peak optimal efficiency
-• 1MB payload:   13 ms processing (76.92 MB/s) - Excellent sustained performance
-• 10MB payload:  144 ms processing (69.44 MB/s)- Strong large payload handling
+Axis2/C Scalability Profile (February 5, 2026 benchmark results):
+• 1KB payload:   0 ms processing (0.00 MB/s)    - Near-instantaneous for small payloads
+• 100KB payload: 1 ms processing (97.66 MB/s)   - Excellent efficiency
+• 1MB payload:   10 ms processing (100.00 MB/s) - Peak optimal efficiency
+• 10MB payload:  122 ms processing (81.97 MB/s) - Strong large payload handling
 ```
 
 **Memory Usage Pattern Analysis**:
 - **Java Baseline**: JVM heap allocation + garbage collection pressure
-- **C Measured**: 10MB peak usage for 10MB JSON payload processing (December 10, 2025)
+- **C Measured**: 10MB peak usage for 10MB JSON payload processing (February 5, 2026)
 - **Efficiency Ratio**: 1:1 payload-to-memory ratio (exceptional efficiency)
 - **Memory Pattern**: Linear scaling with payload size, no fragmentation, optimal memory utilization
 
@@ -205,11 +205,11 @@ Axis2/C Scalability Profile (December 10, 2025 benchmark results):
 
 **Connection Multiplexing Performance**:
 ```
-Test Scenario: 20 concurrent 5MB JSON requests (December 10, 2025)
-- HTTP/1.1 Estimated: 117,748ms (sequential connections)
-- HTTP/2 Measured: 58,874ms (multiplexed streams)
+Test Scenario: 20 concurrent 5MB JSON requests (February 5, 2026)
+- HTTP/1.1 Estimated: 99,572ms (sequential connections)
+- HTTP/2 Measured: 49,786ms (multiplexed streams)
 - Improvement: 50.0% reduction in connection overhead
-- HTTP/2 Throughput: 1.70 MB/s (multiplexing efficiency)
+- HTTP/2 Throughput: 2.01 MB/s (multiplexing efficiency)
 ```
 
 **Stream Management Efficiency**:
@@ -300,19 +300,19 @@ Benchmark Log Key Evidence:
 ### **Key Performance Advantages of Axis2/C over Axis2/Java**
 
 🚀 **Verified Processing Speed Advantages**:
-- **Measured Throughput**: 72.89 MB/s JSON processing (latest benchmark results, December 10, 2025)
-- **Latency Improvement**: 25.0% reduction vs HTTP/1.1 baseline (12ms vs 9ms)
+- **Measured Throughput**: 75.20 MB/s JSON processing (latest benchmark results, February 5, 2026)
+- **Latency Improvement**: 27.3% reduction vs HTTP/1.1 baseline (11ms vs 8ms)
 - **Build Efficiency**: 162% faster compilation and deployment preparation
 
 🎯 **Documented Scalability Profile**:
 - **Small Payloads (1KB)**: 0ms processing - near-instantaneous response
-- **Medium Payloads (100KB)**: 1ms processing - peak efficiency (97.66 MB/s)
-- **Large Payloads (1MB)**: 13ms processing - excellent sustained performance (76.92 MB/s)
-- **Enterprise Payloads (10MB)**: 144ms processing - strong big data capability (69.44 MB/s)
+- **Medium Payloads (100KB)**: 1ms processing - excellent efficiency (97.66 MB/s)
+- **Large Payloads (1MB)**: 10ms processing - peak optimal efficiency (100.00 MB/s)
+- **Enterprise Payloads (10MB)**: 122ms processing - strong big data capability (81.97 MB/s)
 
 💾 **Measured Memory Efficiency**:
 - **Java Baseline**: JVM heap + garbage collection overhead (estimated 300MB+ for 10MB processing)
-- **C Implementation**: 10MB peak usage for 10MB JSON payloads (December 10, 2025)
+- **C Implementation**: 10MB peak usage for 10MB JSON payloads (February 5, 2026)
 - **Efficiency Advantage**: 1:1 payload-to-memory ratio with exceptional linear scaling
 - **Predictable Allocation**: No garbage collection pauses or memory fragmentation, optimal memory utilization
 
