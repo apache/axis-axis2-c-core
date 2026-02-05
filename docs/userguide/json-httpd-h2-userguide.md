@@ -8,9 +8,7 @@ This guide will help you get started with Axis2/C HTTP/2 transport and JSON via 
 
 **New in Axis2/C 2.0**: Complete HTTP/2 transport implementation with enterprise capabilities, streaming optimization for large JSON payloads, authentication services, XSS protection demonstrations, and production-ready performance enhancements using Apache httpd as the application server.
 
-**✅ Verified Testing**: This guide has been tested and verified to work on **Ubuntu 24.04 LTS** with Apache httpd and mod_h2 support.
-
-**⚠️ Ubuntu 25.10 Note**: Default Apache 2.4.64 (or latest) package lacks mod_h2 module. Use Ondrej's PPA or Ubuntu 24.04 LTS for complete HTTP/2 support.
+**✅ Verified Testing**: This guide has been tested and verified to work on **Ubuntu 25.10** with Apache httpd and mod_h2 support.
 
 **🔧 Critical Configuration**: HTTPS Virtual Hosts **MUST** include `<Location /services>` directive inside `<VirtualHost *:443>` blocks. Without this, Axis2/C services will fail with routing errors and no debug messages will appear in logs.
 
