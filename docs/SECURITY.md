@@ -145,28 +145,7 @@ Axis2/C supports HTTP authentication schemes for securing web service communicat
 2. **Digest Authentication**: More secure than Basic as passwords are hashed,
    but vulnerable to man-in-the-middle without TLS.
 
-### NTLM Authentication - REMOVED
-
-**NTLM support has been completely removed from Axis2/C.**
-
-Microsoft is deprecating NTLM:
-- [The evolution of Windows authentication](https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/4478637)
-
-NTLM had critical security vulnerabilities including:
-- Pass-the-hash attacks
-- NTLM relay attacks
-- Weak cryptographic algorithms (MD4/DES based)
-- Session hijacking vulnerabilities
-
-**Recommended alternatives:**
-- **Kerberos** - For Windows/Active Directory environments
-- **OAuth 2.0/OpenID Connect** - For modern web applications
-- **Mutual TLS (mTLS)** - For service-to-service communication
-- **SAML** - For enterprise SSO scenarios
-
-The `--enable-heimdal` and `--enable-libntlm` configure options have been removed.
-
-### Configuration Example
+### Basic/Digest Configuration Example
 
 ```xml
 <transportSender name="https" class="axis2_http_sender">
