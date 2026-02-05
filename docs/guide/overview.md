@@ -87,6 +87,8 @@ Modern protocol stack for new applications:
 - JSON request/response bodies
 - TLS 1.3 with mTLS support
 
+See the [HTTP/2 + JSON User Guide](../userguide/json-httpd-h2-userguide.md) for detailed examples and configuration.
+
 ### Legacy SOAP/HTTP
 
 For existing SOAP integrations:
