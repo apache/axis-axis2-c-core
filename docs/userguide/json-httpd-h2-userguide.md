@@ -98,7 +98,7 @@ Axis2/C 2.0 introduces a complete HTTP/2 transport implementation designed for e
 - **Streaming Optimization**: Memory-efficient processing of large JSON payloads (50MB+) with 20% reduction in memory usage
 - **Enhanced Performance**: 30% reduction in request latency and 40% improvement in JSON processing throughput for enterprise workloads
 - **Memory Management**: Adaptive flow control and memory pressure detection for operation within 2GB heap constraints
-- **Security**: HTTPS-only enforcement (RFC 7540 compliance) with TLS 1.2+ and ALPN support
+- **Security**: HTTPS-only enforcement (RFC 7540 compliance) with TLS 1.2+ and ALPN support. See [HTTP/2 and JSON Security](../SECURITY.md#http2-and-json-security-axis2c-20) for JSON parser limits, payload size controls, and CVE mitigations.
 
 ### HTTP/2 Processing Modes
 
