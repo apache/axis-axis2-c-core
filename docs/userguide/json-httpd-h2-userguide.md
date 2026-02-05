@@ -59,6 +59,8 @@ This guide covers five **fully implemented** service demonstrations:
 4. **[CameraControlService](#cameracontrolservice-testing-generic-camera-control-with-sftp)**: Generic camera control with SFTP file transfer using user-implementable stub functions
 5. **[FinancialBenchmarkService](#financialbenchmarkservice-testing-financial-computation-benchmark)**: Financial computation benchmarks demonstrating native C performance for O(n²) matrix operations
 
+**Stateless Architecture**: All services are stateless—each request is processed independently without HTTP cookies or server-side session storage. This enables horizontal scaling where any server instance can handle any request.
+
 **⚠️ Protocol Requirement**: These services are **HTTP/2-only** for performance optimization. HTTP/1.1 requests will receive **HTTP 426 "Upgrade Required"** responses. Always use `curl --http2` for testing.
 
 More documentation concerning Axis2/C and JSON can be found in the [HTTP/2 JSON Architecture](../AXIS2C_HTTP2_MIGRATION_STATE.md) and [HTTP/2 Configuration](../HTTP2_AXIS2_DOT_XML.md).
