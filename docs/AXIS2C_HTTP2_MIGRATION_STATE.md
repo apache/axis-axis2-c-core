@@ -5,7 +5,7 @@
 **For practical deployment and testing examples**, see the comprehensive [Apache Axis2/C HTTP/2 JSON User Guide](userguide/json-httpd-h2-userguide.md) which provides:
 - Complete build and installation instructions
 - Apache httpd configuration with HTTP/2 and SSL/TLS
-- Three fully implemented service examples (BigData, Authentication, XSS Protection)
+- Five fully implemented service examples (BigData, Authentication, XSS Protection, Camera Control, Financial Benchmark)
 - curl-based testing examples for all services
 - Enterprise deployment patterns
 
