@@ -1375,10 +1375,74 @@ curl -k --http2 \
 }
 ```
 
+**Test configure settings (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "configure_settings",
+       "resolution": "1920x1080",
+       "fps": "30",
+       "codec": "h264",
+       "bitrate": "8000000",
+       "audio_source": "mic"
+     }' \
+     https://localhost/services/CameraControlService/configureSettings
+```
+
+**Test list files (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "list_files",
+       "pattern": "*.mp4",
+       "directory": "/storage/emulated/0/DCIM/OpenCamera"
+     }' \
+     https://localhost/services/CameraControlService/listFiles
+```
+
+**Expected Response Format (List Files):**
+```json
+{
+  "success": true,
+  "file_count": 3,
+  "total_size": 157286400,
+  "directory": "/storage/emulated/0/DCIM/OpenCamera",
+  "files": [
+    {"name": "VID_20260101_120000.mp4", "size": 52428800, "modified": "2026-01-01 12:00:00"},
+    {"name": "VID_20260102_140000.mp4", "size": 52428800, "modified": "2026-01-02 14:00:00"},
+    {"name": "VID_20260103_160000.mp4", "size": 52428800, "modified": "2026-01-03 16:00:00"}
+  ]
+}
+```
+
+**Test delete files (stub implementation):**
+```bash
+curl -k --http2 \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "delete_files",
+       "pattern": "VID_20260101_*.mp4"
+     }' \
+     https://localhost/services/CameraControlService/deleteFiles
+```
+
+Supported delete patterns:
+- Specific file: `"VID_20260104_105049.mp4"`
+- Wildcard: `"*.mp4"`, `"VID_2026*"`
+- Date: `"2026-01-04"` (all files from that date)
+- Today: `"today"` (all files from current date)
+- All: `"*"` (delete all video files)
+
 **Implementation Requirements**:
-- Replace stub functions with camera-specific implementations
-- Implement `camera_device_start_recording_impl()`, `camera_device_stop_recording_impl()`, `camera_device_get_status_impl()`, `camera_device_configure_settings_impl()`, and `camera_device_sftp_transfer_impl()`
-- See comprehensive examples for OpenCamera JNI, V4L2, IP cameras, and libssh2 SFTP integration in the implementation guide
+
+For comprehensive implementation examples including OpenCamera and libssh2 SFTP integration, see the [Kanaha](https://github.com/robertlazarski/kanaha) project:
+
+- [Kanaha Multi-Camera Deployment Guide](https://github.com/robertlazarski/kanaha/blob/main/docs/MULTI_CAMERA_DEPLOYMENT_SYSTEM.md) - Camera-specific implementations for `camera_device_start_recording_impl()`, `camera_device_stop_recording_impl()`, `camera_device_get_status_impl()`, `camera_device_configure_settings_impl()`, `camera_device_sftp_transfer_impl()`, `camera_device_list_files_impl()`, and `camera_device_delete_files_impl()`
+- [Android Support Guide](../HTTP2_ANDROID.md) - Cross-compile for ARM64/ARMv7 mobile devices
+
+**Note:** [Kanaha](https://github.com/robertlazarski/kanaha) is an independent project (GPLv3 licensed due to OpenCamera dependency) and is not affiliated with Apache Software Foundation. It demonstrates production deployment patterns for the CameraControlService sample in `samples/user_guide/camera-control-service/`.
 
 ### FinancialBenchmarkService Testing (Financial Computation Benchmark)
 
