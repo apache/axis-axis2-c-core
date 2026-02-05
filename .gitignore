@@ -40,6 +40,9 @@ missing
 stamp-h*
 test-driver
 compile
+confdefs.h
+conftest.c
+conftest.err
 
 # Build artifacts
 *.o
