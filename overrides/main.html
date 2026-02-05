@@ -1,41 +1,36 @@
 {% extends "base.html" %}
 
-{% block announce %}
+{% block content %}
+{{ super() }}
+<div class="support-asf-container">
+  <a href="https://www.apache.org/foundation/contributing.html"
+     class="support-asf"
+     title="Support the Apache Software Foundation"
+     target="_blank"
+     rel="noopener">
+    <img src="https://www.apache.org/images/SupportApache-small.png"
+         alt="Support the ASF">
+  </a>
+</div>
 <style>
+  .support-asf-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    padding: 1rem;
+  }
   .support-asf {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-    opacity: 0.85;
+    opacity: 0.9;
     transition: opacity 0.2s;
   }
   .support-asf:hover {
     opacity: 1;
   }
   .support-asf img {
-    width: 100px;
+    width: 120px;
     height: auto;
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
-  @media screen and (max-width: 76.1875em) {
-    .support-asf img {
-      width: 80px;
-    }
-  }
-  @media screen and (max-width: 600px) {
-    .support-asf {
-      display: none;
-    }
-  }
 </style>
-<a href="https://www.apache.org/foundation/contributing.html"
-   class="support-asf"
-   title="Support the Apache Software Foundation"
-   target="_blank"
-   rel="noopener">
-  <img src="https://www.apache.org/images/SupportApache-small.png"
-       alt="Support the ASF">
-</a>
 {% endblock %}
