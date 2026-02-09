@@ -361,7 +361,7 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
     $ make
     $ make install
 
- 	(e) With JSON Support (REST API Alternative)
+ 	(d) With JSON Support (REST API Alternative)
     --------------------------------------------
 
     If you need REST API support as an alternative to SOAP-based web services,
@@ -380,7 +380,7 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
     WSDL2C code generator. It provides REST API capabilities as an alternative
     to traditional SOAP messaging.
 
- 	(f) With Google Test (C++ Unit Testing Support) - ADVANCED
+ 	(e) With Google Test (C++ Unit Testing Support) - ADVANCED
     -----------------------------------------------------------
 
     IMPORTANT: Google Test C++ unit tests are optional. The basic build and
@@ -428,13 +428,13 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 
     Method 3 - Manual functionality verification (after Method 2):
         # Test WSDL2C native generator
-        $ cd tools/codegen/native/build
+        $ cd tools/codegen/native
         $ ./wsdl2c-native --help
 
         # Test code generation and compilation
         $ mkdir /tmp/axis2c_test && cd /tmp/axis2c_test
         $ echo '<?xml version="1.0"?><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://test/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://test/"><types><xsd:schema targetNamespace="http://test/"><xsd:element name="TestRequest" type="xsd:string"/><xsd:element name="TestResponse" type="xsd:string"/></xsd:schema></types><message name="TestMessage"><part name="body" element="tns:TestRequest"/></message><message name="TestResponseMessage"><part name="body" element="tns:TestResponse"/></message><portType name="TestPortType"><operation name="TestOperation"><input message="tns:TestMessage"/><output message="tns:TestResponseMessage"/></operation></portType><binding name="TestBinding" type="tns:TestPortType"><soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/><operation name="TestOperation"><soap:operation soapAction="urn:TestOperation"/><input><soap:body use="literal"/></input><output><soap:body use="literal"/></output></operation></binding><service name="TestService"><port name="TestPort" binding="tns:TestBinding"><soap:address location="http://localhost:8080/axis2/services/TestService"/></port></service></definitions>' > test.wsdl
-        $ ${AXIS2C_HOME}/../tools/codegen/native/build/wsdl2c-native -uri test.wsdl -o output -d adb -u
+        $ ${AXIS2C_HOME}/../tools/codegen/native/wsdl2c-native -uri test.wsdl -o output -d adb -u
         $ cd output/src && gcc -c adb_*.c -I. -I${AXIS2C_HOME}/include/axis2-2.0.0 -I/usr/include/libxml2 -Wall -Wno-unused-parameter
 
     Note: Methods 2 and 3 avoid the C++ Google Test compilation issues and
@@ -460,7 +460,7 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
    
    	To build the samples:
 	
-	$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib/
+	$ export LD_LIBRARY_PATH=${AXIS2C_HOME}/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
     $ cd samples
     $ ./configure --prefix=${AXIS2C_HOME} 
 				  --with-axis2=${AXIS2C_HOME}/include/axis2-2.0.0
@@ -499,7 +499,7 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 	NOTE 2 : If you run into shared lib problems, set the LD_LIBRARY_PATH as 
 			 follows.
 				 
-			 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib
+			 $ export LD_LIBRARY_PATH=${AXIS2C_HOME}/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
 	(b) Clients
 	-----------
@@ -519,7 +519,7 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 
    	NOTE : If you run into shared lib problems, set the LD_LIBRARY_PATH as
 		   follows.
-		   $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib
+		   $ export LD_LIBRARY_PATH=${AXIS2C_HOME}/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
 
 2. Getting Axis2/C Working on Windows
@@ -899,7 +899,7 @@ are not supported in HTTP/2 due to high effort and few benefits.
    	   $ apt-get install libxml2-dev
 	  
 	2. If you are using a RedHat/Fedora based system run
-	   $ yum install libxml2-dev
+	   $ yum install libxml2-devel
 	   
 	3. If you install libxml2 from source you will not get this error
 
