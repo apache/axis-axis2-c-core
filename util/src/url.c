@@ -285,7 +285,10 @@ axutil_url_parse_string(
         {
             port = AXIS2_ATOI(port_str);
         }
-        /* Validate port range (0-65535) */
+        /* Validate port range (0-65535).
+         * Note: port is set by AXIS2_ATOI in every branch above (path with '/',
+         * path with '?', path with '#', and no-path), so this check covers all
+         * code paths even though it runs unconditionally. */
         if(port < 0 || port > 65535)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
