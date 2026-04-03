@@ -66,6 +66,10 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type f -name config.status`
 	rm -rf $(distdir)/tools/md5/src/md5
 	find $(distdir) -name "makefile" | xargs sed -i "s/\/WX//g"
+	find $(distdir) -name "*.gcda" -delete
+	find $(distdir) -name "*.gcno" -delete
+	find $(distdir) -path "*/gtest/gtest-all.cc" -delete
+	find $(distdir) -path "*/gtest/gtest_main.cc" -delete
 	sh dist.sh
 
 bindist: $(bin_PROGRAMS)
