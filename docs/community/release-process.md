@@ -202,52 +202,55 @@ sha512sum -c axis2c-src-${VERSION}.tar.gz.sha512
 
 ### 4.1 Upload to ASF Development Area
 
-Use SVN to upload to the development distribution area:
+Use SVN to upload to the development distribution area. Note the SVN dev path
+does NOT include `core/` — it is `dist/dev/axis/axis2/c/`:
 
 ```bash
-# Checkout dev area
-svn checkout https://dist.apache.org/repos/dist/dev/axis/axis2/c/core/ axis2c-dev-dist
-cd axis2c-dev-dist
+# Checkout dev area (empty directory, creates it if needed)
+svn checkout https://dist.apache.org/repos/dist/dev/axis/axis2/c/ ~/repos/axis2c-dev-dist
+cd ~/repos/axis2c-dev-dist
 
-# Create version directory
+# Create version directory and copy artifacts
 mkdir ${VERSION}
-cd ${VERSION}
-
-# Copy source artifacts
-cp /path/to/axis2c-src-${VERSION}.tar.gz .
-cp /path/to/axis2c-src-${VERSION}.tar.gz.asc .
-cp /path/to/axis2c-src-${VERSION}.tar.gz.sha512 .
-cp /path/to/KEYS .
+cp ~/repos/axis-axis2-c-core/axis2c-src-${VERSION}.tar.gz     ${VERSION}/
+cp ~/repos/axis-axis2-c-core/axis2c-src-${VERSION}.tar.gz.asc ${VERSION}/
+cp ~/repos/axis-axis2-c-core/axis2c-src-${VERSION}.tar.gz.sha512 ${VERSION}/
 
 # Commit
-cd ..
 svn add ${VERSION}
-svn commit -m "Axis2/C ${VERSION} release candidate"
+svn commit -m "Stage Apache Axis2/C ${VERSION} RC1 for vote"
 ```
 
-### 4.2 Prepare Site Staging Area
+Do NOT copy KEYS into the version directory — the KEYS file lives at the
+parent level (`dist/release/axis/axis2/c/KEYS`) and is already maintained.
+
+### 4.2 Build and Commit Site
+
+The site is built with MkDocs from source in the axis-axis2-c-core repo and
+committed directly to the axis-site repo. There is no separate staging step —
+the site is updated in place under `axis2/c/core/`.
 
 ```bash
-# Clone site repository
-git clone https://gitbox.apache.org/repos/asf/axis-site.git
-cd axis-site
+# Install MkDocs if not already available
+pip install mkdocs mkdocs-material
 
-# Create staging directory
-cp -r axis2/c/core axis2/c/core-staging
+# Build site from axis-axis2-c-core docs/
+cd ~/repos/axis-axis2-c-core
+mkdocs build
+# Output is in site/
 
-# Build documentation using MkDocs
-cd /path/to/axis-axis2-c-core
-./mkdocs-venv/bin/mkdocs build
+# Sync built site into axis-site (replaces old Maven/1.6.0 content)
+rsync -av --delete site/ ~/repos/site/axis-site/axis2/c/core/
 
-# Copy built site to staging
-cp -r site/* /path/to/axis-site/axis2/c/core-staging/
-
-# Commit staging site
-cd /path/to/axis-site
-git add axis2/c/core-staging
-git commit -m "Axis2/C ${VERSION} site staging"
+# Commit to axis-site
+cd ~/repos/site/axis-site
+git add -A axis2/c/core/
+git commit -m "Apache Axis2/C ${VERSION} site — MkDocs build"
 git push
 ```
+
+Before building, ensure `docs/downloads.md` has the correct download links
+for the new version pointing to `downloads.apache.org/axis/axis2/c/${VERSION}/`.
 
 ## Step 5: Call for Vote
 
@@ -339,22 +342,23 @@ svn mv https://dist.apache.org/repos/dist/release/axis/axis2/c/core/OLD_VERSION 
 
 ### 7.1 Publish Site
 
-```bash
-cd /path/to/axis-site
+The site was already committed to axis-site in Step 4.2. After the vote passes,
+push the axis-site changes if they haven't been pushed yet:
 
-# Replace production with staging
-git rm -r axis2/c/core
-git mv axis2/c/core-staging axis2/c/core
-git commit -m "Apache Axis2/C ${VERSION} site"
+```bash
+cd ~/repos/site/axis-site
 git push
 ```
 
+The ASF gitpubsub infrastructure automatically deploys commits to axis-site.
+
 ### 7.2 Verify Site Deployment
 
-The site will automatically deploy via ASF infrastructure. Verify:
+The site will deploy automatically. Verify:
 - https://axis.apache.org/axis2/c/core/
+- https://axis.apache.org/axis2/c/core/downloads/
 
-This may take several hours to propagate to all mirrors.
+Deployment is typically within minutes but may take up to an hour.
 
 ## Step 8: Announce Release
 

@@ -1,5 +1,34 @@
 # Downloads
 
+## Current Release: 2.0.0
+
+Apache Axis2/C 2.0.0 is the current release — the first release since 1.6.0 (2009).
+It includes 17 years of bug fixes, HTTP/2 support, and JSON-RPC services.
+
+| File | SHA-512 | Signature |
+|------|---------|-----------|
+| [axis2c-src-2.0.0.tar.gz](https://downloads.apache.org/axis/axis2/c/2.0.0/axis2c-src-2.0.0.tar.gz) | [SHA-512](https://downloads.apache.org/axis/axis2/c/2.0.0/axis2c-src-2.0.0.tar.gz.sha512) | [ASC](https://downloads.apache.org/axis/axis2/c/2.0.0/axis2c-src-2.0.0.tar.gz.asc) |
+
+**KEYS file**: [https://downloads.apache.org/axis/axis2/c/KEYS](https://downloads.apache.org/axis/axis2/c/KEYS)
+
+See [Release Notes 2.0.0](release-notes-2.0.0.md) for the full change log.
+
+### Verifying Downloads
+
+```bash
+# Import Apache Axis2/C release signing keys
+wget https://downloads.apache.org/axis/axis2/c/KEYS
+gpg --import KEYS
+
+# Verify signature
+gpg --verify axis2c-src-2.0.0.tar.gz.asc axis2c-src-2.0.0.tar.gz
+
+# Verify checksum
+sha512sum -c axis2c-src-2.0.0.tar.gz.sha512
+```
+
+---
+
 ## Source Code
 
 ### GitHub Repository
