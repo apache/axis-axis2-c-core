@@ -132,8 +132,7 @@ Update version in these files:
 ```bash
 ./configure --prefix=/tmp/axis2c-test \
     --enable-tests=yes \
-    --with-apache2=/usr/include/apache2 \
-    --enable-tcp=yes
+    --with-apache2=/usr/include/apache2
 make clean
 make
 make check

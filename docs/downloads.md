@@ -21,8 +21,7 @@ git clone git@github.com:apache/axis-axis2-c-core.git
 
 | Branch | Description |
 |--------|-------------|
-| `main` | Current development (HTTP/2 + JSON focus) |
-| `trunk` | Legacy branch (SOAP-era code) |
+| `master` | Current development |
 
 ### Release Tags
 
@@ -33,7 +32,7 @@ Releases are tagged in the repository:
 git tag -l
 
 # Checkout specific version
-git checkout tags/v1.7.0
+git checkout tags/v2.0.0
 ```
 
 ## Building from Source
