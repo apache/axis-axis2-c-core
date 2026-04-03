@@ -224,11 +224,15 @@ svn commit -m "Stage Apache Axis2/C ${VERSION} RC1 for vote"
 Do NOT copy KEYS into the version directory — the KEYS file lives at the
 parent level (`dist/release/axis/axis2/c/KEYS`) and is already maintained.
 
-### 4.2 Build and Commit Site
+### 4.2 Build and Commit Site to core-staging
 
-The site is built with MkDocs from source in the axis-axis2-c-core repo and
-committed directly to the axis-site repo. There is no separate staging step —
-the site is updated in place under `axis2/c/core/`.
+The site is built with MkDocs and committed to `axis2/c/core-staging/` in the
+axis-site repo. ASF GitPubSub auto-publishes this to
+`https://axis.apache.org/axis2/c/core-staging/` within minutes of the push.
+
+This is a **temporary staging directory** used only during the release vote —
+identical to the Axis2/Java core-staging pattern. Do NOT update `core/` yet;
+that happens post-vote (Step 7).
 
 ```bash
 # Install MkDocs if not already available
@@ -239,13 +243,13 @@ cd ~/repos/axis-axis2-c-core
 mkdocs build
 # Output is in site/
 
-# Sync built site into axis-site (replaces old Maven/1.6.0 content)
-rsync -av --delete site/ ~/repos/site/axis-site/axis2/c/core/
+# Sync built site into core-staging (does not touch production core/)
+rsync -av ~/repos/axis-axis2-c-core/site/ ~/repos/site/axis-site/axis2/c/core-staging/
 
-# Commit to axis-site
+# Commit to axis-site master branch
 cd ~/repos/site/axis-site
-git add -A axis2/c/core/
-git commit -m "Apache Axis2/C ${VERSION} site — MkDocs build"
+git add axis2/c/core-staging/
+git commit -m "axis2/c core-staging for ${VERSION} release vote"
 git push
 ```
 
@@ -273,7 +277,7 @@ Git tag: https://github.com/apache/axis-axis2-c-core/releases/tag/vX.Y.Z
 
 Distributions: https://dist.apache.org/repos/dist/dev/axis/axis2/c/X.Y.Z/
 
-Site: https://axis.apache.org/axis2/c/core/
+Site: https://axis.apache.org/axis2/c/core-staging/
 
 +1 from me
 
@@ -281,9 +285,9 @@ Your Name
 ```
 
 Notes:
-- The site link points directly to `axis2/c/core/` — the axis-site repo is
-  updated in Step 4.2 before the vote, so voters see the new site immediately
-- No separate core-staging step is used for Axis2/C (unlike Axis2/Java)
+- The site link uses `core-staging/` — the temporary preview URL built in Step 4.2.
+  This matches the Axis2/Java release pattern.
+- After the vote passes, core-staging is promoted to core/ (Step 7) and deleted.
 - The distributions path does NOT include `/core/`
 
 Voting guide:
@@ -343,21 +347,31 @@ svn mv https://dist.apache.org/repos/dist/release/axis/axis2/c/core/OLD_VERSION 
 
 ## Step 7: Deploy Website
 
-### 7.1 Publish Site
+### 7.1 Promote core-staging to core
 
-The site was already committed to axis-site in Step 4.2. After the vote passes,
-push the axis-site changes if they haven't been pushed yet:
+After the vote passes, replace the production site with core-staging and delete
+the staging directory:
 
 ```bash
 cd ~/repos/site/axis-site
+
+# Replace production site with staged content
+rsync -av --delete axis2/c/core-staging/ axis2/c/core/
+
+# Remove the staging directory
+git rm -r axis2/c/core-staging
+
+# Stage and commit
+git add -A axis2/c/core/
+git commit -m "Apache Axis2/C ${VERSION} site"
 git push
 ```
 
-The ASF gitpubsub infrastructure automatically deploys commits to axis-site.
+ASF GitPubSub automatically deploys the commit.
 
 ### 7.2 Verify Site Deployment
 
-The site will deploy automatically. Verify:
+Verify:
 - https://axis.apache.org/axis2/c/core/
 - https://axis.apache.org/axis2/c/core/downloads/
 
