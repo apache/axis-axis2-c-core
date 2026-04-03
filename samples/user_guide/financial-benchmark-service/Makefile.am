@@ -59,8 +59,6 @@ include_HEADERS = src/financial_benchmark_service.h
 EXTRA_DIST = \
     services.xml \
     src/financial_benchmark_service.h \
-    README.md \
-    test/test_benchmark.sh \
-    test/generate_test_data.py
+    README.md
 
 endif # AXIS2_JSON_ENABLED

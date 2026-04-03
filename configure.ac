@@ -782,17 +782,18 @@ if test x$http2_enabled = xtrue; then
     ])
 fi
 
-dnl Conditionally configure HTTP/2 JSON sample services (including camera control and financial benchmark)
-if test x$http2_enabled = xtrue && test x$json_enabled = xtrue; then
-    AC_CONFIG_FILES([
-        samples/user_guide/Makefile
-        samples/user_guide/clients/Makefile
-        samples/user_guide/bigdata-h2-service/Makefile
-        samples/user_guide/login-service/Makefile
-        samples/user_guide/testws-service/Makefile
-        samples/user_guide/camera-control-service/Makefile
-        samples/user_guide/financial-benchmark-service/Makefile
-    ])
-fi
+dnl samples/user_guide is in samples/SUBDIRS unconditionally, so its Makefile must
+dnl always be generated. The service subdirs are in DIST_SUBDIRS (automake union),
+dnl so their Makefiles must also exist for make dist. Compilation is still gated by
+dnl the AXIS2_JSON_ENABLED/WITH_NGHTTP2 conditionals inside each Makefile.am.
+AC_CONFIG_FILES([
+    samples/user_guide/Makefile
+    samples/user_guide/clients/Makefile
+    samples/user_guide/bigdata-h2-service/Makefile
+    samples/user_guide/login-service/Makefile
+    samples/user_guide/testws-service/Makefile
+    samples/user_guide/camera-control-service/Makefile
+    samples/user_guide/financial-benchmark-service/Makefile
+])
 
 AC_OUTPUT

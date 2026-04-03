@@ -30,7 +30,6 @@ endif
 
 # HTTP/2 Pure JSON Services Documentation
 EXTRA_DIST = \
-    bigdata-h2-service/README.md \
     bigdata-h2-service/services.xml \
     bigdata-h2-service/src/bigdata_h2_service.c \
     bigdata-h2-service/src/bigdata_h2_service.h \
@@ -40,9 +39,7 @@ EXTRA_DIST = \
     financial-benchmark-service/README.md \
     financial-benchmark-service/services.xml \
     financial-benchmark-service/src/financial_benchmark_service.c \
-    financial-benchmark-service/src/financial_benchmark_service.h \
-    financial-benchmark-service/test/test_benchmark.sh \
-    financial-benchmark-service/test/generate_test_data.py
+    financial-benchmark-service/src/financial_benchmark_service.h
 
 # Clean up service builds
 clean-local:
