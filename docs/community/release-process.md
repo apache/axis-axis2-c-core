@@ -256,32 +256,35 @@ for the new version pointing to `downloads.apache.org/axis/axis2/c/${VERSION}/`.
 
 ### 5.1 Send Vote Email
 
-Send a vote email to `c-dev@axis.apache.org` with the following format:
+Send a vote email to `c-dev@axis.apache.org`. Keep it brief — see the
+Axis2/Java vote format as a model:
 
 ```
 Subject: [VOTE] Release Apache Axis2/C X.Y.Z
 
-Hi,
+I'd like to call a vote on releasing Apache Axis2/C X.Y.Z.
 
-I would like to call for a vote to release Apache Axis2/C X.Y.Z.
+This is the first release of Axis2/C since 1.6.0 in 2009. Version X.Y.Z
+includes 17 years of bug fixes (115+ Jira issues resolved), HTTP/2 support
+with pure JSON-RPC services, and removes obsolete transports (TCP, CGI,
+libcurl, AMQP, IIS/ISAPI).
 
-Release artifacts:
-https://dist.apache.org/repos/dist/dev/axis/axis2/c/core/X.Y.Z/
+Git tag: https://github.com/apache/axis-axis2-c-core/releases/tag/vX.Y.Z
 
-Source repository tag:
-https://github.com/apache/axis-axis2-c-core/releases/tag/vX.Y.Z
+Distributions: https://dist.apache.org/repos/dist/dev/axis/axis2/c/X.Y.Z/
 
-Site preview:
-https://axis.apache.org/axis2/c/core-staging/
+Site: https://axis.apache.org/axis2/c/core/
 
-Release notes:
-https://github.com/apache/axis-axis2-c-core/blob/vX.Y.Z/docs/release-notes-X.Y.Z.md
++1 from me
 
-The vote is open for at least 72 hours.
+Your Name
+```
 
-[ ] +1 Release this package
-[ ] +0 No opinion
-[ ] -1 Do not release (provide reason)
+Notes:
+- The site link points directly to `axis2/c/core/` — the axis-site repo is
+  updated in Step 4.2 before the vote, so voters see the new site immediately
+- No separate core-staging step is used for Axis2/C (unlike Axis2/Java)
+- The distributions path does NOT include `/core/`
 
 Voting guide:
 - Download and verify signatures: gpg --verify *.asc
