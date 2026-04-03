@@ -18,80 +18,75 @@ Key Features
           * Client transport with ability to enable SSL support
           * Basic HTTP Authentication
           * Digest HTTP Authentication
-          * libcurl based client transport
-          * CGI interface
 
    4. Transports supported: HTTPS
           * HTTPS Transport implementation using OpenSSL
           * SNI (Server Name Indication) support
 
-   5. Transports supported: TCP
-          * for both client and server side
-
-   6. Transports supported: HTTP/2 (NEW in 2.0.0)
+   5. Transports supported: HTTP/2 (NEW in 2.0.0)
           * HTTP/2 transport for JSON requests via Apache mod_http2
           * Stream multiplexing and header compression
           * Large payload support (50MB+)
 
-   7. Transport proxy support (HTTP)
+   6. Transport proxy support (HTTP)
           * Proxy Authentication (Basic/Digest)
 
-   8. Module architecture, mechanism to extend the SOAP processing model.
+   7. Module architecture, mechanism to extend the SOAP processing model.
 
-   9. WS-Addressing support, both the submission (2004/08) and
+   8. WS-Addressing support, both the submission (2004/08) and
       final (2005/08) versions, implemented as a module.
 
-  10. MTOM/XOP support.
+   9. MTOM/XOP support.
 
-  11. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages;
+  10. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages;
       This has complete XML infoset support.
 
-  12. XPath support for Axiom XML Object model
+  11. XPath support for Axiom XML Object model
 
-  13. XML parser abstraction
+  12. XML parser abstraction
           * Libxml2 wrapper
           * Guththila pull parser support
 
-  14. JSON support (NEW in 2.0.0)
+  13. JSON support (NEW in 2.0.0)
           * JSON message processing via json-c library
           * JSON-RPC message receiver
 
-  15. Both directory based and archive based deployment models for deploying
+  14. Both directory based and archive based deployment models for deploying
       services and modules
 
-  16. Description hierarchy providing access to static data of Axis2/C runtime
+  15. Description hierarchy providing access to static data of Axis2/C runtime
       (configuration, service groups, services, operations and messages)
 
-  17. Context hierarchy providing access to dynamic
+  16. Context hierarchy providing access to dynamic
       Axis2/C runtime information (corresponding contexts to map to
       each level of description hierarchy)
 
-  18. Message receiver abstraction
+  17. Message receiver abstraction
           * Inbuilt raw XML message receiver
           * JSON-RPC message receiver (NEW in 2.0.0)
 
-  19. Code generation tool for stub and skeleton generation for a given
+  18. Code generation tool for stub and skeleton generation for a given
       WSDL (based on Java tool)
           * Axis Data Binding (ADB) support
 
-  20. Native C WSDL2C code generator (NEW in 2.0.0)
+  19. Native C WSDL2C code generator (NEW in 2.0.0)
           * Pure C implementation with libxml2 dependency only
           * Fast, reliable WSDL to C code generation
 
-  21. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
+  20. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
           * Support for RESTful Services
 
-  22. Comprehensive documentation
+  21. Comprehensive documentation
           * Axis2/C Manual
           * MkDocs-based documentation site
 
-  23. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
+  22. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
 
-  24. HTTP KeepAlive support.
+  23. HTTP KeepAlive support.
 
-  25. HTTP session handling.
+  24. HTTP session handling.
 
-  26. Security hardening (NEW in 2.0.0)
+  25. Security hardening (NEW in 2.0.0)
           * SSL/TLS peer name validation enabled by default
           * JSON payload size and depth limits
 
@@ -117,7 +112,6 @@ Improvements:
    * HTTP header reading performance (AXIS2C-1480)
    * Custom HTTP User-Agent header (AXIS2C-1612)
    * Base64 whitespace handling (AXIS2C-1666)
-   * Libcurl debug logging (AXIS2C-1371)
    * Multi-threading client transport optimization (AXIS2C-1328)
    * Prevention of name clashes with multiple services (AXIS2C-1330)
 
@@ -132,6 +126,9 @@ Bug Fixes (115 issues resolved):
    * macOS and FreeBSD build fixes
 
 Removed:
+   * TCP transport (unmaintained, use HTTP/2 instead)
+   * libcurl-based client transport (replaced by native HTTP client)
+   * CGI interface (unmaintained)
    * IIS/ISAPI integration (unmaintained since 2009, use WSL2 instead)
    * AMQP transport (experimental, unmaintained)
 
