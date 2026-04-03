@@ -62,12 +62,12 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 	    openssl >= 1.0.0 - Required for HTTPS and HTTP/2 ALPN negotiation
 
 	    Ubuntu/Debian installation:
-	        $ sudo apt install libnghttp2-dev libnghttp2-14 libssl-dev libcurl4-openssl-dev
+	        $ sudo apt install libnghttp2-dev libnghttp2-14 libssl-dev
 
 	    RedHat/CentOS installation:
-	        $ sudo yum install libnghttp2-devel openssl-devel libcurl-devel
+	        $ sudo yum install libnghttp2-devel openssl-devel
 	        # OR for newer systems:
-	        $ sudo dnf install libnghttp2-devel openssl-devel libcurl-devel
+	        $ sudo dnf install libnghttp2-devel openssl-devel
 
 	    Build with HTTP/2 support:
 	        $ ./configure \
@@ -76,7 +76,6 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 	            --enable-json=yes \
 	            --enable-tests \
 	            --enable-ssl \
-	            --enable-libcurl \
 	            --with-apache2=/usr/include/apache2 \
 	            --with-apr=/usr/include/apr-1.0 \
 	            PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
@@ -616,11 +615,7 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 		- Set ENABLE_SSL option to 1
 		- Set OPENSSL_BIN_DIR to the location where OpenSSL is installed
 
-	(d) Enable libcurl
-		- Set ENABLE_LIBCURL to 1
-		- Set LIBCURL_BIN_DIR to the location where libcurl is installed
-
-	(e) Setting zlib Location
+	(d) Setting zlib Location
 		- Set the ZLIB_BIN_DIR to the location where zlib is installed
 
 	2.2.2 Compiling the Source
