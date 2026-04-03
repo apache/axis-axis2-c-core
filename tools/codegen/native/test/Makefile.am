@@ -87,4 +87,4 @@ EXTRA_DIST = \
     adb_test_plan.md \
     wsdl/ \
     integration/ \
-    build/
+    output/

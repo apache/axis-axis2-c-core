@@ -758,14 +758,17 @@ AC_CONFIG_FILES([Makefile \
     ides/Makefile \
     include/Makefile \
     axis2c.pc \
-    gtest/Makefile \
-	dist.sh \
+    dist.sh \
 	bindist.sh \
 	axis2c_build.sh
     ])
 
-dnl gtest/Makefile is now configured unconditionally above
-dnl The GTEST_AVAILABLE conditional only controls whether it's included in SUBDIRS
+dnl gtest/Makefile is only generated when --with-gtest is passed.
+dnl Without it, GTEST_AVAILABLE=false excludes gtest from SUBDIRS and EXTRA_DIST,
+dnl and the Makefile is not generated, so make dist does not process it.
+if test x$gtest_available = xtrue; then
+    AC_CONFIG_FILES([gtest/Makefile])
+fi
 
 dnl Conditionally configure HTTP/2 transport subdirectories
 if test x$http2_enabled = xtrue; then

@@ -67,8 +67,7 @@ include_HEADERS = include/wsdl2c_native.h include/schema_loader.h
 # Subdirectories to recurse into
 SUBDIRS = test
 
-# Extra files to distribute
 EXTRA_DIST = \
-    SESSION_STATE.md \
-    README.md \
-    build/
+    BUILD_SYSTEM_EVALUATION.md \
+    CODEGEN_APPROACHES.md \
+    NESTED_ARRAYS_ANALYSIS.md

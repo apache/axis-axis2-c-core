@@ -52,6 +52,7 @@ endif
 EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples $(GTEST_EXTRA_DIST)
 
 dist-hook:
+	rm -rf $(distdir)/gtest
 	rm -rf `find $(distdir)/ -type d -name .git`
 	rm -rf `find $(distdir)/ -type f -name *.la`
 	rm -rf `find $(distdir)/ -type f -name *.o`
