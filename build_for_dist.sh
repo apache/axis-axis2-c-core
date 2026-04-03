@@ -20,13 +20,13 @@ AXIS2C_HOME=`pwd`/deploy
 export AXIS2C_HOME
 echo "AXIS2C_HOME = ${AXIS2C_HOME}"
 
-sh configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-apache2=/usr/include/apache2 --enable-tcp=yes --with-archive=/usr/include --with-apr=/usr/include/apr-1.0 --with-gtest=/usr/src/googletest/googletest
+sh configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-apache2=/usr/include/apache2 --with-archive=/usr/include --with-apr=/usr/include/apr-1.0 --with-gtest=/usr/src/googletest/googletest
 make -j 10
 make install
 
 cd samples
 sh autogen.sh
-sh configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.7.0
+sh configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-2.0.0
 make -j 10
 make install
 cd ..
