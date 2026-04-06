@@ -504,6 +504,7 @@ journalctl -xeu apache2-custom.service
 
 # Test configuration syntax
 sudo /usr/local/apache2/bin/httpd -t
+```
 
 **Verify Apache is working correctly:**
 ```bash

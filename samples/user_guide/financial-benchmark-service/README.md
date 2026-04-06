@@ -8,13 +8,15 @@ This service demonstrates Axis2/C performance on **resource-constrained hardware
 
 ### The "Single Camera" Use Case
 
-Just as the Kanaha Camera Control system provides value with a single old Android phone, this benchmark service demonstrates that **one modest device** can run production-grade financial calculations:
+Just as the Kanaha Camera Control system provides value with a single old Android phone, this benchmark service demonstrates that **one modest device** can run production-grade financial calculations.
 
-| Platform | Minimum RAM | Old Android (2GB) |
-|----------|-------------|-------------------|
-| **Java/WildFly 32** | 4-8 GB | ❌ Cannot start |
-| **Node.js/V8** | 1-2 GB | ⚠️ OOM risk |
-| **Axis2/C 2.0** | ~30 MB | ✅ Runs comfortably |
+The Java comparison here is not a straw man — it reflects real enterprise production deployments. Large financial services organizations routinely run **70+ WildFly servers**, all configured at **16 GB RAM minimum**, with the majority at **32 GB or higher**, running portfolio management, securities master, and data processing services under heavy load. These are the real numbers:
+
+| Platform | Edge Device (2 GB) | Enterprise Production Reality |
+|----------|--------------------|-----------------------|
+| **Java/WildFly 32** | ❌ Cannot start | 16–32+ GB per server (70+ servers) |
+| **Node.js/V8** | ⚠️ OOM risk | 4–8 GB |
+| **Axis2/C 2.0** | ✅ Runs comfortably | ~30 MB (unchanged at any scale) |
 
 ## Operations
 
@@ -98,7 +100,7 @@ Runs Value at Risk (VaR) simulation using Geometric Brownian Motion.
 
 ### 3. Scenario Analysis (`/scenarioAnalysis`)
 
-Demonstrates O(1) hash table lookups vs O(n) linear search (mirrors DPT's Array→Map optimization).
+Demonstrates O(1) hash table lookups vs O(n) linear search — a common optimization in enterprise portfolio systems migrating from array scans to hash-based asset lookups.
 
 ### 4. Service Metadata (`/metadata`)
 
@@ -195,20 +197,21 @@ On a **$20 used Android phone from 2014** (Galaxy S5, 2GB RAM):
 │  Result: 250,000 matrix ops in 4.5ms                       │
 │  Memory: 28 MB peak                                        │
 │  ────────────────────────────────────────────────────────  │
-│  Java/WildFly: Cannot run (requires 4-8GB RAM)             │
-│  Hardware cost: $20 vs $2000+                              │
+│  Java/WildFly: Cannot run on this device.                  │
+│  Enterprise minimum: 16 GB RAM per WildFly server          │
+│  Hardware cost: $20 device vs $5,000–$20,000+ server       │
 └────────────────────────────────────────────────────────────┘
 ```
 
 ### Benchmark Results Table
 
-| Test | Axis2/C (2GB device) | Java/WildFly |
-|------|---------------------|--------------|
-| Portfolio 500 assets | ~5ms | N/A (cannot start) |
-| Monte Carlo 10K sims | ~100ms | N/A (cannot start) |
-| Memory usage | ~30MB | 4-8GB minimum |
-| Startup time | <1s | 30-60s |
-| Device cost | $20 | $2000+ |
+| Test | Axis2/C (2GB device) | Java/WildFly 32 (Enterprise production) |
+|------|---------------------|----------------------------------------|
+| Portfolio 500 assets | ~5ms | N/A — cannot start on device |
+| Monte Carlo 10K sims | ~100ms | N/A — cannot start on device |
+| Memory footprint | ~30 MB | 16–32 GB (enterprise: 70+ servers configured this way) |
+| Startup time | <1s | 30–60s |
+| Hardware cost | $20 used phone | Enterprise server ($5,000–$20,000+) |
 
 ## Use Cases
 

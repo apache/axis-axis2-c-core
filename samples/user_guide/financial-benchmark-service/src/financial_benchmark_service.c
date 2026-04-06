@@ -468,7 +468,7 @@ finbench_portfolio_variance_response_to_json(
     /* Add comparison note for demo */
     json_object_object_add(json_resp, "comparison_note",
         json_object_new_string(
-            "Java/WildFly requires 4-8GB RAM minimum. "
+            "Enterprise Java/WildFly deployments require 16-32GB RAM per server. "
             "This device runs Axis2/C in ~30MB."));
 
     json_str = json_object_to_json_string_ext(json_resp, JSON_C_TO_STRING_PLAIN);
@@ -852,6 +852,430 @@ finbench_monte_carlo_json_only(
 }
 
 /* ============================================================================
+ * Scenario Analysis Implementation
+ *
+ * Demonstrates O(1) hash table vs O(n) linear search for asset lookups.
+ * Mirrors DPT v2's Array→Map optimization for 500+ asset portfolios.
+ *
+ * Financial calculation per asset:
+ *   expected_return = Σ( probability_i × (scenario_price_i / current_price - 1) )
+ *   upside = Σ( probability_i × max(0, price_i - current) × position_size )  [gains only]
+ *   downside = Σ( probability_i × max(0, current - price_i) × position_size ) [losses only]
+ *
+ * Benchmark: N_LOOKUPS = n_assets × 10 lookups measured for both methods.
+ * ============================================================================
+ */
+
+AXIS2_EXTERN finbench_scenario_request_t* AXIS2_CALL
+finbench_scenario_request_create_from_json(
+    const axutil_env_t *env,
+    const axis2_char_t *json_string)
+{
+    finbench_scenario_request_t *request = NULL;
+    json_object *json_obj = NULL;
+    json_object *assets_arr = NULL;
+    json_object *value_obj = NULL;
+    int i, j, n_assets;
+
+    if (!env || !json_string) return NULL;
+
+    json_obj = json_tokener_parse(json_string);
+    if (!json_obj) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "ScenarioAnalysis: Failed to parse JSON request");
+        return NULL;
+    }
+
+    request = AXIS2_MALLOC(env->allocator, sizeof(finbench_scenario_request_t));
+    if (!request) {
+        json_object_put(json_obj);
+        return NULL;
+    }
+    memset(request, 0, sizeof(finbench_scenario_request_t));
+
+    /* use_hash_lookup flag (default: run both, report both) */
+    if (json_object_object_get_ex(json_obj, "use_hash_lookup", &value_obj)) {
+        request->use_hash_lookup = json_object_get_boolean(value_obj)
+            ? AXIS2_TRUE : AXIS2_FALSE;
+    } else {
+        request->use_hash_lookup = AXIS2_TRUE;
+    }
+
+    /* request_id */
+    if (json_object_object_get_ex(json_obj, "request_id", &value_obj)) {
+        const char *rid = json_object_get_string(value_obj);
+        if (rid) request->request_id = axutil_strdup(env, rid);
+    }
+
+    /* assets array */
+    if (!json_object_object_get_ex(json_obj, "assets", &assets_arr) ||
+        !json_object_is_type(assets_arr, json_type_array)) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "ScenarioAnalysis: Missing or invalid 'assets' array");
+        if (request->request_id) AXIS2_FREE(env->allocator, request->request_id);
+        AXIS2_FREE(env->allocator, request);
+        json_object_put(json_obj);
+        return NULL;
+    }
+
+    n_assets = json_object_array_length(assets_arr);
+    if (n_assets <= 0 || n_assets > FINBENCH_MAX_ASSETS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "ScenarioAnalysis: n_assets=%d out of range (max %d)",
+            n_assets, FINBENCH_MAX_ASSETS);
+        if (request->request_id) AXIS2_FREE(env->allocator, request->request_id);
+        AXIS2_FREE(env->allocator, request);
+        json_object_put(json_obj);
+        return NULL;
+    }
+
+    request->n_assets = n_assets;
+    request->assets = AXIS2_MALLOC(env->allocator,
+        n_assets * sizeof(finbench_asset_scenario_t));
+    if (!request->assets) {
+        if (request->request_id) AXIS2_FREE(env->allocator, request->request_id);
+        AXIS2_FREE(env->allocator, request);
+        json_object_put(json_obj);
+        return NULL;
+    }
+    memset(request->assets, 0, n_assets * sizeof(finbench_asset_scenario_t));
+
+    for (i = 0; i < n_assets; i++) {
+        json_object *asset_obj = json_object_array_get_idx(assets_arr, i);
+        json_object *field_obj = NULL;
+        finbench_asset_scenario_t *a = &request->assets[i];
+
+        if (!asset_obj) continue;
+
+        if (json_object_object_get_ex(asset_obj, "asset_id", &field_obj))
+            a->asset_id = (int64_t)json_object_get_int64(field_obj);
+        else
+            a->asset_id = (int64_t)(i + 1); /* auto-assign if missing */
+
+        if (json_object_object_get_ex(asset_obj, "current_price", &field_obj))
+            a->current_price = json_object_get_double(field_obj);
+
+        if (json_object_object_get_ex(asset_obj, "position_size", &field_obj))
+            a->position_size = json_object_get_double(field_obj);
+
+        /* scenarios array: [{price, probability}, ...] */
+        json_object *sc_arr = NULL;
+        if (json_object_object_get_ex(asset_obj, "scenarios", &sc_arr) &&
+            json_object_is_type(sc_arr, json_type_array)) {
+            int n_sc = json_object_array_length(sc_arr);
+            if (n_sc > FINBENCH_MAX_SCENARIOS) n_sc = FINBENCH_MAX_SCENARIOS;
+            a->n_scenarios = n_sc;
+            for (j = 0; j < n_sc; j++) {
+                json_object *sc = json_object_array_get_idx(sc_arr, j);
+                json_object *sc_field = NULL;
+                if (!sc) continue;
+                if (json_object_object_get_ex(sc, "price", &sc_field))
+                    a->scenario_prices[j] = json_object_get_double(sc_field);
+                if (json_object_object_get_ex(sc, "probability", &sc_field))
+                    a->probabilities[j] = json_object_get_double(sc_field);
+            }
+        }
+    }
+
+    json_object_put(json_obj);
+    AXIS2_LOG_INFO(env->log, "ScenarioAnalysis: Parsed %d assets", n_assets);
+    return request;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+finbench_scenario_request_free(
+    finbench_scenario_request_t *request,
+    const axutil_env_t *env)
+{
+    if (!request || !env) return;
+    if (request->assets) AXIS2_FREE(env->allocator, request->assets);
+    if (request->request_id) AXIS2_FREE(env->allocator, request->request_id);
+    AXIS2_FREE(env->allocator, request);
+}
+
+AXIS2_EXTERN finbench_scenario_response_t* AXIS2_CALL
+finbench_scenario_response_create(const axutil_env_t *env)
+{
+    finbench_scenario_response_t *response;
+    response = AXIS2_MALLOC(env->allocator, sizeof(finbench_scenario_response_t));
+    if (response) memset(response, 0, sizeof(finbench_scenario_response_t));
+    return response;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+finbench_scenario_response_free(
+    finbench_scenario_response_t *response,
+    const axutil_env_t *env)
+{
+    if (!response || !env) return;
+    if (response->status)        AXIS2_FREE(env->allocator, response->status);
+    if (response->error_message) AXIS2_FREE(env->allocator, response->error_message);
+    if (response->lookup_method) AXIS2_FREE(env->allocator, response->lookup_method);
+    if (response->request_id)    AXIS2_FREE(env->allocator, response->request_id);
+    AXIS2_FREE(env->allocator, response);
+}
+
+/**
+ * Core Scenario Analysis Calculation
+ *
+ * Step 1 — Financial computation: expected return, upside, downside per asset.
+ * Step 2 — O(n) linear search benchmark: scan array for each lookup.
+ * Step 3 — O(1) hash table benchmark: axutil_hash lookup for each query.
+ *
+ * Both timings always reported so the comparison is always visible.
+ */
+AXIS2_EXTERN finbench_scenario_response_t* AXIS2_CALL
+finbench_calculate_scenarios(
+    const axutil_env_t *env,
+    finbench_scenario_request_t *request)
+{
+    finbench_scenario_response_t *response = NULL;
+    axutil_hash_t *hash = NULL;
+    long linear_start, linear_end, hash_build_start, hash_build_end;
+    long hash_lookup_start, hash_lookup_end;
+    int i, j, q;
+    double total_upside = 0.0, total_downside = 0.0;
+    double portfolio_weighted_value = 0.0;
+    double portfolio_expected_return = 0.0;
+    double total_position_value = 0.0;
+    int n_lookups;
+    long linear_found = 0, hash_found = 0;
+    char key_buf[32];
+
+    response = finbench_scenario_response_create(env);
+    if (!response) return NULL;
+
+    if (!request || !request->assets || request->n_assets <= 0) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "Invalid request: no assets provided");
+        return response;
+    }
+
+    /* -----------------------------------------------------------------------
+     * Step 1: Financial computation — expected return, upside, downside
+     * ----------------------------------------------------------------------- */
+    for (i = 0; i < request->n_assets; i++) {
+        finbench_asset_scenario_t *a = &request->assets[i];
+        double asset_expected_return = 0.0;
+        double asset_upside = 0.0, asset_downside = 0.0;
+        double asset_weighted_value = 0.0;
+
+        if (a->current_price <= 0.0 || a->n_scenarios <= 0) continue;
+
+        for (j = 0; j < a->n_scenarios; j++) {
+            double prob = a->probabilities[j];
+            double price = a->scenario_prices[j];
+            double ret = (price / a->current_price) - 1.0;
+
+            asset_expected_return += prob * ret;
+            asset_weighted_value  += prob * price * a->position_size;
+
+            if (price > a->current_price)
+                asset_upside   += prob * (price - a->current_price) * a->position_size;
+            else if (price < a->current_price)
+                asset_downside += prob * (a->current_price - price) * a->position_size;
+        }
+
+        double position_value = a->current_price * a->position_size;
+        portfolio_expected_return += asset_expected_return * position_value;
+        total_position_value      += position_value;
+        portfolio_weighted_value  += asset_weighted_value;
+        total_upside              += asset_upside;
+        total_downside            += asset_downside;
+    }
+
+    if (total_position_value > 0.0)
+        portfolio_expected_return /= total_position_value;
+
+    /* -----------------------------------------------------------------------
+     * Step 2: O(n) linear search benchmark
+     * Each query scans the array from index 0 until asset_id matches.
+     * n_lookups = n_assets × 10 to amplify the timing difference.
+     * ----------------------------------------------------------------------- */
+    n_lookups = request->n_assets * 10;
+    linear_start = get_time_us();
+
+    for (q = 0; q < n_lookups; q++) {
+        int64_t target_id = request->assets[q % request->n_assets].asset_id;
+        for (i = 0; i < request->n_assets; i++) {
+            if (request->assets[i].asset_id == target_id) {
+                linear_found++;
+                break;
+            }
+        }
+    }
+
+    linear_end = get_time_us();
+
+    /* -----------------------------------------------------------------------
+     * Step 3: O(1) hash table benchmark
+     * Build axutil_hash keyed by asset_id string, then perform same lookups.
+     * ----------------------------------------------------------------------- */
+    hash_build_start = get_time_us();
+    hash = axutil_hash_make(env);
+    if (hash) {
+        for (i = 0; i < request->n_assets; i++) {
+            snprintf(key_buf, sizeof(key_buf), "%" PRId64,
+                     request->assets[i].asset_id);
+            axutil_hash_set(hash, key_buf, AXIS2_HASH_KEY_STRING,
+                            &request->assets[i]);
+        }
+    }
+    hash_build_end = get_time_us();
+
+    hash_lookup_start = get_time_us();
+    if (hash) {
+        for (q = 0; q < n_lookups; q++) {
+            snprintf(key_buf, sizeof(key_buf), "%" PRId64,
+                     request->assets[q % request->n_assets].asset_id);
+            finbench_asset_scenario_t *found =
+                axutil_hash_get(hash, key_buf, AXIS2_HASH_KEY_STRING);
+            if (found) hash_found++;
+        }
+    }
+    hash_lookup_end = get_time_us();
+
+    if (hash) axutil_hash_free(hash, env);
+
+    /* -----------------------------------------------------------------------
+     * Populate response
+     * ----------------------------------------------------------------------- */
+    long linear_us   = linear_end - linear_start;
+    long hash_total_us = (hash_build_end - hash_build_start)
+                       + (hash_lookup_end - hash_lookup_start);
+
+    response->status              = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
+    response->expected_return     = portfolio_expected_return;
+    response->weighted_value      = portfolio_weighted_value;
+    response->upside_potential    = total_upside;
+    response->downside_risk       = total_downside;
+    response->upside_downside_ratio =
+        (total_downside > 0.0) ? (total_upside / total_downside) : 0.0;
+    response->calc_time_us        = linear_us; /* primary timing: linear */
+    response->lookups_performed   = n_lookups;
+    response->memory_used_kb      = finbench_get_memory_usage_kb();
+
+    if (linear_us > 0)
+        response->lookups_per_second =
+            (double)n_lookups / (linear_us / 1000000.0);
+
+    /* Store hash timing in lookup_method string for demo output */
+    char method_buf[256];
+    snprintf(method_buf, sizeof(method_buf),
+        "linear_search_us=%ld hash_total_us=%ld speedup=%.1fx "
+        "(linear=%ld found, hash=%ld found, n_assets=%d, n_lookups=%d)",
+        linear_us, hash_total_us,
+        (hash_total_us > 0) ? (double)linear_us / hash_total_us : 0.0,
+        linear_found, hash_found,
+        request->n_assets, n_lookups);
+    response->lookup_method = axutil_strdup(env, method_buf);
+
+    if (request->request_id)
+        response->request_id = axutil_strdup(env, request->request_id);
+
+    AXIS2_LOG_INFO(env->log,
+        "ScenarioAnalysis: %d assets, %d lookups — linear=%ldus hash=%ldus "
+        "speedup=%.1fx E[r]=%.4f U/D=%.2f",
+        request->n_assets, n_lookups, linear_us, hash_total_us,
+        (hash_total_us > 0) ? (double)linear_us / hash_total_us : 0.0,
+        portfolio_expected_return,
+        response->upside_downside_ratio);
+
+    return response;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_scenario_response_to_json(
+    const finbench_scenario_response_t *response,
+    const axutil_env_t *env)
+{
+    json_object *json_resp;
+    const char *json_str;
+    axis2_char_t *result;
+
+    if (!response || !env) return NULL;
+
+    json_resp = json_object_new_object();
+
+    json_object_object_add(json_resp, "status",
+        json_object_new_string(response->status ? response->status : "UNKNOWN"));
+
+    json_object_object_add(json_resp, "expected_return",
+        json_object_new_double(response->expected_return));
+
+    json_object_object_add(json_resp, "weighted_value",
+        json_object_new_double(response->weighted_value));
+
+    json_object_object_add(json_resp, "upside_potential",
+        json_object_new_double(response->upside_potential));
+
+    json_object_object_add(json_resp, "downside_risk",
+        json_object_new_double(response->downside_risk));
+
+    json_object_object_add(json_resp, "upside_downside_ratio",
+        json_object_new_double(response->upside_downside_ratio));
+
+    json_object_object_add(json_resp, "calc_time_us",
+        json_object_new_int64(response->calc_time_us));
+
+    json_object_object_add(json_resp, "lookups_performed",
+        json_object_new_int64(response->lookups_performed));
+
+    json_object_object_add(json_resp, "lookups_per_second",
+        json_object_new_double(response->lookups_per_second));
+
+    json_object_object_add(json_resp, "memory_used_kb",
+        json_object_new_int(response->memory_used_kb));
+
+    if (response->lookup_method) {
+        json_object_object_add(json_resp, "lookup_benchmark",
+            json_object_new_string(response->lookup_method));
+    }
+
+    if (response->request_id) {
+        json_object_object_add(json_resp, "request_id",
+            json_object_new_string(response->request_id));
+    }
+
+    if (response->error_message) {
+        json_object_object_add(json_resp, "error_message",
+            json_object_new_string(response->error_message));
+    }
+
+    json_str = json_object_to_json_string_ext(json_resp, JSON_C_TO_STRING_PLAIN);
+    result = axutil_strdup(env, json_str);
+    json_object_put(json_resp);
+
+    return result;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_scenario_json_only(
+    const axutil_env_t *env,
+    const axis2_char_t *json_request)
+{
+    finbench_scenario_request_t *request;
+    finbench_scenario_response_t *response;
+    axis2_char_t *json_response;
+
+    request = finbench_scenario_request_create_from_json(env, json_request);
+    if (!request) {
+        return axutil_strdup(env,
+            "{\"status\":\"FAILED\","
+            "\"error_message\":\"Failed to parse scenario request\"}");
+    }
+
+    response = finbench_calculate_scenarios(env, request);
+    json_response = finbench_scenario_response_to_json(response, env);
+
+    finbench_scenario_request_free(request, env);
+    finbench_scenario_response_free(response, env);
+
+    return json_response;
+}
+
+/* ============================================================================
  * Service Metadata
  * ============================================================================
  */
@@ -913,7 +1337,7 @@ finbench_get_metadata_json(const axutil_env_t *env)
     json_object_object_add(json_resp, "comparison_note",
         json_object_new_string(
             "This service runs on hardware with 1-2GB RAM where "
-            "Java/WildFly (4-8GB minimum) cannot operate. "
+            "enterprise Java/WildFly (16-32GB per server minimum) cannot operate. "
             "Demonstrates Axis2/C efficiency for edge computing."));
 
     json_str = json_object_to_json_string_ext(json_resp, JSON_C_TO_STRING_PRETTY);
