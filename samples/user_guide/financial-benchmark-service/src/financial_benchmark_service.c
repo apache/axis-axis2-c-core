@@ -215,10 +215,11 @@ finbench_portfolio_variance_request_create_from_json(
         return NULL;
     }
 
-    /* Extract weights */
+    /* Extract weights — record actual length for dimension validation */
     if (json_object_object_get_ex(json_obj, "weights", &array_obj) &&
         json_object_is_type(array_obj, json_type_array)) {
         int len = json_object_array_length(array_obj);
+        request->weights_provided = len;
         for (i = 0; i < request->n_assets && i < len; i++) {
             json_object *elem = json_object_array_get_idx(array_obj, i);
             request->weights[i] = json_object_get_double(elem);
@@ -245,13 +246,15 @@ finbench_portfolio_variance_request_create_from_json(
         json_object *first_elem = json_object_array_get_idx(array_obj, 0);
 
         if (first_elem && json_object_is_type(first_elem, json_type_array)) {
-            /* 2D array format: [[row0], [row1], ...] */
+            /* 2D array format: [[row0], [row1], ...] — record as flat element count */
             AXIS2_LOG_INFO(env->log,
                 "FinBench: Parsing 2D covariance matrix format");
+            int total_elements = 0;
             for (i = 0; i < request->n_assets && i < outer_len; i++) {
                 json_object *row = json_object_array_get_idx(array_obj, i);
                 if (row && json_object_is_type(row, json_type_array)) {
                     int row_len = json_object_array_length(row);
+                    total_elements += row_len;
                     for (j = 0; j < request->n_assets && j < row_len; j++) {
                         json_object *cell = json_object_array_get_idx(row, j);
                         request->covariance_matrix[i * request->n_assets + j] =
@@ -259,10 +262,18 @@ finbench_portfolio_variance_request_create_from_json(
                     }
                 }
             }
+            /* Account for any rows beyond n_assets (for mismatch detection) */
+            for (i = request->n_assets; i < outer_len; i++) {
+                json_object *row = json_object_array_get_idx(array_obj, i);
+                if (row && json_object_is_type(row, json_type_array))
+                    total_elements += json_object_array_length(row);
+            }
+            request->matrix_elements_provided = total_elements;
         } else {
             /* Flat array format: [row0_col0, row0_col1, ..., row1_col0, ...] */
             AXIS2_LOG_INFO(env->log,
                 "FinBench: Parsing flat covariance matrix format");
+            request->matrix_elements_provided = outer_len;
             for (i = 0; i < (int)matrix_size && i < outer_len; i++) {
                 json_object *elem = json_object_array_get_idx(array_obj, i);
                 request->covariance_matrix[i] = json_object_get_double(elem);
@@ -366,6 +377,41 @@ finbench_calculate_portfolio_variance(
     }
 
     n = request->n_assets;
+
+    /* -----------------------------------------------------------------------
+     * Dimension validation — the kind of check a Python quant will probe
+     * immediately. Mismatched arrays silently produce wrong variance if not
+     * caught here: n_assets=500 with 100 weights zero-fills the rest, giving
+     * a mathematically meaningless result with no indication of bad input.
+     * ----------------------------------------------------------------------- */
+    if (request->weights_provided > 0 &&
+        request->weights_provided != n) {
+        char err_buf[256];
+        snprintf(err_buf, sizeof(err_buf),
+            "weights array length %d != n_assets %d. "
+            "Provide exactly n_assets weights summing to 1.0.",
+            request->weights_provided, n);
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, err_buf);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench portfolioVariance: %s", err_buf);
+        return response;
+    }
+
+    if (request->matrix_elements_provided > 0 &&
+        request->matrix_elements_provided != n * n) {
+        char err_buf[256];
+        snprintf(err_buf, sizeof(err_buf),
+            "covariance_matrix element count %d != n_assets² (%d×%d=%d). "
+            "Provide a flat array of n_assets² elements or an n_assets×n_assets 2D array.",
+            request->matrix_elements_provided, n, n, n * n);
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, err_buf);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench portfolioVariance: %s", err_buf);
+        return response;
+    }
+
     start_time = get_time_us();
 
     /*

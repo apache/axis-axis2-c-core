@@ -91,6 +91,10 @@ typedef struct finbench_portfolio_variance_request
     /** Request identifier for tracing */
     char *request_id;
 
+    /** Actual array lengths as parsed (for dimension validation before computation) */
+    int weights_provided;         /* length of weights[] in JSON */
+    int matrix_elements_provided; /* length of covariance_matrix[] in JSON (flat count) */
+
 } finbench_portfolio_variance_request_t;
 
 /**
