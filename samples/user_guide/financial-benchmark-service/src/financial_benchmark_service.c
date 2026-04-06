@@ -290,6 +290,22 @@ finbench_portfolio_variance_request_create_from_json(
         }
     }
 
+    /* normalize_weights — default false; set true to rescale weights to sum 1.0 */
+    if (json_object_object_get_ex(json_obj, "normalize_weights", &value_obj)) {
+        request->normalize_weights = json_object_get_boolean(value_obj)
+            ? AXIS2_TRUE : AXIS2_FALSE;
+    } else {
+        request->normalize_weights = AXIS2_FALSE;
+    }
+
+    /* n_periods_per_year — default 252 (equity trading days) */
+    if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj)) {
+        int npy = json_object_get_int(value_obj);
+        request->n_periods_per_year = (npy > 0) ? npy : 252;
+    } else {
+        request->n_periods_per_year = 252;
+    }
+
     json_object_put(json_obj);
     return request;
 }
@@ -400,7 +416,7 @@ finbench_calculate_portfolio_variance(
         char err_buf[256];
         snprintf(err_buf, sizeof(err_buf),
             "weights array length %d != n_assets %d. "
-            "Provide exactly n_assets weights summing to 1.0.",
+            "Provide exactly n_assets weights (or set normalize_weights=true to rescale).",
             request->weights_provided, n);
         response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
         response->error_message = axutil_strdup(env, err_buf);
@@ -432,6 +448,52 @@ finbench_calculate_portfolio_variance(
         return response;
     }
 
+    /* -----------------------------------------------------------------------
+     * Optional weight normalization.
+     *
+     * Compute weight sum first; if normalize_weights=true and sum != 1.0,
+     * rescale all weights in-place. This lets callers pass unnormalized
+     * exposures (e.g., notional values) without a preprocessing step.
+     * ----------------------------------------------------------------------- */
+    double weight_sum = 0.0;
+    for (i = 0; i < n; i++) {
+        weight_sum += request->weights[i];
+    }
+    response->weight_sum = weight_sum;
+    response->weights_normalized = AXIS2_FALSE;
+
+    if (request->normalize_weights) {
+        if (weight_sum <= 0.0) {
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env,
+                "normalize_weights=true but weights sum to zero or negative. "
+                "Cannot normalize a zero-weight portfolio.");
+            return response;
+        }
+        if (fabs(weight_sum - 1.0) > 1e-10) {
+            for (i = 0; i < n; i++) {
+                request->weights[i] /= weight_sum;
+            }
+            response->weights_normalized = AXIS2_TRUE;
+            AXIS2_LOG_INFO(env->log,
+                "FinBench portfolioVariance: normalized weights (sum was %.8f)", weight_sum);
+        }
+    } else {
+        /* Reject clearly non-unit weights (tolerance 1e-6 — tighter than prob check) */
+        if (fabs(weight_sum - 1.0) > 1e-4) {
+            char err_buf[256];
+            snprintf(err_buf, sizeof(err_buf),
+                "weights sum to %.8f, expected 1.0 (tolerance 1e-4). "
+                "Pass normalize_weights=true to rescale automatically.",
+                weight_sum);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "FinBench portfolioVariance: %s", err_buf);
+            return response;
+        }
+    }
+
     start_time = get_time_us();
 
     /*
@@ -452,11 +514,13 @@ finbench_calculate_portfolio_variance(
 
     end_time = get_time_us();
 
+    int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
+
     /* Populate response */
     response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
     response->portfolio_variance = variance;
     response->portfolio_volatility = sqrt(variance);
-    response->annualized_volatility = sqrt(variance) * sqrt(252.0);
+    response->annualized_volatility = sqrt(variance) * sqrt((double)npy);
     response->calc_time_us = end_time - start_time;
     response->memory_used_kb = finbench_get_memory_usage_kb();
     response->matrix_operations = ops;
@@ -516,6 +580,12 @@ finbench_portfolio_variance_response_to_json(
     json_object_object_add(json_resp, "ops_per_second",
         json_object_new_double(response->ops_per_second));
 
+    json_object_object_add(json_resp, "weight_sum",
+        json_object_new_double(response->weight_sum));
+
+    json_object_object_add(json_resp, "weights_normalized",
+        json_object_new_boolean(response->weights_normalized));
+
     if (response->request_id) {
         json_object_object_add(json_resp, "request_id",
             json_object_new_string(response->request_id));
@@ -559,7 +629,12 @@ finbench_portfolio_variance_json_only(
     request = finbench_portfolio_variance_request_create_from_json(env, json_request);
     if (!request) {
         return axutil_strdup(env,
-            "{\"status\":\"FAILED\",\"error_message\":\"Failed to parse request\"}");
+            "{\"status\":\"FAILED\",\"error_message\":"
+            "\"Failed to parse portfolioVariance request. "
+            "Required fields: n_assets (int), weights (float[]), "
+            "covariance_matrix (float[n²] flat or float[n][n] 2D). "
+            "Optional: normalize_weights (bool), n_periods_per_year (int, default 252), "
+            "request_id (string).\"}");
     }
 
     response = finbench_calculate_portfolio_variance(env, request);
@@ -630,6 +705,38 @@ finbench_monte_carlo_request_create_from_json(
 
     if (json_object_object_get_ex(json_obj, "random_seed", &value_obj)) {
         request->random_seed = (uint32_t)json_object_get_int(value_obj);
+    }
+
+    /* n_periods_per_year — controls GBM time step dt = 1/n_periods_per_year */
+    if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj)) {
+        int npy = json_object_get_int(value_obj);
+        request->n_periods_per_year = (npy > 0) ? npy : 252;
+    } else {
+        request->n_periods_per_year = 252;
+    }
+
+    /* percentiles — array of tail levels in (0,1); default {0.01, 0.05} */
+    {
+        json_object *pct_arr = NULL;
+        if (json_object_object_get_ex(json_obj, "percentiles", &pct_arr) &&
+            json_object_is_type(pct_arr, json_type_array)) {
+            int n_pct = json_object_array_length(pct_arr);
+            if (n_pct > 8) n_pct = 8;
+            request->n_percentiles = 0;
+            int pi;
+            for (pi = 0; pi < n_pct; pi++) {
+                json_object *pct_elem = json_object_array_get_idx(pct_arr, pi);
+                double p = json_object_get_double(pct_elem);
+                if (p > 0.0 && p < 1.0) {
+                    request->percentiles[request->n_percentiles++] = p;
+                }
+            }
+        } else {
+            /* Default: 1% and 5% VaR levels */
+            request->percentiles[0] = 0.01;
+            request->percentiles[1] = 0.05;
+            request->n_percentiles = 2;
+        }
     }
 
     if (json_object_object_get_ex(json_obj, "request_id", &value_obj)) {
@@ -730,7 +837,10 @@ finbench_run_monte_carlo(
     }
 
     /* Pre-calculate constants */
-    dt = 1.0 / 252.0; /* Daily time step */
+    {
+        int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
+        dt = 1.0 / (double)npy;
+    }
     drift = (request->expected_return - 0.5 * request->volatility * request->volatility) * dt;
     vol_sqrt_dt = request->volatility * sqrt(dt);
 
@@ -782,16 +892,37 @@ finbench_run_monte_carlo(
     /* Sort for percentiles */
     qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
 
-    int idx_5 = (int)(0.05 * request->n_simulations);
-    int idx_1 = (int)(0.01 * request->n_simulations);
-    int idx_50 = request->n_simulations / 2;
+    int n_sims = request->n_simulations;
+    int idx_5  = (int)(0.05 * n_sims);
+    int idx_1  = (int)(0.01 * n_sims);
+    int idx_50 = n_sims / 2;
 
     /* Calculate CVaR (Expected Shortfall) - average of worst 5% */
     double cvar_sum = 0.0;
-    for (int i = 0; i < idx_5; i++) {
-        cvar_sum += final_values[i];
+    {
+        int ci;
+        for (ci = 0; ci < idx_5; ci++) {
+            cvar_sum += final_values[ci];
+        }
     }
     double cvar_95 = (idx_5 > 0) ? (cvar_sum / idx_5) : final_values[0];
+
+    /* Compute caller-requested percentile VaR values */
+    response->n_percentiles = 0;
+    {
+        int pi;
+        int n_pct = (request->n_percentiles > 8) ? 8 : request->n_percentiles;
+        for (pi = 0; pi < n_pct; pi++) {
+            double p = request->percentiles[pi];
+            if (p <= 0.0 || p >= 1.0) continue;
+            int idx = (int)(p * n_sims);
+            if (idx >= n_sims) idx = n_sims - 1;
+            response->percentile_levels[response->n_percentiles] = p;
+            response->var_at_percentile[response->n_percentiles] =
+                request->initial_value - final_values[idx];
+            response->n_percentiles++;
+        }
+    }
 
     /* Populate response */
     response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
@@ -876,6 +1007,21 @@ finbench_monte_carlo_response_to_json(
     json_object_object_add(json_resp, "memory_used_kb",
         json_object_new_int(response->memory_used_kb));
 
+    /* Emit caller-specified percentile VaR values as a structured array */
+    if (response->n_percentiles > 0) {
+        json_object *pct_array = json_object_new_array();
+        int pi;
+        for (pi = 0; pi < response->n_percentiles; pi++) {
+            json_object *entry = json_object_new_object();
+            json_object_object_add(entry, "percentile",
+                json_object_new_double(response->percentile_levels[pi]));
+            json_object_object_add(entry, "var",
+                json_object_new_double(response->var_at_percentile[pi]));
+            json_object_array_add(pct_array, entry);
+        }
+        json_object_object_add(json_resp, "percentile_vars", pct_array);
+    }
+
     if (response->request_id) {
         json_object_object_add(json_resp, "request_id",
             json_object_new_string(response->request_id));
@@ -905,7 +1051,17 @@ finbench_monte_carlo_json_only(
     request = finbench_monte_carlo_request_create_from_json(env, json_request);
     if (!request) {
         return axutil_strdup(env,
-            "{\"status\":\"FAILED\",\"error_message\":\"Failed to parse request\"}");
+            "{\"status\":\"FAILED\",\"error_message\":"
+            "\"Failed to parse monteCarlo request. "
+            "All fields optional with defaults: "
+            "n_simulations (int, default 10000, max 1000000), "
+            "n_periods (int, default 252), "
+            "initial_value (float, default 1000000.0), "
+            "expected_return (float, default 0.08), "
+            "volatility (float, default 0.20), "
+            "random_seed (int, default 0=random), "
+            "n_periods_per_year (int, default 252), "
+            "percentiles (float[], default [0.01, 0.05]).\"}");
     }
 
     response = finbench_run_monte_carlo(env, request);
@@ -965,6 +1121,19 @@ finbench_scenario_request_create_from_json(
             ? AXIS2_TRUE : AXIS2_FALSE;
     } else {
         request->use_hash_lookup = AXIS2_TRUE;
+    }
+
+    /*
+     * prob_tolerance — probability sum tolerance per asset.
+     * Default 1e-4; 0.0 → default; clamped to [1e-10, 0.1].
+     */
+    if (json_object_object_get_ex(json_obj, "prob_tolerance", &value_obj)) {
+        double tol = json_object_get_double(value_obj);
+        if (tol <= 0.0) tol = 1e-4;
+        if (tol > 0.1)  tol = 0.1;
+        request->prob_tolerance = tol;
+    } else {
+        request->prob_tolerance = 1e-4;
     }
 
     /* request_id */
@@ -1133,7 +1302,9 @@ finbench_calculate_scenarios(
      * differences in JSON-encoded probabilities, but tight enough to catch
      * missing or miscounted scenarios (e.g., three scenarios summing to 0.85).
      * ----------------------------------------------------------------------- */
-#define FINBENCH_PROB_SUM_TOLERANCE 1e-4
+    double prob_tolerance = (request->prob_tolerance > 0.0)
+        ? request->prob_tolerance : 1e-4;
+
     for (i = 0; i < request->n_assets; i++) {
         finbench_asset_scenario_t *a = &request->assets[i];
         double prob_sum = 0.0;
@@ -1145,15 +1316,16 @@ finbench_calculate_scenarios(
             prob_sum += a->probabilities[k];
         }
 
-        if (prob_sum < (1.0 - FINBENCH_PROB_SUM_TOLERANCE) ||
-            prob_sum > (1.0 + FINBENCH_PROB_SUM_TOLERANCE)) {
+        if (prob_sum < (1.0 - prob_tolerance) ||
+            prob_sum > (1.0 + prob_tolerance)) {
 
             char err_buf[256];
             snprintf(err_buf, sizeof(err_buf),
                 "Asset index %d (id=%" PRId64 "): scenario probabilities sum to "
-                "%.8f, expected 1.0 (tolerance %.0e). "
-                "All %d scenario probabilities must sum to exactly 1.0.",
-                i, a->asset_id, prob_sum, FINBENCH_PROB_SUM_TOLERANCE,
+                "%.8f, expected 1.0 (tolerance %.2g). "
+                "All %d scenario probabilities must sum to exactly 1.0. "
+                "Pass prob_tolerance to adjust validation strictness.",
+                i, a->asset_id, prob_sum, prob_tolerance,
                 a->n_scenarios);
             response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
             response->error_message = axutil_strdup(env, err_buf);
@@ -1404,8 +1576,13 @@ finbench_scenario_json_only(
     request = finbench_scenario_request_create_from_json(env, json_request);
     if (!request) {
         return axutil_strdup(env,
-            "{\"status\":\"FAILED\","
-            "\"error_message\":\"Failed to parse scenario request\"}");
+            "{\"status\":\"FAILED\",\"error_message\":"
+            "\"Failed to parse scenarioAnalysis request. "
+            "Required: assets (array of {asset_id, current_price, position_size, "
+            "scenarios: [{price, probability}]}). "
+            "Optional: use_hash_lookup (bool, default true), "
+            "prob_tolerance (float, default 0.0001), "
+            "request_id (string).\"}");
     }
 
     response = finbench_calculate_scenarios(env, request);

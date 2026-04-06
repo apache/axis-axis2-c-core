@@ -95,6 +95,21 @@ typedef struct finbench_portfolio_variance_request
     int weights_provided;         /* length of weights[] in JSON */
     int matrix_elements_provided; /* length of covariance_matrix[] in JSON (flat count) */
 
+    /**
+     * Normalize weights to sum to 1.0 before computing variance.
+     * When AXIS2_TRUE, weights are rescaled in-place if their sum != 1.0.
+     * When AXIS2_FALSE (default), weights that do not sum to 1.0 return an error.
+     * Quants often work with unnormalized exposures; this avoids a pre-processing step.
+     */
+    axis2_bool_t normalize_weights;
+
+    /**
+     * Trading periods per year used for annualizing volatility.
+     * Default: 252 (equity trading days). Use 260 for some fixed-income conventions,
+     * 365 for crypto, or 12 for monthly data.
+     */
+    int n_periods_per_year;
+
 } finbench_portfolio_variance_request_t;
 
 /**
@@ -111,8 +126,14 @@ typedef struct finbench_portfolio_variance_response
     /** Portfolio volatility (σ = sqrt(variance)) */
     double portfolio_volatility;
 
-    /** Annualized volatility (σ × sqrt(252)) */
+    /** Annualized volatility (σ × sqrt(n_periods_per_year)) */
     double annualized_volatility;
+
+    /** Actual sum of weights as provided (before any normalization) */
+    double weight_sum;
+
+    /** Whether weights were renormalized to 1.0 (only when normalize_weights=true) */
+    axis2_bool_t weights_normalized;
 
     /** Processing time in microseconds */
     long calc_time_us;
@@ -168,6 +189,24 @@ typedef struct finbench_monte_carlo_request
     /** Random seed for reproducibility (0 = use time) */
     uint32_t random_seed;
 
+    /**
+     * Trading periods per year — controls the GBM time step (dt = 1/n_periods_per_year).
+     * Default: 252 (equity trading days). Must match the frequency of expected_return
+     * and volatility inputs (both must be annualized).
+     */
+    int n_periods_per_year;
+
+    /**
+     * Percentile levels for VaR reporting (values in [0,1], e.g. 0.01 for 1%).
+     * Defaults: {0.01, 0.05} — the 99% and 95% VaR levels.
+     * Up to FINBENCH_MAX_PERCENTILES values; extras are ignored.
+     * Each percentile p produces: VaR_p = initial_value - sorted_final_values[p * n_sims].
+     */
+    double percentiles[8];
+
+    /** Number of entries in percentiles[]. 0 → use defaults {0.01, 0.05}. */
+    int n_percentiles;
+
     /** Request identifier */
     char *request_id;
 
@@ -190,14 +229,23 @@ typedef struct finbench_monte_carlo_response
     /** Standard deviation of final values */
     double std_dev_final_value;
 
-    /** Value at Risk 95% (5th percentile loss) */
+    /** Value at Risk 95% (5th percentile loss) — always populated */
     double var_95;
 
-    /** Value at Risk 99% (1st percentile loss) */
+    /** Value at Risk 99% (1st percentile loss) — always populated */
     double var_99;
 
-    /** Conditional VaR 95% (Expected Shortfall) */
+    /** Conditional VaR 95% (Expected Shortfall) — always populated */
     double cvar_95;
+
+    /**
+     * Per-request percentile VaR values (parallel to request->percentiles[]).
+     * var_at_percentile[i] = initial_value - sorted_final_values[percentiles[i] * n_sims]
+     * Count is stored in n_percentiles; up to 8 entries.
+     */
+    double var_at_percentile[8];
+    double percentile_levels[8];
+    int n_percentiles;
 
     /** Maximum drawdown observed */
     double max_drawdown;
@@ -267,6 +315,15 @@ typedef struct finbench_scenario_request
 
     /** Enable hash table optimization (for comparison) */
     axis2_bool_t use_hash_lookup;
+
+    /**
+     * Tolerance for probability sum validation.
+     * Each asset's scenario probabilities must sum to 1.0 within this tolerance.
+     * Default: 1e-4 (0.01%) — accommodates JSON representation rounding while
+     * catching genuinely miscounted scenarios (e.g., three scenarios summing to 0.85).
+     * Pass 0.0 to use the default. Values > 0.1 are clamped to 0.1.
+     */
+    double prob_tolerance;
 
     /** Request identifier */
     char *request_id;
