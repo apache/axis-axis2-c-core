@@ -516,11 +516,19 @@ finbench_calculate_portfolio_variance(
 
     int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
 
+    /*
+     * Clamp variance to zero before sqrt. Floating-point cancellation in the
+     * O(n²) sum can yield a tiny negative result (e.g., -1e-17) for a
+     * numerically near-zero portfolio variance, producing NaN from sqrt().
+     */
+    if (variance < 0.0) variance = 0.0;
+    double volatility = sqrt(variance);
+
     /* Populate response */
     response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
     response->portfolio_variance = variance;
-    response->portfolio_volatility = sqrt(variance);
-    response->annualized_volatility = sqrt(variance) * sqrt((double)npy);
+    response->portfolio_volatility = volatility;
+    response->annualized_volatility = volatility * sqrt((double)npy);
     response->calc_time_us = end_time - start_time;
     response->memory_used_kb = finbench_get_memory_usage_kb();
     response->matrix_operations = ops;
@@ -721,7 +729,7 @@ finbench_monte_carlo_request_create_from_json(
         if (json_object_object_get_ex(json_obj, "percentiles", &pct_arr) &&
             json_object_is_type(pct_arr, json_type_array)) {
             int n_pct = json_object_array_length(pct_arr);
-            if (n_pct > 8) n_pct = 8;
+            if (n_pct > FINBENCH_MAX_PERCENTILES) n_pct = FINBENCH_MAX_PERCENTILES;
             request->n_percentiles = 0;
             int pi;
             for (pi = 0; pi < n_pct; pi++) {
@@ -911,7 +919,8 @@ finbench_run_monte_carlo(
     response->n_percentiles = 0;
     {
         int pi;
-        int n_pct = (request->n_percentiles > 8) ? 8 : request->n_percentiles;
+        int n_pct = (request->n_percentiles > FINBENCH_MAX_PERCENTILES)
+            ? FINBENCH_MAX_PERCENTILES : request->n_percentiles;
         for (pi = 0; pi < n_pct; pi++) {
             double p = request->percentiles[pi];
             if (p <= 0.0 || p >= 1.0) continue;

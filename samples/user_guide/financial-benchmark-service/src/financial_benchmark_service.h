@@ -53,6 +53,9 @@ extern "C"
 #define FINBENCH_MAX_SCENARIOS      10
 #define FINBENCH_MAX_SIMULATIONS    1000000
 
+/** Maximum number of percentile levels accepted in a monteCarlo request */
+#define FINBENCH_MAX_PERCENTILES    8
+
 /* Memory constraint for Android devices */
 #define FINBENCH_MEMORY_CONSTRAINT_MB   512
 
@@ -202,7 +205,7 @@ typedef struct finbench_monte_carlo_request
      * Up to FINBENCH_MAX_PERCENTILES values; extras are ignored.
      * Each percentile p produces: VaR_p = initial_value - sorted_final_values[p * n_sims].
      */
-    double percentiles[8];
+    double percentiles[FINBENCH_MAX_PERCENTILES];
 
     /** Number of entries in percentiles[]. 0 → use defaults {0.01, 0.05}. */
     int n_percentiles;
@@ -243,8 +246,8 @@ typedef struct finbench_monte_carlo_response
      * var_at_percentile[i] = initial_value - sorted_final_values[percentiles[i] * n_sims]
      * Count is stored in n_percentiles; up to 8 entries.
      */
-    double var_at_percentile[8];
-    double percentile_levels[8];
+    double var_at_percentile[FINBENCH_MAX_PERCENTILES];
+    double percentile_levels[FINBENCH_MAX_PERCENTILES];
     int n_percentiles;
 
     /** Maximum drawdown observed */
