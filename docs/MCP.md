@@ -1,7 +1,8 @@
 ---
 type: architecture
 created: 2026-04-06
-status: Active — Java implementation first, C port follows
+last-verified: 2026-04-06
+status: Active — Java A1/A2/A3 complete, C1 now unblocked
 ---
 
 # MCP Support for Apache Axis2/C
@@ -86,9 +87,18 @@ Android phone.
 |----------|--------|
 | `axis2-openapi` module | ✅ Serves `/openapi.json`, `/openapi.yaml`, `/swagger-ui` |
 | `springbootdemo-tomcat11` | ✅ Reference implementation, Java 25 + Tomcat 11 |
-| `/openapi-mcp.json` endpoint | 🔄 In progress (A1) |
-| `axis2-mcp-bridge` stdio JAR | ❌ Not started (A2) |
+| `/openapi-mcp.json` endpoint | ✅ Done (A1) |
+| `axis2-mcp-bridge` stdio JAR | ✅ Done (A2) — with mTLS (port 8443, IoT CA) |
+| A3 end-to-end validation | ✅ Done — Claude Desktop → bridge → mTLS → BigDataH2Service confirmed |
 | `axis2-transport-mcp` Java native | ❌ Not started (B1) |
+
+**C1 is now unblocked.** Java A2 was the gate: the JSON-RPC 2.0 handshake
+(`initialize` / `tools/list` / `tools/call`) is validated against Claude Desktop.
+The C port translates proven behavior rather than discovering it.
+
+The Java bridge uses no MCP SDK — just Jackson + Java stdlib HttpClient. The C port
+similarly needs no library beyond json-c, which is already in use throughout
+`financial_benchmark_service.c`.
 
 ---
 
@@ -96,7 +106,7 @@ Android phone.
 
 ### C1: stdio MCP Mode in `financial_benchmark_service.c`
 
-**When**: After Java A2 (`axis2-mcp-bridge` stdio JAR) is validated against Claude Desktop.
+**When**: Now — Java A2 is validated. C1 is unblocked.
 
 **How it works**: The binary detects whether stdin is a pipe (MCP client attached) or
 a tty (interactive/httpd mode) and switches behavior accordingly:
@@ -294,13 +304,13 @@ service registry already uses for WSDL.
 ## Relationship to Java Reference Implementation
 
 ```
-Java A1 (/openapi-mcp.json)        ← defines MCP tool schema format
+Java A1 (/openapi-mcp.json)        ✅ done — defines MCP tool schema format
          ↓
-Java A2 (axis2-mcp-bridge stdio)   ← validates JSON-RPC 2.0 handshake
+Java A2 (axis2-mcp-bridge stdio)   ✅ done — validates JSON-RPC 2.0 handshake
          ↓
 Java B1 (axis2-transport-mcp)      ← proves native transport pattern
          ↓
-C1 (stdio in financial-benchmark)  ← port: same protocol, same schemas, C dispatch
+C1 (stdio in financial-benchmark)  ← NEXT — port: same protocol, same schemas, C dispatch
          ↓
 C2 (HTTP/SSE on Penguin)           ← port: same as Java A4/B2
          ↓
