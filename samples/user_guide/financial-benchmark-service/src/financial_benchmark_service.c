@@ -1054,7 +1054,50 @@ finbench_calculate_scenarios(
     }
 
     /* -----------------------------------------------------------------------
-     * Step 1: Financial computation — expected return, upside, downside
+     * Step 1: Validate probability distributions before any computation.
+     *
+     * Each asset's scenario probabilities must sum to 1.0 (within floating-
+     * point tolerance). Without this check, malformed input silently produces
+     * wrong expected-return figures — the kind of silent error that corrupts
+     * downstream portfolio decisions without any indication that the input
+     * data was bad.
+     *
+     * Tolerance: 1e-4 (0.01%). Tighter than typical financial rounding error
+     * (~1e-6) but looser than machine epsilon to accommodate legitimate
+     * floating-point representation differences in JSON-encoded probabilities.
+     * ----------------------------------------------------------------------- */
+#define FINBENCH_PROB_SUM_TOLERANCE 1e-4
+    for (i = 0; i < request->n_assets; i++) {
+        finbench_asset_scenario_t *a = &request->assets[i];
+        double prob_sum = 0.0;
+        int k;
+
+        if (a->n_scenarios <= 0) continue;
+
+        for (k = 0; k < a->n_scenarios; k++) {
+            prob_sum += a->probabilities[k];
+        }
+
+        if (prob_sum < (1.0 - FINBENCH_PROB_SUM_TOLERANCE) ||
+            prob_sum > (1.0 + FINBENCH_PROB_SUM_TOLERANCE)) {
+
+            char err_buf[256];
+            snprintf(err_buf, sizeof(err_buf),
+                "Asset index %d (id=%" PRId64 "): scenario probabilities sum to "
+                "%.8f, expected 1.0 (tolerance %.0e). "
+                "All %d scenario probabilities must sum to exactly 1.0.",
+                i, a->asset_id, prob_sum, FINBENCH_PROB_SUM_TOLERANCE,
+                a->n_scenarios);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ScenarioAnalysis: probability validation failed - %s", err_buf);
+            return response;
+        }
+    }
+
+    /* -----------------------------------------------------------------------
+     * Step 2: Financial computation — expected return, upside, downside
      * ----------------------------------------------------------------------- */
     for (i = 0; i < request->n_assets; i++) {
         finbench_asset_scenario_t *a = &request->assets[i];
@@ -1090,7 +1133,7 @@ finbench_calculate_scenarios(
         portfolio_expected_return /= total_position_value;
 
     /* -----------------------------------------------------------------------
-     * Step 2: O(n) linear search benchmark
+     * Step 3: O(n) linear search benchmark
      * Each query scans the array from index 0 until asset_id matches.
      * n_lookups = n_assets × 10 to amplify the timing difference.
      * ----------------------------------------------------------------------- */
@@ -1110,7 +1153,7 @@ finbench_calculate_scenarios(
     linear_end = get_time_us();
 
     /* -----------------------------------------------------------------------
-     * Step 3: O(1) hash table benchmark
+     * Step 4: O(1) hash table benchmark
      * Build axutil_hash keyed by asset_id string, then perform same lookups.
      * ----------------------------------------------------------------------- */
     /*
