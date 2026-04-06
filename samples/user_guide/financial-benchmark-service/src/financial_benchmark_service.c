@@ -1041,6 +1041,7 @@ finbench_calculate_scenarios(
     int n_lookups;
     long linear_found = 0, hash_found = 0;
     char key_buf[32];
+    char **hash_keys = NULL; /* per-entry allocated keys (axutil_hash stores ptr, not copy) */
 
     response = finbench_scenario_response_create(env);
     if (!response) return NULL;
@@ -1112,14 +1113,28 @@ finbench_calculate_scenarios(
      * Step 3: O(1) hash table benchmark
      * Build axutil_hash keyed by asset_id string, then perform same lookups.
      * ----------------------------------------------------------------------- */
+    /*
+     * axutil_hash_set with AXIS2_HASH_KEY_STRING stores the key pointer — it does
+     * NOT copy the string. Each entry needs its own allocated key so that all
+     * n_assets entries in the table have distinct, stable key pointers.
+     */
+    hash_keys = (char **)AXIS2_MALLOC(env->allocator,
+                                      request->n_assets * sizeof(char *));
+    if (hash_keys) {
+        for (i = 0; i < request->n_assets; i++) hash_keys[i] = NULL;
+    }
+
     hash_build_start = get_time_us();
     hash = axutil_hash_make(env);
-    if (hash) {
+    if (hash && hash_keys) {
         for (i = 0; i < request->n_assets; i++) {
             snprintf(key_buf, sizeof(key_buf), "%" PRId64,
                      request->assets[i].asset_id);
-            axutil_hash_set(hash, key_buf, AXIS2_HASH_KEY_STRING,
-                            &request->assets[i]);
+            hash_keys[i] = axutil_strdup(env, key_buf); /* stable per-entry copy */
+            if (hash_keys[i]) {
+                axutil_hash_set(hash, hash_keys[i], AXIS2_HASH_KEY_STRING,
+                                &request->assets[i]);
+            }
         }
     }
     hash_build_end = get_time_us();
@@ -1137,13 +1152,18 @@ finbench_calculate_scenarios(
     hash_lookup_end = get_time_us();
 
     if (hash) axutil_hash_free(hash, env);
+    if (hash_keys) {
+        for (i = 0; i < request->n_assets; i++) {
+            if (hash_keys[i]) AXIS2_FREE(env->allocator, hash_keys[i]);
+        }
+        AXIS2_FREE(env->allocator, hash_keys);
+        hash_keys = NULL;
+    }
 
     /* -----------------------------------------------------------------------
      * Populate response
      * ----------------------------------------------------------------------- */
-    long linear_us   = linear_end - linear_start;
-    long hash_total_us = (hash_build_end - hash_build_start)
-                       + (hash_lookup_end - hash_lookup_start);
+    long linear_us = linear_end - linear_start;
 
     response->status              = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
     response->expected_return     = portfolio_expected_return;
@@ -1160,13 +1180,20 @@ finbench_calculate_scenarios(
         response->lookups_per_second =
             (double)n_lookups / (linear_us / 1000000.0);
 
-    /* Store hash timing in lookup_method string for demo output */
-    char method_buf[256];
+    /*
+     * Report lookup-only speedup (build cost excluded from comparison — amortized
+     * in real workloads where the hash is built once and queried many times).
+     */
+    long hash_build_us  = hash_build_end  - hash_build_start;
+    long hash_lookup_us = hash_lookup_end - hash_lookup_start;
+    char method_buf[320];
     snprintf(method_buf, sizeof(method_buf),
-        "linear_search_us=%ld hash_total_us=%ld speedup=%.1fx "
+        "linear_search_us=%ld hash_lookup_us=%ld lookup_speedup=%.1fx "
+        "hash_build_us=%ld "
         "(linear=%ld found, hash=%ld found, n_assets=%d, n_lookups=%d)",
-        linear_us, hash_total_us,
-        (hash_total_us > 0) ? (double)linear_us / hash_total_us : 0.0,
+        linear_us, hash_lookup_us,
+        (hash_lookup_us > 0) ? (double)linear_us / hash_lookup_us : 0.0,
+        hash_build_us,
         linear_found, hash_found,
         request->n_assets, n_lookups);
     response->lookup_method = axutil_strdup(env, method_buf);
@@ -1175,11 +1202,11 @@ finbench_calculate_scenarios(
         response->request_id = axutil_strdup(env, request->request_id);
 
     AXIS2_LOG_INFO(env->log,
-        "ScenarioAnalysis: %d assets, %d lookups — linear=%ldus hash=%ldus "
-        "speedup=%.1fx E[r]=%.4f U/D=%.2f",
-        request->n_assets, n_lookups, linear_us, hash_total_us,
-        (hash_total_us > 0) ? (double)linear_us / hash_total_us : 0.0,
-        portfolio_expected_return,
+        "ScenarioAnalysis: %d assets, %d lookups — linear=%ldus "
+        "hash_lookup=%ldus speedup=%.1fx build=%ldus E[r]=%.4f U/D=%.2f",
+        request->n_assets, n_lookups, linear_us, hash_lookup_us,
+        (hash_lookup_us > 0) ? (double)linear_us / hash_lookup_us : 0.0,
+        hash_build_us, portfolio_expected_return,
         response->upside_downside_ratio);
 
     return response;
@@ -1363,7 +1390,6 @@ finbench_generate_test_portfolio_json(
     const char *json_str;
     axis2_char_t *result;
     int i, j;
-    double weight_sum = 0.0;
 
     if (n_assets <= 0 || n_assets > FINBENCH_MAX_ASSETS) {
         n_assets = 100; /* Default */
