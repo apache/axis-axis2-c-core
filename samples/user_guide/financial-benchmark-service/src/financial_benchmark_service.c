@@ -31,6 +31,7 @@
 #include "financial_benchmark_service.h"
 #include <axutil_string.h>
 #include <axutil_utils.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -380,12 +381,22 @@ finbench_calculate_portfolio_variance(
 
     /* -----------------------------------------------------------------------
      * Dimension validation — the kind of check a Python quant will probe
-     * immediately. Mismatched arrays silently produce wrong variance if not
-     * caught here: n_assets=500 with 100 weights zero-fills the rest, giving
-     * a mathematically meaningless result with no indication of bad input.
+     * immediately. Mismatched or absent arrays silently produce wrong variance
+     * if not caught here: n_assets=500 with 100 weights zero-fills the rest,
+     * giving a mathematically meaningless result with no indication of bad
+     * input. weights_provided == 0 means the "weights" key was absent — that
+     * is also an error, not a license to compute variance with all-zero weights.
      * ----------------------------------------------------------------------- */
-    if (request->weights_provided > 0 &&
-        request->weights_provided != n) {
+    if (request->weights_provided == 0) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "Missing required field: \"weights\" array (n_assets elements summing to 1.0).");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench portfolioVariance: weights array missing from request");
+        return response;
+    }
+
+    if (request->weights_provided != n) {
         char err_buf[256];
         snprintf(err_buf, sizeof(err_buf),
             "weights array length %d != n_assets %d. "
@@ -398,8 +409,17 @@ finbench_calculate_portfolio_variance(
         return response;
     }
 
-    if (request->matrix_elements_provided > 0 &&
-        request->matrix_elements_provided != n * n) {
+    if (request->matrix_elements_provided == 0) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "Missing required field: \"covariance_matrix\" "
+            "(n_assets*n_assets elements as flat array or n_assets x n_assets 2D array).");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench portfolioVariance: covariance_matrix missing from request");
+        return response;
+    }
+
+    if (request->matrix_elements_provided != n * n) {
         char err_buf[256];
         snprintf(err_buf, sizeof(err_buf),
             "covariance_matrix element count %d != n_assets² (%d×%d=%d). "
@@ -1108,9 +1128,10 @@ finbench_calculate_scenarios(
      * downstream portfolio decisions without any indication that the input
      * data was bad.
      *
-     * Tolerance: 1e-4 (0.01%). Tighter than typical financial rounding error
-     * (~1e-6) but looser than machine epsilon to accommodate legitimate
-     * floating-point representation differences in JSON-encoded probabilities.
+     * Tolerance: 1e-4 (0.01%). Looser than machine epsilon and typical
+     * floating-point rounding (~1e-6) to accommodate legitimate representation
+     * differences in JSON-encoded probabilities, but tight enough to catch
+     * missing or miscounted scenarios (e.g., three scenarios summing to 0.85).
      * ----------------------------------------------------------------------- */
 #define FINBENCH_PROB_SUM_TOLERANCE 1e-4
     for (i = 0; i < request->n_assets; i++) {
@@ -1211,6 +1232,11 @@ finbench_calculate_scenarios(
                                       request->n_assets * sizeof(char *));
     if (hash_keys) {
         for (i = 0; i < request->n_assets; i++) hash_keys[i] = NULL;
+    } else {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench scenarioAnalysis: hash_keys alloc failed (%d assets) — "
+            "hash benchmark will be skipped; only linear search timing reported",
+            request->n_assets);
     }
 
     hash_build_start = get_time_us();
