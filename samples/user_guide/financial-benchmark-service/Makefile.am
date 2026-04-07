@@ -28,7 +28,8 @@ servicesdir = $(prefix)/services/FinancialBenchmarkService
 lib_LTLIBRARIES = libfinancial_benchmark_service.la
 
 libfinancial_benchmark_service_la_SOURCES = \
-    src/financial_benchmark_service.c
+    src/financial_benchmark_service.c \
+    src/mcp_catalog_handler.c
 
 libfinancial_benchmark_service_la_CPPFLAGS = \
     -I$(top_srcdir)/include \
@@ -88,13 +89,15 @@ services_DATA = services.xml
 # Install headers for potential extensions
 include_HEADERS = \
     src/financial_benchmark_service.h \
-    src/finbench_mcp.h
+    src/finbench_mcp.h \
+    src/mcp_catalog_handler.h
 
 # Extra files to distribute
 EXTRA_DIST = \
     services.xml \
     src/financial_benchmark_service.h \
     src/finbench_mcp.h \
+    src/mcp_catalog_handler.h \
     README.md
 
 endif # AXIS2_JSON_ENABLED
