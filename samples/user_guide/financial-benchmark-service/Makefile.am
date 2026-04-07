@@ -30,7 +30,8 @@ lib_LTLIBRARIES = libfinancial_benchmark_service.la
 libfinancial_benchmark_service_la_SOURCES = \
     src/financial_benchmark_service.c \
     src/financial_benchmark_service_handler.c \
-    src/mcp_catalog_handler.c
+    src/mcp_catalog_handler.c \
+    src/axis2_json_secure_fault.c
 
 libfinancial_benchmark_service_la_CPPFLAGS = \
     -I$(top_srcdir)/include \
@@ -91,7 +92,8 @@ services_DATA = services.xml
 include_HEADERS = \
     src/financial_benchmark_service.h \
     src/finbench_mcp.h \
-    src/mcp_catalog_handler.h
+    src/mcp_catalog_handler.h \
+    src/axis2_json_secure_fault.h
 
 # Extra files to distribute
 EXTRA_DIST = \
@@ -100,6 +102,7 @@ EXTRA_DIST = \
     src/financial_benchmark_service_handler.c \
     src/finbench_mcp.h \
     src/mcp_catalog_handler.h \
+    src/axis2_json_secure_fault.h \
     README.md
 
 endif # AXIS2_JSON_ENABLED

@@ -44,6 +44,7 @@
  */
 
 #include "mcp_catalog_handler.h"
+#include "axis2_json_secure_fault.h"
 
 #include <axis2_svc.h>
 #include <axis2_op.h>
@@ -225,11 +226,28 @@ mcp_catalog_generate_json(
     axis2_conf_t       *conf,
     const axutil_env_t *env)
 {
-    if (!conf || !env) return NULL;
+    if (!env) return NULL;
+    if (!conf) {
+        char corr_id[AXIS2_JSON_CORR_ID_LEN];
+        axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[MCP][%s] mcp_catalog_generate_json: conf is NULL — "
+            "cannot walk services", corr_id);
+        return axis2_json_secure_fault(env, corr_id,
+            "catalog generation failed — see server log");
+    }
 
     /* ── Root object ─────────────────────────────────────────────────────── */
     json_object *root = json_object_new_object();
-    if (!root) return NULL;
+    if (!root) {
+        char corr_id[AXIS2_JSON_CORR_ID_LEN];
+        axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[MCP][%s] json_object_new_object() returned NULL — "
+            "out of memory", corr_id);
+        return axis2_json_secure_fault(env, corr_id,
+            "catalog generation failed — see server log");
+    }
 
     /* ── _meta block ─────────────────────────────────────────────────────── */
     json_object *meta = json_object_new_object();
@@ -382,11 +400,27 @@ mcp_catalog_generate_json(
     axis2_char_t *result = NULL;
     if (json_cstr) {
         result = axutil_strdup(env, json_cstr);
+        if (!result) {
+            /* axutil_strdup OOM — log with correlation ID and return fault */
+            char corr_id[AXIS2_JSON_CORR_ID_LEN];
+            axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[MCP][%s] axutil_strdup failed serialising catalog "
+                "(%zu bytes) — out of memory",
+                corr_id, strlen(json_cstr));
+            json_object_put(root);
+            return axis2_json_secure_fault(env, corr_id,
+                "catalog generation failed — see server log");
+        }
     } else {
+        char corr_id[AXIS2_JSON_CORR_ID_LEN];
+        axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[MCP] json_object_to_json_string_ext returned NULL — "
-            "returning fallback catalog");
-        result = axutil_strdup(env, "{\"tools\":[]}");
+            "[MCP][%s] json_object_to_json_string_ext returned NULL",
+            corr_id);
+        json_object_put(root);
+        return axis2_json_secure_fault(env, corr_id,
+            "catalog generation failed — see server log");
     }
 
     /* json_object_put frees the entire tree including all children */

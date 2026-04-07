@@ -29,6 +29,7 @@
 
 #include "financial_benchmark_service.h"
 #include "mcp_catalog_handler.h"
+#include "axis2_json_secure_fault.h"
 #include <axis2_svc.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
@@ -54,7 +55,12 @@ route_operation(
 
     if (!operation_name)
     {
-        return axutil_strdup(env, "{\"error\":\"No operation specified\"}");
+        char corr_id[AXIS2_JSON_CORR_ID_LEN];
+        axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "[FinancialBenchmark][%s] route_operation: no operation name",
+            corr_id);
+        return axis2_json_secure_fault(env, corr_id, "no operation specified");
     }
 
     /* portfolioVariance operation */
@@ -102,14 +108,14 @@ route_operation(
         return finbench_scenario_json_only(env, json_request);
     }
 
-    /* Unknown operation */
+    /* Unknown operation — log the name internally; do not echo it in the
+     * response body (prevents operation-name enumeration by clients). */
+    char corr_id[AXIS2_JSON_CORR_ID_LEN];
+    axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-                      "FinancialBenchmarkService: Unknown operation '%s'", operation_name);
-
-    char error_msg[256];
-    snprintf(error_msg, sizeof(error_msg),
-             "{\"error\":\"Unknown operation: %s\"}", operation_name);
-    return axutil_strdup(env, error_msg);
+        "[FinancialBenchmark][%s] unknown operation '%s'",
+        corr_id, operation_name);
+    return axis2_json_secure_fault(env, corr_id, "unknown operation");
 }
 
 /**
