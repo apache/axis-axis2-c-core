@@ -21,7 +21,8 @@
 # Only build if JSON is enabled (required for json-c library)
 if AXIS2_JSON_ENABLED
 
-# Service library
+# ─── Httpd shared library (loaded by mod_axis2) ───────────────────────────────
+
 servicesdir = $(prefix)/services/FinancialBenchmarkService
 
 lib_LTLIBRARIES = libfinancial_benchmark_service.la
@@ -49,16 +50,51 @@ libfinancial_benchmark_service_la_LDFLAGS = \
     -no-undefined \
     -shared
 
+# ─── MCP stdio binary (C1) ────────────────────────────────────────────────────
+#
+# Standalone binary launched by Claude Desktop (and Cursor) as an MCP subprocess.
+# Links financial_benchmark_service.c directly (no shared library dependency).
+#
+# Claude Desktop config (~/.config/claude/claude_desktop_config.json):
+#   { "mcpServers": { "axis2c-financial": {
+#       "command": "/usr/local/axis2c/bin/financial-benchmark-mcp" } } }
+
+bin_PROGRAMS = financial-benchmark-mcp
+
+financial_benchmark_mcp_SOURCES = \
+    src/financial_benchmark_service.c \
+    src/finbench_mcp.c \
+    src/finbench_mcp_main.c
+
+financial_benchmark_mcp_CPPFLAGS = \
+    -I$(top_srcdir)/include \
+    -I$(top_srcdir)/util/include \
+    -I$(top_srcdir)/axiom/include \
+    -I$(top_srcdir)/neethi/include \
+    $(JSON_CFLAGS)
+
+financial_benchmark_mcp_LDADD = \
+    $(top_builddir)/src/core/engine/libaxis2_engine.la \
+    $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
+    $(top_builddir)/util/src/libaxutil.la \
+    $(JSON_LIBS) \
+    -lm
+
+# ─── Install ──────────────────────────────────────────────────────────────────
+
 # Install services.xml to the services directory
 services_DATA = services.xml
 
-# Install header for potential extensions
-include_HEADERS = src/financial_benchmark_service.h
+# Install headers for potential extensions
+include_HEADERS = \
+    src/financial_benchmark_service.h \
+    src/finbench_mcp.h
 
 # Extra files to distribute
 EXTRA_DIST = \
     services.xml \
     src/financial_benchmark_service.h \
+    src/finbench_mcp.h \
     README.md
 
 endif # AXIS2_JSON_ENABLED

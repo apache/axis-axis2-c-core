@@ -93,11 +93,10 @@ route_operation(
         return finbench_generate_test_portfolio_json(env, n_assets);
     }
 
-    /* scenarioAnalysis operation (stub for now) */
+    /* scenarioAnalysis operation */
     if (axutil_strcmp(operation_name, "scenarioAnalysis") == 0)
     {
-        return axutil_strdup(env,
-            "{\"status\":\"NOT_IMPLEMENTED\",\"message\":\"Scenario analysis coming soon\"}");
+        return finbench_scenario_json_only(env, json_request);
     }
 
     /* Unknown operation */
