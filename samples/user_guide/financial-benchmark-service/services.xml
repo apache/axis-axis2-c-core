@@ -88,11 +88,11 @@
                     "n_assets":          {"type": "integer",  "minimum": 2, "maximum": 2000,
                                           "description": "Number of assets in the portfolio"},
                     "weights":           {"type": "array",    "items": {"type": "number"},
-                                          "description": "Portfolio weights, one per asset (will be normalised to sum=1)"},
+                                          "description": "Exactly n_assets values. If normalize_weights=true they are scaled to sum=1 before calculation; otherwise caller must ensure they already sum to 1."},
                     "covariance_matrix": {"type": "array",    "items": {"type": "number"},
-                                          "description": "Flattened n×n covariance matrix (row-major)"},
+                                          "description": "Exactly n_assets×n_assets values, row-major order (element [i*n+j] is cov(i,j))"},
                     "normalize_weights": {"type": "boolean",  "default": false,
-                                          "description": "Normalise weights before calculation"},
+                                          "description": "Scale weights to sum=1 before calculation. Default: false — caller must supply weights that already sum to 1."},
                     "request_id":        {"type": "string",   "description": "Optional correlation ID echoed in the response"}
                 }
             }</parameter>
@@ -146,7 +146,10 @@
         <operation name="monteCarlo">
             <parameter name="mcpDescription">Run a Monte Carlo VaR simulation using Geometric Brownian Motion. Compute-intensive: 10 000 sims × 252 periods = 2.52M iterations. Returns VaR 95/99, CVaR, max drawdown, and probability of profit.</parameter>
             <parameter name="mcpReadOnly">true</parameter>
-            <parameter name="mcpIdempotent">true</parameter>
+            <!-- mcpIdempotent=false: without random_seed the PRNG is seeded from
+                 time(), so repeated identical requests produce different VaR results.
+                 Idempotency holds only when random_seed is explicitly supplied. -->
+            <parameter name="mcpIdempotent">false</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
                 "required": ["n_simulations", "n_periods", "initial_value", "expected_return", "volatility"],
@@ -158,7 +161,7 @@
                     "initial_value":   {"type": "number",  "description": "Initial portfolio value"},
                     "expected_return": {"type": "number",  "description": "Annualised expected return (e.g. 0.08 for 8%)"},
                     "volatility":      {"type": "number",  "description": "Annualised volatility (e.g. 0.20 for 20%)"},
-                    "random_seed":     {"type": "integer", "description": "Optional seed for reproducible results"},
+                    "random_seed":     {"type": "integer", "description": "Seed for reproducible results. When omitted, seeded from time() — results differ across calls."},
                     "request_id":      {"type": "string",  "description": "Optional correlation ID"}
                 }
             }</parameter>
@@ -223,18 +226,19 @@
                     "n_assets":        {"type": "integer", "minimum": 1, "maximum": 2000,
                                         "description": "Number of assets"},
                     "assets":          {"type": "array",
-                                        "description": "Array of asset scenario objects",
+                                        "minItems": 1, "maxItems": 2000,
+                                        "description": "Array of asset scenario objects. Length must equal n_assets.",
                                         "items": {
                                             "type": "object",
                                             "required": ["asset_id", "current_price", "scenario_prices", "probabilities", "position_size"],
                                             "properties": {
                                                 "asset_id":       {"type": "integer"},
                                                 "current_price":  {"type": "number"},
-                                                "scenario_prices":{"type": "array", "items": {"type": "number"},
-                                                                   "description": "Price in each scenario"},
-                                                "probabilities":  {"type": "array", "items": {"type": "number"},
-                                                                   "description": "Probability weights (must sum to 1.0)"},
-                                                "position_size":  {"type": "integer", "description": "Number of shares held"}
+                                                "scenario_prices":{"type": "array", "minItems": 2, "items": {"type": "number"},
+                                                                   "description": "Price in each scenario. Must have equal length to probabilities."},
+                                                "probabilities":  {"type": "array", "minItems": 2, "items": {"type": "number"},
+                                                                   "description": "Probability weight per scenario (must sum to 1.0). Must have equal length to scenario_prices."},
+                                                "position_size":  {"type": "number", "description": "Shares held (integer positions; fractional positions not supported by C implementation)"}
                                             }
                                         }},
                     "use_hash_lookup": {"type": "boolean", "default": true,
@@ -284,7 +288,8 @@
             <parameter name="mcpIdempotent">true</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
-                "properties": {}
+                "properties": {},
+                "additionalProperties": false
             }</parameter>
             <description>
                 Get service metadata, capabilities, and current device statistics.
@@ -324,7 +329,9 @@
         <operation name="generateTestData">
             <parameter name="mcpDescription">Generate a synthetic equal-weighted portfolio with a positive-semi-definite covariance matrix. Returns a ready-to-use portfolioVariance request body.</parameter>
             <parameter name="mcpReadOnly">true</parameter>
-            <parameter name="mcpIdempotent">false</parameter>
+            <!-- mcpIdempotent=true: deterministic — same n_assets always produces
+                 the same equal-weighted PSD covariance matrix, no random state. -->
+            <parameter name="mcpIdempotent">true</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
                 "required": ["n_assets"],
