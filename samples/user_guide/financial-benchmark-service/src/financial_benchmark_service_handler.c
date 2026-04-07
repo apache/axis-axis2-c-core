@@ -151,20 +151,22 @@ financial_benchmark_service_invoke_json(
         if (to)
             request_uri = axis2_endpoint_ref_get_address(to, env);
 
-        if (request_uri && strstr(request_uri, MCP_CATALOG_PATH))
+        if (request_uri)
         {
             axis2_conf_ctx_t *conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
             axis2_conf_t     *conf     = conf_ctx
                     ? axis2_conf_ctx_get_conf(conf_ctx, env)
                     : NULL;
+            /* mcp_catalog_check_and_respond does suffix-based path matching
+             * internally (no redundant strstr here).  Returns AXIS2_FALSE when
+             * path does not match OR when catalog generation fails (NULL output),
+             * so catalog_json is guaranteed non-NULL on AXIS2_TRUE. */
             axis2_char_t *catalog_json = NULL;
-            if (mcp_catalog_check_and_respond(env, conf, request_uri,
-                                              &catalog_json)
-                    && catalog_json)
+            if (mcp_catalog_check_and_respond(env, conf, request_uri, &catalog_json))
             {
                 AXIS2_LOG_INFO(env->log,
                     "FinancialBenchmarkService: Returning MCP catalog (%zu bytes)",
-                    strlen(catalog_json));
+                    catalog_json ? strlen(catalog_json) : 0u);
                 return catalog_json;   /* caller (msg_recv) frees via AXIS2_FREE */
             }
         }

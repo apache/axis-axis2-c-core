@@ -56,6 +56,7 @@
 #include <axutil_log.h>
 
 #include <json-c/json.h>
+#include <stdio.h>   /* snprintf */
 #include <string.h>
 #include <ctype.h>
 
@@ -297,8 +298,7 @@ mcp_catalog_generate_json(
             const axutil_qname_t *svc_qname = axis2_svc_get_qname(svc, env);
             if (!svc_qname) continue;
             const axis2_char_t *svc_name =
-                    axutil_qname_get_localpart(
-                        (axutil_qname_t *)svc_qname, env);
+                    axutil_qname_get_localpart(svc_qname, env);
             if (!svc_name) continue;
 
             /* Skip system services */
@@ -322,8 +322,7 @@ mcp_catalog_generate_json(
                 const axutil_qname_t *op_qname = axis2_op_get_qname(op, env);
                 if (!op_qname) continue;
                 const axis2_char_t *op_name =
-                        axutil_qname_get_localpart(
-                            (axutil_qname_t *)op_qname, env);
+                        axutil_qname_get_localpart(op_qname, env);
                 if (!op_name) continue;
 
                 /* Build endpoint path:  POST /services/SvcName/opName */
@@ -436,15 +435,33 @@ mcp_catalog_check_and_respond(
     const axis2_char_t  *request_path,
     axis2_char_t       **out_json)
 {
-    if (!request_path || !out_json) return AXIS2_FALSE;
+    if (!env || !request_path || !out_json) return AXIS2_FALSE;
 
-    /* Match suffix: path may be "/axis2/_mcp/openapi-mcp.json" or just the
-     * bare catalog path — check strstr so context-path prefixes are handled. */
-    if (!strstr(request_path, MCP_CATALOG_PATH)) return AXIS2_FALSE;
+    /* Suffix match: the path must END with MCP_CATALOG_PATH so that a
+     * path like /evil/_mcp/openapi-mcp.json/../../admin (which contains
+     * the catalog path as a substring but not as a suffix) does not match.
+     * strstr-anywhere matching would allow path-confusion info disclosure. */
+    size_t path_len    = strlen(request_path);
+    size_t catalog_len = strlen(MCP_CATALOG_PATH);
+    if (path_len < catalog_len) return AXIS2_FALSE;
+    if (strcmp(request_path + path_len - catalog_len, MCP_CATALOG_PATH) != 0)
+        return AXIS2_FALSE;
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
         "[MCP] Catalog request matched path '%s'", request_path);
 
     *out_json = mcp_catalog_generate_json(conf, env);
+
+    /* mcp_catalog_generate_json returns NULL on conf==NULL, env==NULL, or OOM.
+     * Return AXIS2_FALSE rather than AXIS2_TRUE with a NULL response pointer
+     * so the caller falls through to normal dispatch instead of sending NULL. */
+    if (!*out_json) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[MCP] mcp_catalog_generate_json returned NULL for path '%s' "
+            "(conf=%p) — falling through to normal dispatch",
+            request_path, (void *)conf);
+        return AXIS2_FALSE;
+    }
+
     return AXIS2_TRUE;
 }
