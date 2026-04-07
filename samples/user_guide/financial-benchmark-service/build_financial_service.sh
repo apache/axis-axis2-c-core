@@ -26,6 +26,12 @@ echo "   • financial-benchmark-mcp — JSON-RPC 2.0 stdio, runs as Claude Desk
 echo ""
 
 # ── 1. Build the httpd shared library ─────────────────────────────────────────
+#
+# Includes:
+#   financial_benchmark_service.c     — core computation + JSON I/O
+#   financial_benchmark_service_handler.c — Axis2/C HTTP entry points (D1)
+#   mcp_catalog_handler.c             — /_mcp/openapi-mcp.json endpoint (D1)
+#   axis2_json_secure_fault.c         — correlation-ID error responses (D2)
 gcc -shared -fPIC \
     -DAXIS2_JSON_ENABLED -DWITH_NGHTTP2 -O2 \
     -I/usr/local/axis2c/include/axis2-2.0.0 \
@@ -34,6 +40,9 @@ gcc -shared -fPIC \
     -I../../src/core/transport/http/util \
     -I/usr/include/json-c \
     src/financial_benchmark_service.c \
+    src/financial_benchmark_service_handler.c \
+    src/mcp_catalog_handler.c \
+    src/axis2_json_secure_fault.c \
     -o libfinancial_benchmark_service.so \
     -L/usr/local/axis2c/lib \
     -laxutil -laxis2_engine \

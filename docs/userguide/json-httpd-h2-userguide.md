@@ -8,7 +8,7 @@ This guide will help you get started with Axis2/C HTTP/2 transport and JSON via 
 
 **New in Axis2/C 2.0**: Complete HTTP/2 transport implementation with enterprise capabilities, streaming optimization for large JSON payloads, authentication services, XSS protection demonstrations, and production-ready performance enhancements using Apache httpd as the application server.
 
-**✅ Verified Testing**: This guide has been tested and verified to work on **Ubuntu 25.10** with Apache httpd and mod_h2 support.
+**✅ Verified Testing**: This guide has been tested and verified to work on **Ubuntu 22.04 LTS** with system Apache 2.4.52 (`mod_http2.so`).
 
 **🔧 Critical Configuration**: HTTPS Virtual Hosts **MUST** include `<Location /services>` directive inside `<VirtualHost *:443>` blocks. Without this, Axis2/C services will fail with routing errors and no debug messages will appear in logs.
 
@@ -295,11 +295,22 @@ echo "🔍 Testing Apache HTTP/2 support on your system..."
 # Test 1: Check if Apache is installed
 { command -v apache2 >/dev/null 2>&1 || command -v httpd >/dev/null 2>&1; } && echo "✅ Apache installation found" || { echo "❌ No Apache installation found"; echo "   Install Apache first: sudo apt install apache2"; return 1 2>/dev/null || echo "Please install Apache before continuing"; }
 
-# Test 2: Check if mod_h2 module file exists
-{ ls /usr/lib/apache2/modules/mod_h2.so 2>/dev/null || ls /usr/lib*/httpd/modules/mod_h2.so 2>/dev/null; } && { echo "✅ mod_h2.so found - HTTP/2 module is available!"; echo "   You can use system Apache (skip source compilation)"; } || echo "❌ mod_h2.so not found - HTTP/2 module missing"
+# Test 2: Check if HTTP/2 module file exists
+# Ubuntu 22.04+ ships mod_http2.so (not mod_h2.so — that was the old name)
+{ ls /usr/lib/apache2/modules/mod_http2.so 2>/dev/null || \
+  ls /usr/lib*/apache2/modules/mod_h2.so 2>/dev/null || \
+  ls /usr/lib*/httpd/modules/mod_http2.so 2>/dev/null || \
+  ls /usr/lib*/httpd/modules/mod_h2.so 2>/dev/null; } \
+    && { echo "✅ HTTP/2 module found - HTTP/2 is available!"; echo "   You can use system Apache (skip source compilation)"; } \
+    || echo "❌ HTTP/2 module not found - module missing"
 
-# Test 3: Try enabling mod_h2 (safe test)
-command -v a2enmod >/dev/null 2>&1 && { sudo a2enmod h2 2>/dev/null && { echo "✅ mod_h2 enabled successfully!"; echo "   Your system Apache supports HTTP/2"; sudo a2dismod h2 2>/dev/null; } || echo "❌ Cannot enable mod_h2 - module not available"; } || echo "⚠️ a2enmod not available - cannot test module enabling"
+# Test 3: Try enabling mod_http2 (safe test)
+# Ubuntu 22.04: module is named http2 (not h2)
+command -v a2enmod >/dev/null 2>&1 && {
+  ( sudo a2enmod http2 2>/dev/null && echo "✅ mod_http2 enabled successfully!" && sudo a2dismod http2 2>/dev/null ) \
+  || ( sudo a2enmod h2 2>/dev/null && echo "✅ mod_h2 enabled successfully!" && sudo a2dismod h2 2>/dev/null ) \
+  || echo "❌ Cannot enable HTTP/2 module - not available"
+} || echo "⚠️ a2enmod not available - cannot test module enabling"
 
 # Test 4: Check what HTTP/2 related modules exist
 echo ""
@@ -308,7 +319,12 @@ find /usr/lib*/apache2/modules /usr/lib*/httpd/modules -name "*h2*" -o -name "*h
 
 echo ""
 echo "📋 RECOMMENDATION:"
-ls /usr/lib*/apache2/modules/mod_h2.so /usr/lib*/httpd/modules/mod_h2.so 2>/dev/null >/dev/null && { echo "✅ Use system Apache - HTTP/2 support is available"; echo "   Continue with Step 1 Option A"; } || { echo "❌ Compile Apache from source - no HTTP/2 support in system package"; echo "   Use Step 0 below, then Step 1 Option B"; }
+{ ls /usr/lib*/apache2/modules/mod_http2.so \
+     /usr/lib*/apache2/modules/mod_h2.so \
+     /usr/lib*/httpd/modules/mod_http2.so \
+     /usr/lib*/httpd/modules/mod_h2.so 2>/dev/null | grep -q .; } \
+  && { echo "✅ Use system Apache - HTTP/2 support is available"; echo "   Continue with Step 1 Option A"; } \
+  || { echo "❌ Compile Apache from source - no HTTP/2 support in system package"; echo "   Use Step 0 below, then Step 1 Option B"; }
 ```
 
 **Run this test first to save time!**
@@ -318,7 +334,7 @@ ls /usr/lib*/apache2/modules/mod_h2.so /usr/lib*/httpd/modules/mod_h2.so 2>/dev/
 ## Compiling Apache httpd from Source with HTTP/2 Support
 
 **When to use this approach:**
-- Your distribution lacks mod_h2 support (like Ubuntu 25.10)
+- Your distribution genuinely lacks HTTP/2 module support (check with the diagnostic above first)
 - You need the latest Apache features
 - You want full control over Apache compilation options
 - You're working with Apache projects and expect to overcome such hurdles
@@ -637,10 +653,7 @@ curl -k -I --http2 https://localhost/
 ```bash
 # Create the HTTPS-only configuration file
 sudo tee /etc/apache2/sites-available/axis2-services.conf << 'EOF'
-# Load required modules for HTTP/2 + HTTPS
-LoadModule h2_module /usr/lib/apache2/modules/mod_h2.so
-LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so
-LoadModule headers_module /usr/lib/apache2/modules/mod_headers.so
+# Load Axis2/C module (mod_http2 + mod_ssl are enabled via a2enmod)
 LoadModule axis2_module /usr/local/axis2c/lib/libmod_axis2.so
 
 # Axis2/C Configuration (standard Unix paths)
@@ -649,7 +662,8 @@ Axis2LogFile /var/log/axis2c/axis2.log
 Axis2LogLevel info
 
 # HTTP/2 Configuration (requires HTTPS)
-<IfModule mod_h2.c>
+# Ubuntu 22.04 ships mod_http2.so (not mod_h2.so — that was the pre-2.4.x name)
+<IfModule mod_http2.c>
     # HTTP/2 performance settings for enterprise big data
     H2WindowSize 65536
     H2MaxWorkers 256
@@ -719,13 +733,17 @@ EOF
 # Enable the site and required modules
 sudo a2ensite axis2-services
 
-# Enable SSL and headers modules (standard modules)
+# Enable SSL and headers modules (standard modules, always available)
 sudo a2enmod ssl
 sudo a2enmod headers
 
 # Enable HTTP/2 module (REQUIRED for this guide)
-# Try system Apache first, then custom Apache
-command -v a2enmod >/dev/null 2>&1 && { sudo a2enmod h2 2>/dev/null && echo "✅ HTTP/2 module enabled successfully (system Apache)" || { echo "❌ System Apache mod_h2 module not available"; echo ""; echo "🔧 SOLUTIONS:"; echo "1. Use custom-compiled Apache (Step 0 above)"; echo "2. Install from Ondrej's PPA: sudo add-apt-repository ppa:ondrej/apache2"; echo "3. Use Ubuntu 24.04 LTS (has proper mod_h2 support)"; echo ""; echo "❌ SETUP FAILED: Cannot continue without mod_h2"; return 1 2>/dev/null || echo "Please fix mod_h2 issue above before continuing"; }; } || { command -v /usr/local/apache2/bin/httpd >/dev/null 2>&1 && { /usr/local/apache2/bin/httpd -M | grep -q h2 && { echo "✅ HTTP/2 modules available in custom Apache build"; echo "   mod_h2 and mod_http2 are compiled into your custom Apache"; } || { echo "❌ Custom Apache was compiled without HTTP/2 support"; echo "   Re-run Step 0 with --enable-http2 --with-nghttp2"; return 1 2>/dev/null || echo "Please recompile Apache with HTTP/2 support"; }; } || { echo "❌ No Apache installation found with HTTP/2 support"; echo "   Install system Apache or compile from source (Step 0)"; return 1 2>/dev/null || echo "Please install Apache before continuing"; }; }
+# Ubuntu 22.04 uses 'http2' as the a2enmod name (module file is mod_http2.so)
+sudo a2enmod http2 && echo "✅ HTTP/2 module enabled (mod_http2)" \
+  || { echo "❌ Cannot enable HTTP/2 module."; \
+       echo "   On Ubuntu 22.04 mod_http2 ships in apache2 package — check:"; \
+       echo "   ls /usr/lib/apache2/modules/mod_http2.so"; \
+       echo "   If missing, install: sudo apt install apache2"; }
 
 # Create SSL certificates for HTTP/2 testing
 # HTTP/2 requires valid TLS certificates - self-signed for development only
