@@ -37,7 +37,6 @@
 #include <json-c/json.h>
 #include <axutil_string.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 /* ============================================================================
@@ -189,7 +188,9 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
     { NULL, NULL, NULL }  /* sentinel */
 };
 
-#define FINBENCH_MCP_N_TOOLS  3
+/* Maximum request size — prevents DoS via unbounded memory allocation */
+#define MAX_MCP_REQUEST_BYTES   (16 * 1024 * 1024)  /* 16 MB per line */
+#define MCP_LINE_INITIAL_CAP    4096
 
 /* ============================================================================
  * JSON-RPC 2.0 output helpers
@@ -282,8 +283,9 @@ static json_object *mcp_handle_tools_list(void)
 {
     json_object *tools_array = json_object_new_array();
 
-    for (int i = 0; i < FINBENCH_MCP_N_TOOLS; i++) {
-        const finbench_mcp_tool_t *tool = &finbench_mcp_tools[i];
+    /* Iterate to NULL sentinel — no hardcoded count needed */
+    for (const finbench_mcp_tool_t *tool = finbench_mcp_tools;
+         tool->name != NULL; tool++) {
         json_object *tool_obj = json_object_new_object();
 
         json_object_object_add(tool_obj, "name",
@@ -342,12 +344,21 @@ static json_object *mcp_handle_tools_call(
     }
     const char *tool_name = json_object_get_string(name_obj);
 
-    /* Extract arguments — optional; default to empty object */
+    /* Extract arguments — optional; default to empty object.
+     * axutil_strdup gives a stable copy independent of json-c's internal buffer
+     * (json_object_to_json_string returns a pointer that is only valid until
+     *  the next call to that function on *any* object). */
     json_object *args_obj = NULL;
     json_object_object_get_ex(params, "arguments", &args_obj);
-    const char *args_json = args_obj
-        ? json_object_to_json_string(args_obj)  /* owned by args_obj, valid while args_obj lives */
+    const char *args_json_tmp = args_obj
+        ? json_object_to_json_string(args_obj)
         : "{}";
+    axis2_char_t *args_json = axutil_strdup(env, args_json_tmp);
+    if (!args_json) {
+        *out_code = MCP_ERR_INTERNAL_ERROR;
+        *out_msg  = "Failed to allocate memory for arguments";
+        return NULL;
+    }
 
     /* Dispatch to the matching finbench_*_json_only() function.
      * Each returns an axutil_strdup()'d string — free with AXIS2_FREE(). */
@@ -360,10 +371,13 @@ static json_object *mcp_handle_tools_call(
     } else if (strcmp(tool_name, "scenarioAnalysis") == 0) {
         result_json = finbench_scenario_json_only(env, args_json);
     } else {
+        AXIS2_FREE(env->allocator, args_json);
         *out_code = MCP_ERR_METHOD_NOT_FOUND;
         *out_msg  = "Unknown tool name. Available: portfolioVariance, monteCarlo, scenarioAnalysis";
         return NULL;
     }
+
+    AXIS2_FREE(env->allocator, args_json);
 
     if (!result_json) {
         *out_code = MCP_ERR_INTERNAL_ERROR;
@@ -392,27 +406,95 @@ static json_object *mcp_handle_tools_call(
  * ============================================================================
  */
 
+/*
+ * Read one newline-terminated line from stdin into a buffer managed by the
+ * Axis2/C allocator. Grows exponentially up to MAX_MCP_REQUEST_BYTES.
+ *
+ * Returns AXIS2_TRUE and sets *out_buf / *out_len on a complete line.
+ * Returns AXIS2_FALSE on EOF or allocation failure.
+ * On oversized input (> MAX_MCP_REQUEST_BYTES), drains the line, writes a
+ * JSON-RPC error to stdout, and returns AXIS2_FALSE with *out_len == 0.
+ */
+static axis2_bool_t
+mcp_read_line(const axutil_env_t *env,
+              axis2_char_t      **buf_inout,
+              size_t             *cap_inout,
+              size_t             *out_len)
+{
+    axis2_char_t *buf = *buf_inout;
+    size_t cap        = *cap_inout;
+    size_t len        = 0;
+    int    c;
+
+    while ((c = getchar()) != EOF) {
+        if (c == '\n') {
+            /* Strip trailing CR */
+            if (len > 0 && buf[len - 1] == '\r') len--;
+            buf[len]  = '\0';
+            *out_len  = len;
+            return AXIS2_TRUE;
+        }
+
+        /* Size guard — prevents DoS via unbounded allocation */
+        if (len >= MAX_MCP_REQUEST_BYTES) {
+            /* Drain remainder of the oversized line */
+            while ((c = getchar()) != EOF && c != '\n') {}
+            mcp_write_error(NULL, MCP_ERR_INVALID_REQUEST,
+                "Request exceeds maximum size (16 MB)");
+            *out_len = 0;
+            return AXIS2_FALSE;
+        }
+
+        /* Grow buffer if needed (doubles each time) */
+        if (len + 1 >= cap) {
+            size_t new_cap = cap * 2;
+            axis2_char_t *new_buf = AXIS2_MALLOC(env->allocator, new_cap);
+            if (!new_buf) {
+                mcp_write_error(NULL, MCP_ERR_INTERNAL_ERROR,
+                    "Failed to grow line buffer");
+                while ((c = getchar()) != EOF && c != '\n') {}
+                *out_len = 0;
+                return AXIS2_FALSE;
+            }
+            memcpy(new_buf, buf, len);
+            AXIS2_FREE(env->allocator, buf);
+            buf = new_buf;
+            cap = new_cap;
+            *buf_inout = buf;
+            *cap_inout = cap;
+        }
+
+        buf[len++] = (axis2_char_t)c;
+    }
+
+    /* EOF without newline — treat as end of session */
+    *out_len = 0;
+    return AXIS2_FALSE;
+}
+
 void finbench_run_mcp_stdio(const axutil_env_t *env)
 {
-    char   *line     = NULL;
-    size_t  line_cap = 0;
-    ssize_t line_len;
-
     /*
-     * getline() allocates dynamically — handles large portfolioVariance requests
-     * (e.g. 500-asset covariance matrix ~ 2 MB) without a fixed buffer limit.
+     * Line buffer managed by the Axis2/C allocator — avoids mixing stdlib
+     * malloc/free with any custom allocator Axis2/C may be configured to use.
+     * Initial capacity 4 KB; grows up to MAX_MCP_REQUEST_BYTES (16 MB) to
+     * handle large portfolioVariance requests (500-asset matrix ~ 2 MB).
      */
-    while ((line_len = getline(&line, &line_cap, stdin)) > 0) {
+    size_t         line_cap = MCP_LINE_INITIAL_CAP;
+    axis2_char_t  *line_buf = AXIS2_MALLOC(env->allocator, line_cap);
+    size_t         line_len = 0;
 
-        /* Strip trailing CR/LF */
-        while (line_len > 0
-                && (line[line_len - 1] == '\n' || line[line_len - 1] == '\r')) {
-            line[--line_len] = '\0';
-        }
+    if (!line_buf) {
+        mcp_write_error(NULL, MCP_ERR_INTERNAL_ERROR,
+            "Failed to allocate initial line buffer");
+        return;
+    }
+
+    while (mcp_read_line(env, &line_buf, &line_cap, &line_len)) {
         if (line_len == 0) continue;
 
         /* ── Parse JSON-RPC 2.0 request ─────────────────────────────── */
-        json_object *req = json_tokener_parse(line);
+        json_object *req = json_tokener_parse(line_buf);
         if (!req) {
             /* id is unknown on parse failure — use null per spec */
             mcp_write_error(NULL, MCP_ERR_PARSE_ERROR, "Parse error: invalid JSON");
@@ -468,5 +550,5 @@ void finbench_run_mcp_stdio(const axutil_env_t *env)
         json_object_put(req);  /* release request + all its members */
     }
 
-    free(line);
+    AXIS2_FREE(env->allocator, line_buf);
 }
