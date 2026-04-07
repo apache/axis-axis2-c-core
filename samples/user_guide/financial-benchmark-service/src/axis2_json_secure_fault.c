@@ -107,9 +107,11 @@ axis2_json_corr_id_generate(char *buf, size_t len)
  * ============================================================================
  */
 
-/* Returned verbatim when json-c allocation fails (static, never freed) */
-static const char FAULT_ALLOC_FALLBACK[] =
-    "{\"status\":\"ERROR\",\"error\":\"internal error\"}";
+/* Minimal fallback written directly via snprintf when json-c itself fails.
+ * Unlike the static string approach, this is always heap-allocated so the
+ * caller can safely free it with AXIS2_FREE in all code paths. */
+#define FAULT_FALLBACK_TEMPLATE \
+    "{\"status\":\"ERROR\",\"correlation_id\":\"%s\",\"error\":\"internal error\"}"
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_json_secure_fault(
@@ -117,14 +119,19 @@ axis2_json_secure_fault(
     const char         *corr_id,
     const char         *safe_message)
 {
-    const char *safe_corr  = corr_id      ? corr_id      : "unknown";
-    const char *safe_msg   = safe_message ? safe_message
+    if (!env) return NULL;   /* cannot allocate without env */
+
+    const char *safe_corr  = (corr_id && corr_id[0])  ? corr_id      : "unknown";
+    const char *safe_msg   = (safe_message && safe_message[0])
+                                          ? safe_message
                                           : "an internal error occurred";
 
     json_object *root = json_object_new_object();
     if (!root) {
-        /* json-c allocation failed — return static fallback (never NULL) */
-        return (axis2_char_t *)(uintptr_t)FAULT_ALLOC_FALLBACK;
+        /* json-c OOM — build fallback string via snprintf (heap-allocated) */
+        char buf[128];
+        snprintf(buf, sizeof(buf), FAULT_FALLBACK_TEMPLATE, safe_corr);
+        return axutil_strdup(env, buf);   /* NULL on total OOM — documented */
     }
 
     json_object_object_add(root, "status",
@@ -138,16 +145,18 @@ axis2_json_secure_fault(
             root, JSON_C_TO_STRING_PLAIN);
 
     axis2_char_t *result = NULL;
-    if (json_cstr && env) {
+    if (json_cstr) {
         result = axutil_strdup(env, json_cstr);
     }
 
     json_object_put(root);   /* free entire tree */
 
     if (!result) {
-        /* axutil_strdup failed or env was NULL */
-        return (axis2_char_t *)(uintptr_t)FAULT_ALLOC_FALLBACK;
+        /* axutil_strdup OOM after successful serialisation — same snprintf fallback */
+        char buf[128];
+        snprintf(buf, sizeof(buf), FAULT_FALLBACK_TEMPLATE, safe_corr);
+        result = axutil_strdup(env, buf);
     }
 
-    return result;
+    return result;   /* NULL only on total memory exhaustion */
 }

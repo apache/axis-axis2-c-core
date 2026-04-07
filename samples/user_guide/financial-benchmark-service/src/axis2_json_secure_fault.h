@@ -90,11 +90,12 @@ axis2_json_corr_id_generate(char *buf, size_t len);
  * readable description suitable for API consumers.
  *
  * @param env          Axis2/C environment (allocator used for the result).
+ *                     NULL causes an immediate NULL return.
  * @param corr_id      16-char hex correlation ID from axis2_json_corr_id_generate().
- *                     NULL produces "unknown" in the response.
+ *                     NULL or empty produces "unknown" in the response.
  * @param safe_message Public-safe error description.  NULL uses a generic message.
- * @return Heap-allocated JSON string; caller frees with AXIS2_FREE.
- *         Returns a minimal static fallback on allocation failure (never NULL).
+ * @return Heap-allocated JSON string; caller MUST free with AXIS2_FREE.
+ *         Returns NULL only when @p env is NULL or on total memory exhaustion.
  */
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_json_secure_fault(
