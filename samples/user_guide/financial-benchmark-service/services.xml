@@ -78,6 +78,24 @@
              Target: <10ms on old Android phone
              ================================================================ -->
         <operation name="portfolioVariance">
+            <parameter name="mcpDescription">Calculate portfolio variance using an O(n²) covariance matrix. Returns portfolio volatility and annualised volatility. Benchmark: 500 assets in &lt;10ms on constrained hardware.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">true</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "required": ["n_assets", "weights", "covariance_matrix"],
+                "properties": {
+                    "n_assets":          {"type": "integer",  "minimum": 2, "maximum": 2000,
+                                          "description": "Number of assets in the portfolio"},
+                    "weights":           {"type": "array",    "items": {"type": "number"},
+                                          "description": "Portfolio weights, one per asset (will be normalised to sum=1)"},
+                    "covariance_matrix": {"type": "array",    "items": {"type": "number"},
+                                          "description": "Flattened n×n covariance matrix (row-major)"},
+                    "normalize_weights": {"type": "boolean",  "default": false,
+                                          "description": "Normalise weights before calculation"},
+                    "request_id":        {"type": "string",   "description": "Optional correlation ID echoed in the response"}
+                }
+            }</parameter>
             <description>
                 Calculate portfolio variance using covariance matrix multiplication.
 
@@ -126,6 +144,24 @@
              Target: <500ms on old Android phone
              ================================================================ -->
         <operation name="monteCarlo">
+            <parameter name="mcpDescription">Run a Monte Carlo VaR simulation using Geometric Brownian Motion. Compute-intensive: 10 000 sims × 252 periods = 2.52M iterations. Returns VaR 95/99, CVaR, max drawdown, and probability of profit.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">true</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "required": ["n_simulations", "n_periods", "initial_value", "expected_return", "volatility"],
+                "properties": {
+                    "n_simulations":   {"type": "integer", "minimum": 100,  "maximum": 1000000,
+                                        "description": "Number of simulation paths"},
+                    "n_periods":       {"type": "integer", "minimum": 1,    "maximum": 2520,
+                                        "description": "Number of time steps (252 = 1 trading year)"},
+                    "initial_value":   {"type": "number",  "description": "Initial portfolio value"},
+                    "expected_return": {"type": "number",  "description": "Annualised expected return (e.g. 0.08 for 8%)"},
+                    "volatility":      {"type": "number",  "description": "Annualised volatility (e.g. 0.20 for 20%)"},
+                    "random_seed":     {"type": "integer", "description": "Optional seed for reproducible results"},
+                    "request_id":      {"type": "string",  "description": "Optional correlation ID"}
+                }
+            }</parameter>
             <description>
                 Run Monte Carlo simulation for Value at Risk calculation.
 
@@ -177,6 +213,35 @@
              Mirrors DPT v2's fundAssetList.find() pattern.
              ================================================================ -->
         <operation name="scenarioAnalysis">
+            <parameter name="mcpDescription">Scenario-weighted portfolio analysis using O(1) hash lookups vs O(n) linear search. Returns expected portfolio value and volatility across probability-weighted price scenarios.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">true</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "required": ["n_assets", "assets"],
+                "properties": {
+                    "n_assets":        {"type": "integer", "minimum": 1, "maximum": 2000,
+                                        "description": "Number of assets"},
+                    "assets":          {"type": "array",
+                                        "description": "Array of asset scenario objects",
+                                        "items": {
+                                            "type": "object",
+                                            "required": ["asset_id", "current_price", "scenario_prices", "probabilities", "position_size"],
+                                            "properties": {
+                                                "asset_id":       {"type": "integer"},
+                                                "current_price":  {"type": "number"},
+                                                "scenario_prices":{"type": "array", "items": {"type": "number"},
+                                                                   "description": "Price in each scenario"},
+                                                "probabilities":  {"type": "array", "items": {"type": "number"},
+                                                                   "description": "Probability weights (must sum to 1.0)"},
+                                                "position_size":  {"type": "integer", "description": "Number of shares held"}
+                                            }
+                                        }},
+                    "use_hash_lookup": {"type": "boolean", "default": true,
+                                        "description": "Use O(1) hash lookup instead of O(n) linear scan"},
+                    "request_id":      {"type": "string"}
+                }
+            }</parameter>
             <description>
                 Calculate scenario-weighted portfolio analysis.
 
@@ -214,6 +279,13 @@
              Get service information, capabilities, and device stats.
              ================================================================ -->
         <operation name="metadata">
+            <parameter name="mcpDescription">Get FinancialBenchmarkService metadata: supported operations, capacity limits, current memory usage, and device platform information. No request body required.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">true</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "properties": {}
+            }</parameter>
             <description>
                 Get service metadata, capabilities, and current device statistics.
 
@@ -250,6 +322,17 @@
              Generate synthetic test portfolio data for benchmarking.
              ================================================================ -->
         <operation name="generateTestData">
+            <parameter name="mcpDescription">Generate a synthetic equal-weighted portfolio with a positive-semi-definite covariance matrix. Returns a ready-to-use portfolioVariance request body.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">false</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "required": ["n_assets"],
+                "properties": {
+                    "n_assets": {"type": "integer", "minimum": 2, "maximum": 2000,
+                                 "description": "Number of assets to generate"}
+                }
+            }</parameter>
             <description>
                 Generate synthetic portfolio test data for benchmarking.
 
