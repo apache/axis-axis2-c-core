@@ -2,7 +2,7 @@
 type: architecture
 created: 2026-04-06
 last-verified: 2026-04-06
-status: Active — Java A1/A2/A3 complete, C1 now unblocked
+status: Active — Java A1/A2/A3 complete, C1 complete
 ---
 
 # MCP Support for Apache Axis2/C
@@ -78,7 +78,7 @@ Android phone.
 | Service dispatch table (`route_operation()`) | ✅ Reusable for MCP `tools/call` |
 | Apache httpd handler | ✅ Running, mod_axis2 loaded |
 | `axis2-transport-mcp` C module | ❌ Not started |
-| stdio MCP mode | ❌ Not started |
+| stdio MCP mode | ✅ Done (C1) — finbench_mcp.c + finbench_mcp_main.c |
 | HTTP/SSE MCP endpoint | ❌ Not started |
 
 ### What exists in Axis2/Java (the reference)
@@ -106,7 +106,7 @@ similarly needs no library beyond json-c, which is already in use throughout
 
 ### C1: stdio MCP Mode in `financial_benchmark_service.c`
 
-**When**: Now — Java A2 is validated. C1 is unblocked.
+**When**: ✅ Done.
 
 **How it works**: The binary detects whether stdin is a pipe (MCP client attached) or
 a tty (interactive/httpd mode) and switches behavior accordingly:
@@ -310,7 +310,7 @@ Java A2 (axis2-mcp-bridge stdio)   ✅ done — validates JSON-RPC 2.0 handshake
          ↓
 Java B1 (axis2-transport-mcp)      ← proves native transport pattern
          ↓
-C1 (stdio in financial-benchmark)  ← NEXT — port: same protocol, same schemas, C dispatch
+C1 (stdio in financial-benchmark)  ✅ done — finbench_mcp.c, same protocol, static tool catalog
          ↓
 C2 (HTTP/SSE on Penguin)           ← port: same as Java A4/B2
          ↓
