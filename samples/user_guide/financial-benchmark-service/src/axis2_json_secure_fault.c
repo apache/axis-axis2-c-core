@@ -44,6 +44,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>  /* size_t */
 #include <string.h>
 #include <time.h>
 
@@ -79,7 +80,11 @@ axis2_json_corr_id_generate(char *buf, size_t len)
 
     if (!got_random) {
         /* Fallback: mix time, clock, and pid with XOR shifts.
-         * Not cryptographically random — adequate for log correlation only. */
+         * Not cryptographically random — adequate for log correlation only.
+         * Note: clock() returns (clock_t)-1 on POSIX when unavailable, not 0;
+         * that sentinel still contributes non-zero bits after the XOR mix.
+         * Not thread-safe: concurrent fallback calls at the same instant may
+         * produce duplicate IDs; this is acceptable for log correlation. */
         uint64_t v = (uint64_t)time(NULL);
         v ^= (uint64_t)clock() << 17;
 #ifdef __linux__

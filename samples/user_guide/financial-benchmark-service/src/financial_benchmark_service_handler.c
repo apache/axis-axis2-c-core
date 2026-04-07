@@ -229,9 +229,12 @@ financial_benchmark_service_process_json_only(
 
     if (!json_request)
     {
+        char corr_id[AXIS2_JSON_CORR_ID_LEN];
+        axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                       "FinancialBenchmarkService: No JSON request provided");
-        return axutil_strdup(env, "{\"error\": \"No JSON request provided\"}");
+            "[FinancialBenchmark][%s] process_json_only: no JSON request",
+            corr_id);
+        return axis2_json_secure_fault(env, corr_id, "no request body");
     }
 
     /* Try to extract operation from JSON */

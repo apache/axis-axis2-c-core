@@ -396,9 +396,15 @@ mcp_catalog_generate_json(
     const char *json_cstr =
             json_object_to_json_string_ext(root, JSON_C_TO_STRING_PLAIN);
 
+    /* Record length before json_object_put() invalidates json_cstr.
+     * json_object_to_json_string_ext() returns a pointer into root's internal
+     * buffer; any call to json_object_put(root) after this point makes it
+     * a dangling pointer.  Capture size eagerly so the log message is safe. */
+    size_t json_len = json_cstr ? strlen(json_cstr) : 0;
+
     axis2_char_t *result = NULL;
     if (json_cstr) {
-        result = axutil_strdup(env, json_cstr);
+        result = (axis2_char_t *)axutil_strdup(env, json_cstr);
         if (!result) {
             /* axutil_strdup OOM — log with correlation ID and return fault */
             char corr_id[AXIS2_JSON_CORR_ID_LEN];
@@ -406,7 +412,7 @@ mcp_catalog_generate_json(
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "[MCP][%s] axutil_strdup failed serialising catalog "
                 "(%zu bytes) — out of memory",
-                corr_id, strlen(json_cstr));
+                corr_id, json_len);
             json_object_put(root);
             return axis2_json_secure_fault(env, corr_id,
                 "catalog generation failed — see server log");
