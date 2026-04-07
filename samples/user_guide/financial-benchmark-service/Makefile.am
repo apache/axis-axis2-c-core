@@ -29,6 +29,7 @@ lib_LTLIBRARIES = libfinancial_benchmark_service.la
 
 libfinancial_benchmark_service_la_SOURCES = \
     src/financial_benchmark_service.c \
+    src/financial_benchmark_service_handler.c \
     src/mcp_catalog_handler.c
 
 libfinancial_benchmark_service_la_CPPFLAGS = \
@@ -96,6 +97,7 @@ include_HEADERS = \
 EXTRA_DIST = \
     services.xml \
     src/financial_benchmark_service.h \
+    src/financial_benchmark_service_handler.c \
     src/finbench_mcp.h \
     src/mcp_catalog_handler.h \
     README.md

@@ -1737,21 +1737,22 @@ finbench_generate_test_portfolio_json(
 }
 
 /* ============================================================================
- * JSON Service Entry Point - Matches Camera Service Pattern
+ * JSON Object Dispatcher - json_object-based calling convention
  *
- * This is the entry point that axis2_json_rpc_msg_recv calls for JSON requests.
- * Function naming convention: {service_name}_invoke_json
+ * This is used by axis2_json_rpc_msg_recv when it passes a parsed json_object
+ * directly.  The exported entry point for string-based callers and for
+ * the Axis2/C dynamic loader is in financial_benchmark_service_handler.c
  * ============================================================================
  */
 
 /**
- * @brief JSON Service Entry Point - Routes requests to appropriate operation
+ * @brief JSON object dispatcher — routes a pre-parsed request to the right op.
  *
- * This function is called by the Axis2/C JSON RPC message receiver.
- * It parses the incoming JSON request and routes to the appropriate operation.
+ * Internal function; the public axis2_json_rpc_msg_recv entry point lives in
+ * financial_benchmark_service_handler.c where msg_ctx is available.
  */
-AXIS2_EXTERN json_object* AXIS2_CALL
-financial_benchmark_service_invoke_json(
+static json_object *
+finbench_dispatch_json_obj(
     const axutil_env_t *env,
     json_object *json_request)
 {
