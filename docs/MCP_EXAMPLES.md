@@ -6,6 +6,21 @@ Protocol). An AI agent asks a question in natural language. The MCP server
 dispatches to native C computation. The answer comes back in microseconds,
 not seconds. This document shows what that looks like and why it matters.
 
+A companion document (`MCP_EXAMPLES.md` in the Axis2/Java repo) runs the
+same demos against the Java implementation with head-to-head performance
+numbers. The financial results are identical — only performance differs.
+
+---
+
+### Transport and Timing Note
+
+Axis2/C is tested over **HTTPS/HTTP2** (TLS required for HTTP/2).
+Axis2/Java is tested over **HTTP/1.1** on WildFly. This does **not**
+affect the performance comparison: all timings use the **server-reported
+`calc_time_us` / `calcTimeUs` field** — wall-clock time measured inside
+the service handler. TLS overhead occurs in the transport layer outside
+this measurement window.
+
 ---
 
 ## What MCP Does for Quants
@@ -50,7 +65,7 @@ curl -k --http2 -s \
         0.002, 0.009, 0.01
       ]
     }' \
-    https://localhost/services/FinancialBenchmarkService/portfolioVariance
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
 
 **Response:**
@@ -138,7 +153,7 @@ curl -k --http2 -s \
       "expected_return": 0.08,
       "volatility": 0.20
     }' \
-    https://localhost/services/FinancialBenchmarkService/monteCarlo
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
 ```
 
 **Response:**
@@ -233,7 +248,7 @@ curl -k --http2 -s \
       ],
       "use_hash_lookup": true
     }' \
-    https://localhost/services/FinancialBenchmarkService/scenarioAnalysis
+    https://10.10.10.10/services/FinancialBenchmarkService/scenarioAnalysis
 ```
 
 **Response:**
@@ -251,6 +266,12 @@ curl -k --http2 -s \
 }
 ```
 
+**MCP stdio:**
+```bash
+echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"scenarioAnalysis","arguments":{"n_assets":3,"assets":[{"asset_id":1,"current_price":150.0,"position_size":100,"scenario_prices":[165.0,157.5,150.0,142.5,135.0],"probabilities":[0.15,0.25,0.30,0.20,0.10]},{"asset_id":2,"current_price":75.0,"position_size":200,"scenario_prices":[82.5,78.75,75.0,71.25,67.5],"probabilities":[0.15,0.25,0.30,0.20,0.10]},{"asset_id":3,"current_price":200.0,"position_size":50,"scenario_prices":[220.0,210.0,200.0,190.0,180.0],"probabilities":[0.15,0.25,0.30,0.20,0.10]}],"use_hash_lookup":true}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
+```
+
 At 3 assets the O(n) vs O(1) difference is negligible. At 500+ assets with
 repeated lookups, hash tables dominate — the same optimization that turns
 10-second page loads into sub-second responses in production.
@@ -263,7 +284,7 @@ repeated lookups, hash tables dominate — the same optimization that turns
 curl -k --http2 -s \
     -H "Content-Type: application/json" \
     -d '{}' \
-    https://localhost/services/FinancialBenchmarkService/metadata
+    https://10.10.10.10/services/FinancialBenchmarkService/metadata
 ```
 
 ```json
@@ -292,14 +313,14 @@ covariance matrix. The output is a ready-to-use `portfolioVariance` request.
 curl -k --http2 -s \
     -H "Content-Type: application/json" \
     -d '{"n_assets": 500}' \
-    https://localhost/services/FinancialBenchmarkService/generateTestData \
+    https://10.10.10.10/services/FinancialBenchmarkService/generateTestData \
     -o /tmp/portfolio_500.json
 
 # Then benchmark it
 curl -k --http2 -s \
     -H "Content-Type: application/json" \
     -d @/tmp/portfolio_500.json \
-    https://localhost/services/FinancialBenchmarkService/portfolioVariance
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
 
 ---
@@ -432,6 +453,12 @@ curl -k --http2 -s \
 }
 ```
 
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0313,0.0976,0.0591,0.0408,0.0058,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0272,0.0408,0.0437,0.0638,0.0015,-0.0035,0.0058,-0.0086,0.0015,0.0303],"normalize_weights":true}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
+```
+
 **Step 2 — Stressed (all pairwise correlations → 0.8):**
 
 Same volatilities, but off-diagonal covariances recomputed as
@@ -467,6 +494,12 @@ curl -k --http2 -s \
 }
 ```
 
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0656,0.0730,0.0530,0.0366,0.0656,0.0974,0.0866,0.0629,0.0434,0.0730,0.0866,0.1204,0.0699,0.0483,0.0530,0.0629,0.0699,0.0635,0.0351,0.0366,0.0434,0.0483,0.0351,0.0303],"normalize_weights":true}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
+```
+
 **Step 3 — Monte Carlo on the stressed portfolio (100K paths):**
 
 ```bash
@@ -495,6 +528,12 @@ curl -k --http2 -s \
     "calc_time_us": 726621,
     "simulations_per_second": 137623
 }
+```
+
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"monteCarlo","arguments":{"n_simulations":100000,"n_periods":252,"initial_value":1000000,"expected_return":0.10,"volatility":0.255,"random_seed":42}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
 **What the assistant tells the PM:**
@@ -556,6 +595,12 @@ curl -k --http2 -s \
 }
 ```
 
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":6,"weights":[0.2425,0.2425,0.194,0.1455,0.1455,0.03],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0787,0.0313,0.0976,0.0591,0.0408,0.0058,0.0934,0.0457,0.0591,0.1207,0.0437,-0.0086,0.1039,0.0272,0.0408,0.0437,0.0638,0.0015,0.0610,-0.0035,0.0058,-0.0086,0.0015,0.0303,0.0115,0.0787,0.0934,0.1039,0.0610,0.0115,0.1936],"normalize_weights":true}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
+```
+
 **Candidate B — Japanese peer (vol 38%, correlation 0.31 to US tech):**
 
 ```bash
@@ -587,6 +632,12 @@ curl -k --http2 -s \
 }
 ```
 
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":6,"weights":[0.2425,0.2425,0.194,0.1455,0.1455,0.03],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0310,0.0313,0.0976,0.0591,0.0408,0.0058,0.0368,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0409,0.0272,0.0408,0.0437,0.0638,0.0015,0.0239,-0.0035,0.0058,-0.0086,0.0015,0.0303,0.0066,0.0310,0.0368,0.0409,0.0239,0.0066,0.1444],"normalize_weights":true}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
+```
+
 **Head-to-head Monte Carlo (100K paths each):**
 
 ```bash
@@ -601,6 +652,17 @@ curl -k --http2 -s -H "Content-Type: application/json" \
     -d '{"n_simulations":100000,"n_periods":252,"initial_value":1000000,
          "expected_return":0.10,"volatility":0.201,"random_seed":42}' \
     https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
+```
+
+**MCP stdio equivalents:**
+```bash
+# European candidate
+echo '{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"monteCarlo","arguments":{"n_simulations":100000,"n_periods":252,"initial_value":1000000,"expected_return":0.10,"volatility":0.211,"random_seed":42}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
+
+# Japanese candidate
+echo '{"jsonrpc":"2.0","id":7,"method":"tools/call","params":{"name":"monteCarlo","arguments":{"n_simulations":100000,"n_periods":252,"initial_value":1000000,"expected_return":0.10,"volatility":0.201,"random_seed":42}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
 **Results side by side (real output, 2026-04-08):**
@@ -639,6 +701,12 @@ for N in 1000 10000 100000 1000000; do
          \"expected_return\":0.10,\"volatility\":0.198,\"random_seed\":42}" \
     https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
 done
+```
+
+**MCP stdio equivalent (example for 100K):**
+```bash
+echo '{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"monteCarlo","arguments":{"n_simulations":100000,"n_periods":252,"initial_value":1000000,"expected_return":0.10,"volatility":0.198,"random_seed":42}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
 **Actual results (seed=42, vol=19.8%, 2026-04-08):**
@@ -721,7 +789,7 @@ curl -k --http2 -s \
       ],
       "normalize_weights": true
     }' \
-    https://localhost/services/FinancialBenchmarkService/portfolioVariance
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
 
 **Real result:**
@@ -733,6 +801,12 @@ curl -k --http2 -s \
   "annualized_volatility": 3.14,
   "weight_sum": 1.0
 }
+```
+
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0313,0.0976,0.0591,0.0408,0.0058,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0272,0.0408,0.0437,0.0638,0.0015,-0.0035,0.0058,-0.0086,0.0015,0.0303],"normalize_weights":true}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
 **Portfolio volatility: 19.8%.** The individual stocks range from 17% (JNJ)
@@ -752,7 +826,7 @@ curl -k --http2 -s \
       "expected_return": 0.10,
       "volatility": 0.198
     }' \
-    https://localhost/services/FinancialBenchmarkService/monteCarlo
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
 ```
 
 **Real result (100K simulations, 1.08 seconds):**
@@ -767,6 +841,12 @@ curl -k --http2 -s \
   "prob_profit": 0.659,
   "simulations_per_second": 92826.21
 }
+```
+
+**MCP stdio equivalent:**
+```bash
+echo '{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"monteCarlo","arguments":{"n_simulations":100000,"n_periods":252,"initial_value":1000000,"expected_return":0.10,"volatility":0.198}}}' \
+    | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
 **What this tells a portfolio manager:**
