@@ -87,7 +87,7 @@ const char* json_tokener_error_to_str(enum json_tokener_error error)
     case json_tokener_error_parse_utf8_string:
         return "error_parse_utf8_string";
 #endif
-#if defined(JSON_C_VERSION_NUM) && JSON_C_VERSION_NUM >= ((0 << 16) | (14 << 8))
+#if defined(JSON_C_VERSION_NUM) && JSON_C_VERSION_NUM >= ((0 << 16) | (17 << 8))
     case json_tokener_error_memory:
         return "error_memory";
     case json_tokener_error_size:
