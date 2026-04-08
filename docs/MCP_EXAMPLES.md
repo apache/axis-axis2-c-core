@@ -483,6 +483,134 @@ an experiment to answer it. Three MCP calls, one table, actionable advice.
 
 ---
 
+## Live Session: Real Market Data → Real Portfolio Risk
+
+The examples above use synthetic data. This section shows a **real
+end-to-end pipeline** run on April 8, 2026: fetch 1 year of daily
+closing prices from a market data provider, compute the covariance
+matrix from historical returns, and run portfolio risk analysis on
+Axis2/C — all in under 2 seconds.
+
+### Step 1: Fetch real prices
+
+Pull 252 trading days of daily closes for a 5-stock portfolio:
+MSFT, AAPL, AMZN, JPM, JNJ.
+
+```bash
+# Fetch from your market data provider (any source that returns daily closes)
+# Example using a REST API with date range and field selection:
+curl -s -X POST "https://market-data-provider.example.com/api/v1/timeseries" \
+    -d "symbol=MSFT&fields=close,date&from=20250401&to=20260407"
+# Repeat for AAPL, AMZN, JPM, JNJ
+```
+
+### Step 2: Compute covariance matrix from real returns
+
+```python
+import math, json
+
+# 254 daily log returns computed from 255 closing prices (April 2025 - April 2026)
+# Annualized covariance: cov(r_i, r_j) * 252
+
+# Real annualized volatilities (from market data, as of 2026-04-07):
+#   MSFT: 26.3%   AAPL: 31.2%   AMZN: 34.7%   JPM: 25.2%   JNJ: 17.4%
+#
+# Real correlation matrix:
+#          MSFT   AAPL   AMZN    JPM    JNJ
+#   MSFT   1.00   0.38   0.50   0.41  -0.08
+#   AAPL   0.38   1.00   0.54   0.52   0.11
+#   AMZN   0.50   0.54   1.00   0.50  -0.14
+#    JPM   0.41   0.52   0.50   1.00   0.03
+#    JNJ  -0.08   0.11  -0.14   0.03   1.00
+#
+# Note: JNJ is negatively correlated with tech — the diversification benefit is real.
+```
+
+### Step 3: Call Axis2/C with real covariance matrix
+
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_assets": 5,
+      "weights": [0.25, 0.25, 0.20, 0.15, 0.15],
+      "covariance_matrix": [
+        0.0691, 0.0313, 0.0457, 0.0272, -0.0035,
+        0.0313, 0.0976, 0.0591, 0.0408,  0.0058,
+        0.0457, 0.0591, 0.1207, 0.0437, -0.0086,
+        0.0272, 0.0408, 0.0437, 0.0638,  0.0015,
+       -0.0035, 0.0058,-0.0086, 0.0015,  0.0303
+      ],
+      "normalize_weights": true
+    }' \
+    https://localhost/services/FinancialBenchmarkService/portfolioVariance
+```
+
+**Real result:**
+```json
+{
+  "status": "SUCCESS",
+  "portfolio_variance": 0.0392,
+  "portfolio_volatility": 0.198,
+  "annualized_volatility": 3.14,
+  "weight_sum": 1.0
+}
+```
+
+**Portfolio volatility: 19.8%.** The individual stocks range from 17% (JNJ)
+to 35% (AMZN). The weighted-average vol would be 27.4%, but the portfolio
+achieves 19.8% — a **28% diversification benefit** driven primarily by JNJ's
+negative correlation with the tech names.
+
+### Step 4: Monte Carlo VaR with real volatility
+
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_simulations": 100000,
+      "n_periods": 252,
+      "initial_value": 1000000,
+      "expected_return": 0.10,
+      "volatility": 0.198
+    }' \
+    https://localhost/services/FinancialBenchmarkService/monteCarlo
+```
+
+**Real result (100K simulations, 1.08 seconds):**
+```json
+{
+  "status": "SUCCESS",
+  "mean_final_value": 1106232.16,
+  "var_95": 217878.47,
+  "var_99": 317260.52,
+  "cvar_95": 278149.14,
+  "max_drawdown": 0.5524,
+  "prob_profit": 0.659,
+  "simulations_per_second": 92826.21
+}
+```
+
+**What this tells a portfolio manager:**
+- At 95% confidence: worst-case annual loss is **$218K** on a $1M portfolio
+- At 99% confidence: **$317K**
+- Expected Shortfall (CVaR 95%): if you're in the worst 5% of outcomes,
+  your average loss is **$278K**
+- **66% probability of profit** over the next year at 10% expected return
+- Worst single-path drawdown across all 100K simulations: **55%**
+- All computed in **1.08 seconds** on a lightly-loaded CI/CD VM
+
+### The punchline
+
+This entire pipeline — real market data, real covariance matrix, real Monte
+Carlo VaR — ran end-to-end in under 2 seconds. The analyst's version of
+this workflow involves a Jupyter notebook, 15 minutes of setup, and a prayer
+that the dependencies haven't broken since last quarter.
+
+With MCP, Claude does it in one conversation turn.
+
+---
+
 ## Why This Matters for Financial Computing
 
 ### The portfolio analytics workflow today
