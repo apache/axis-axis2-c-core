@@ -137,40 +137,83 @@ else
     exit 1
 fi
 
+# Post-restart health check: Apache can pass configtest but crash at runtime
+# (e.g., Axis2 worker init failure, missing transport libs). Wait briefly for
+# child processes to stabilize, then verify the process is still running.
+sleep 2
+if ! systemctl is-active --quiet apache2; then
+    echo ""
+    echo "ERROR: Apache started but crashed. Checking logs..."
+    echo ""
+    echo "--- Last 20 lines of error.log ---"
+    tail -20 /var/log/apache2/error.log
+    echo ""
+    if [ -f "$AXIS2C_LOG/axis2.log" ]; then
+        echo "--- Last 20 lines of axis2.log ---"
+        tail -20 "$AXIS2C_LOG/axis2.log"
+    fi
+    echo ""
+    echo "Rolling back..."
+    a2dissite axis2-services
+    systemctl restart apache2
+    echo "Site disabled. Existing sites are unaffected."
+    exit 1
+fi
+
+echo "Apache is running (PID $(pgrep -o apache2))."
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Step 7: Verify
 # ─────────────────────────────────────────────────────────────────────────────
 echo ""
 echo "── Step 7: Verification ──"
 
-# Check Maven repo (port 80) is still up
+# Verify Apache is listening on expected ports
+echo "Listening ports:"
+ss -tlnp | grep apache2 || echo "  WARNING: apache2 not found in listener list"
+
+# Check existing site on port 80 is still up
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/ 2>/dev/null || echo "000")
 if [ "$HTTP_CODE" = "200" ]; then
-    echo "Port 80 (Maven repo): OK (HTTP $HTTP_CODE)"
+    echo "Port 80 (existing site): OK (HTTP $HTTP_CODE)"
 else
-    echo "Port 80 (Maven repo): WARNING (HTTP $HTTP_CODE) — check default site"
+    echo "Port 80 (existing site): WARNING (HTTP $HTTP_CODE) — check default site"
 fi
 
 # Check HTTPS is responding
 HTTP_CODE=$(curl -k -s -o /dev/null -w "%{http_code}" https://localhost/ 2>/dev/null || echo "000")
-echo "Port 443 (HTTPS):     HTTP $HTTP_CODE"
+echo "Port 443 (HTTPS):        HTTP $HTTP_CODE"
 
 # Check HTTP/2 negotiation
 H2_CHECK=$(curl -k -s --http2 -o /dev/null -w "%{http_version}" https://localhost/ 2>/dev/null || echo "?")
-echo "HTTP/2 negotiation:   version $H2_CHECK"
+echo "HTTP/2 negotiation:      version $H2_CHECK"
 
 # Test FinancialBenchmarkService
 echo ""
 echo "Testing FinancialBenchmarkService..."
-curl -k --http2 -s \
+BENCH_RESPONSE=$(curl -k --http2 -s -w "\n%{http_code}" \
     -H "Content-Type: application/json" \
     -d '{"benchmark":[{"arg0":{"portfolioSize":10,"iterations":100}}]}' \
-    https://localhost/services/FinancialBenchmarkService/benchmark \
-    | head -c 200
-echo ""
+    https://localhost/services/FinancialBenchmarkService/benchmark 2>/dev/null)
+BENCH_HTTP=$(echo "$BENCH_RESPONSE" | tail -1)
+BENCH_BODY=$(echo "$BENCH_RESPONSE" | sed '$d')
+if [ "$BENCH_HTTP" = "200" ]; then
+    echo "  HTTP $BENCH_HTTP — OK"
+    echo "  Response: $(echo "$BENCH_BODY" | head -c 200)"
+else
+    echo "  HTTP $BENCH_HTTP — FAILED"
+    echo "  Response: $(echo "$BENCH_BODY" | head -c 200)"
+    echo ""
+    echo "  Check axis2 log: tail -20 $AXIS2C_LOG/axis2.log"
+fi
 
 echo ""
 echo "=== Deployment complete ==="
+echo ""
+echo "Diagnostics if needed:"
+echo "  apache2ctl -S                     # show vhost config"
+echo "  tail -30 /var/log/apache2/error.log"
+echo "  tail -30 $AXIS2C_LOG/axis2.log"
 echo ""
 echo "Rollback if needed:"
 echo "  a2dissite axis2-services && systemctl restart apache2"

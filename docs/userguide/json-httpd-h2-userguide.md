@@ -695,9 +695,10 @@ Axis2LogLevel info
     SSLCipherSuite ECDHE+AESGCM:ECDHE+CHACHA20:DHE+AESGCM:DHE+CHACHA20:!aNULL:!MD5:!DSS
     SSLHonorCipherOrder off
 
-    # ALPN for HTTP/2 negotiation
-    SSLUseStapling on
-    SSLStaplingCache shmcb:/tmp/stapling_cache(128000)
+    # OCSP Stapling — enable only with CA-signed certificates.
+    # Self-signed certs have no OCSP responder and will cause Apache errors.
+    # SSLUseStapling on
+    # SSLStaplingCache shmcb:/tmp/stapling_cache(128000)
 
     # Security headers for HTTPS-only deployment
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -850,9 +851,10 @@ Axis2LogLevel info
     SSLCipherSuite ECDHE+AESGCM:ECDHE+CHACHA20:DHE+AESGCM:DHE+CHACHA20:!aNULL:!MD5:!DSS
     SSLHonorCipherOrder off
 
-    # ALPN for HTTP/2 negotiation
-    SSLUseStapling on
-    SSLStaplingCache shmcb:/tmp/stapling_cache(128000)
+    # OCSP Stapling — enable only with CA-signed certificates.
+    # Self-signed certs have no OCSP responder and will cause Apache errors.
+    # SSLUseStapling on
+    # SSLStaplingCache shmcb:/tmp/stapling_cache(128000)
 
     # Security headers for HTTPS-only deployment
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
