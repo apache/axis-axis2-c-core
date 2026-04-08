@@ -522,6 +522,62 @@ The MCP stdio startup matters because Claude Desktop launches MCP servers
 as subprocesses. Every time you open a conversation, the server starts. A
 50ms C startup is invisible; a 3-second JVM startup is noticeable every time.
 
+### The bigger picture: AI assistants embedded in financial platforms
+
+The examples above show a standalone MCP server called from Claude Desktop.
+The real payoff is when the same MCP tools power an **AI assistant embedded
+directly in a portfolio management application**.
+
+Picture a chat interface inside a web-based portfolio management platform.
+The portfolio manager is looking at their holdings and types:
+
+> "Which positions are most overweight relative to optimal?"
+
+The assistant calls a rebalancing analysis tool via MCP, gets back the
+positions ranked by deviation from optimal sizing, and renders a chart
+inline — no page navigation, no separate tool, no waiting for the quant
+team to run a script.
+
+> "What's my downside risk if correlations spike to 0.8 in a selloff?"
+
+The assistant calls `portfolioVariance` with stressed correlation
+assumptions, then calls `monteCarlo` with the stressed volatility to
+estimate the tail loss. Two MCP calls, one answer:
+
+> "Under stressed correlations, your portfolio vol increases from 14%
+> to 22%. A 99% VaR Monte Carlo with 100K paths estimates a worst-case
+> annual loss of $331K on your $1M book. The simulation took 1.08 seconds."
+
+The assistant generates an interactive visualization showing the
+distribution of terminal portfolio values — the PM drags a slider to
+adjust the confidence level and sees the VaR threshold move in real time.
+
+This is not speculative. The building blocks exist today:
+
+- **MCP tool schemas** describe what calculations are available
+- **Streaming responses** (SSE) let the assistant show partial results
+  as they arrive
+- **Artifact rendering** lets the AI generate interactive charts that
+  the platform renders in a sandboxed iframe
+- **Conversation persistence** means the PM can pick up where they left
+  off after a meeting
+- **Permission-scoped data** ensures the assistant only accesses funds
+  and positions the user is authorized to see
+
+What Axis2/C adds to this picture is **computation speed**. An assistant
+that can run a 100K-path Monte Carlo in 1 second keeps the conversation
+interactive. An assistant that waits 30 seconds for a batch job to complete
+breaks the flow. The PM asks a follow-up, and the answer is already there.
+
+The same MCP protocol works for both:
+- A chat assistant embedded in a web application (HTTP/SSE transport)
+- Claude Desktop analyzing a portfolio from a terminal (stdio transport)
+- A scheduled risk report that runs overnight (batch MCP calls)
+- A mobile app showing position alerts on a phone (lightweight client)
+
+One protocol. One set of tool definitions. Multiple surfaces. The
+financial calculations don't change — only the interface does.
+
 ### What this proves for production risk systems
 
 Monte Carlo VaR, portfolio correlation, and scenario analysis are the same
