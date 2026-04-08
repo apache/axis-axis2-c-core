@@ -53,134 +53,75 @@ if [ -f "liblogin_json_service.so" ]; then
     echo "📋 Installed files:"
     ls -la /usr/local/axis2c/services/LoginService/
 
-    # Install and configure Axis2/C Apache module (if not already done)
-    echo ""
-    echo "🔧 Installing Axis2/C Apache module..."
+    # Apache module + config: only needed for source-built Apache (/usr/local/apache2).
+    # Packaged Apache (Debian/Ubuntu) uses deploy-localhost.sh + axis2-services.conf instead.
+    if [ -d "/usr/local/apache2" ]; then
+        echo ""
+        echo "🔧 Source-built Apache detected at /usr/local/apache2 — configuring module..."
 
-    # Copy the main Axis2/C module to Apache modules directory
-    if [ ! -f "/usr/local/apache2/modules/mod_axis2.so" ]; then
-        # Try to locate the Axis2/C module using various methods
-        AXIS2_MODULE=""
+        if [ ! -f "/usr/local/apache2/modules/mod_axis2.so" ]; then
+            AXIS2_MODULE=""
+            if [ -n "${AXIS2C_HOME:-}" ] && [ -f "$AXIS2C_HOME/lib/libmod_axis2.so.0.7.0" ]; then
+                AXIS2_MODULE="$AXIS2C_HOME/lib/libmod_axis2.so.0.7.0"
+            elif [ -f "/usr/local/axis2c/lib/libmod_axis2.so.0.7.0" ]; then
+                AXIS2_MODULE="/usr/local/axis2c/lib/libmod_axis2.so.0.7.0"
+            elif [ -f "../../../deploy/lib/libmod_axis2.so.0.7.0" ]; then
+                AXIS2_MODULE="../../../deploy/lib/libmod_axis2.so.0.7.0"
+            elif [ -f "../../deploy/lib/libmod_axis2.so.0.7.0" ]; then
+                AXIS2_MODULE="../../deploy/lib/libmod_axis2.so.0.7.0"
+            fi
 
-        # Method 1: Use AXIS2C_HOME environment variable
-        if [ -n "$AXIS2C_HOME" ] && [ -f "$AXIS2C_HOME/lib/libmod_axis2.so.0.7.0" ]; then
-            AXIS2_MODULE="$AXIS2C_HOME/lib/libmod_axis2.so.0.7.0"
-        # Method 2: Look in standard install location
-        elif [ -f "/usr/local/axis2c/lib/libmod_axis2.so.0.7.0" ]; then
-            AXIS2_MODULE="/usr/local/axis2c/lib/libmod_axis2.so.0.7.0"
-        # Method 3: Look relative to current build location (assuming we're in samples/user_guide/service/)
-        elif [ -f "../../../deploy/lib/libmod_axis2.so.0.7.0" ]; then
-            AXIS2_MODULE="../../../deploy/lib/libmod_axis2.so.0.7.0"
-        # Method 4: Look in common build locations
-        elif [ -f "../../deploy/lib/libmod_axis2.so.0.7.0" ]; then
-            AXIS2_MODULE="../../deploy/lib/libmod_axis2.so.0.7.0"
-        fi
-
-        if [ -n "$AXIS2_MODULE" ]; then
-            sudo cp "$AXIS2_MODULE" /usr/local/apache2/modules/mod_axis2.so
-            echo "✅ Axis2/C module copied from: $AXIS2_MODULE"
+            if [ -n "$AXIS2_MODULE" ]; then
+                sudo cp "$AXIS2_MODULE" /usr/local/apache2/modules/mod_axis2.so
+                echo "✅ Axis2/C module copied from: $AXIS2_MODULE"
+            else
+                echo "⚠️  Axis2/C module not found. Please set AXIS2C_HOME or ensure Axis2/C is built."
+                echo "   Searched: \$AXIS2C_HOME/lib, /usr/local/axis2c/lib, ../../../deploy/lib"
+            fi
         else
-            echo "⚠️  Axis2/C module not found. Please set AXIS2C_HOME or ensure Axis2/C is built."
-            echo "   Searched locations:"
-            echo "   - \$AXIS2C_HOME/lib/libmod_axis2.so.0.7.0"
-            echo "   - /usr/local/axis2c/lib/libmod_axis2.so.0.7.0"
-            echo "   - ../../../deploy/lib/libmod_axis2.so.0.7.0"
-            echo "   - ../../deploy/lib/libmod_axis2.so.0.7.0"
+            echo "✅ Axis2/C module already installed"
         fi
-    else
-        echo "✅ Axis2/C module already installed"
-    fi
 
-    # Create Apache configuration for Axis2/C
-    echo ""
-    echo "📝 Configuring Apache for Axis2/C services..."
-
-    AXIS2_CONF="/usr/local/apache2/conf/extra/httpd-axis2.conf"
-    if [ ! -f "$AXIS2_CONF" ]; then
-        sudo tee "$AXIS2_CONF" > /dev/null << 'EOF'
+        AXIS2_CONF="/usr/local/apache2/conf/extra/httpd-axis2.conf"
+        if [ ! -f "$AXIS2_CONF" ]; then
+            echo ""
+            echo "📝 Creating Axis2/C Apache configuration..."
+            sudo tee "$AXIS2_CONF" > /dev/null << 'CONFEOF'
 # Axis2/C Configuration for HTTP/2 JSON Services
 LoadModule axis2_module modules/mod_axis2.so
-
-# Enable HTTP/2 for Axis2/C services (global setting)
 Protocols h2 h2c http/1.1
-
-# Axis2/C Repository and Services Location
 Axis2RepoPath /usr/local/axis2c
 Axis2LogFile /var/log/axis2c/axis2.log
 Axis2LogLevel info
 Axis2MaxLogFileSize 1024
-
-# Location directive for Axis2/C services
 <Location /services>
     SetHandler axis2_module
 </Location>
-
-# Enable JSON content type handling
 <LocationMatch "^/services/.*">
     Header always set Access-Control-Allow-Origin "*"
     Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
     Header always set Access-Control-Allow-Headers "Content-Type, Authorization, Accept"
 </LocationMatch>
-EOF
-        echo "✅ Created Axis2/C Apache configuration"
-    else
-        echo "✅ Axis2/C Apache configuration already exists"
-    fi
-
-    # Include the configuration in main httpd.conf
-    if ! grep -q "Include conf/extra/httpd-axis2.conf" /usr/local/apache2/conf/httpd.conf; then
-        echo "" | sudo tee -a /usr/local/apache2/conf/httpd.conf
-        echo "# Include Axis2/C configuration" | sudo tee -a /usr/local/apache2/conf/httpd.conf
-        echo "Include conf/extra/httpd-axis2.conf" | sudo tee -a /usr/local/apache2/conf/httpd.conf
-        echo "✅ Added Axis2/C configuration to httpd.conf"
-    else
-        echo "✅ Axis2/C configuration already included in httpd.conf"
-    fi
-
-    # Create log directory
-    sudo mkdir -p /var/log/axis2c
-    sudo chmod 755 /var/log/axis2c
-
-    # Test Apache configuration
-    echo ""
-    echo "🧪 Testing Apache configuration..."
-
-    # Try different Apache binary locations
-    APACHE_CMD=""
-    if [ -x "/usr/local/apache2/bin/httpd" ]; then
-        APACHE_CMD="/usr/local/apache2/bin/httpd"
-    elif [ -x "/usr/sbin/httpd" ]; then
-        APACHE_CMD="/usr/sbin/httpd"
-    elif [ -x "/usr/sbin/apache2" ]; then
-        APACHE_CMD="/usr/sbin/apache2"
-    elif command -v apache2 >/dev/null 2>&1; then
-        APACHE_CMD="apache2"
-    elif command -v httpd >/dev/null 2>&1; then
-        APACHE_CMD="httpd"
-    else
-        echo "⚠️  Apache binary not found - skipping configuration test"
-        echo "   Manually test with: sudo apache2 -t  or  sudo httpd -t"
-        APACHE_CMD=""
-    fi
-
-    if [ -n "$APACHE_CMD" ]; then
-        if sudo "$APACHE_CMD" -t; then
-            echo "✅ Apache configuration test passed"
-            echo ""
-            echo "🔄 Restart Apache to apply changes:"
-            echo "   sudo systemctl restart apache2-custom  # Ubuntu 25.10"
-            echo "   sudo systemctl restart httpd           # RedHat/CentOS and Ubuntu/Debian with package managed httpd that contains the proper H2 features"
-        else
-            echo "❌ Apache configuration test failed - please check the configuration"
+CONFEOF
+            echo "✅ Created $AXIS2_CONF"
         fi
+
+        if [ -f /usr/local/apache2/conf/httpd.conf ] && \
+           ! grep -q "Include conf/extra/httpd-axis2.conf" /usr/local/apache2/conf/httpd.conf; then
+            { echo ""; echo "# Include Axis2/C configuration"; echo "Include conf/extra/httpd-axis2.conf"; } \
+                | sudo tee -a /usr/local/apache2/conf/httpd.conf > /dev/null
+            echo "✅ Added Include directive to httpd.conf"
+        fi
+
+        sudo mkdir -p /var/log/axis2c && sudo chmod 755 /var/log/axis2c
+    else
+        echo ""
+        echo "ℹ️  Packaged Apache detected — skipping module/config install."
+        echo "   Use deploy-localhost.sh + axis2-services.conf for Debian/Ubuntu."
     fi
 
     echo ""
-    echo "✅ CONCLUSION: Pure JSON HTTP/2 Login Service"
-    echo "🏗️  Service Architecture: Direct JSON processing (no SOAP skeleton patterns)"
-    echo "🔧 Apache Integration: Axis2/C module configured for HTTP/2 services"
-    echo "📋 Note: AXIOM libraries present as transitive dependencies through axis2_engine"
-    echo "💡 Service-level code uses pure json-c processing without SOAP framework"
+    echo "✅ Login JSON Service ready"
 else
     echo ""
     echo "❌ BUILD FAILED"
