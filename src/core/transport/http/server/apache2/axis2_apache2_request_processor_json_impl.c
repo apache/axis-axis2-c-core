@@ -1138,7 +1138,19 @@ axis2_apache2_json_processor_parse_and_process_json(
             }
         }
 
-        /* Generate "no data" JSON error response only if no data found anywhere */
+        /* For GET requests (e.g., /metadata), supply an empty JSON object
+         * so the service handler can still run and return its response.
+         * Only reject with 400 for POST/PUT that should have a body. */
+        if (request && request->method_number == M_GET)
+        {
+            AXIS2_LOG_INFO(env->log,
+                "[JSON_PROCESSOR] GET request with no body — using empty JSON object");
+            json_request_buffer = axutil_strdup(env, "{}");
+            request_length = 2;
+            goto process_json;
+        }
+
+        /* POST/PUT with no body is an error */
         return axis2_apache2_json_processor_write_json_error_response(
             env, out_stream, "No request data received", 400);
     }
