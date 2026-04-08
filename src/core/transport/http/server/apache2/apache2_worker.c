@@ -285,6 +285,9 @@ axis2_apache2_worker_process_request(
         out_desc = axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
         in_desc = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
     }
+	/* in_desc may be NULL when transportReceiver is commented out in axis2.xml
+	 * (HTTP/2 mode — Apache httpd handles transport, no standalone receiver needed) */
+	if(in_desc)
 	{
 		axis2_transport_receiver_t *receiver = NULL;
 		receiver = axis2_transport_in_desc_get_recv(in_desc, env);

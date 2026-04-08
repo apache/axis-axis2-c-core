@@ -45,6 +45,11 @@ Axis2/C Engine (SOAP/JSON)
 - **Processes Apache `request_rec`** → Axis2 message context
 - **Handles HTTP/2 multiplexing** with stream processing
 - **Critical path** for JSON HTTP/2 requests
+- **NULL transport descriptors**: In HTTP/2 mode, `axis2_conf_get_transport_in()`
+  and `axis2_conf_get_transport_out()` may return NULL when `transportReceiver`
+  and `transportSender` are commented out in `axis2.xml` (Apache httpd handles
+  transport directly). All code using `in_desc`/`out_desc` must NULL-guard.
+  See `docs/HTTP2_AXIS2_DOT_XML.md` for why these are disabled in HTTP/2 mode.
 
 #### **HTTP Header Processing (Lines 469-605)**
 ```c
