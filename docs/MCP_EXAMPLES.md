@@ -66,6 +66,10 @@ curl -k --http2 -s \
 }
 ```
 
+(`calc_time_us: 0` = sub-microsecond; `ops_per_second` is raw matrix
+multiply-accumulate throughput — the 929M figure comes from the 500-asset
+benchmark below, not this 3-asset example.)
+
 **MCP stdio (Claude Desktop):**
 ```bash
 echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":3,"weights":[0.4,0.3,0.3],"covariance_matrix":[0.04,0.006,0.002,0.006,0.09,0.009,0.002,0.009,0.01]}}}' \
@@ -80,11 +84,14 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioV
   "result": {
     "content": [{
       "type": "text",
-      "text": "{\"status\":\"SUCCESS\",\"portfolio_variance\":0.01894,\"portfolio_volatility\":0.1376,...}"
+      "text": "{\"status\":\"SUCCESS\",\"portfolio_variance\":0.01894,\"portfolio_volatility\":0.1376, ...}"
     }]
   }
 }
 ```
+
+(Response truncated for brevity — full response includes all fields from
+the HTTP/2 example above.)
 
 **At scale (500 assets = 250,000 matrix operations):**
 
@@ -95,9 +102,10 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioV
 | Memory | 48 MB total process |
 
 For context: a production portfolio system calculating correlations across
-500 assets performs the same O(n^2) matrix multiplication. The difference is
-that enterprise Java runtimes require 4-8 GB of heap and 30-60 seconds of
-JVM startup. Axis2/C does it in 269 microseconds with 48 MB of memory.
+500 assets performs the same O(n^2) matrix multiplication. Enterprise Java
+runtimes typically require multi-GB heap allocations and several seconds of
+JVM startup. Axis2/C does it in 269 microseconds with 48 MB peak process
+memory (RSS under load).
 
 ---
 
@@ -170,9 +178,9 @@ echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"monteCarlo
 Linear scaling — the throughput stays constant as you add simulations. A
 nightly risk run that needs 1 million simulations across 10 portfolios
 finishes in about 2 minutes on a single core of modest hardware. The same
-calculation on a JavaScript runtime (V8, Node.js) would take 10-100x longer
-due to JIT warmup, garbage collection pauses, and the overhead of
-floating-point operations through an interpreter before optimization kicks in.
+calculation on an interpreted runtime would typically take significantly
+longer due to JIT warmup, garbage collection pauses, and floating-point
+overhead before the optimizer kicks in.
 
 Monte Carlo is specifically identified as a future compute-intensive feature
 in production optimization roadmaps. The question is always: "where do we
@@ -346,13 +354,13 @@ paths, scenario analysis — are tight numerical loops over floating-point
 arrays. This is exactly where C excels and where interpreted languages pay
 the highest overhead.
 
-| | Axis2/C | Python (numpy) | JavaScript (V8) |
-|---|---|---|---|
-| 500-asset portfolio variance | **269 μs** | ~5-10 ms | ~10-50 ms |
-| 10K Monte Carlo paths | **110 ms** | ~1-5 sec | ~2-10 sec |
-| Memory for 500 assets | **48 MB** | ~200-500 MB | ~100-300 MB |
-| Startup time | **instant** (shared lib) | 1-3 sec (import) | 1-3 sec (JVM/V8) |
-| MCP stdio startup | **< 50 ms** | 500-1000 ms | 1-3 sec |
+| | Axis2/C (measured) | Interpreted runtimes (typical) |
+|---|---|---|
+| 500-asset portfolio variance | **269 μs** | Milliseconds to tens of milliseconds |
+| 10K Monte Carlo paths | **110 ms** | Seconds (varies with JIT warmup) |
+| Peak memory for 500 assets | **48 MB** RSS | Hundreds of MB (runtime + GC overhead) |
+| Startup time | **instant** (shared lib) | 1-3 sec (interpreter/JVM startup) |
+| MCP stdio startup | **< 50 ms** | 500 ms+ (module import / classloading) |
 
 The MCP stdio startup matters because Claude Desktop launches MCP servers
 as subprocesses. Every time you open a conversation, the server starts. A
@@ -393,8 +401,8 @@ For remote servers accessible via SSH:
   "mcpServers": {
     "axis2c-financial": {
       "command": "ssh",
-      "args": ["-i", "~/.ssh/your_key", "user@your-server",
-               "sudo /usr/local/axis2c/bin/financial-benchmark-mcp"]
+      "args": ["user@your-server",
+               "/usr/local/axis2c/bin/financial-benchmark-mcp"]
     }
   }
 }
@@ -415,6 +423,10 @@ The same Axis2/C deployment also hosts:
 These demonstrate that Axis2/C handles authentication, security validation,
 and large payload streaming alongside compute-intensive financial operations
 — all on the same Apache httpd instance, all over HTTP/2.
+
+Note: The benchmark examples above omit authentication for clarity.
+Production deployments should require JWT tokens (via `LoginService`) for
+all financial calculation endpoints.
 
 ---
 
