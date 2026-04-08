@@ -707,32 +707,113 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
                 "JsonRpcMessageReceiver: Building JSON response for service: %s, operation: %s",
                 service_name ? service_name : "unknown", operation_name ? operation_name : "NULL");
 
-            // Revolutionary: Create JSON response (service-specific processing would go here)
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "[JSON RPC MSG RECV] DEBUG: Starting JSON response generation for service='%s' operation='%s'",
-                service_name ? service_name : "unknown", operation_name ? operation_name : "NULL");
+            /* Service .so loaded via axis2_get_instance — now invoke its
+             * <serviceclass>_invoke_json() to get actual computed results.
+             *
+             * Server-side services (Linux/httpd) use a 4-param signature:
+             *   axis2_char_t* <svcclass>_invoke_json(svc, env, json_str, msg_ctx)
+             *
+             * Android services use a 2-param signature via the static registry
+             * (see #ifdef __ANDROID__ path above):
+             *   json_object* <svcname>_invoke_json(env, json_object*)
+             *
+             * The .so is already loaded by axutil_class_loader_create_dll above,
+             * so dlsym(RTLD_DEFAULT, ...) finds the symbol without another dlopen.
+             * See also: docs/HTTP2_SERVICES_DOT_XML.md (step 6)
+             */
+            {
+                /* ── Step 1: Function pointer type for server-side _invoke_json ── */
+                typedef axis2_char_t* (*invoke_json_4p_t)(
+                    axis2_svc_t*, const axutil_env_t*,
+                    const axis2_char_t*, axis2_msg_ctx_t*);
+                invoke_json_4p_t invoke_func = NULL;
+                axis2_char_t *func_name = NULL;
+                axutil_dll_desc_t *dll_desc = NULL;
+                const axis2_char_t *extracted_class = NULL;
 
-            axis2_char_t* part1 = axutil_stracat(env, "{\"service\":\"", service_name ? service_name : "unknown");
-            AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: part1 created: %p", (void*)part1);
-
-            if (part1) {
-                axis2_char_t* part2 = axutil_stracat(env, part1, "\",\"operation\":\"");
-                AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: part2 created: %p", (void*)part2);
-
-                if (part2) {
-                    axis2_char_t* part3 = axutil_stracat(env, part2, operation_name ? operation_name : "unknown");
-                    AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: part3 created: %p", (void*)part3);
-
-                    if (part3) {
-                        json_response = axutil_stracat(env, part3, "\",\"status\":\"success\",\"message\":\"Service loaded correctly\"}");
-                        AXIS2_LOG_INFO(env->log, "[JSON RPC MSG RECV] DEBUG: json_response created: %p", (void*)json_response);
-
-                        // Free intermediate strings
-                        AXIS2_FREE(env->allocator, part3);
+                /* ── Step 2: Extract service class name from the DLL descriptor ──
+                 *
+                 * The ServiceClass parameter was already transformed by svc_builder.c
+                 * into a dll_desc containing the full library path, e.g.:
+                 *   /usr/local/axis2c/services/FinancialBenchmarkService/libfinancial_benchmark_service.so
+                 *
+                 * We extract "financial_benchmark_service" from the basename by
+                 * stripping the "lib" prefix and ".so" suffix.
+                 */
+                dll_desc = (axutil_dll_desc_t *)axutil_param_get_value(impl_class_param, env);
+                if (dll_desc) {
+                    const char *dll_path = axutil_dll_desc_get_name(dll_desc, env);
+                    if (dll_path) {
+                        const char *base = strrchr(dll_path, '/');
+                        base = base ? base + 1 : dll_path;
+                        /* e.g. "libfinancial_benchmark_service.so" -> "financial_benchmark_service" */
+                        if (strncmp(base, "lib", 3) == 0 && strlen(base) > 6) {
+                            size_t len = strlen(base) - 6; /* minus "lib" (3) + ".so" (3) */
+                            char *name = (char *)AXIS2_MALLOC(env->allocator, len + 1);
+                            if (name) {
+                                strncpy(name, base + 3, len);
+                                name[len] = '\0';
+                                extracted_class = name;
+                            }
+                        }
                     }
-                    AXIS2_FREE(env->allocator, part2);
                 }
-                AXIS2_FREE(env->allocator, part1);
+
+                /* ── Step 3: Build function name: "<serviceclass>_invoke_json" ── */
+                if (extracted_class) {
+                    func_name = axutil_stracat(env, extracted_class, "_invoke_json");
+                    AXIS2_FREE(env->allocator, (void *)extracted_class);
+                }
+
+                /* ── Step 4: Look up and call the service's _invoke_json ──
+                 *
+                 * The .so was already loaded by axutil_class_loader_create_dll (line 699),
+                 * so its symbols are in the global scope. RTLD_DEFAULT searches all
+                 * loaded shared objects without needing another dlopen().
+                 *
+                 * Example: for FinancialBenchmarkService this resolves to
+                 * financial_benchmark_service_invoke_json(svc, env, json_request, msg_ctx)
+                 * which routes to the correct operation and returns computed JSON.
+                 */
+                if (func_name) {
+                    invoke_func = (invoke_json_4p_t)dlsym(RTLD_DEFAULT, func_name);
+                    if (invoke_func && json_request) {
+                        AXIS2_LOG_INFO(env->log,
+                            "JsonRpcMessageReceiver: Calling %s for operation %s",
+                            func_name, operation_name ? operation_name : "unknown");
+                        json_response = invoke_func(svc, env, json_request, in_msg_ctx);
+                    }
+                    if (!invoke_func) {
+                        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                            "JsonRpcMessageReceiver: %s not found via dlsym, using fallback",
+                            func_name);
+                    }
+                    AXIS2_FREE(env->allocator, func_name);
+                }
+
+                /* ── Step 5: Fallback if _invoke_json not found or returned NULL ──
+                 *
+                 * This covers services that don't export _invoke_json (e.g., legacy
+                 * services or services that only implement the SOAP skeleton pattern).
+                 * Returns a generic JSON acknowledgment so the caller gets valid JSON
+                 * rather than an empty response or SOAP fault.
+                 */
+                if (!json_response) {
+                    axis2_char_t *p1 = axutil_stracat(env, "{\"service\":\"", service_name ? service_name : "unknown");
+                    if (p1) {
+                        axis2_char_t *p2 = axutil_stracat(env, p1, "\",\"operation\":\"");
+                        AXIS2_FREE(env->allocator, p1);
+                        if (p2) {
+                            axis2_char_t *p3 = axutil_stracat(env, p2, operation_name ? operation_name : "unknown");
+                            AXIS2_FREE(env->allocator, p2);
+                            if (p3) {
+                                json_response = axutil_stracat(env, p3,
+                                    "\",\"status\":\"success\",\"message\":\"Service loaded (no _invoke_json handler)\"}");
+                                AXIS2_FREE(env->allocator, p3);
+                            }
+                        }
+                    }
+                }
             }
         } else {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,

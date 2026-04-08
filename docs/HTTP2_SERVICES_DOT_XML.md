@@ -74,10 +74,18 @@ status = axis2_msg_recv_receive(receiver, env, msg_ctx,
 
 ### 6. JSON Processing Execution
 The `axis2_json_rpc_msg_recv` receiver (`src/core/receivers/axis2_json_rpc_msg_recv.c`):
-1. **Bypasses AXIOM/SOAP**: Revolutionary AXIOM-free processing
-2. **Direct JSON Parsing**: Uses json-c library for pure JSON processing
-3. **Service Function Invocation**: Directly calls the C service function
-4. **JSON Response Generation**: Returns JSON response without XML conversion
+1. **Bypasses AXIOM/SOAP**: AXIOM-free processing
+2. **Loads service .so**: Uses `axutil_class_loader_create_dll()` via the `ServiceClass` parameter
+3. **Resolves invoke function**: Uses `dlsym(RTLD_DEFAULT, "<serviceclass>_invoke_json")` to find the service's JSON handler in the already-loaded .so
+4. **Calls service function**: Invokes the 4-param server-side signature:
+   ```c
+   axis2_char_t* <serviceclass>_invoke_json(
+       axis2_svc_t *svc, const axutil_env_t *env,
+       const axis2_char_t *json_request, axis2_msg_ctx_t *msg_ctx);
+   ```
+5. **JSON Response Generation**: Returns the service's JSON response string directly
+
+**Android path**: On Android (`__ANDROID__`), services are statically linked and use a 2-param signature via the static service registry instead of dlsym. See `docs/HTTP2_ANDROID.md`.
 
 ## Configuration Parameters in services.xml
 

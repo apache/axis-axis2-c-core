@@ -219,6 +219,57 @@ json_service_invoke_func_t android_static_service_lookup(...) { }
 
 Static functions have internal linkage and may be excluded from static archives.
 
+## Android vs Server-Side: Two `_invoke_json` Signatures
+
+The `axis2_json_rpc_msg_recv` framework dispatches to service functions
+using **different signatures** depending on the platform:
+
+### Android (2-param, `json_object*`)
+
+```c
+json_object* camera_control_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request);
+```
+
+- Resolved via the **static service registry** (`android_static_service_lookup`)
+- Uses weak/strong symbol linking — no `dlopen`/`dlsym` at runtime
+- Works with `json_object*` (json-c object pointers)
+- The Kanaha app's `axis2_static_service_adapter.c` bridges this to the
+  app's `_impl()` functions which use plain `char*` strings
+
+### Server-side / Linux (4-param, `char*`)
+
+```c
+axis2_char_t* financial_benchmark_service_invoke_json(
+    axis2_svc_t *svc,
+    const axutil_env_t *env,
+    const axis2_char_t *json_request,
+    axis2_msg_ctx_t *msg_ctx);
+```
+
+- Resolved via `dlsym(RTLD_DEFAULT, "<serviceclass>_invoke_json")` after
+  the service `.so` is loaded by `axutil_class_loader_create_dll()`
+- Has access to the `axis2_svc_t` and `axis2_msg_ctx_t` for operation
+  routing, endpoint info, and MCP catalog generation
+- Works with `axis2_char_t*` (JSON strings), not `json_object*`
+
+### Why Two Signatures?
+
+Server-side services need `svc` and `msg_ctx` to:
+- Extract the operation name from the message context (URL path dispatch)
+- Access endpoint reference for MCP catalog intercepts
+- Get configuration context for multi-service deployments
+
+Android services don't need these because:
+- The static registry already routes by service name
+- Operations are identified by the `"action"` field in the JSON body
+- There is no multi-service deployment — one app, one service
+
+Services that want to work in both environments can export both:
+- `<serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
+- `<serviceclass>_process_json_only(env, json_str)` for simpler contexts
+
 ## Linking for Android
 
 ### Direct Linking Required
