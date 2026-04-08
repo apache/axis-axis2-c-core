@@ -14,9 +14,15 @@
 # limitations under the License.
 # HTTP Transport Build Configuration
 #
-# Always build sender and receiver — axis2.xml requires libaxis2_http_sender.so
-# and libaxis2_http_receiver.so for transport initialization regardless of
-# whether HTTP/2 is enabled. Without them, mod_axis2 worker creation fails.
+# HTTP/2 JSON mode (WITH_NGHTTP2): Only builds util and common
+# Legacy HTTP/1.1 SOAP mode: Builds full stack including sender and receiver
+
+if WITH_NGHTTP2
+# HTTP/2 JSON: Minimal HTTP transport - server built separately after engine
+SUBDIRS = util common
+else
+# Legacy HTTP/1.1 SOAP: Full HTTP transport stack for traditional SOAP services
 SUBDIRS = util common sender receiver
+endif
 
 # Note: Apache module (server/) is built after engine in main SUBDIRS to avoid circular deps
