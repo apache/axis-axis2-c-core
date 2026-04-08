@@ -390,96 +390,274 @@ Monte Carlo" and Claude already knows what to send.
 
 ## What This Looks Like in Practice
 
-### Conversation 1: Stress-testing a portfolio
+Every example below was run live on April 8, 2026. The curl commands
+are real, the JSON responses are real, the timings are real. Each
+section frames the analyst question, shows what the MCP tool call looks
+like under the hood, and presents the actual response.
 
-> **Analyst**: I have a 3-asset portfolio: 40% in Asset A (vol 20%),
-> 30% in Asset B (vol 30%), 30% in Asset C (vol 10%). Correlations are
-> low. What's my portfolio risk?
+### Demo 1: Stress-test — "What if correlations spike?"
 
-Claude calls `portfolioVariance` — it already knows to construct the
-covariance matrix from volatilities and correlations, set `n_assets: 3`,
-and normalize the weights.
+> **PM question**: My 5-stock portfolio shows 19.8% vol. What happens
+> if cross-asset correlations spike to 0.8 in a selloff?
 
-> **Claude**: Your portfolio volatility is 13.8% annualized. The
-> diversification benefit is significant — a naive weighted average of
-> individual vols would be 19.0%, so you're getting a 27% risk reduction
-> from low correlations.
+**Step 1 — Baseline (real market correlations):**
 
-> **Analyst**: Now stress-test it — what if correlations spike to 0.8
-> during a crisis?
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_assets": 5,
+      "weights": [0.25, 0.25, 0.20, 0.15, 0.15],
+      "covariance_matrix": [
+        0.0691, 0.0313, 0.0457, 0.0272, -0.0035,
+        0.0313, 0.0976, 0.0591, 0.0408,  0.0058,
+        0.0457, 0.0591, 0.1207, 0.0437, -0.0086,
+        0.0272, 0.0408, 0.0437, 0.0638,  0.0015,
+       -0.0035, 0.0058,-0.0086, 0.0015,  0.0303
+      ],
+      "normalize_weights": true
+    }' \
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
+```
 
-Claude reconstructs the covariance matrix with correlation = 0.8, calls
-`portfolioVariance` again.
+```json
+{
+    "status": "SUCCESS",
+    "portfolio_variance": 0.0392,
+    "portfolio_volatility": 0.198,
+    "annualized_volatility": 3.143,
+    "calc_time_us": 0,
+    "memory_used_kb": 37448,
+    "matrix_operations": 25
+}
+```
 
-> **Claude**: Under stressed correlations, portfolio volatility jumps to
-> 22.1% — a 60% increase. The diversification benefit nearly disappears.
-> This is the drawdown-conditional correlation effect that risk managers
-> watch for.
+**Step 2 — Stressed (all pairwise correlations → 0.8):**
 
-> **Analyst**: Run a Monte Carlo with the stressed parameters — what's
-> my 99% VaR over one year?
+Same volatilities, but off-diagonal covariances recomputed as
+`vol_i × vol_j × 0.8`:
 
-Claude calls `monteCarlo` with the stressed volatility, 100K simulations.
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_assets": 5,
+      "weights": [0.25, 0.25, 0.20, 0.15, 0.15],
+      "covariance_matrix": [
+        0.0691, 0.0656, 0.0730, 0.0530, 0.0366,
+        0.0656, 0.0974, 0.0866, 0.0629, 0.0434,
+        0.0730, 0.0866, 0.1204, 0.0699, 0.0483,
+        0.0530, 0.0629, 0.0699, 0.0635, 0.0351,
+        0.0366, 0.0434, 0.0483, 0.0351, 0.0303
+      ],
+      "normalize_weights": true
+    }' \
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
+```
 
-> **Claude**: With 100,000 simulations at 22.1% vol: your 99% VaR is
-> $331K on a $1M portfolio. There's a 38% chance of ending the year
-> below your starting value. Max drawdown across all paths was 57%.
-> The simulation ran in 1.08 seconds.
+```json
+{
+    "status": "SUCCESS",
+    "portfolio_variance": 0.0649,
+    "portfolio_volatility": 0.2547,
+    "annualized_volatility": 4.043,
+    "calc_time_us": 0,
+    "memory_used_kb": 39560,
+    "matrix_operations": 25
+}
+```
 
-Three calculations. Zero lines of code. Each builds on the previous
-answer. The AI handles parameter construction, unit conversion, and
-financial interpretation.
+**Step 3 — Monte Carlo on the stressed portfolio (100K paths):**
 
-### Conversation 2: Discovery-driven analysis
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_simulations": 100000,
+      "n_periods": 252,
+      "initial_value": 1000000,
+      "expected_return": 0.10,
+      "volatility": 0.255,
+      "random_seed": 42
+    }' \
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
+```
 
-> **Analyst**: What financial tools do you have access to?
+```json
+{
+    "status": "SUCCESS",
+    "mean_final_value": 1104211.79,
+    "var_95": 298687.71,
+    "var_99": 410292.07,
+    "cvar_95": 366609.94,
+    "max_drawdown": 0.674,
+    "prob_profit": 0.604,
+    "calc_time_us": 726621,
+    "simulations_per_second": 137623
+}
+```
 
-Claude already has the `tools/list` response. It answers:
+**What the assistant tells the PM:**
 
-> **Claude**: I can run three financial calculations via the Axis2/C
-> benchmark service:
->
-> 1. **Portfolio Variance** — O(n^2) covariance matrix calculation for
->    up to 2,000 assets. Supports weight normalization and custom
->    annualization (equity, fixed income, crypto).
->
-> 2. **Monte Carlo VaR** — Geometric Brownian Motion simulation with up
->    to 1M paths. Returns VaR at any percentile, CVaR (expected shortfall),
->    max drawdown, and probability of profit. All parameters have sensible
->    defaults — I can run one with no configuration at all.
->
-> 3. **Scenario Analysis** — Probability-weighted return calculation with
->    hash-table vs linear-scan benchmarking for large portfolios.
->
-> What would you like to analyze?
+| Metric | Normal correlations | Stressed (ρ = 0.8) | Change |
+|--------|--------------------|--------------------|--------|
+| Portfolio vol | 19.8% | 25.5% | **+29%** |
+| 95% VaR (1yr, $1M) | $219K | $299K | **+$80K** |
+| 99% VaR | $318K | $410K | **+$92K** |
+| Prob of profit | 65.7% | 60.4% | -5.3pp |
+| Max drawdown | 57% | 67% | +10pp |
 
-The AI didn't read a README. It read the `tools/list` schema and
-synthesized a human-readable summary, including details like "up to 2,000
-assets" (from the schema's max constraint) and "all parameters have
-defaults" (from the `required: []` annotation).
+The diversification benefit nearly disappears. Under normal
+correlations the portfolio achieves 19.8% vol vs a naive weighted
+average of 27.4% (28% diversification benefit). Under stress, vol
+jumps to 25.5% — the portfolio starts behaving like a single bet.
 
-### Conversation 3: Iterative parameter exploration
+Three MCP calls. Two `portfolioVariance` (sub-microsecond each), one
+`monteCarlo` (0.73 seconds). Total wall time under 1 second.
 
-> **Analyst**: How sensitive is VaR to the number of simulations?
+### Demo 2: Pre-trade risk — "Should I add this name?"
 
-Claude runs `monteCarlo` at 1K, 10K, and 100K simulations (it knows
-the max is 1M from the schema), compares the 95% VaR values:
+> **Analyst question**: I want to add a 3% position in a European
+> semiconductor equipment name. 52-week range 542 to 1,313 (EUR).
+> What does it do to my portfolio risk vs a Japanese alternative?
 
-> **Claude**: The 95% VaR stabilizes quickly:
->
-> | Simulations | 95% VaR | Time |
-> |-------------|---------|------|
-> | 1,000 | $236K | 12 ms |
-> | 10,000 | $231K | 110 ms |
-> | 100,000 | $232K | 1.08 sec |
->
-> Convergence is tight by 10K simulations — the 95% VaR changes by less
-> than 2% from 10K to 100K. For production reporting, 10K paths gives
-> you reliable estimates in 110 milliseconds.
+The assistant computes covariance from historical returns, then runs
+`portfolioVariance` on two candidate portfolios: the original 5 names
+scaled to 97% plus the new name at 3%.
 
-The analyst didn't ask for a convergence study. But the AI understood
-the implicit question — "how many simulations do I need?" — and designed
-an experiment to answer it. Three MCP calls, one table, actionable advice.
+**Candidate A — European semi (vol 44%, correlation 0.68 to existing tech):**
+
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_assets": 6,
+      "weights": [0.2425, 0.2425, 0.194, 0.1455, 0.1455, 0.03],
+      "covariance_matrix": [
+        0.0691, 0.0313, 0.0457, 0.0272,-0.0035, 0.0787,
+        0.0313, 0.0976, 0.0591, 0.0408, 0.0058, 0.0934,
+        0.0457, 0.0591, 0.1207, 0.0437,-0.0086, 0.1039,
+        0.0272, 0.0408, 0.0437, 0.0638, 0.0015, 0.0610,
+       -0.0035, 0.0058,-0.0086, 0.0015, 0.0303, 0.0115,
+        0.0787, 0.0934, 0.1039, 0.0610, 0.0115, 0.1936
+      ],
+      "normalize_weights": true
+    }' \
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
+```
+
+```json
+{
+    "status": "SUCCESS",
+    "portfolio_variance": 0.04141,
+    "portfolio_volatility": 0.2035,
+    "calc_time_us": 0,
+    "matrix_operations": 36
+}
+```
+
+**Candidate B — Japanese peer (vol 38%, correlation 0.31 to US tech):**
+
+```bash
+curl -k --http2 -s \
+    -H "Content-Type: application/json" \
+    -d '{
+      "n_assets": 6,
+      "weights": [0.2425, 0.2425, 0.194, 0.1455, 0.1455, 0.03],
+      "covariance_matrix": [
+        0.0691, 0.0313, 0.0457, 0.0272,-0.0035, 0.0310,
+        0.0313, 0.0976, 0.0591, 0.0408, 0.0058, 0.0368,
+        0.0457, 0.0591, 0.1207, 0.0437,-0.0086, 0.0409,
+        0.0272, 0.0408, 0.0437, 0.0638, 0.0015, 0.0239,
+       -0.0035, 0.0058,-0.0086, 0.0015, 0.0303, 0.0066,
+        0.0310, 0.0368, 0.0409, 0.0239, 0.0066, 0.1444
+      ],
+      "normalize_weights": true
+    }' \
+    https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
+```
+
+```json
+{
+    "status": "SUCCESS",
+    "portfolio_variance": 0.03874,
+    "portfolio_volatility": 0.1968,
+    "calc_time_us": 0,
+    "matrix_operations": 36
+}
+```
+
+**Head-to-head Monte Carlo (100K paths each):**
+
+```bash
+# European candidate (vol 20.35%)
+curl -k --http2 -s -H "Content-Type: application/json" \
+    -d '{"n_simulations":100000,"n_periods":252,"initial_value":1000000,
+         "expected_return":0.10,"volatility":0.211,"random_seed":42}' \
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
+
+# Japanese candidate (vol 19.68%)
+curl -k --http2 -s -H "Content-Type: application/json" \
+    -d '{"n_simulations":100000,"n_periods":252,"initial_value":1000000,
+         "expected_return":0.10,"volatility":0.201,"random_seed":42}' \
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
+```
+
+**Results side by side (real output, 2026-04-08):**
+
+| | Before (5 names) | + European semi | + Japanese peer |
+|---|---|---|---|
+| Portfolio vol | 19.8% | **20.3%** (+55bp) | **19.7%** (-13bp) |
+| 95% VaR ($1M) | $219K | $238K | $224K |
+| 99% VaR | $318K | $340K | $323K |
+| CVaR 95% | $279K | $300K | $284K |
+| Prob of profit | 65.7% | 64.3% | 65.4% |
+| Max drawdown | 57.1% | 59.7% | 57.7% |
+| `portfolioVariance` time | < 1 μs | < 1 μs | < 1 μs |
+| `monteCarlo` time | 0.68 sec | 0.72 sec | 0.67 sec |
+
+The European name adds 55bp of vol because it's correlated 0.68 with
+the existing tech cluster. The Japanese alternative actually *reduces*
+vol by 13bp — the JPY exposure and lower tech correlation provide
+genuine diversification. The 99% VaR difference is **$17K per $1M**
+of notional.
+
+Four `portfolioVariance` calls (sub-microsecond each) and two
+`monteCarlo` runs (0.67-0.72 seconds each). Total compute: ~1.4 seconds.
+
+### Demo 3: Convergence — "How much compute do I actually need?"
+
+> **Quant question**: I'm calibrating Monte Carlo for the nightly risk
+> run. How many simulations for stable 99% VaR?
+
+Run `monteCarlo` at 1K, 10K, 100K, and 1M paths with a fixed seed:
+
+```bash
+for N in 1000 10000 100000 1000000; do
+  curl -k --http2 -s -H "Content-Type: application/json" \
+    -d "{\"n_simulations\":$N,\"n_periods\":252,\"initial_value\":1000000,
+         \"expected_return\":0.10,\"volatility\":0.198,\"random_seed\":42}" \
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
+done
+```
+
+**Actual results (seed=42, vol=19.8%, 2026-04-08):**
+
+| Simulations | 95% VaR | 99% VaR | Calc time | Sims/sec |
+|-------------|---------|---------|-----------|----------|
+| 1,000 | $244,132 | $338,909 | **6 ms** | 164,295 |
+| 10,000 | $221,010 | $326,476 | **66 ms** | 152,423 |
+| 100,000 | $219,248 | $317,559 | **716 ms** | 139,650 |
+| 1,000,000 | $217,666 | $316,045 | **6.6 sec** | 150,773 |
+
+The 95% VaR converges by 10K paths (< 1% change beyond that). The 99%
+VaR needs 100K — the 10K estimate is 2.8% higher than the converged
+value, which matters for regulatory reporting.
+
+**Production capacity math**: at 716 ms per 100K-path run, a single
+core processes **83 funds per minute**. A 500-fund universe completes
+in 6 minutes on one core, or **36 seconds on a 10-core node**. That's
+regulatory-grade VaR without a compute cluster.
 
 ---
 
