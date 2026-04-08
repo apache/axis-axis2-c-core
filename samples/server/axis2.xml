@@ -56,13 +56,15 @@
   
     <!-- HTTP/2 JSON mode: Apache httpd handles all transport via mod_axis2.
          The standalone HTTP/1.1 sender/receiver libs are not built in HTTP/2
-         mode (see HTTP2_CONDITIONAL_COMPILATION.md).
+         mode (see docs/HTTP2_CONDITIONAL_COMPILATION.md).
          Uncomment for legacy HTTP/1.1 SOAP mode with standalone server. -->
     <!--transportReceiver name="http" class="axis2_http_receiver">
         <parameter name="port" locked="false">6060</parameter>
         <parameter name="exposeHeaders" locked="true">false</parameter>
     </transportReceiver-->
   
+    <!-- HTTPS receiver: also not needed in HTTP/2 mode (Apache handles TLS).
+         Uncomment for legacy HTTP/1.1 SOAP mode with SSL. -->
     <!--transportReceiver name="https" class="axis2_http_receiver">
         <parameter name="port" locked="false">6060</parameter>
         <parameter name="exposeHeaders" locked="true">false</parameter>
@@ -82,16 +84,15 @@
         <parameter name="xml-declaration" insert="false"/>
     </transportSender-->
 
-    <!-- Uncomment the following with appropriate parameters to enable the SSL transport sender.
-         Also make sure that the appropriate transport receiver is enabled above.-->
+    <!-- HTTPS sender: also not needed in HTTP/2 mode (Apache handles TLS).
+         Uncomment for legacy HTTP/1.1 SOAP mode with SSL. -->
     <!--transportSender name="https" class="axis2_http_sender">
         <parameter name="PROTOCOL" locked="false">HTTP/1.1</parameter>
         <parameter name="xml-declaration" insert="false"/>
-    </transportSender>
-    <parameter name="SERVER_CERT">/path/to/ca/certificate</parameter>
-    <parameter name="KEY_FILE">/path/to/client/certificate/chain/file</parameter>
-    <parameter name="SSL_PASSPHRASE">passphrase</parameter>
-    -->
+        <parameter name="SERVER_CERT">/path/to/ca/certificate</parameter>
+        <parameter name="KEY_FILE">/path/to/client/certificate/chain/file</parameter>
+        <parameter name="SSL_PASSPHRASE">passphrase</parameter>
+    </transportSender-->
 
     <!-- TCP transport removed (January 2026) - use HTTP/2 instead -->
 
