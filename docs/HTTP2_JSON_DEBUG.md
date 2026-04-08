@@ -315,6 +315,77 @@ tail -20 /var/log/axis2c/axis2.log    # look for loading errors before the crash
 
 ---
 
+## Problem 9: Request-Path Segfault — NULL Transport Descriptor
+
+**Symptom:** Worker init succeeds (axis2.log shows "Axis2 worker created")
+but Apache child crashes on the first incoming request.
+
+**Stack trace pattern (from `coredumpctl info`):**
+```
+#0  axis2_transport_in_desc_get_recv (libaxis2_engine.so)
+#1  axis2_apache2_worker_process_request (libmod_axis2.so)
+#2  axis2_handler (libmod_axis2.so)
+#3  ap_run_handler (apache2)
+```
+
+**Root cause:** In `apache2_worker.c`, the request processing path calls:
+```c
+in_desc = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+// in_desc is NULL because transportReceiver is commented out in axis2.xml
+receiver = axis2_transport_in_desc_get_recv(in_desc, env);  // SEGFAULT
+```
+
+When `transportReceiver` is absent from `axis2.xml` (correct for HTTP/2
+mode), `axis2_conf_get_transport_in()` returns NULL. The code then passes
+NULL to `axis2_transport_in_desc_get_recv()` which dereferences it.
+
+**Fix:** NULL-guard the transport descriptor before use:
+```c
+if(in_desc)
+{
+    receiver = axis2_transport_in_desc_get_recv(in_desc, env);
+    if(receiver)
+        axis2_transport_receiver_set_server_ip(receiver, env, ...);
+}
+```
+
+**Key insight:** There are **two separate crash points** when removing
+transport config from axis2.xml — one during init (Problem 4: "Transport
+sender is NULL") and one during request handling (this problem). Fixing
+Problem 4 alone is not sufficient; the request path must also tolerate
+NULL transport descriptors.
+
+---
+
+## Problem 10: "Operation Not Found" for Valid Service
+
+**Symptom in axis2.log:**
+```
+Operation Not found. Endpoint reference is : /services/MyService/someOperation
+```
+
+**Symptom in response:**
+```json
+{"error":{"message":"Service processing failed","code":500}}
+```
+
+**What it means:** The service is loaded and running, but the operation
+name in the URL path doesn't match any `<operation name="...">` in
+`services.xml`.
+
+**Diagnosis:** Check what operations are actually registered:
+```bash
+grep '<operation name=' /usr/local/axis2c/services/MyService/services.xml
+```
+
+**Common causes:**
+- URL uses a different operation name than what's in `services.xml`
+- The test/deploy script uses a placeholder operation name (e.g., `benchmark`)
+  that was never defined
+- Case sensitivity mismatch
+
+---
+
 ## Packaged Apache vs Source-Built Apache
 
 Many issues stem from path differences between these two environments:

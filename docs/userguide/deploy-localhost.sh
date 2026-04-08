@@ -196,13 +196,13 @@ echo "Port 443 (HTTPS):        HTTP $HTTP_CODE"
 H2_CHECK=$(curl -k -s --http2 -o /dev/null -w "%{http_version}" https://localhost/ 2>/dev/null || echo "?")
 echo "HTTP/2 negotiation:      version $H2_CHECK"
 
-# Test FinancialBenchmarkService
+# Test FinancialBenchmarkService — use portfolioVariance (a real operation)
 echo ""
-echo "Testing FinancialBenchmarkService..."
+echo "Testing FinancialBenchmarkService/portfolioVariance..."
 BENCH_RESPONSE=$(curl -k --http2 -s -w "\n%{http_code}" \
     -H "Content-Type: application/json" \
-    -d '{"benchmark":[{"arg0":{"portfolioSize":10,"iterations":100}}]}' \
-    https://localhost/services/FinancialBenchmarkService/benchmark 2>/dev/null)
+    -d '{"n_assets":3,"weights":[0.4,0.3,0.3],"covariance_matrix":[0.04,0.006,0.002,0.006,0.09,0.009,0.002,0.009,0.01]}' \
+    https://localhost/services/FinancialBenchmarkService/portfolioVariance 2>/dev/null)
 BENCH_HTTP=$(echo "$BENCH_RESPONSE" | tail -1)
 BENCH_BODY=$(echo "$BENCH_RESPONSE" | sed '$d')
 if [ "$BENCH_HTTP" = "200" ]; then
