@@ -336,25 +336,44 @@ axis2_financial_benchmark_service_create(
 }
 
 /**
- * @brief Alternate service factory function (axis2_get_instance pattern)
+ * @brief Service factory function called by axutil_class_loader_create_dll().
  *
- * Some Axis2/C configurations look for this function name.
+ * CRITICAL: The signature must match CREATE_FUNCT in axutil_dll_desc.h:
+ *   typedef int (*CREATE_FUNCT)(void **inst, const axutil_env_t *env);
+ *
+ * The class loader calls: create_funct(&obj, env)
+ * A wrong signature (e.g., returning axis2_svc_t* with only env param) causes
+ * &obj to be misinterpreted as env, leading to a segfault in axis2_svc_create.
+ *
+ * Compare with bigdata-h2-service and login-service which avoid this by not
+ * exporting axis2_get_instance (they use ServiceClass=<name> in services.xml
+ * with a different loading path).
  */
-AXIS2_EXTERN axis2_svc_t* AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 axis2_get_instance(
+    void **inst,
     const axutil_env_t *env)
 {
-    return axis2_financial_benchmark_service_create(env);
+    *inst = axis2_financial_benchmark_service_create(env);
+    if (!(*inst))
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
 }
 
 /**
- * @brief Service cleanup function
+ * @brief Service cleanup function called by axutil_class_loader.
+ *
+ * CRITICAL: The signature must match DELETE_FUNCT in axutil_dll_desc.h:
+ *   typedef int (*DELETE_FUNCT)(void *inst, const axutil_env_t *env);
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 axis2_remove_instance(
-    axis2_svc_t *svc,
+    void *inst,
     const axutil_env_t *env)
 {
+    axis2_svc_t *svc = (axis2_svc_t *)inst;
     AXIS2_LOG_INFO(env->log,
                   "FinancialBenchmarkService: Removing service instance");
 
