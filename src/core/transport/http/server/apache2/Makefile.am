@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # Install to Apache modules directory instead of standard lib directory
-apachemoddir = /usr/local/apache2/modules
+apachemoddir = @prefix@/lib
 apachemod_LTLIBRARIES = libmod_axis2.la
 
 # Automatic build fix: Force recompilation when object files are missing
