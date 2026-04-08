@@ -138,10 +138,18 @@ else
 fi
 
 # Post-restart health check: Apache can pass configtest but crash at runtime
-# (e.g., Axis2 worker init failure, missing transport libs). Wait briefly for
-# child processes to stabilize, then verify the process is still running.
-sleep 2
-if ! systemctl is-active --quiet apache2; then
+# (e.g., Axis2 worker init failure, missing transport libs). Retry a few times
+# since child processes may take a moment to stabilize or crash.
+HEALTH_OK=false
+for i in 1 2 3 4 5; do
+    sleep 2
+    if systemctl is-active --quiet apache2; then
+        HEALTH_OK=true
+        break
+    fi
+    echo "  Health check attempt $i/5: Apache not active, retrying..."
+done
+if [ "$HEALTH_OK" = false ]; then
     echo ""
     echo "ERROR: Apache started but crashed. Checking logs..."
     echo ""

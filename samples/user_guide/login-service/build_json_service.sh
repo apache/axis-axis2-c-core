@@ -114,6 +114,10 @@ CONFEOF
         fi
 
         sudo mkdir -p /var/log/axis2c && sudo chmod 755 /var/log/axis2c
+
+        echo ""
+        echo "🔄 Restart Apache to apply changes:"
+        echo "   sudo /usr/local/apache2/bin/httpd -k restart"
     else
         echo ""
         echo "ℹ️  Packaged Apache detected — skipping module/config install."
