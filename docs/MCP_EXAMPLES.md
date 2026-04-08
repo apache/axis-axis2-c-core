@@ -1,6 +1,6 @@
 # MCP Examples: Financial Services over HTTP/2
 
-**BLUF**: Apache Axis2/C serves financial calculations — portfolio variance,
+**Summary**: Apache Axis2/C serves financial calculations — portfolio variance,
 Monte Carlo VaR, scenario analysis — over HTTP/2 JSON and MCP (Model Context
 Protocol). An AI agent asks a question in natural language. The MCP server
 dispatches to native C computation. The answer comes back in microseconds,
