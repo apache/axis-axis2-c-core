@@ -267,8 +267,8 @@ Android services don't need these because:
 - There is no multi-service deployment — one app, one service
 
 Services that want to work in both environments can export both:
-- `<serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
-- `<serviceclass>_process_json_only(env, json_str)` for simpler contexts
+- `axis2_char_t* <serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
+- `axis2_char_t* <serviceclass>_process_json_only(env, json_str)` for simpler contexts
 
 ## Linking for Android
 

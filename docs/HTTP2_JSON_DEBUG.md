@@ -244,6 +244,14 @@ axis2_remove_instance(void *inst, const axutil_env_t *env)
 }
 ```
 
+**Alternative approach:** Some services (e.g., `bigdata-h2-service`,
+`login-service`, `testws-service`) avoid this trap entirely by **not
+exporting `axis2_get_instance`**. They rely solely on the `ServiceClass`
+parameter in `services.xml` and the `_invoke_json` dlsym lookup path in
+the `JsonRpcMessageReceiver`. This sidesteps the `CREATE_FUNCT` signature
+requirement altogether. Only export `axis2_get_instance` / `axis2_remove_instance`
+if your service needs custom initialization during worker startup.
+
 ---
 
 ## Problem 6: Apache Module Not Found at Install Time

@@ -793,24 +793,21 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
 
                 /* ── Step 5: Fallback if _invoke_json not found or returned NULL ──
                  *
-                 * This covers services that don't export _invoke_json (e.g., legacy
-                 * services or services that only implement the SOAP skeleton pattern).
-                 * Returns a generic JSON acknowledgment so the caller gets valid JSON
-                 * rather than an empty response or SOAP fault.
+                 * This likely indicates a misconfiguration: the service .so loaded
+                 * but doesn't export <serviceclass>_invoke_json. Returns a JSON
+                 * error (not SOAP fault) so clients get a parseable response.
                  */
                 if (!json_response) {
-                    axis2_char_t *p1 = axutil_stracat(env, "{\"service\":\"", service_name ? service_name : "unknown");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "JsonRpcMessageReceiver: Service %s loaded but has no _invoke_json handler. "
+                        "Verify the service .so exports <serviceclass>_invoke_json().",
+                        service_name ? service_name : "unknown");
+                    axis2_char_t *p1 = axutil_stracat(env, "{\"error\":{\"message\":\"Service '", service_name ? service_name : "unknown");
                     if (p1) {
-                        axis2_char_t *p2 = axutil_stracat(env, p1, "\",\"operation\":\"");
+                        axis2_char_t *p2 = axutil_stracat(env, p1, "' has no _invoke_json handler\",\"code\":500}}");
                         AXIS2_FREE(env->allocator, p1);
                         if (p2) {
-                            axis2_char_t *p3 = axutil_stracat(env, p2, operation_name ? operation_name : "unknown");
-                            AXIS2_FREE(env->allocator, p2);
-                            if (p3) {
-                                json_response = axutil_stracat(env, p3,
-                                    "\",\"status\":\"success\",\"message\":\"Service loaded (no _invoke_json handler)\"}");
-                                AXIS2_FREE(env->allocator, p3);
-                            }
+                            json_response = p2;
                         }
                     }
                 }
