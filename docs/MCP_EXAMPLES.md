@@ -14,12 +14,14 @@ numbers. The financial results are identical — only performance differs.
 
 ### Transport and Timing Note
 
-Axis2/C is tested over **HTTPS/HTTP2** (TLS required for HTTP/2).
-Axis2/Java is tested over **HTTP/1.1** on WildFly. This does **not**
-affect the performance comparison: all timings use the **server-reported
-`calc_time_us` / `calcTimeUs` field** — wall-clock time measured inside
-the service handler. TLS overhead occurs in the transport layer outside
-this measurement window.
+Both Axis2/C and Axis2/Java support **HTTPS/HTTP2**. Axis2/C runs over
+Apache httpd with mod_h2; Axis2/Java runs over WildFly or Tomcat with
+ALPN-negotiated HTTP/2 on port 8443 (verified on WildFly 32, WildFly 39,
+and Tomcat 11).
+
+All timings use the **server-reported `calc_time_us` / `calcTimeUs`
+field** — wall-clock time measured inside the service handler. Transport
+overhead (TLS, HTTP/2 framing) is excluded.
 
 ---
 
