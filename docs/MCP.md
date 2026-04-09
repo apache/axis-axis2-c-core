@@ -1,13 +1,13 @@
 ---
 type: architecture
 created: 2026-04-06
-last-verified: 2026-04-06
-status: Active — Java A1/A2/A3 complete, C1 complete
+last-verified: 2026-04-09
+status: Active — Java A1/A2/A3 complete, C1 complete, mcpInputSchema deployed
 ---
 
 # MCP Support for Apache Axis2/C
 
-**BLUF**: Axis2/C gains MCP (Model Context Protocol) support by porting from the
+**Summary**: Axis2/C gains MCP (Model Context Protocol) support by porting from the
 Axis2/Java reference implementation — the same pattern used successfully for HTTP/2.
 The C implementation targets hardware where Java cannot run: edge devices, embedded
 systems, Android phones. One MCP client (Claude Desktop, Claude API) connects to
@@ -66,7 +66,7 @@ Android phone.
 
 ---
 
-## Current State (2026-04-06)
+## Current State (2026-04-09)
 
 ### What exists in Axis2/C today
 
@@ -74,7 +74,7 @@ Android phone.
 |----------|--------|
 | json-c integration | ✅ In use throughout financial benchmark service |
 | HTTP/2 transport (`modules/transport-h2`) | ✅ Working, tested |
-| `financial_benchmark_service.c` | ✅ portfolioVariance, monteCarlo, scenarioAnalysis — all validated |
+| `financial_benchmark_service.c` | ✅ portfolioVariance, monteCarlo VaR, scenarioAnalysis — all validated |
 | Service dispatch table (`route_operation()`) | ✅ Reusable for MCP `tools/call` |
 | Apache httpd handler | ✅ Running, mod_axis2 loaded |
 | `axis2-transport-mcp` C module | ❌ Not started |
@@ -184,8 +184,7 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
             "\"initial_value\":{\"type\":\"number\"},"
             "\"expected_return\":{\"type\":\"number\"},"
             "\"volatility\":{\"type\":\"number\"}"
-        "},\"required\":[\"n_simulations\",\"n_periods\",\"initial_value\","
-                        "\"expected_return\",\"volatility\"]}",
+        "},\"required\":[]}",
         finbench_monte_carlo_mcp_handler
     },
     {
@@ -221,7 +220,7 @@ call the existing `finbench_*_json_only()` function, return the result string.
 
 ---
 
-### C2: HTTP/SSE MCP Endpoint (Penguin Demo)
+### C2: HTTP/SSE MCP Endpoint
 
 **When**: After C1 stdio works. Enables multiple Claude sessions sharing one
 persistent C server over HTTP/2.
@@ -312,7 +311,7 @@ Java B1 (axis2-transport-mcp)      ← proves native transport pattern
          ↓
 C1 (stdio in financial-benchmark)  ✅ done — finbench_mcp.c, same protocol, static tool catalog
          ↓
-C2 (HTTP/SSE on Penguin)           ← port: same as Java A4/B2
+C2 (HTTP/SSE endpoint)             ← port: same as Java A4/B2
          ↓
 C3 (axis2-transport-mcp C module)  ← port: same transport abstraction in C
 ```
@@ -332,7 +331,7 @@ When C1 and Java B1 are both complete, the demonstration is:
 Claude Desktop
     ├── axis2c-financial (stdio, $20 Android phone)
     │       portfolioVariance — 500 assets in 5ms, 30MB memory
-    │       monteCarlo        — 10,000 simulations in 100ms
+    │       monteCarlo VaR    — 10,000 GBM simulations in 100ms
     │       scenarioAnalysis  — O(n) vs O(1) hash, 2,000 assets
     │
     └── axis2-java-services (HTTP/SSE, enterprise server)
