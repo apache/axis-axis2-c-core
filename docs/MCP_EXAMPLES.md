@@ -1,5 +1,46 @@
 # MCP Examples: Financial Services over HTTP/2
 
+## Stress Test Results: Pandemic-Era Market Data (Feb-Apr 2020)
+
+The financial benchmark service was stress-tested with real market data from
+the COVID-19 crash period (February-April 2020), when markets experienced:
+
+- **JPM annualized volatility: 89.6%** (normal: ~22%)
+- **MSFT-AAPL correlation: 0.945** (normal: ~0.5)
+- **All sector correlations: 0.54-0.95** (crisis correlation spike)
+- **VIX peaked at 82** (normal: 15-20)
+
+Data was fetched live from FIS TimeSeries for 5 tickers (MSFT.O, AAPL.O,
+AMZN.O, JPM.N, JNJ.N), 62 trading days. The covariance matrix was computed
+from 61 daily log returns and annualized (×252).
+
+### Results
+
+| Test | Input | Result |
+|------|-------|--------|
+| Pandemic portfolio variance | 5 assets, real 2020 covariance | SUCCESS, portfolio vol=61.2%, 0 μs |
+| Pandemic Monte Carlo 1M sims | vol=89.6%, return=-20% | SUCCESS, no Inf/NaN, 88K sims/sec |
+| Extreme Monte Carlo 1M sims | vol=80%, return=-50% | SUCCESS, no Inf/NaN |
+| 500-asset portfolio | 250K matrix operations | SUCCESS, 273 μs |
+| 1000-asset portfolio | 1M operations, 8 MB payload | SUCCESS, 950 μs, 148 MB RSS |
+| Zero volatility MC | vol=0.0 (deterministic) | SUCCESS |
+| 200% volatility MC | vol=2.0 (extreme) | SUCCESS, no Inf/NaN |
+| 1 simulation MC | Minimum input | SUCCESS |
+| Malformed/empty JSON | Edge cases | Clean error messages, no crash |
+| 20 concurrent requests | Parallel pandemic PV | All HTTP 200 |
+| 500 sequential requests | Memory leak check | No RSS growth |
+| Rapid-fire 100 requests | Sequential pandemic PV | All HTTP 200 |
+| MCP stdio extreme | vol=80%, return=-50%, 100K sims | SUCCESS via stdio |
+| Apache health post-stress | After all tests | Active, no crash |
+
+**Zero crashes. Zero Inf/NaN. Zero memory leaks.** Tested on Ubuntu 22.04,
+Apache httpd with mod_axis2, HTTPS/HTTP2, 64 GB RAM.
+
+The same test payloads can be run against Axis2/Java for identical financial
+results (different performance — see the performance comparison below).
+
+---
+
 **Summary**: Apache Axis2/C serves financial calculations — portfolio variance,
 Monte Carlo VaR, scenario analysis — over HTTP/2 JSON and MCP (Model Context
 Protocol). An AI agent asks a question in natural language. The MCP server
