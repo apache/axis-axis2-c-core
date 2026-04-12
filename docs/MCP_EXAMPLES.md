@@ -39,6 +39,25 @@ Apache httpd with mod_axis2, HTTPS/HTTP2, 64 GB RAM.
 The same test payloads can be run against Axis2/Java for identical financial
 results (different performance — see the performance comparison below).
 
+### Payload Size Limits
+
+Portfolio variance payloads grow as O(n²) — the covariance matrix dominates:
+
+| Assets | Covariance elements | JSON payload | HTTP limit (50 MB) |
+|--------|--------------------:|-------------:|:------------------:|
+| 500    |           250,000  |       ~6 MB  | ✅ |
+| 700    |           490,000  |      ~11 MB  | ✅ |
+| 1000   |         1,000,000  |      ~22 MB  | ✅ |
+| 1500   |         2,250,000  |      ~50 MB  | ✅ (borderline) |
+| 2000   |         4,000,000  |      ~89 MB  | ❌ exceeds limit |
+
+Monte Carlo and scenario analysis requests are always small (~200 bytes)
+regardless of simulation count — all computation happens server-side.
+
+MCP stdio transport has no payload size limit (line-buffered I/O).
+The `FINBENCH_MAX_ASSETS=2000` code cap is reachable via MCP but not
+via HTTP for portfolio variance due to the quadratic payload growth.
+
 ---
 
 **Summary**: Apache Axis2/C serves financial calculations — portfolio variance,
