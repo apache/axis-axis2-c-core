@@ -826,9 +826,11 @@ finbench_run_monte_carlo(
         return response;
     }
 
-    /* Allocate array for final values (needed for percentiles) */
+    /* Allocate array for final values (needed for percentiles).
+     * Cast to size_t to prevent integer overflow on 32-bit platforms
+     * when n_simulations is large (e.g., 1M × 8 bytes = 8 MB). */
     final_values = AXIS2_MALLOC(env->allocator,
-        request->n_simulations * sizeof(double));
+        (size_t)request->n_simulations * sizeof(double));
     if (!final_values) {
         response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
         response->error_message = axutil_strdup(env, "Memory allocation failed");
@@ -865,7 +867,16 @@ finbench_run_monte_carlo(
 
         for (period = 0; period < request->n_periods; period++) {
             double z = rand_normal(&rng);
-            value *= exp(drift + vol_sqrt_dt * z);
+            double exponent = drift + vol_sqrt_dt * z;
+            /* Guard against exp() overflow — exp(709.78) ≈ DBL_MAX.
+             * Extreme GBM shocks with high volatility can produce
+             * exponents that overflow to Inf, corrupting all downstream
+             * statistics. Cap to a safe maximum. */
+            if (exponent > 709.0) {
+                value = 1e308; /* Near DBL_MAX — treat as extreme outcome */
+            } else {
+                value *= exp(exponent);
+            }
 
             /* Track drawdown */
             if (value > peak) {
