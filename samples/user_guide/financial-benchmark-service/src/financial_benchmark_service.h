@@ -48,8 +48,12 @@ extern "C"
 {
 #endif
 
-/* Maximum supported assets for benchmark */
-#define FINBENCH_MAX_ASSETS         2000
+/* Maximum supported assets for benchmark.
+ * Enterprise portfolio management systems commonly have 2000+ assets
+ * per department. Cap at 3000 to cover large portfolios with margin.
+ * Note: 3000-asset covariance matrix payload is ~135 MB (O(n²)),
+ * reachable via MCP stdio but exceeds HTTP 50MB LimitRequestBody. */
+#define FINBENCH_MAX_ASSETS         3000
 #define FINBENCH_MAX_SCENARIOS      10
 #define FINBENCH_MAX_SIMULATIONS    1000000
 
