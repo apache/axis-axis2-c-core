@@ -266,6 +266,39 @@ is accepted by the Apache community.
 
 ---
 
+## Feature Comparison: C vs Java MCP
+
+Both implementations cover the MCP essentials — the three required methods
+(`initialize`, `tools/list`, `tools/call`) over stdio with full `inputSchema`.
+An AI assistant configured with either backend gets identical capabilities.
+
+| Feature | Axis2/C | Axis2/Java |
+|---|---|---|
+| `initialize` / `tools/list` / `tools/call` | ✅ | ✅ |
+| stdio transport | ✅ Native (fgets/fprintf) | ✅ Bridge JAR |
+| inputSchema | Static struct array (compile-time) | Auto-generated from Java types + manual override |
+| Startup time | **< 100 ms** | 1–3 sec (JVM cold-start) |
+| Memory footprint | **~30 MB** | 512 MB–2 GB JVM heap |
+| Monte Carlo throughput | **~150K sims/sec** | ~73K sims/sec |
+| HTTP/SSE transport | Planned (C2) | Planned (A4) |
+| Spring Boot integration | N/A | ✅ Starter with autoconfiguration |
+| Auto-schema from types | N/A (C has no reflection) | ✅ Java POJO introspection |
+| Android / edge / IoT | **✅ Native binary** | ❌ JVM required |
+
+The approaches differ by design, not by omission. Java's auto-schema
+generation uses runtime reflection — a language feature C does not have.
+C's static tool catalog is the idiomatic equivalent: explicit, zero-overhead,
+compile-time checked. Both produce the same MCP catalog JSON that AI
+assistants consume.
+
+Where the implementations compete is on the deployment edge: C runs where
+Java cannot (Android phones, IoT gateways, embedded systems) and starts
+instantly for stdio MCP (where Claude Desktop spawns a subprocess per
+session). Java runs where enterprise infrastructure already exists
+(WildFly, Tomcat, Spring Boot) with richer integration tooling.
+
+---
+
 ## Key Design Decisions for C Port
 
 **Why static tool catalog, not services.xml reflection**
@@ -334,8 +367,8 @@ Claude Desktop
     │       monteCarlo VaR    — 10,000 GBM simulations in 100ms
     │       scenarioAnalysis  — O(n) vs O(1) hash, 2,000 assets
     │
-    └── axis2-java-services (HTTP/SSE, enterprise server)
-            AssetCalculations — same calculations, JVM runtime
+    └── axis2-java-services (HTTPS/HTTP2, enterprise server)
+            FinancialBenchmarkService — same calculations, JVM runtime
             BigDataH2Service  — HTTP/2 streaming, large payloads
 ```
 
