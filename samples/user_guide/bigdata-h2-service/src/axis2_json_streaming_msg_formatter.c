@@ -129,9 +129,9 @@ streaming_json_write_to(
 {
     axutil_property_t* json_response_prop = NULL;
     axis2_char_t* json_response = NULL;
-    int json_len = 0;
-    int offset = 0;
-    int total_written = 0;
+    size_t json_len = 0;
+    size_t offset = 0;
+    size_t total_written = 0;
     int flush_count = 0;
 
     if (!msg_ctx || !out_stream) {
@@ -166,24 +166,25 @@ streaming_json_write_to(
     /* Small responses: write in one shot, no chunking overhead */
     if (json_len <= AXIS2_JSON_STREAMING_FLUSH_INTERVAL) {
         int written = axutil_stream_write(out_stream, env, json_response, json_len);
-        if (written > 0) {
+        if (written >= 0 && (size_t)written == json_len) {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                            "Streaming JSON formatter: wrote %d bytes (small response, no chunking)",
-                            written);
+                            "Streaming JSON formatter: wrote %zu bytes (small response, no chunking)",
+                            json_len);
             return AXIS2_SUCCESS;
         }
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Streaming JSON formatter: failed to write small response");
+                        "Streaming JSON formatter: partial/failed write on small response "
+                        "(wrote %d of %zu bytes)", written, json_len);
         return AXIS2_FAILURE;
     }
 
     /* Large responses: write in chunks with flush between each */
     AXIS2_LOG_INFO(env->log,
-                   "Streaming JSON formatter: streaming %d bytes in %d-byte chunks",
+                   "Streaming JSON formatter: streaming %zu bytes in %d-byte chunks",
                    json_len, AXIS2_JSON_STREAMING_FLUSH_INTERVAL);
 
     while (offset < json_len) {
-        int chunk_size = json_len - offset;
+        size_t chunk_size = json_len - offset;
         if (chunk_size > AXIS2_JSON_STREAMING_FLUSH_INTERVAL) {
             chunk_size = AXIS2_JSON_STREAMING_FLUSH_INTERVAL;
         }
@@ -192,14 +193,14 @@ streaming_json_write_to(
                                           json_response + offset, chunk_size);
         if (written <= 0) {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "Streaming JSON formatter: write failed at offset %d "
-                            "(wrote %d of %d bytes so far)",
+                            "Streaming JSON formatter: write failed at offset %zu "
+                            "(wrote %zu of %zu bytes so far)",
                             offset, total_written, json_len);
             return AXIS2_FAILURE;
         }
 
-        total_written += written;
-        offset += written;
+        total_written += (size_t)written;
+        offset += (size_t)written;
 
         /* Flush after each chunk — triggers HTTP/2 DATA frame via ap_rflush */
         if (offset < json_len) {
@@ -209,7 +210,7 @@ streaming_json_write_to(
     }
 
     AXIS2_LOG_INFO(env->log,
-                   "Streaming JSON formatter: completed %d bytes in %d chunks (%d flushes)",
+                   "Streaming JSON formatter: completed %zu bytes in %d chunks (%d flushes)",
                    total_written, flush_count + 1, flush_count);
 
     return AXIS2_SUCCESS;
