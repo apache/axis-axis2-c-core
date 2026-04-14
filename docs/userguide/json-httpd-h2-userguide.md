@@ -1587,6 +1587,40 @@ json_object* bigdata_h2_service_invoke_json(
 
 **For comprehensive technical analysis and performance benchmarks** that demonstrate why these C implementations achieve 30% latency reduction, 70% memory savings, and 162% faster build times compared to Java, see the [Axis2/C HTTP/2 JSON Architecture](../AXIS2C_HTTP2_MIGRATION_STATE.md) document.
 
+## Streaming JSON Message Formatter
+
+Axis2/C 2.0.1 includes a streaming message formatter (`axis2_json_streaming_msg_formatter`)
+that prevents reverse proxy body-size rejections on large HTTP responses. It is a drop-in
+replacement for `axis2_json_msg_formatter`.
+
+**How it works:** The standard formatter writes the entire JSON response in one
+`axutil_stream_write()` call. The streaming formatter writes in 64 KB chunks and calls
+`axutil_stream_flush()` between chunks. Under Apache httpd + mod_axis2:
+
+```
+axutil_stream_write() → ap_rwrite()  → bucket brigade append
+axutil_stream_flush() → ap_rflush()  → brigade flush → mod_h2 HTTP/2 DATA frame
+```
+
+The reverse proxy sees a stream of small chunks, never the full response body.
+
+**Problem solved:** Large JSON responses (hundreds of MB) that cause reverse proxy
+502 Bad Gateway due to body-size limits or buffering timeouts.
+
+**NOT solved:** Large HTTP *request* bodies (client → server). That is a client-side
+problem — break requests into smaller payloads or add a pre-send size guard.
+
+**Small responses (≤ 64 KB)** skip chunking entirely — written in one call, same as the
+standard formatter. No overhead for typical payloads.
+
+**Source:**
+- `samples/user_guide/bigdata-h2-service/src/axis2_json_streaming_msg_formatter.h`
+- `samples/user_guide/bigdata-h2-service/src/axis2_json_streaming_msg_formatter.c`
+
+**Axis2/Java equivalent:** `org.apache.axis2.json.streaming.MoshiStreamingMessageFormatter`
+and `org.apache.axis2.json.streaming.JSONStreamingMessageFormatter` in the `axis2-json`
+module (both GSON and Moshi variants, tested on WildFly 32).
+
 ## Resources
 
 ### Documentation
