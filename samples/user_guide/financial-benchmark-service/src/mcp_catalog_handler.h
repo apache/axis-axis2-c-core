@@ -31,8 +31,8 @@
  *   mcpOpenWorld     — sets openWorldHint   (default: false)
  *
  * The catalog format matches the Java OpenApiSpecGenerator output exactly,
- * so the same MCP client (axis2-mcp-bridge, Claude Desktop, rapi-mcp) can
- * point at either a Java or C deployment and receive the same schema shape.
+ * so an MCP-aware client (e.g., axis2-mcp-bridge) can point at either a
+ * Java or C deployment and receive the same schema shape.
  *
  * Output format:
  * @code

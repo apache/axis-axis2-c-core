@@ -1097,7 +1097,8 @@ finbench_monte_carlo_json_only(
  * Scenario Analysis Implementation
  *
  * Demonstrates O(1) hash table vs O(n) linear search for asset lookups.
- * Mirrors DPT v2's Array→Map optimization for 500+ asset portfolios.
+ * A common optimization pattern in portfolio analysis code that handles
+ * 500+ assets.
  *
  * Financial calculation per asset:
  *   expected_return = Σ( probability_i × (scenario_price_i / current_price - 1) )

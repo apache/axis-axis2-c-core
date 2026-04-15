@@ -72,7 +72,7 @@ if the file isn't committed to git, it won't exist on the target machine.
 
 **Symptom:** `other_vhosts_access.log` shows:
 ```
-penguin.alphatheory.local:80 127.0.0.1 - - [...] "\x16\x03\x01\x02" 400 499
+axis2c.example.com:80 127.0.0.1 - - [...] "\x16\x03\x01\x02" 400 499
 ```
 
 **What it means:** `\x16\x03\x01` is a TLS ClientHello hitting the plain

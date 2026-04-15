@@ -72,7 +72,8 @@
              Operation: portfolioVariance
 
              Calculate portfolio variance using covariance matrix.
-             This is O(n²) - the same complexity as DPT v2 correlation calcs.
+             This is O(n²) - the same complexity class as typical
+             portfolio correlation calculations.
 
              Key benchmark: 500 assets = 250,000 matrix operations
              Target: <10ms on old Android phone
@@ -101,8 +102,8 @@
 
                 Formula: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
 
-                This is an O(n²) operation that directly mirrors the correlation
-                calculations in production financial systems like DPT v2.
+                This is an O(n²) operation that mirrors correlation
+                calculations common in production financial risk systems.
 
                 Example JSON Request:
                 {
@@ -213,7 +214,8 @@
              Calculate scenario-weighted portfolio analysis.
              Demonstrates O(1) hash lookups vs O(n) linear search.
 
-             Mirrors DPT v2's fundAssetList.find() pattern.
+             Mirrors the typical fund-asset-list lookup pattern used by
+             portfolio analytics code at scale.
              ================================================================ -->
         <operation name="scenarioAnalysis">
             <parameter name="mcpDescription">Scenario-weighted portfolio analysis using O(1) hash lookups vs O(n) linear search. Returns expected portfolio value and volatility across probability-weighted price scenarios.</parameter>
@@ -249,8 +251,9 @@
             <description>
                 Calculate scenario-weighted portfolio analysis.
 
-                Demonstrates hash table lookups vs linear search,
-                mirroring the Array→Map optimization in DPT v2.
+                Demonstrates hash table lookups vs linear search — the
+                Array→Map optimization commonly applied in portfolio
+                analytics code.
 
                 Example JSON Request:
                 {

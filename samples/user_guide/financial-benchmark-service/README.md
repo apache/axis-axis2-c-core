@@ -26,7 +26,7 @@ Calculates portfolio variance using covariance matrix multiplication.
 
 **Formula**: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
 
-**Complexity**: O(n²) - same as DPT v2 correlation calculations
+**Complexity**: O(n²) - mirrors typical portfolio correlation calculations
 
 | Asset Count | Operations | Target Time |
 |-------------|------------|-------------|
