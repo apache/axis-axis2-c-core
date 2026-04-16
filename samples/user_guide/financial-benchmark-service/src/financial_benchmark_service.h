@@ -35,6 +35,8 @@
  * Use Case: "Single Camera" equivalent - one old Android phone running
  * financial calculations that would require expensive server hardware
  * with Java/WildFly stack.
+ *
+ * @see Java equivalent: https://github.com/apache/axis-axis2-java-core/blob/master/modules/samples/userguide/src/userguide/springbootdemo-tomcat11/src/main/java/userguide/springboot/webservices/FinancialBenchmarkService.java
  */
 
 #include <axutil_env.h>
