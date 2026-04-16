@@ -826,6 +826,41 @@ finbench_run_monte_carlo(
         return response;
     }
 
+    /* Fail-fast input validation — the simulation body has no guards of
+     * its own for these, and silently-wrong results on garbage input
+     * would be worse than an explicit rejection. */
+    if (request->initial_value <= 0.0) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "initial_value must be > 0. Geometric Brownian Motion evolves "
+            "multiplicatively through exp(...) and is undefined for "
+            "non-positive starting values.");
+        return response;
+    }
+    if (request->n_simulations <= 0 ||
+        request->n_simulations > FINBENCH_MAX_SIMULATIONS) {
+        char err_buf[192];
+        snprintf(err_buf, sizeof(err_buf),
+            "n_simulations=%d is out of range [1, %d].",
+            request->n_simulations, FINBENCH_MAX_SIMULATIONS);
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, err_buf);
+        return response;
+    }
+    if (request->n_periods <= 0) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "n_periods must be >= 1 (at least one time step is required).");
+        return response;
+    }
+    if (request->volatility < 0.0) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "volatility must be >= 0 (negative volatility is not a "
+            "meaningful input).");
+        return response;
+    }
+
     /* Allocate array for final values (needed for percentiles).
      * Cast to size_t to prevent integer overflow on 32-bit platforms
      * when n_simulations is large (e.g., 1M × 8 bytes = 8 MB). */
@@ -907,6 +942,12 @@ finbench_run_monte_carlo(
     /* Calculate statistics */
     double mean = sum_final / request->n_simulations;
     double variance = (sum_sq / request->n_simulations) - (mean * mean);
+    /* Clamp tiny negative variance produced by floating-point cancellation
+     * in the (sum_sq/N - mean^2) formula before the final sqrt. Magnitudes
+     * here are typically ~1e-16 to 1e-12 and occur for near-constant
+     * samples; a negative value would propagate NaN through std_dev and
+     * downstream consumers. */
+    if (variance < 0.0) variance = 0.0;
 
     /* Sort for percentiles */
     qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
@@ -914,7 +955,15 @@ finbench_run_monte_carlo(
     int n_sims = request->n_simulations;
     int idx_5  = (int)(0.05 * n_sims);
     int idx_1  = (int)(0.01 * n_sims);
-    int idx_50 = n_sims / 2;
+
+    /* Sample median of a sorted array: for odd N take the middle element,
+     * for even N average the two central elements. Using a single index
+     * (n_sims/2) is only an approximation for even N and can produce small
+     * reconciliation differences against NumPy/R, which both implement
+     * the average-of-two rule. */
+    double median = (n_sims % 2 == 0)
+        ? (final_values[n_sims / 2 - 1] + final_values[n_sims / 2]) / 2.0
+        : final_values[n_sims / 2];
 
     /* Calculate CVaR (Expected Shortfall) - average of worst 5% */
     double cvar_sum = 0.0;
@@ -947,7 +996,7 @@ finbench_run_monte_carlo(
     /* Populate response */
     response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
     response->mean_final_value = mean;
-    response->median_final_value = final_values[idx_50];
+    response->median_final_value = median;
     response->std_dev_final_value = sqrt(variance);
     response->var_95 = request->initial_value - final_values[idx_5];
     response->var_99 = request->initial_value - final_values[idx_1];
@@ -1218,9 +1267,16 @@ finbench_scenario_request_create_from_json(
         json_object *sc_arr = NULL;
         if (json_object_object_get_ex(asset_obj, "scenarios", &sc_arr) &&
             json_object_is_type(sc_arr, json_type_array)) {
-            int n_sc = json_object_array_length(sc_arr);
-            if (n_sc > FINBENCH_MAX_SCENARIOS) n_sc = FINBENCH_MAX_SCENARIOS;
+            int n_sc_raw = json_object_array_length(sc_arr);
+            int n_sc = (n_sc_raw > FINBENCH_MAX_SCENARIOS)
+                ? FINBENCH_MAX_SCENARIOS : n_sc_raw;
+            /* Store both counts so finbench_calculate_scenarios can fail
+             * fast when the caller exceeded the cap rather than silently
+             * truncating.  The fixed-size arrays below must never be
+             * indexed past FINBENCH_MAX_SCENARIOS, so we still cap the
+             * fill loop at n_sc. */
             a->n_scenarios = n_sc;
+            a->n_scenarios_requested = n_sc_raw;
             for (j = 0; j < n_sc; j++) {
                 json_object *sc = json_object_array_get_idx(sc_arr, j);
                 json_object *sc_field = NULL;
@@ -1330,8 +1386,63 @@ finbench_calculate_scenarios(
         finbench_asset_scenario_t *a = &request->assets[i];
         double prob_sum = 0.0;
         int k;
+        char err_buf[256];
 
-        if (a->n_scenarios <= 0) continue;
+        /* Fail-fast: current_price must be positive — scenario return is
+         * computed as (scenario_price / current_price - 1), undefined for
+         * non-positive current_price.  Previously this asset was silently
+         * skipped, which quietly omitted a holding from the portfolio
+         * result without any indication to the caller. */
+        if (a->current_price <= 0.0) {
+            snprintf(err_buf, sizeof(err_buf),
+                "Asset index %d (id=%" PRId64 "): current_price=%.8f is not "
+                "positive. Scenario analysis computes return as "
+                "(price / current_price - 1), which is undefined for "
+                "non-positive current_price.",
+                i, a->asset_id, a->current_price);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ScenarioAnalysis: current_price validation failed - %s",
+                err_buf);
+            return response;
+        }
+
+        /* Fail-fast: must supply at least one scenario — without scenarios
+         * the asset contributes nothing to the weighted portfolio, which
+         * is almost certainly a caller mistake (empty JSON array or
+         * malformed input) rather than a deliberate input. */
+        if (a->n_scenarios <= 0) {
+            snprintf(err_buf, sizeof(err_buf),
+                "Asset index %d (id=%" PRId64 "): scenarios array is missing "
+                "or empty. At least one scenario {price, probability} is "
+                "required.",
+                i, a->asset_id);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ScenarioAnalysis: scenarios validation failed - %s", err_buf);
+            return response;
+        }
+
+        /* Fail-fast: reject requests that exceeded the per-asset scenario
+         * cap.  The parser records n_scenarios_requested so the rejection
+         * message can tell the caller the cap was exceeded rather than
+         * silently truncating the input.  Suggest coalescing rare outcomes
+         * to stay within the cap. */
+        if (a->n_scenarios_requested > FINBENCH_MAX_SCENARIOS) {
+            snprintf(err_buf, sizeof(err_buf),
+                "Asset index %d (id=%" PRId64 "): scenarios count %d exceeds "
+                "maximum %d. Coalesce low-probability outcomes to stay "
+                "within the cap.",
+                i, a->asset_id, a->n_scenarios_requested,
+                FINBENCH_MAX_SCENARIOS);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ScenarioAnalysis: MAX_SCENARIOS exceeded - %s", err_buf);
+            return response;
+        }
 
         for (k = 0; k < a->n_scenarios; k++) {
             prob_sum += a->probabilities[k];
@@ -1340,7 +1451,6 @@ finbench_calculate_scenarios(
         if (prob_sum < (1.0 - prob_tolerance) ||
             prob_sum > (1.0 + prob_tolerance)) {
 
-            char err_buf[256];
             snprintf(err_buf, sizeof(err_buf),
                 "Asset index %d (id=%" PRId64 "): scenario probabilities sum to "
                 "%.8f, expected 1.0 (tolerance %.2g). "
@@ -1365,7 +1475,9 @@ finbench_calculate_scenarios(
         double asset_upside = 0.0, asset_downside = 0.0;
         double asset_weighted_value = 0.0;
 
-        if (a->current_price <= 0.0 || a->n_scenarios <= 0) continue;
+        /* Step 1 above has already rejected any asset with non-positive
+         * current_price, missing scenarios, or an over-cap scenario count,
+         * so no defensive skip is needed here. */
 
         for (j = 0; j < a->n_scenarios; j++) {
             double prob = a->probabilities[j];
@@ -1478,8 +1590,25 @@ finbench_calculate_scenarios(
     response->weighted_value      = portfolio_weighted_value;
     response->upside_potential    = total_upside;
     response->downside_risk       = total_downside;
-    response->upside_downside_ratio =
-        (total_downside > 0.0) ? (total_upside / total_downside) : 0.0;
+    /* Upside/downside ratio — three distinct regimes:
+     *   downside > 0, finite      : standard ratio (the common path)
+     *   downside ~ 0, upside > 0  : INFINITY (all-upside portfolio;
+     *                               returning 0.0 here would falsely
+     *                               imply "no upside")
+     *   downside ~ 0, upside ~ 0  : NAN (both sides effectively zero —
+     *                               the ratio is genuinely undefined)
+     * The 1e-9 threshold avoids treating floating-point residue from the
+     * probability-weighted sums as a real non-zero side.
+     * Note on JSON: json-c serializes these as "Infinity" / "NaN", which
+     * are valid JavaScript Number literals but NOT strict JSON per RFC
+     * 8259 — strict parsers must handle the tokens or map them to null. */
+    if (total_downside > 1e-9) {
+        response->upside_downside_ratio = total_upside / total_downside;
+    } else if (total_upside > 1e-9) {
+        response->upside_downside_ratio = INFINITY;
+    } else {
+        response->upside_downside_ratio = NAN;
+    }
     response->calc_time_us        = linear_us; /* primary timing: linear */
     response->lookups_performed   = n_lookups;
     response->memory_used_kb      = finbench_get_memory_usage_kb();

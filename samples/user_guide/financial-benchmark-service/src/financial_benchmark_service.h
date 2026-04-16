@@ -301,8 +301,17 @@ typedef struct finbench_asset_scenario
     /** Probability weights for each scenario */
     double probabilities[FINBENCH_MAX_SCENARIOS];
 
-    /** Number of scenarios defined */
+    /** Number of scenarios defined (after capping at FINBENCH_MAX_SCENARIOS) */
     int n_scenarios;
+
+    /**
+     * Raw scenario count as supplied in the JSON request, BEFORE capping.
+     * When the caller sends more than FINBENCH_MAX_SCENARIOS scenarios the
+     * parser only fills the first FINBENCH_MAX_SCENARIOS entries but records
+     * the original count here so that finbench_calculate_scenarios can
+     * fail fast with a specific error rather than silently dropping data.
+     */
+    int n_scenarios_requested;
 
     /** Position size (shares) */
     double position_size;
