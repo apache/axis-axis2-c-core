@@ -59,7 +59,7 @@
  * Tool catalog — input schemas (snake_case, matching C service field names)
  *
  * These are the same JSON field names accepted by the HTTP/2 JSON endpoints.
- * MCP clients (Claude Desktop, Cursor) use these schemas to populate requests.
+ * MCP clients use these schemas to populate requests.
  * ============================================================================
  */
 

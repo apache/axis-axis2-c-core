@@ -22,7 +22,7 @@ echo "   • Monte Carlo VaR   - Compute-intensive simulation"
 echo "   • Scenario Analysis - Hash table lookups"
 echo ""
 echo "🤖 MCP (Model Context Protocol) binary also built:"
-echo "   • financial-benchmark-mcp — JSON-RPC 2.0 stdio, runs as Claude Desktop subprocess"
+echo "   • financial-benchmark-mcp — JSON-RPC 2.0 stdio, runs as an MCP client subprocess"
 echo ""
 
 # ── 1. Build the httpd shared library ─────────────────────────────────────────
@@ -129,9 +129,10 @@ if [ -f "libfinancial_benchmark_service.so" ] && [ -f "financial-benchmark-mcp" 
     echo '        -d '\''{"n_simulations":10000,"n_periods":252,"initial_value":1000000,"expected_return":0.08,"volatility":0.20}'\'' \'
     echo '        https://localhost:443/services/FinancialBenchmarkService/monteCarlo'
     echo ""
-    echo "── MCP stdio (Claude Desktop) ──"
+    echo "── MCP stdio (stdio-based MCP client) ──"
     echo ""
-    echo "6. Add to ~/.config/claude/claude_desktop_config.json:"
+    echo "6. Add to your MCP client config (path varies by client;"
+    echo "   Claude Desktop's ~/.config/claude/claude_desktop_config.json shown):"
     echo '   {"mcpServers":{"axis2c-financial":{"command":"/usr/local/axis2c/bin/financial-benchmark-mcp"}}}'
     echo ""
     echo "7. Smoke-test MCP stdio directly:"

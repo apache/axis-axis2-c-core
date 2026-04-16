@@ -19,7 +19,8 @@
  * @file finbench_mcp_main.c
  * @brief Entry point for the financial-benchmark-mcp standalone binary (C1)
  *
- * Claude Desktop config (~/.config/claude/claude_desktop_config.json):
+ * Example MCP client config (path varies by client; Claude Desktop's
+ * ~/.config/claude/claude_desktop_config.json shown):
  * @code
  * {
  *   "mcpServers": {

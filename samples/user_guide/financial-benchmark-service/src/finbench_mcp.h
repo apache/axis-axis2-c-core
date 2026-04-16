@@ -29,7 +29,8 @@
  * The same JSON request/response schemas are reused — MCP adds only the
  * JSON-RPC 2.0 framing (method, id, params.arguments, result.content).
  *
- * Usage (Claude Desktop claude_desktop_config.json):
+ * Example MCP client config (path varies by client; Claude Desktop's
+ * ~/.config/claude/claude_desktop_config.json shown):
  * @code
  * {
  *   "mcpServers": {
@@ -64,7 +65,7 @@ extern "C" {
  *
  * Reads newline-delimited JSON requests from stdin, dispatches to the
  * financial benchmark operations, and writes JSON-RPC 2.0 responses to stdout.
- * Returns when stdin reaches EOF (Claude Desktop terminates the process).
+ * Returns when stdin reaches EOF (the MCP client terminates the process).
  *
  * @param env Axis2/C environment. The associated logger MUST write to a file,
  *            not stdout. Use axutil_env_create_all("/tmp/finbench_mcp.log", ...).

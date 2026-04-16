@@ -10,7 +10,7 @@ status: Active — Java A1/A2/A3 complete, C1 complete, mcpInputSchema deployed
 **Summary**: Axis2/C gains MCP (Model Context Protocol) support by porting from the
 Axis2/Java reference implementation — the same pattern used successfully for HTTP/2.
 The C implementation targets hardware where Java cannot run: edge devices, embedded
-systems, Android phones. One MCP client (Claude Desktop, Claude API) connects to
+systems, Android phones. One MCP client (stdio or HTTP) connects to
 both runtimes via identical protocol. One AI protocol, the full hardware spectrum.
 
 MCP is JSON-RPC 2.0. Three required methods: `initialize`, `tools/list`, `tools/call`.
@@ -37,11 +37,11 @@ MCP is a better candidate than HTTP/2 was:
   the only addition.
 - **stdio in C is trivial**: `fgets(stdin)` / `fprintf(stdout)`. In Java this
   requires thread management and stream handling. In C it is a 30-line loop.
-- **No JVM startup**: Claude Desktop starts MCP servers as subprocesses. JVM
+- **No JVM startup**: stdio-based MCP clients start MCP servers as subprocesses. JVM
   cold-start is 1–3 seconds. A C binary starts in under 100ms. For stdio MCP
-  (process-per-client), this is visible every time Claude Desktop opens.
+  (process-per-client), this is visible every time the MCP client opens.
 - **Port is mechanical once Java proves the protocol**: After Axis2/Java validates
-  the `initialize`/`tools/list`/`tools/call` handshake against Claude Desktop,
+  the `initialize`/`tools/list`/`tools/call` handshake against a compliant MCP client,
   the C port translates proven behavior rather than discovering it.
 
 **Estimated new C code**: ~500 lines for stdio, ~800 for HTTP/SSE. The HTTP/2 port
@@ -89,11 +89,11 @@ Android phone.
 | `springbootdemo-tomcat11` | ✅ Reference implementation, Java 25 + Tomcat 11 |
 | `/openapi-mcp.json` endpoint | ✅ Done (A1) |
 | `axis2-mcp-bridge` stdio JAR | ✅ Done (A2) — with mTLS (port 8443, IoT CA) |
-| A3 end-to-end validation | ✅ Done — Claude Desktop → bridge → mTLS → BigDataH2Service confirmed |
+| A3 end-to-end validation | ✅ Done — MCP client → bridge → mTLS → BigDataH2Service confirmed |
 | `axis2-transport-mcp` Java native | ❌ Not started (B1) |
 
 **C1 is now unblocked.** Java A2 was the gate: the JSON-RPC 2.0 handshake
-(`initialize` / `tools/list` / `tools/call`) is validated against Claude Desktop.
+(`initialize` / `tools/list` / `tools/call`) is validated against a compliant MCP client.
 The C port translates proven behavior rather than discovering it.
 
 The Java bridge uses no MCP SDK — just Jackson + Java stdlib HttpClient. The C port
@@ -204,7 +204,7 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
 Each `_mcp_handler` is a thin wrapper: extract arguments from `json_object *`,
 call the existing `finbench_*_json_only()` function, return the result string.
 
-**Claude Desktop config** (the demo deliverable):
+**Example MCP client config** (stdio transport; the demo deliverable):
 ```json
 {
   "mcpServers": {
@@ -293,7 +293,7 @@ assistants consume.
 
 Where the implementations compete is on the deployment edge: C runs where
 Java cannot (Android phones, IoT gateways, embedded systems) and starts
-instantly for stdio MCP (where Claude Desktop spawns a subprocess per
+instantly for stdio MCP (where the MCP client spawns a subprocess per
 session). Java runs where enterprise infrastructure already exists
 (WildFly, Tomcat, Spring Boot) with richer integration tooling.
 
@@ -315,9 +315,9 @@ services dynamically.
 **Why `isatty()` for mode detection**
 
 The same binary serves both HTTP/2 JSON (via Apache httpd as a shared library) and
-MCP stdio (as a subprocess launched by Claude Desktop). The `isatty()` check is the
+MCP stdio (as a subprocess launched by an MCP client). The `isatty()` check is the
 POSIX-standard way to detect whether stdin is connected to an interactive terminal or
-a pipe. When Claude Desktop launches the binary, stdin is a pipe — MCP mode. When
+a pipe. When an MCP client launches the binary, stdin is a pipe — MCP mode. When
 httpd loads the shared library, stdin is not opened at all.
 
 In production the binary and the shared library would be separate build targets from
@@ -361,7 +361,7 @@ is serving them.
 When C1 and Java B1 are both complete, the demonstration is:
 
 ```
-Claude Desktop
+MCP client (stdio)
     ├── axis2c-financial (stdio, $20 Android phone)
     │       portfolioVariance — 500 assets in 5ms, 30MB memory
     │       monteCarlo VaR    — 10,000 GBM simulations in 100ms

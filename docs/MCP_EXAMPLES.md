@@ -101,7 +101,7 @@ Three MCP methods handle everything:
 - `tools/list` — what calculations are available and their input schemas
 - `tools/call` — run a specific calculation with arguments
 
-The wire protocol is JSON-RPC 2.0 over stdio (Claude Desktop) or HTTP/SSE
+The wire protocol is JSON-RPC 2.0 over stdio (subprocess-based MCP clients) or HTTP/SSE
 (persistent server). Axis2/C implements stdio today; HTTP/SSE is planned.
 
 ---
@@ -147,7 +147,7 @@ curl -k --http2 -s \
 multiply-accumulate throughput — the 929M figure comes from the 500-asset
 benchmark below, not this 3-asset example.)
 
-**MCP stdio (Claude Desktop):**
+**MCP stdio (subprocess-based MCP client):**
 ```bash
 echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":3,"weights":[0.4,0.3,0.3],"covariance_matrix":[0.04,0.006,0.002,0.006,0.09,0.009,0.002,0.009,0.01]}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
@@ -966,13 +966,13 @@ the highest overhead.
 | Startup time | **instant** (shared lib) | 1-3 sec (interpreter/JVM startup) |
 | MCP stdio startup | **< 50 ms** | 500 ms+ (module import / classloading) |
 
-The MCP stdio startup matters because Claude Desktop launches MCP servers
+The MCP stdio startup matters because MCP clients launch MCP servers
 as subprocesses. Every time you open a conversation, the server starts. A
 50ms C startup is invisible; a 3-second JVM startup is noticeable every time.
 
 ### The bigger picture: AI assistants embedded in financial platforms
 
-The examples above show a standalone MCP server called from Claude Desktop.
+The examples above show a standalone MCP server called from a stdio-based MCP client.
 The real payoff is when the same MCP tools power an **AI assistant embedded
 directly in a portfolio management application**.
 
@@ -1019,7 +1019,7 @@ breaks the flow. The PM asks a follow-up, and the answer is already there.
 
 The same MCP protocol works for both:
 - A chat assistant embedded in a web application (HTTP/SSE transport)
-- Claude Desktop analyzing a portfolio from a terminal (stdio transport)
+- An MCP client analyzing a portfolio from a terminal (stdio transport)
 - A scheduled risk report that runs overnight (batch MCP calls)
 - A mobile app showing position alerts on a phone (lightweight client)
 
@@ -1039,10 +1039,12 @@ VaR computation on hardware that costs less than a Bloomberg terminal.
 
 ---
 
-## Claude Desktop Configuration
+## Example MCP Client Configuration
 
-To connect Claude Desktop to the Axis2/C MCP server, add to
-`~/.config/claude/claude_desktop_config.json`:
+To connect a stdio-based MCP client to the Axis2/C MCP server, add an
+entry to its configuration file. The path varies by client; Claude
+Desktop's `~/.config/claude/claude_desktop_config.json` is shown as
+an example:
 
 ```json
 {

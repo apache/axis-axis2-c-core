@@ -55,10 +55,11 @@ libfinancial_benchmark_service_la_LDFLAGS = \
 
 # ─── MCP stdio binary (C1) ────────────────────────────────────────────────────
 #
-# Standalone binary launched by Claude Desktop (and Cursor) as an MCP subprocess.
+# Standalone binary launched by a stdio-based MCP client as an MCP subprocess.
 # Links financial_benchmark_service.c directly (no shared library dependency).
 #
-# Claude Desktop config (~/.config/claude/claude_desktop_config.json):
+# Example MCP client config (path varies by client; Claude Desktop's
+# ~/.config/claude/claude_desktop_config.json shown):
 #   { "mcpServers": { "axis2c-financial": {
 #       "command": "/usr/local/axis2c/bin/financial-benchmark-mcp" } } }
 
