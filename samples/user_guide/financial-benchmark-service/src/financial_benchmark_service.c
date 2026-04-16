@@ -370,8 +370,37 @@ finbench_portfolio_variance_response_free(
 /**
  * Core Portfolio Variance Calculation
  *
- * This is the KEY BENCHMARK: O(n²) matrix multiplication
- * Demonstrates C performance vs Java on constrained hardware.
+ * The KEY BENCHMARK: O(n²) matrix multiplication that exercises the
+ * same math pattern used by production portfolio risk engines.
+ *
+ * Formula: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
+ *
+ * The output basis matches the input basis — if the caller passes a
+ * daily covariance matrix, σ²_p is a daily variance, and the caller
+ * can annualize by sqrt(252) externally. The service additionally
+ * emits an annualized_volatility field computed as
+ *   portfolio_volatility * sqrt(n_periods_per_year)
+ * which is correct for a PER-PERIOD input matrix. Callers who pass a
+ * pre-annualized matrix (common in quant practice) should ignore that
+ * field to avoid double-annualization.
+ *
+ * Weight normalization edge case:
+ *   When normalize_weights=true, weights are rescaled in-place so they
+ *   sum to 1.0. This silently discards the gross-exposure information
+ *   (a {0.5, 0.5} long-short book becomes {0.5, 0.5} — same — but
+ *   {-0.3, 0.3} becomes undefined because sum is 0). The service
+ *   explicitly rejects a zero-sum portfolio under normalize_weights=true
+ *   rather than producing NaN from division by zero.
+ *
+ * Numerical edge case:
+ *   The O(n²) accumulator can produce variance < 0 from two sources:
+ *     (1) floating-point cancellation on strongly-negative correlations
+ *         with large weights — magnitude ~1e-16 to 1e-12, harmless
+ *     (2) a non-PSD input covariance matrix — the math is wrong, not
+ *         the code, and the magnitude can be large (e.g., -0.02)
+ *   The implementation clamps both to 0.0 to avoid NaN from sqrt,
+ *   which masks case (2). Callers who need hard non-PSD rejection
+ *   should validate upstream (e.g., via Cholesky decomposition).
  */
 AXIS2_EXTERN finbench_portfolio_variance_response_t* AXIS2_CALL
 finbench_calculate_portfolio_variance(
@@ -797,10 +826,51 @@ finbench_monte_carlo_response_free(
 /**
  * Core Monte Carlo Simulation
  *
- * Simulates portfolio value paths using Geometric Brownian Motion:
- * S(t+dt) = S(t) * exp((μ - σ²/2)*dt + σ*sqrt(dt)*Z)
+ * Runs n_simulations independent Geometric Brownian Motion (GBM) paths,
+ * each of n_periods time steps, to build an empirical distribution of
+ * terminal portfolio values. That distribution is then summarized as
+ * mean, median, std dev, VaR at user-specified percentiles, CVaR_95,
+ * max drawdown, and probability of profit.
  *
- * This is COMPUTE-INTENSIVE: n_simulations × n_periods iterations.
+ * GBM update rule per step:
+ *   S(t+dt) = S(t) * exp((μ − σ²/2) * dt  +  σ * sqrt(dt) * Z),  Z ~ N(0,1)
+ *
+ * Intuition:
+ *   Each path is an independent future scenario for the portfolio;
+ *   aggregating n_simulations of them produces a histogram of terminal
+ *   values whose left tail is the loss distribution. "VaR at 95%"
+ *   means "the 5th-percentile terminal loss" (so 95% of paths lose
+ *   LESS than VaR_95, 5% lose MORE or equal). CVaR_95 (Expected
+ *   Shortfall) is the AVERAGE loss over the worst 5% of paths,
+ *   a strictly more conservative number than VaR_95.
+ *
+ * The Itô correction (−σ²/2) is NOT optional:
+ *   Without the −σ²/2 drift adjustment, the expected terminal value
+ *   would be S(0) * exp((μ + σ²/2) * T), drifting upward with vol.
+ *   WITH the correction, E[S(T)] = S(0) * exp(μ * T), which is what
+ *   any reader of Black-Scholes expects. Home-grown GBM
+ *   implementations frequently omit this; the code here preserves it
+ *   verbatim.
+ *
+ * Numerical edge cases (see also the header block for full discussion):
+ *   - The exp() exponent is capped at 709 to avoid +Inf on extreme
+ *     σ × long horizons. This divergent from Axis2/Java, which does
+ *     NOT cap exp() — Java prefers NaN propagation as an alarm.
+ *   - The variance accumulator (sumSq/N − mean²) is clamped at 0.0
+ *     before sqrt to prevent NaN from floating-point cancellation
+ *     on near-constant samples.
+ *
+ * Reproducibility:
+ *   xorshift128plus seeded from request->random_seed (or time(NULL)
+ *   if seed == 0). Reproducibility is PER-PRNG only — callers
+ *   reconciling against NumPy (PCG64), R (Mersenne Twister), or
+ *   java.util.Random (LCG) will get different numbers for the SAME
+ *   seed even with identical inputs.
+ *
+ * Performance note: this is the compute-heavy operation — n_simulations
+ * × n_periods iterations of three multiplies, one exp, one PRNG step,
+ * plus sort and reduce. Timings in response->simulations_per_second
+ * are a useful hardware proxy for bare-metal scalar floating point.
  */
 AXIS2_EXTERN finbench_monte_carlo_response_t* AXIS2_CALL
 finbench_run_monte_carlo(
@@ -965,7 +1035,18 @@ finbench_run_monte_carlo(
         ? (final_values[n_sims / 2 - 1] + final_values[n_sims / 2]) / 2.0
         : final_values[n_sims / 2];
 
-    /* Calculate CVaR (Expected Shortfall) - average of worst 5% */
+    /* CVaR_95 (Expected Shortfall at 95%): the arithmetic mean of the
+     * idx_5 worst final values after ascending sort. This is a common
+     * discrete-sample estimator for E[L | L >= VaR_95] — the average
+     * loss in the worst 5% of simulated outcomes.
+     *
+     * Estimator detail: this averages the floor(0.05 * n_sims) WORST
+     * observations (positions 0 through idx_5 - 1 inclusive). For large
+     * n_sims this matches the textbook definition to within one
+     * observation. Systems reconciling against an alternate estimator
+     * (e.g., one that averages L values that strictly exceed the VaR
+     * threshold rather than the bottom k outcomes) may see minutely
+     * different numbers, especially at small n_sims. */
     double cvar_sum = 0.0;
     {
         int ci;
@@ -998,6 +1079,12 @@ finbench_run_monte_carlo(
     response->mean_final_value = mean;
     response->median_final_value = median;
     response->std_dev_final_value = sqrt(variance);
+    /* Sign convention: var_95, var_99, cvar_95 are returned as POSITIVE
+     * LOSS MAGNITUDES in base-currency units. var_95 = 252000 means
+     * "there is a 5% chance of losing $252,000 or more over the
+     * simulated horizon." A profitable tail outcome would make these
+     * figures NEGATIVE (a "loss" of -$1000 = a gain), which is normal
+     * and not a bug. */
     response->var_95 = request->initial_value - final_values[idx_5];
     response->var_99 = request->initial_value - final_values[idx_1];
     response->cvar_95 = request->initial_value - cvar_95;
@@ -1330,11 +1417,33 @@ finbench_scenario_response_free(
 /**
  * Core Scenario Analysis Calculation
  *
- * Step 1 — Financial computation: expected return, upside, downside per asset.
- * Step 2 — O(n) linear search benchmark: scan array for each lookup.
- * Step 3 — O(1) hash table benchmark: axutil_hash lookup for each query.
+ * Three-step pipeline:
+ *   Step 1 — Fail-fast input validation (probability sums, scenario
+ *            count caps, non-positive current_price, empty scenarios).
+ *            A bad input fails the whole request here rather than
+ *            silently skipping individual assets, which previously
+ *            omitted holdings from the result with no indication.
+ *   Step 2 — Financial computation: per-asset expected return, upside,
+ *            downside; roll up to portfolio level weighted by position
+ *            value (asset_position_value = current_price × position_size).
+ *   Step 3 — Benchmark pair: n_assets × 10 asset-id lookups performed
+ *            once via linear scan (O(n)) and once via axutil_hash (O(1)),
+ *            timings reported in the response for direct comparison.
  *
- * Both timings always reported so the comparison is always visible.
+ * The financial formulas per asset are:
+ *   expected_return_i = Σ_k  p_k * (scenario_price_k / current_price - 1)
+ *   upside_i          = Σ_k  p_k * max(0, scenario_price_k - current_price) * position_size
+ *   downside_i        = Σ_k  p_k * max(0, current_price - scenario_price_k) * position_size
+ *   weighted_value_i  = Σ_k  p_k * scenario_price_k * position_size
+ *
+ * upside and downside are separate sums rather than a single signed
+ * number, so callers can read distributional SHAPE (small mean return
+ * with large dispersion vs small mean with small dispersion) off the
+ * response rather than just the mean.
+ *
+ * Unlike Monte Carlo, there is no PRNG, no Itô correction, and no
+ * discretization — this is a deterministic probability-weighted
+ * average over a small number of user-supplied price scenarios.
  */
 AXIS2_EXTERN finbench_scenario_response_t* AXIS2_CALL
 finbench_calculate_scenarios(
