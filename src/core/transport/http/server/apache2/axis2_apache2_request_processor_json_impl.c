@@ -915,7 +915,7 @@ axis2_apache2_json_processor_write_json_error_response(
     json_response = AXIS2_MALLOC(env->allocator, buffer_size);
     if (json_response)
     {
-        sprintf(json_response,
+        snprintf(json_response, buffer_size,
             "{\n"
             "  \"error\": {\n"
             "    \"code\": %d,\n"
@@ -1009,7 +1009,19 @@ axis2_apache2_json_processor_parse_and_process_json(
                 env, out_stream, "Memory allocation error", 500);
         }
 
-        /* Read in chunks, growing buffer as needed */
+        /* Read in chunks, growing buffer as needed.
+         *
+         * TODO (Gemini pro review, April 2026): This loop has a potential
+         * integer underflow when the buffer is exactly full. The expression
+         *   read_space = current_size - total_read - 1;
+         * underflows size_t to SIZE_MAX when total_read == current_size,
+         * which is then cast to (int)-1 and passed to axutil_stream_read.
+         * The buffer growth logic should be moved BEFORE the read call
+         * (not after) so the buffer is always large enough before reading.
+         * This is a pre-existing bug unrelated to the ?fields= feature;
+         * fixing it requires restructuring the loop and dedicated testing
+         * since this code path handles every JSON request to every service.
+         */
         while (1)
         {
             /* SECURITY: Validate buffer space before read to prevent underflow */
