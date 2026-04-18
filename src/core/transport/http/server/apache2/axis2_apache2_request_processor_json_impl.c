@@ -510,7 +510,13 @@ axis2_apache2_json_processor_process_request_body_impl(
         content_type = "application/json";  /* Default for HTTP/2 JSON */
     }
 
-    service_path = request->uri;  /* Service path from request URI */
+    /* Use unparsed_uri (includes query string) not uri (path only).
+     * This matches apache2_worker.c line 257 which has always used
+     * request->unparsed_uri for the SOAP/XML path. The JSON processor
+     * using request->uri was an oversight that stripped query parameters
+     * like ?fields= before they reached the service handler.
+     * When no query string is present, unparsed_uri == uri. */
+    service_path = request->unparsed_uri;
 
     AXIS2_LOG_INFO(env->log,
         "[JSON_PROCESSOR_TRACE] Got Content-Type: %s, Service: %s",
@@ -658,7 +664,7 @@ axis2_apache2_json_processor_process_request_body_impl(
                                 engine_content_type,
                                 engine_content_length,
                                 NULL,  /* soap_action_header - not needed for JSON */
-                                request->uri);
+                                request->unparsed_uri);  /* preserve query string */
 
     AXIS2_LOG_INFO(env->log,
         "[JSON_PROCESSOR_ENGINE] Engine processing completed with status: %d", engine_status);

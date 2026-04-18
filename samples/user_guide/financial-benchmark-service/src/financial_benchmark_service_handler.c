@@ -335,8 +335,16 @@ financial_benchmark_service_invoke_json(
         axis2_endpoint_ref_t *to_ref = axis2_msg_ctx_get_to(msg_ctx, env);
         if (to_ref)
             uri = axis2_endpoint_ref_get_address(to_ref, env);
-        if (uri)
+        if (uri) {
+            AXIS2_LOG_INFO(env->log,
+                "FinancialBenchmarkService: endpoint ref address for fields extraction: '%s'",
+                uri);
             fields_csv = finbench_extract_fields_param(env, uri);
+            if (fields_csv) {
+                AXIS2_LOG_INFO(env->log,
+                    "FinancialBenchmarkService: extracted fields_csv: '%s'", fields_csv);
+            }
+        }
     }
 
     /* If we couldn't get operation from context, try parsing from JSON */
