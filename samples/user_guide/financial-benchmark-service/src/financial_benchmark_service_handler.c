@@ -117,6 +117,12 @@ finbench_filter_json_response(
     char *tok = strtok_r(fields_buf, ",", &saveptr);
     while (tok && n_keep < 64) {
         while (*tok == ' ') tok++;  /* trim leading space */
+        /* Trim trailing space — "status, calc_time_us " needs both ends
+         * stripped or strcmp against the JSON key will fail. */
+        char *end = tok + strlen(tok) - 1;
+        while (end > tok && *end == ' ') {
+            *end-- = '\0';
+        }
         if (*tok) keep[n_keep++] = tok;
         tok = strtok_r(NULL, ",", &saveptr);
     }
@@ -267,7 +273,7 @@ financial_benchmark_service_invoke_json(
 {
     const axis2_char_t *operation_name = NULL;
     axis2_op_t *op = NULL;
-    axutil_qname_t *op_qname = NULL;
+    const axutil_qname_t *op_qname = NULL;
 
     AXIS2_LOG_INFO(env->log,
                    "FinancialBenchmarkService: Processing HTTP/2 JSON request");
@@ -313,7 +319,7 @@ financial_benchmark_service_invoke_json(
         op = axis2_msg_ctx_get_op(msg_ctx, env);
         if (op)
         {
-            op_qname = (axutil_qname_t *)axis2_op_get_qname(op, env);
+            op_qname = axis2_op_get_qname(op, env);
             if (op_qname)
             {
                 operation_name = axutil_qname_get_localpart(op_qname, env);
