@@ -110,11 +110,15 @@ finbench_filter_json_response(
     /* Parse comma-separated field names into keep[] array */
     strncpy(fields_buf, fields_csv, sizeof(fields_buf) - 1);
     fields_buf[sizeof(fields_buf) - 1] = '\0';
-    char *tok = strtok(fields_buf, ",");
+    /* strtok_r (not strtok) — thread-safe for mod_h2 multi-threaded workers.
+     * Gemini pro review flagged strtok as a CRITICAL thread-safety violation
+     * since concurrent ?fields= requests would share strtok's static buffer. */
+    char *saveptr = NULL;
+    char *tok = strtok_r(fields_buf, ",", &saveptr);
     while (tok && n_keep < 64) {
         while (*tok == ' ') tok++;  /* trim leading space */
         if (*tok) keep[n_keep++] = tok;
-        tok = strtok(NULL, ",");
+        tok = strtok_r(NULL, ",", &saveptr);
     }
     if (n_keep == 0) return json_str;
 
@@ -127,8 +131,17 @@ finbench_filter_json_response(
     json_object_object_get_ex(root, "response", &inner);
     if (!inner) inner = root;
 
-    /* Collect keys to delete (cannot delete during iteration) */
-    const char *del_keys[256];
+    /* Collect keys to delete — dynamically sized from actual key count.
+     * Cannot delete during json_object_object_foreach iteration (pointer
+     * aliasing). Fixed-size array of 256 was flagged by Gemini pro as a
+     * silent truncation risk that could leak excluded fields. */
+    int n_keys = json_object_object_length(inner);
+    const char **del_keys = AXIS2_MALLOC(env->allocator,
+        (size_t)n_keys * sizeof(const char *));
+    if (!del_keys) {
+        json_object_put(root);
+        return json_str;  /* OOM fallback: return unfiltered */
+    }
     int n_del = 0;
     json_object_object_foreach(inner, key, val) {
         (void)val;
@@ -136,13 +149,14 @@ finbench_filter_json_response(
         for (int i = 0; i < n_keep; i++) {
             if (strcmp(key, keep[i]) == 0) { found = 1; break; }
         }
-        if (!found && n_del < 256) del_keys[n_del++] = key;
+        if (!found) del_keys[n_del++] = key;
     }
 
     /* Delete unwanted keys */
     for (int i = 0; i < n_del; i++) {
         json_object_object_del(inner, del_keys[i]);
     }
+    AXIS2_FREE(env->allocator, del_keys);
 
     /* Re-serialize and replace */
     filtered_str = json_object_to_json_string_ext(root, JSON_C_TO_STRING_PLAIN);

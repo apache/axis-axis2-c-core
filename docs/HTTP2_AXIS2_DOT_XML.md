@@ -12,7 +12,7 @@ Unlike Axis2/Java, **Axis2/C automatically detects and handles HTTP/2 with JSON 
 
 ### Automatic Protocol and Content-Type Detection
 
-Axis2/C uses the `axis2_apache2_request_processor_is_json_http2_request()` function in `/home/robert/repos/axis-axis2-c-core/src/core/transport/http/server/apache2/axis2_apache2_request_processor_factory.c:253-283` to automatically detect:
+Axis2/C uses the `axis2_apache2_request_processor_is_json_http2_request()` function in `src/core/transport/http/server/apache2/axis2_apache2_request_processor_factory.c` to automatically detect:
 
 1. **HTTP/2 Protocol Detection**: Checks `request->protocol` for "HTTP/2" or "HTTP/2.0" strings
 2. **JSON Content-Type Detection**: Analyzes Content-Type header for:
@@ -81,7 +81,7 @@ No axis2.xml configuration is needed - the system automatically routes to the ap
 
 ### Why Axis2/Java Requires axis2.xml Changes
 
-Based on the Spring Boot user guide (`/home/robert/repos/axis-axis2-java-core/src/site/xdoc/docs/json-springboot-userguide.xml`), Axis2/Java requires explicit axis2.xml configuration because it uses a **static configuration model** where message processors are pre-configured rather than dynamically selected.
+Based on the Spring Boot user guide (`src/site/xdoc/docs/json-springboot-userguide.xml` in axis-axis2-java-core), Axis2/Java requires explicit axis2.xml configuration because it uses a **static configuration model** where message processors are pre-configured rather than dynamically selected.
 
 ### Required Axis2/Java Configuration Components
 
@@ -199,3 +199,80 @@ The fundamental difference between Axis2/C and Axis2/Java lies in their architec
 This makes Axis2/C significantly easier to deploy for HTTP/2 and JSON scenarios while maintaining full backward compatibility with existing SOAP services. The intelligent request processor factory ensures that each request type gets appropriate handling without any manual configuration.
 
 For HTTP/2 and JSON support, developers can focus on service implementation rather than configuration management, as the framework handles protocol and content-type detection transparently.
+
+## Streaming and Field Filtering: Java vs C Architecture
+
+### JSON Serialization Model
+
+| | Axis2/Java | Axis2/C |
+|---|---|---|
+| **Serialization** | Streaming — Moshi/GSON writes fields directly to a `JsonWriter` backed by an `OutputStream`. No intermediate tree. | Tree — json-c builds a `json_object*` in memory, then `json_object_to_json_string()` serializes the whole tree at once. |
+| **Memory profile** | Only the current field's value is in memory during serialization. A 50 MB response never exists as a 50 MB buffer. | The full json-c tree is in memory before serialization. For typical responses (1-10 KB) this is negligible; for large responses Java is more memory-efficient. |
+
+### HTTP/2 Streaming
+
+| | Axis2/Java | Axis2/C |
+|---|---|---|
+| **Mechanism** | `FlushingOutputStream` wraps the transport `OutputStream` and flushes every 64 KB. The flush happens DURING Moshi/GSON serialization — each field written eventually triggers a flush, converting one buffered response into a stream of HTTP/2 DATA frames. | `ap_rflush(r)` called periodically during response generation via Apache httpd `mod_h2`. Achieves similar chunked delivery but is manual — each service must call `ap_rflush()` at the right points in its serialization code. |
+| **Scope** | Framework-level — configure `MoshiStreamingMessageFormatter` in `axis2.xml` and ALL services get 64 KB streaming automatically. | Service-level — each service decides when to flush. The financial benchmark service uses the same 64 KB interval as Java. |
+
+### Field Filtering (`?fields=`)
+
+| | Axis2/Java | Axis2/C |
+|---|---|---|
+| **Approach** | True streaming (Option C): reflection-based selective serialization inside `MoshiStreamingMessageFormatter.writeFilteredObject()`. Non-selected fields are NEVER serialized, never buffered, never written to the wire. | Post-build tree filtering: json-c builds the full `json_object*` tree, then `finbench_filter_json_response()` deletes unwanted keys via `json_object_object_del()`, then re-serializes. The full tree is briefly in memory. |
+| **Scope** | Framework-level — `FieldFilteringMessageFormatter` wraps any `MessageFormatter`. Configure once in `axis2.xml`, all services get `?fields=` for free. | Service-level — implemented in the financial benchmark service handler. Other C services would need their own filter call. |
+| **Code** | ~320 lines (`FieldFilteringMessageFormatter.java`) + ~100 lines added to `MoshiStreamingMessageFormatter.java`) | ~60 lines in `financial_benchmark_service_handler.c` (`finbench_extract_fields_param` + `finbench_filter_json_response`) |
+
+### Why the Difference
+
+Axis2/Java has a **pluggable message formatter pipeline** in the kernel.
+`MessageFormatter` is an interface that the engine calls to serialize
+every outbound message. `FlushingOutputStream`, `FieldFilteringMessageFormatter`,
+and `MoshiStreamingMessageFormatter` all live in this pipeline. Any
+service deployed to any Axis2/Java instance gets these features by
+changing one line in `axis2.xml`.
+
+Axis2/C has **no equivalent pluggable JSON formatter pipeline**. The C
+architecture was designed for SOAP (Axiom / libxml2). JSON services
+bypass the SOAP pipeline entirely by handling serialization themselves
+— each service builds its own json-c tree and calls
+`json_object_to_json_string()`. This is simpler per-service but means
+streaming and field filtering must be implemented in each service's
+handler rather than once in the framework.
+
+### Reusability Path for C
+
+The `finbench_filter_json_response()` function is already generic —
+it operates on any JSON string using json-c and `axutil_strdup`. To
+make field filtering available to all Axis2/C JSON services:
+
+1. Move `finbench_extract_fields_param()` and
+   `finbench_filter_json_response()` into an `axutil` shared utility
+   (e.g., `axutil_json_field_filter.c`).
+2. In the JSON message receiver (`axis2_json_rpc_msg_recv`), check for
+   `?fields=` on the request URI and apply the filter to the outbound
+   JSON string before sending.
+3. This would give all Axis2/C JSON services field filtering without
+   per-service code — matching the Axis2/Java architecture.
+
+For now, the per-service approach in the financial benchmark handler is
+correct and KISS — it is ~60 lines of self-contained C that achieves
+feature parity with the Axis2/Java deployment.
+
+### Parity Reference
+
+| Feature | Axis2/Java | Axis2/C | Parity |
+|---------|-----------|---------|--------|
+| HTTP/2 transport | `modules/transport-h2` | `mod_h2` via Apache httpd | ✅ |
+| 64 KB streaming flush | `FlushingOutputStream` | `ap_rflush(r)` | ✅ |
+| `?fields=` response filtering | `FieldFilteringMessageFormatter` | `finbench_filter_json_response()` | ✅ |
+| Pluggable for all services | Yes (axis2.xml config) | No (per-service) | ⚠️ Java ahead |
+| Streaming during serialization | Yes (Moshi → Okio → flush) | No (json-c tree → serialize) | ⚠️ Java ahead |
+| MCP tool catalog | `openapi-mcp.json` auto-generated | `mcp_catalog_handler.c` | ✅ |
+| Financial benchmark parity | portfolioVariance, monteCarlo, scenarioAnalysis | Same three services | ✅ |
+
+See also:
+- [Axis2/Java HTTP/2 Integration Guide](https://github.com/apache/axis-axis2-java-core/blob/master/src/site/xdoc/docs/http2-integration-guide.xml)
+- [Axis2/Java FieldFilteringMessageFormatter](https://github.com/apache/axis-axis2-java-core/blob/master/modules/json/src/org/apache/axis2/json/streaming/FieldFilteringMessageFormatter.java)
+- [Axis2/Java Streaming JSON Formatter](https://github.com/apache/axis-axis2-java-core/blob/master/src/site/xdoc/docs/json-streaming-formatter.xml)
