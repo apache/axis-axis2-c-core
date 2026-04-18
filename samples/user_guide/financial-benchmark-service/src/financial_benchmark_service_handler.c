@@ -40,6 +40,118 @@
 #include <axutil_log.h>
 #include <string.h>
 
+/* ============================================================================
+ * Field Filtering — ?fields=status,calc_time_us
+ *
+ * Parses the fields query parameter and filters a JSON response string
+ * to include only the requested top-level fields. Re-parses the response
+ * via json-c, deletes unwanted keys, re-serializes. The cost of parsing
+ * a ~1 KB response object is negligible.
+ *
+ * Mirrors Axis2/Java FieldFilteringMessageFormatter.
+ * @see https://github.com/apache/axis-axis2-java-core/blob/master/modules/json/src/org/apache/axis2/json/streaming/FieldFilteringMessageFormatter.java
+ * ============================================================================
+ */
+
+/**
+ * Extract the "fields" query parameter value from a request URI.
+ * Returns NULL if not present; caller must free with AXIS2_FREE.
+ */
+static axis2_char_t*
+finbench_extract_fields_param(
+    const axutil_env_t *env,
+    const axis2_char_t *uri)
+{
+    const char *qmark, *start, *amp;
+    if (!uri) return NULL;
+    qmark = strchr(uri, '?');
+    if (!qmark) return NULL;
+
+    start = qmark + 1;
+    while (*start) {
+        /* find end of this param */
+        amp = strchr(start, '&');
+        size_t plen = amp ? (size_t)(amp - start) : strlen(start);
+
+        if (plen > 7 && strncmp(start, "fields=", 7) == 0) {
+            size_t vlen = plen - 7;
+            char *val = AXIS2_MALLOC(env->allocator, vlen + 1);
+            if (!val) return NULL;
+            memcpy(val, start + 7, vlen);
+            val[vlen] = '\0';
+            return val;
+        }
+        if (!amp) break;
+        start = amp + 1;
+    }
+    return NULL;
+}
+
+/**
+ * Filter a JSON response string to include only the specified fields.
+ * If fields_csv is NULL or empty, returns json_str unchanged.
+ * On filter, frees the original json_str and returns a new allocation.
+ */
+static axis2_char_t*
+finbench_filter_json_response(
+    const axutil_env_t *env,
+    axis2_char_t *json_str,
+    const axis2_char_t *fields_csv)
+{
+    json_object *root, *inner;
+    const char *filtered_str;
+    axis2_char_t *result;
+    char fields_buf[512];
+    const char *keep[64];
+    int n_keep = 0;
+
+    if (!fields_csv || !fields_csv[0] || !json_str) return json_str;
+
+    /* Parse comma-separated field names into keep[] array */
+    strncpy(fields_buf, fields_csv, sizeof(fields_buf) - 1);
+    fields_buf[sizeof(fields_buf) - 1] = '\0';
+    char *tok = strtok(fields_buf, ",");
+    while (tok && n_keep < 64) {
+        while (*tok == ' ') tok++;  /* trim leading space */
+        if (*tok) keep[n_keep++] = tok;
+        tok = strtok(NULL, ",");
+    }
+    if (n_keep == 0) return json_str;
+
+    /* Parse the JSON response */
+    root = json_tokener_parse(json_str);
+    if (!root) return json_str;
+
+    /* Navigate into {"response": {...}} wrapper if present */
+    inner = NULL;
+    json_object_object_get_ex(root, "response", &inner);
+    if (!inner) inner = root;
+
+    /* Collect keys to delete (cannot delete during iteration) */
+    const char *del_keys[256];
+    int n_del = 0;
+    json_object_object_foreach(inner, key, val) {
+        (void)val;
+        int found = 0;
+        for (int i = 0; i < n_keep; i++) {
+            if (strcmp(key, keep[i]) == 0) { found = 1; break; }
+        }
+        if (!found && n_del < 256) del_keys[n_del++] = key;
+    }
+
+    /* Delete unwanted keys */
+    for (int i = 0; i < n_del; i++) {
+        json_object_object_del(inner, del_keys[i]);
+    }
+
+    /* Re-serialize and replace */
+    filtered_str = json_object_to_json_string_ext(root, JSON_C_TO_STRING_PLAIN);
+    result = axutil_strdup(env, filtered_str);
+    json_object_put(root);
+    AXIS2_FREE(env->allocator, json_str);
+    return result;
+}
+
 /**
  * @brief Route JSON request to appropriate operation handler
  */
@@ -47,8 +159,11 @@ static axis2_char_t*
 route_operation(
     const axutil_env_t *env,
     const axis2_char_t *operation_name,
-    const axis2_char_t *json_request)
+    const axis2_char_t *json_request,
+    const axis2_char_t *fields_csv)
 {
+    axis2_char_t *result = NULL;
+
     AXIS2_LOG_INFO(env->log,
                    "FinancialBenchmarkService: Routing to operation '%s'",
                    operation_name ? operation_name : "unknown");
@@ -66,26 +181,25 @@ route_operation(
     /* portfolioVariance operation */
     if (axutil_strcmp(operation_name, "portfolioVariance") == 0)
     {
-        return finbench_portfolio_variance_json_only(env, json_request);
+        result = finbench_portfolio_variance_json_only(env, json_request);
     }
 
     /* monteCarlo operation */
-    if (axutil_strcmp(operation_name, "monteCarlo") == 0)
+    else if (axutil_strcmp(operation_name, "monteCarlo") == 0)
     {
-        return finbench_monte_carlo_json_only(env, json_request);
+        result = finbench_monte_carlo_json_only(env, json_request);
     }
 
     /* metadata operation */
-    if (axutil_strcmp(operation_name, "metadata") == 0)
+    else if (axutil_strcmp(operation_name, "metadata") == 0)
     {
-        return finbench_get_metadata_json(env);
+        result = finbench_get_metadata_json(env);
     }
 
     /* generateTestData operation */
-    if (axutil_strcmp(operation_name, "generateTestData") == 0)
+    else if (axutil_strcmp(operation_name, "generateTestData") == 0)
     {
-        /* Extract n_assets from request if provided */
-        int n_assets = 100;  /* Default */
+        int n_assets = 100;
         if (json_request)
         {
             json_object *json_obj = json_tokener_parse(json_request);
@@ -99,23 +213,30 @@ route_operation(
                 json_object_put(json_obj);
             }
         }
-        return finbench_generate_test_portfolio_json(env, n_assets);
+        result = finbench_generate_test_portfolio_json(env, n_assets);
     }
 
     /* scenarioAnalysis operation */
-    if (axutil_strcmp(operation_name, "scenarioAnalysis") == 0)
+    else if (axutil_strcmp(operation_name, "scenarioAnalysis") == 0)
     {
-        return finbench_scenario_json_only(env, json_request);
+        result = finbench_scenario_json_only(env, json_request);
     }
 
-    /* Unknown operation — log the name internally; do not echo it in the
-     * response body (prevents operation-name enumeration by clients). */
-    char corr_id[AXIS2_JSON_CORR_ID_LEN];
-    axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
-    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-        "[FinancialBenchmark][%s] unknown operation '%s'",
-        corr_id, operation_name);
-    return axis2_json_secure_fault(env, corr_id, "unknown operation");
+    else
+    {
+        /* Unknown operation */
+        char corr_id[AXIS2_JSON_CORR_ID_LEN];
+        axis2_json_corr_id_generate(corr_id, sizeof(corr_id));
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "[FinancialBenchmark][%s] unknown operation '%s'",
+            corr_id, operation_name);
+        return axis2_json_secure_fault(env, corr_id, "unknown operation");
+    }
+
+    /* Apply field filtering if ?fields= was present */
+    if (result && fields_csv && fields_csv[0])
+        result = finbench_filter_json_response(env, result, fields_csv);
+    return result;
 }
 
 /**
@@ -186,6 +307,18 @@ financial_benchmark_service_invoke_json(
         }
     }
 
+    /* Extract ?fields= query parameter for response field filtering */
+    axis2_char_t *fields_csv = NULL;
+    if (msg_ctx)
+    {
+        const axis2_char_t *uri = NULL;
+        axis2_endpoint_ref_t *to_ref = axis2_msg_ctx_get_to(msg_ctx, env);
+        if (to_ref)
+            uri = axis2_endpoint_ref_get_address(to_ref, env);
+        if (uri)
+            fields_csv = finbench_extract_fields_param(env, uri);
+    }
+
     /* If we couldn't get operation from context, try parsing from JSON */
     if (!operation_name && json_request)
     {
@@ -197,14 +330,13 @@ financial_benchmark_service_invoke_json(
             {
                 operation_name = json_object_get_string(op_obj);
             }
-            /* Don't free json_obj yet - operation_name points into it */
-            /* We'll handle this by copying the string */
             if (operation_name)
             {
                 axis2_char_t *op_copy = axutil_strdup(env, operation_name);
                 json_object_put(json_obj);
-                axis2_char_t *result = route_operation(env, op_copy, json_request);
+                axis2_char_t *result = route_operation(env, op_copy, json_request, fields_csv);
                 AXIS2_FREE(env->allocator, op_copy);
+                if (fields_csv) AXIS2_FREE(env->allocator, fields_csv);
                 return result;
             }
             json_object_put(json_obj);
@@ -212,7 +344,9 @@ financial_benchmark_service_invoke_json(
     }
 
     /* Route to the appropriate operation */
-    return route_operation(env, operation_name, json_request);
+    axis2_char_t *result = route_operation(env, operation_name, json_request, fields_csv);
+    if (fields_csv) AXIS2_FREE(env->allocator, fields_csv);
+    return result;
 }
 
 /**
@@ -251,7 +385,7 @@ financial_benchmark_service_process_json_only(
         {
             axis2_char_t *op_copy = axutil_strdup(env, operation_name);
             json_object_put(json_obj);
-            axis2_char_t *result = route_operation(env, op_copy, json_request);
+            axis2_char_t *result = route_operation(env, op_copy, json_request, NULL);
             AXIS2_FREE(env->allocator, (void*)op_copy);
             return result;
         }
