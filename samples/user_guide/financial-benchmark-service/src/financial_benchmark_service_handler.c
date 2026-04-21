@@ -78,19 +78,23 @@ finbench_extract_fields_param(
     qmark = strchr(uri, '?');
     if (!qmark) return NULL;
 
+    /* Walk the query string parameter by parameter (split on '&').
+     * We're looking for "fields=value" — manual parsing avoids pulling
+     * in a URL-parsing library for this single parameter. */
     start = qmark + 1;
     while (*start) {
-        /* find end of this param */
+        /* Find the end of this key=value pair */
         amp = strchr(start, '&');
         size_t plen = amp ? (size_t)(amp - start) : strlen(start);
 
         if (plen > 7 && strncmp(start, "fields=", 7) == 0) {
+            /* Found it — extract just the value portion after "fields=" */
             size_t vlen = plen - 7;
             char *val = AXIS2_MALLOC(env->allocator, vlen + 1);
             if (!val) return NULL;
             memcpy(val, start + 7, vlen);
             val[vlen] = '\0';
-            return val;
+            return val;  /* Caller must AXIS2_FREE this */
         }
         if (!amp) break;
         start = amp + 1;
@@ -125,12 +129,25 @@ finbench_filter_object_keys(
     const char **keep_keys,
     int n_keep)
 {
+    /*
+     * Two-phase delete pattern:
+     *
+     * json-c's json_object_object_foreach uses internal hash iteration.
+     * Deleting keys during iteration corrupts the iterator (pointer
+     * aliasing). So we:
+     *   Phase 1: iterate and collect keys NOT in keep_keys[] into del_keys[]
+     *   Phase 2: delete collected keys in a separate loop
+     *
+     * The del_keys[] array holds const char* pointers into the json_object's
+     * internal key storage — valid until json_object_object_del removes them.
+     */
     int n_keys = json_object_object_length(obj);
     const char **del_keys = AXIS2_MALLOC(env->allocator,
         (size_t)n_keys * sizeof(const char *));
-    if (!del_keys) return;  /* OOM: leave unfiltered */
+    if (!del_keys) return;  /* OOM: leave object unfiltered (graceful degradation) */
     int n_del = 0;
 
+    /* Phase 1: identify keys to remove */
     json_object_object_foreach(obj, key, val) {
         (void)val;
         int found = 0;
@@ -139,6 +156,8 @@ finbench_filter_object_keys(
         }
         if (!found) del_keys[n_del++] = key;
     }
+
+    /* Phase 2: remove unwanted keys (safe — no longer iterating) */
     for (int i = 0; i < n_del; i++) {
         json_object_object_del(obj, del_keys[i]);
     }
@@ -162,12 +181,26 @@ finbench_filter_nested(
 {
     json_object *container = NULL;
     if (!json_object_object_get_ex(parent, container_key, &container))
-        return;
+        return;  /* Container key doesn't exist — nothing to filter */
 
     if (json_object_is_type(container, json_type_object)) {
+        /*
+         * Single nested object, e.g.:
+         *   {"response": {"results": {"ticker":"AAPL", "ops":0.05, "pwr":0.12}}}
+         * With ?fields=results.ticker,results.ops we keep ticker and ops,
+         * delete pwr from the "results" object.
+         */
         finbench_filter_object_keys(env, container, sub_fields, n_sub);
     }
     else if (json_object_is_type(container, json_type_array)) {
+        /*
+         * Array of objects — the key use case for portfolio services.
+         * e.g.: {"response": {"assets": [{"ticker":"AAPL","ops":0.05,...},
+         *                                {"ticker":"MSFT","ops":0.03,...}]}}
+         * With ?fields=assets.ticker,assets.ops we filter EACH array
+         * element independently, keeping only ticker and ops in every object.
+         * Non-object array elements (strings, numbers) are left untouched.
+         */
         int arr_len = json_object_array_length(container);
         for (int i = 0; i < arr_len; i++) {
             json_object *elem = json_object_array_get_idx(container, i);
@@ -176,7 +209,9 @@ finbench_filter_nested(
             }
         }
     }
-    /* If container is a scalar, nothing to filter inside — leave it */
+    /* If container is a scalar (string/number/bool), there are no sub-keys
+     * to filter — leave it untouched. This handles edge cases like
+     * ?fields=status.foo where "status" is a string, not an object. */
 }
 
 /**
@@ -194,29 +229,48 @@ finbench_filter_json_response(
     axis2_char_t *json_str,
     const axis2_char_t *fields_csv)
 {
+    /*
+     * Memory ownership contract:
+     *   - json_str is OWNED by this function (caller expects us to free or return it)
+     *   - result starts as json_str; on success it becomes a new allocation and
+     *     json_str is freed. On failure, result stays as json_str (unfiltered).
+     *   - fields_buf is our working copy of fields_csv for tokenization
+     *   - root is the parsed json-c tree — must json_object_put on all exit paths
+     *   - All cleanup goes through the 'cleanup:' label at the bottom
+     */
     json_object *root = NULL;
     axis2_char_t *result = json_str;
     char *fields_buf = NULL;
 
-    /* Parsed field specs: top-level names to keep, plus nested sub-field lists */
+    /*
+     * Parsing result: two parallel structures built from the ?fields= value.
+     *
+     * For "?fields=status,results.ticker,results.ops":
+     *   top_keep[] = ["status", "results"]     (n_top = 2)
+     *   nested[0]  = { container="results", subs=["ticker","ops"], n_subs=2 }
+     *
+     * Note: "results" appears in BOTH top_keep (so it survives the top-level
+     * prune in Phase 1) AND in nested[] (so its contents get filtered in Phase 2).
+     */
     const char *top_keep[64];
     int n_top = 0;
 
-    /* For nested fields: container_name -> [sub_field1, sub_field2, ...]
-     * We support up to 16 distinct container names, each with up to 64 sub-fields.
-     * This is enough for "portfolio_results.ticker,portfolio_results.ops,..." */
     typedef struct {
         const char *container;  /* e.g., "portfolio_results" */
         const char *subs[64];   /* e.g., ["ticker", "ops", ...] */
         int n_subs;
     } nested_spec_t;
-    nested_spec_t nested[16];
+    nested_spec_t nested[16];  /* Up to 16 distinct container names */
     int n_nested = 0;
 
     if (!fields_csv || !fields_csv[0] || !json_str) return json_str;
 
-    /* Heap-allocate sized to actual input — avoids silent truncation of long
-     * ?fields= values. 64KB cap prevents DoS from malicious query strings. */
+    /* ── Step 1: Copy fields_csv into a mutable working buffer ────────────
+     *
+     * We need a mutable copy because strtok_r writes NUL bytes into it.
+     * Heap-allocated (not stack) because the query string can be arbitrarily
+     * long. The 64KB cap prevents a malicious client from forcing a huge
+     * allocation. */
     size_t fields_len = strlen(fields_csv);
     if (fields_len > 65535) {
         AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
@@ -232,21 +286,37 @@ finbench_filter_json_response(
     }
     memcpy(fields_buf, fields_csv, fields_len + 1);
 
-    /* strtok_r — thread-safe for mod_h2 multi-threaded workers */
+    /* ── Step 2: Tokenize and classify each field spec ────────────────────
+     *
+     * Split on commas, then for each token:
+     *   - "status"          → simple top-level field, goes into top_keep[]
+     *   - "results.ticker"  → dot-notation, split into container="results"
+     *                         and subfield="ticker". Container goes into
+     *                         top_keep[] (to survive Phase 1 prune) AND
+     *                         into nested[] (for Phase 2 inner filtering).
+     *
+     * All pointers (container, subfield, tok) point INTO fields_buf — they
+     * remain valid as long as fields_buf is alive (freed in cleanup:).
+     *
+     * strtok_r (not strtok) is mandatory — Apache mod_h2 runs multiple
+     * requests concurrently in worker threads. strtok uses a static buffer
+     * that would be shared across threads → data corruption. */
     char *saveptr = NULL;
     char *tok = strtok_r(fields_buf, ",", &saveptr);
     while (tok) {
         tok = finbench_trim(tok);
         if (!*tok) { tok = strtok_r(NULL, ",", &saveptr); continue; }
 
-        /* Check for dot-notation: "container.subfield" */
         char *dot = strchr(tok, '.');
         if (dot) {
+            /* Dot-notation: split "container.subfield" by writing NUL at the dot */
             *dot = '\0';
             const char *container = tok;
             const char *subfield = finbench_trim(dot + 1);
 
-            /* Find or create nested spec for this container */
+            /* Find existing nested_spec for this container, or create one.
+             * Multiple fields from the same container accumulate:
+             * "results.ticker,results.ops" → nested[i].subs = ["ticker","ops"] */
             int found_idx = -1;
             for (int i = 0; i < n_nested; i++) {
                 if (strcmp(nested[i].container, container) == 0) {
@@ -263,8 +333,9 @@ finbench_filter_json_response(
                 nested[found_idx].subs[nested[found_idx].n_subs++] = subfield;
             }
 
-            /* Also add the container to top-level keep list (so it survives
-             * the top-level prune — we'll filter inside it separately) */
+            /* The container key itself must survive the top-level prune
+             * (Phase 1), otherwise Phase 2 has nothing to filter inside.
+             * Dedup: don't add "results" to top_keep twice. */
             int already_top = 0;
             for (int i = 0; i < n_top; i++) {
                 if (strcmp(top_keep[i], container) == 0) { already_top = 1; break; }
@@ -272,15 +343,22 @@ finbench_filter_json_response(
             if (!already_top && n_top < 64) top_keep[n_top++] = container;
         }
         else {
-            /* Simple top-level field */
+            /* Simple top-level field — e.g., "status", "calc_time_us" */
             if (n_top < 64) top_keep[n_top++] = tok;
         }
 
         tok = strtok_r(NULL, ",", &saveptr);
     }
+
+    /* Nothing to filter (e.g., "?fields=" with empty value, or all tokens
+     * were whitespace/empty after trimming) */
     if (n_top == 0 && n_nested == 0) goto cleanup;
 
-    /* Parse the JSON response */
+    /* ── Step 3: Parse the JSON response into a json-c tree ─────────────
+     *
+     * We parse the full response string into a mutable json-c object tree.
+     * This lets us delete unwanted keys and re-serialize only what remains.
+     * For typical service responses (~1KB), the parse cost is negligible. */
     root = json_tokener_parse(json_str);
     if (!root) {
         AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
@@ -288,24 +366,49 @@ finbench_filter_json_response(
         goto cleanup;
     }
 
-    /* Navigate into {"response": {...}} wrapper if present */
+    /* ── Step 4: Navigate into the {"response": {...}} wrapper ────────────
+     *
+     * Axis2 JSON-RPC responses are wrapped: {"response": {actual fields...}}.
+     * We filter inside the "response" object, not the root. If there's no
+     * "response" wrapper (e.g., raw JSON), filter the root directly. */
     {
         json_object *inner = NULL;
         json_object_object_get_ex(root, "response", &inner);
         if (!inner) inner = root;
 
-        /* Phase 1: top-level filtering — keep only requested keys */
+        /* ── Phase 1: Top-level prune ────────────────────────────────────
+         *
+         * Delete all keys from inner that are NOT in top_keep[].
+         * After this, only requested top-level fields and container keys
+         * survive. For "?fields=status,results.ticker":
+         *   Before: {"status":"SUCCESS","results":{...},"calc_time_us":1,...}
+         *   After:  {"status":"SUCCESS","results":{...}}
+         */
         finbench_filter_object_keys(env, inner, top_keep, n_top);
 
-        /* Phase 2: nested filtering — for each container.subfield spec,
-         * filter inside the container object/array */
+        /* ── Phase 2: Nested prune ───────────────────────────────────────
+         *
+         * For each container that had dot-notation sub-fields, filter
+         * inside the container. For "?fields=results.ticker,results.ops":
+         *   Before: {"results":{"ticker":"AAPL","ops":0.05,"pwr":0.12,...}}
+         *   After:  {"results":{"ticker":"AAPL","ops":0.05}}
+         *
+         * If the container is an array of objects (common for portfolio
+         * data), each array element is filtered independently. */
         for (int i = 0; i < n_nested; i++) {
             finbench_filter_nested(env, inner, nested[i].container,
                                    nested[i].subs, nested[i].n_subs);
         }
     }
 
-    /* Re-serialize and replace */
+    /* ── Step 5: Re-serialize the pruned tree ────────────────────────────
+     *
+     * json_object_to_json_string_ext returns a pointer to json-c's internal
+     * buffer — valid only until json_object_put(root). We must copy it via
+     * axutil_strdup before releasing the tree.
+     *
+     * On success: free the original json_str, return the filtered copy.
+     * On OOM:     keep original json_str as result (graceful degradation). */
     {
         const char *filtered_str = json_object_to_json_string_ext(root,
             JSON_C_TO_STRING_PLAIN);
@@ -317,9 +420,14 @@ finbench_filter_json_response(
         /* OOM on axutil_strdup: fall through to cleanup, return original json_str */
     }
 
+    /* ── Cleanup: free all resources on every exit path ───────────────────
+     *
+     * goto-based cleanup is the standard C idiom for multi-resource functions.
+     * Both root and fields_buf may be NULL (if we jumped here before allocating
+     * them), so the NULL checks are required. */
 cleanup:
-    if (root) json_object_put(root);
-    if (fields_buf) AXIS2_FREE(env->allocator, fields_buf);
+    if (root) json_object_put(root);      /* Release the json-c parse tree */
+    if (fields_buf) AXIS2_FREE(env->allocator, fields_buf);  /* Release our working copy */
     return result;
 }
 
