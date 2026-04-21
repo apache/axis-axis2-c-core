@@ -41,14 +41,25 @@
 #include <string.h>
 
 /* ============================================================================
- * Field Filtering — ?fields=status,calc_time_us
+ * Field Filtering — ?fields=status,results.ticker,results.ops
  *
- * Parses the fields query parameter and filters a JSON response string
- * to include only the requested top-level fields. Re-parses the response
- * via json-c, deletes unwanted keys, re-serializes. The cost of parsing
- * a ~1 KB response object is negligible.
+ * Supports both flat and nested (dot-notation) field selection:
  *
- * Mirrors Axis2/Java FieldFilteringMessageFormatter.
+ *   ?fields=status,calc_time_us           — top-level only (original behavior)
+ *   ?fields=status,results.ticker          — keep "status" at top level,
+ *                                            keep only "ticker" inside "results"
+ *   ?fields=results.ticker,results.ops     — filter inside nested object/array
+ *
+ * For nested paths like "results.ticker":
+ *   - If "results" is a JSON object, keeps only "ticker" inside it
+ *   - If "results" is a JSON array of objects, keeps only "ticker" in each element
+ *
+ * This enables filtering 126 of 127 fields inside a large nested payload
+ * (e.g., a portfolio service returning 127 fields per asset).
+ *
+ * Re-parses via json-c, prunes unwanted keys, re-serializes.
+ *
+ * Mirrors and extends Axis2/Java FieldFilteringMessageFormatter.
  * @see https://github.com/apache/axis-axis2-java-core/blob/master/modules/json/src/org/apache/axis2/json/streaming/FieldFilteringMessageFormatter.java
  * ============================================================================
  */
@@ -88,7 +99,92 @@ finbench_extract_fields_param(
 }
 
 /**
+ * Trim leading and trailing whitespace from a string in place.
+ * Returns pointer to the trimmed start (within the original buffer).
+ */
+static char*
+finbench_trim(char *s)
+{
+    while (*s == ' ') s++;
+    if (*s) {
+        char *end = s + strlen(s) - 1;
+        while (end > s && *end == ' ') *end-- = '\0';
+    }
+    return s;
+}
+
+/**
+ * Filter keys of a JSON object, keeping only those in keep_keys[].
+ * Handles the "cannot delete during iteration" constraint by collecting
+ * keys to delete first, then deleting in a second pass.
+ */
+static void
+finbench_filter_object_keys(
+    const axutil_env_t *env,
+    json_object *obj,
+    const char **keep_keys,
+    int n_keep)
+{
+    int n_keys = json_object_object_length(obj);
+    const char **del_keys = AXIS2_MALLOC(env->allocator,
+        (size_t)n_keys * sizeof(const char *));
+    if (!del_keys) return;  /* OOM: leave unfiltered */
+    int n_del = 0;
+
+    json_object_object_foreach(obj, key, val) {
+        (void)val;
+        int found = 0;
+        for (int i = 0; i < n_keep; i++) {
+            if (strcmp(key, keep_keys[i]) == 0) { found = 1; break; }
+        }
+        if (!found) del_keys[n_del++] = key;
+    }
+    for (int i = 0; i < n_del; i++) {
+        json_object_object_del(obj, del_keys[i]);
+    }
+    AXIS2_FREE(env->allocator, del_keys);
+}
+
+/**
+ * Apply nested field filtering on a JSON object or array.
+ *
+ * For a path like "results" with sub-fields ["ticker", "ops"]:
+ *   - If obj["results"] is a JSON object: filter its keys to ticker, ops
+ *   - If obj["results"] is a JSON array: filter each element's keys
+ */
+static void
+finbench_filter_nested(
+    const axutil_env_t *env,
+    json_object *parent,
+    const char *container_key,
+    const char **sub_fields,
+    int n_sub)
+{
+    json_object *container = NULL;
+    if (!json_object_object_get_ex(parent, container_key, &container))
+        return;
+
+    if (json_object_is_type(container, json_type_object)) {
+        finbench_filter_object_keys(env, container, sub_fields, n_sub);
+    }
+    else if (json_object_is_type(container, json_type_array)) {
+        int arr_len = json_object_array_length(container);
+        for (int i = 0; i < arr_len; i++) {
+            json_object *elem = json_object_array_get_idx(container, i);
+            if (elem && json_object_is_type(elem, json_type_object)) {
+                finbench_filter_object_keys(env, elem, sub_fields, n_sub);
+            }
+        }
+    }
+    /* If container is a scalar, nothing to filter inside — leave it */
+}
+
+/**
  * Filter a JSON response string to include only the specified fields.
+ * Supports dot-notation for nested filtering:
+ *   "status"          — keep top-level "status"
+ *   "results.ticker"  — keep "results" but filter it to only "ticker"
+ *
  * If fields_csv is NULL or empty, returns json_str unchanged.
  * On filter, frees the original json_str and returns a new allocation.
  */
@@ -98,77 +194,132 @@ finbench_filter_json_response(
     axis2_char_t *json_str,
     const axis2_char_t *fields_csv)
 {
-    json_object *root, *inner;
-    const char *filtered_str;
-    axis2_char_t *result;
-    char fields_buf[512];
-    const char *keep[64];
-    int n_keep = 0;
+    json_object *root = NULL;
+    axis2_char_t *result = json_str;
+    char *fields_buf = NULL;
+
+    /* Parsed field specs: top-level names to keep, plus nested sub-field lists */
+    const char *top_keep[64];
+    int n_top = 0;
+
+    /* For nested fields: container_name -> [sub_field1, sub_field2, ...]
+     * We support up to 16 distinct container names, each with up to 64 sub-fields.
+     * This is enough for "portfolio_results.ticker,portfolio_results.ops,..." */
+    typedef struct {
+        const char *container;  /* e.g., "portfolio_results" */
+        const char *subs[64];   /* e.g., ["ticker", "ops", ...] */
+        int n_subs;
+    } nested_spec_t;
+    nested_spec_t nested[16];
+    int n_nested = 0;
 
     if (!fields_csv || !fields_csv[0] || !json_str) return json_str;
 
-    /* Parse comma-separated field names into keep[] array */
-    strncpy(fields_buf, fields_csv, sizeof(fields_buf) - 1);
-    fields_buf[sizeof(fields_buf) - 1] = '\0';
-    /* strtok_r (not strtok) — thread-safe for mod_h2 multi-threaded workers.
-     * Gemini pro review flagged strtok as a CRITICAL thread-safety violation
-     * since concurrent ?fields= requests would share strtok's static buffer. */
+    /* Heap-allocate sized to actual input — avoids silent truncation of long
+     * ?fields= values. 64KB cap prevents DoS from malicious query strings. */
+    size_t fields_len = strlen(fields_csv);
+    if (fields_len > 65535) {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "fields parameter length %zu exceeds 64KB limit, returning unfiltered",
+            fields_len);
+        return json_str;
+    }
+    fields_buf = AXIS2_MALLOC(env->allocator, fields_len + 1);
+    if (!fields_buf) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "OOM allocating fields_buf, returning unfiltered response");
+        return json_str;
+    }
+    memcpy(fields_buf, fields_csv, fields_len + 1);
+
+    /* strtok_r — thread-safe for mod_h2 multi-threaded workers */
     char *saveptr = NULL;
     char *tok = strtok_r(fields_buf, ",", &saveptr);
-    while (tok && n_keep < 64) {
-        while (*tok == ' ') tok++;  /* trim leading space */
-        /* Trim trailing space — "status, calc_time_us " needs both ends
-         * stripped or strcmp against the JSON key will fail. */
-        char *end = tok + strlen(tok) - 1;
-        while (end > tok && *end == ' ') {
-            *end-- = '\0';
+    while (tok) {
+        tok = finbench_trim(tok);
+        if (!*tok) { tok = strtok_r(NULL, ",", &saveptr); continue; }
+
+        /* Check for dot-notation: "container.subfield" */
+        char *dot = strchr(tok, '.');
+        if (dot) {
+            *dot = '\0';
+            const char *container = tok;
+            const char *subfield = finbench_trim(dot + 1);
+
+            /* Find or create nested spec for this container */
+            int found_idx = -1;
+            for (int i = 0; i < n_nested; i++) {
+                if (strcmp(nested[i].container, container) == 0) {
+                    found_idx = i;
+                    break;
+                }
+            }
+            if (found_idx < 0 && n_nested < 16) {
+                found_idx = n_nested++;
+                nested[found_idx].container = container;
+                nested[found_idx].n_subs = 0;
+            }
+            if (found_idx >= 0 && nested[found_idx].n_subs < 64 && *subfield) {
+                nested[found_idx].subs[nested[found_idx].n_subs++] = subfield;
+            }
+
+            /* Also add the container to top-level keep list (so it survives
+             * the top-level prune — we'll filter inside it separately) */
+            int already_top = 0;
+            for (int i = 0; i < n_top; i++) {
+                if (strcmp(top_keep[i], container) == 0) { already_top = 1; break; }
+            }
+            if (!already_top && n_top < 64) top_keep[n_top++] = container;
         }
-        if (*tok) keep[n_keep++] = tok;
+        else {
+            /* Simple top-level field */
+            if (n_top < 64) top_keep[n_top++] = tok;
+        }
+
         tok = strtok_r(NULL, ",", &saveptr);
     }
-    if (n_keep == 0) return json_str;
+    if (n_top == 0 && n_nested == 0) goto cleanup;
 
     /* Parse the JSON response */
     root = json_tokener_parse(json_str);
-    if (!root) return json_str;
+    if (!root) {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Failed to parse JSON for field filtering, returning unfiltered");
+        goto cleanup;
+    }
 
     /* Navigate into {"response": {...}} wrapper if present */
-    inner = NULL;
-    json_object_object_get_ex(root, "response", &inner);
-    if (!inner) inner = root;
+    {
+        json_object *inner = NULL;
+        json_object_object_get_ex(root, "response", &inner);
+        if (!inner) inner = root;
 
-    /* Collect keys to delete — dynamically sized from actual key count.
-     * Cannot delete during json_object_object_foreach iteration (pointer
-     * aliasing). Fixed-size array of 256 was flagged by Gemini pro as a
-     * silent truncation risk that could leak excluded fields. */
-    int n_keys = json_object_object_length(inner);
-    const char **del_keys = AXIS2_MALLOC(env->allocator,
-        (size_t)n_keys * sizeof(const char *));
-    if (!del_keys) {
-        json_object_put(root);
-        return json_str;  /* OOM fallback: return unfiltered */
-    }
-    int n_del = 0;
-    json_object_object_foreach(inner, key, val) {
-        (void)val;
-        int found = 0;
-        for (int i = 0; i < n_keep; i++) {
-            if (strcmp(key, keep[i]) == 0) { found = 1; break; }
+        /* Phase 1: top-level filtering — keep only requested keys */
+        finbench_filter_object_keys(env, inner, top_keep, n_top);
+
+        /* Phase 2: nested filtering — for each container.subfield spec,
+         * filter inside the container object/array */
+        for (int i = 0; i < n_nested; i++) {
+            finbench_filter_nested(env, inner, nested[i].container,
+                                   nested[i].subs, nested[i].n_subs);
         }
-        if (!found) del_keys[n_del++] = key;
     }
-
-    /* Delete unwanted keys */
-    for (int i = 0; i < n_del; i++) {
-        json_object_object_del(inner, del_keys[i]);
-    }
-    AXIS2_FREE(env->allocator, del_keys);
 
     /* Re-serialize and replace */
-    filtered_str = json_object_to_json_string_ext(root, JSON_C_TO_STRING_PLAIN);
-    result = axutil_strdup(env, filtered_str);
-    json_object_put(root);
-    AXIS2_FREE(env->allocator, json_str);
+    {
+        const char *filtered_str = json_object_to_json_string_ext(root,
+            JSON_C_TO_STRING_PLAIN);
+        axis2_char_t *new_result = axutil_strdup(env, filtered_str);
+        if (new_result) {
+            AXIS2_FREE(env->allocator, json_str);
+            result = new_result;
+        }
+        /* OOM on axutil_strdup: fall through to cleanup, return original json_str */
+    }
+
+cleanup:
+    if (root) json_object_put(root);
+    if (fields_buf) AXIS2_FREE(env->allocator, fields_buf);
     return result;
 }
 
