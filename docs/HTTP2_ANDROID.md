@@ -466,6 +466,13 @@ static int send_intent_broadcast_secure(
     argv[i] = NULL;
 
     pid_t pid = fork();
+
+    if (pid < 0) {
+        /* fork() failed — clean up and return error */
+        free(argv);
+        return -1;
+    }
+
     if (pid == 0) {
         /* Child process */
         execvp("/system/bin/am", argv);
@@ -473,9 +480,12 @@ static int send_intent_broadcast_secure(
     }
 
     /* Parent waits for child */
-    int status;
-    waitpid(pid, &status, 0);
     free(argv);
+
+    int status;
+    if (waitpid(pid, &status, 0) < 0) {
+        return -1;
+    }
 
     return WIFEXITED(status) && WEXITSTATUS(status) == 0 ? 0 : -1;
 }
