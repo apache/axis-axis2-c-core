@@ -85,14 +85,18 @@ json_object* camera_control_service_invoke_json(
     return NULL;
 }
 
-/* Add more weak service declarations here:
- * __attribute__((weak))
- * json_object* another_service_invoke_json(const axutil_env_t *env, json_object *json_request)
- * {
- *     (void)env; (void)json_request;
- *     return NULL;
- * }
- */
+__attribute__((weak))
+json_object* audio_search_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request)
+{
+    /* Weak default - returns NULL if no implementation linked */
+    (void)env;
+    (void)json_request;
+    return NULL;
+}
+
+/* Add more weak service declarations here as needed */
 
 /**
  * Android Static Service Registry - looks up services by name
@@ -118,12 +122,11 @@ android_static_service_lookup(const char *service_name)
     if (strcmp(service_name, "CameraControlService") == 0) {
         return camera_control_service_invoke_json;
     }
+    if (strcmp(service_name, "AudioSearchService") == 0) {
+        return audio_search_service_invoke_json;
+    }
 
-    /* Add more services as needed:
-     * if (strcmp(service_name, "AnotherService") == 0) {
-     *     return another_service_invoke_json;
-     * }
-     */
+    /* Add more services as needed */
 
     return NULL;  /* Service not found in static registry */
 }
