@@ -141,6 +141,9 @@ android_static_service_lookup(const char *service_name)
     if (strcmp(service_name, "CameraControlService") == 0) {
         return camera_control_service_invoke_json;
     }
+    if (strcmp(service_name, "AudioSearchService") == 0) {
+        return audio_search_service_invoke_json;
+    }
     /* Add more services here */
 
     return NULL;
@@ -555,10 +558,22 @@ See the [Kanaha](https://github.com/robertlazarski/kanaha) project's `docs/SECUR
 - Audit logging
 - Apache httpd security headers
 
-**Note:** [Kanaha](https://github.com/robertlazarski/kanaha) is an independent project (GPLv3 licensed due to OpenCamera
+**Note:** [Kanaha Camera](https://github.com/robertlazarski/kanaha) is an independent project (GPLv3 licensed due to OpenCamera
 dependency) and is not affiliated with Apache Software Foundation. It demonstrates
 production deployment patterns for the CameraControlService sample in
 `samples/user_guide/camera-control-service/`.
+
+**[Kanaha Audio](https://github.com/robertlazarski/kanaha-audio)** is a companion project (Apache 2.0 licensed)
+that demonstrates AudioSearchService — on-device ML inference via whisper.cpp,
+dispatched through the same weak symbol registry. Because all its dependencies
+are permissive (MIT + Apache 2.0), its patterns can flow upstream to Apache projects.
+
+### Registered Android Services
+
+| Service | Application | License | IPC Method |
+|---------|-------------|---------|------------|
+| CameraControlService | [Kanaha Camera](https://github.com/robertlazarski/kanaha) | GPL v3+ | fork/execvp Intent IPC (GPL boundary) |
+| AudioSearchService | [Kanaha Audio](https://github.com/robertlazarski/kanaha-audio) | Apache 2.0 | Direct function call (no GPL boundary) |
 
 ## Summary Table
 
@@ -570,7 +585,7 @@ production deployment patterns for the CameraControlService sample in
 | Service location | External .so | Application provides strong symbols |
 | Linker | Libtool | Direct clang with `--whole-archive` |
 | Apache mode | Multi-process | Single-process (`-X`) |
-| IPC method | N/A | fork()/execvp() (NOT system()) |
+| IPC method | N/A | fork()/execvp() or direct call |
 | Input validation | Application | Java SecurityValidator + C checks |
 
 ## Files Reference
@@ -579,16 +594,22 @@ Key files for Android support:
 
 **Axis2/C Core:**
 - `configure.ac` - Android detection, C flags
-- `src/core/receivers/axis2_json_rpc_msg_recv.c` - Static service registry
+- `src/core/receivers/axis2_json_rpc_msg_recv.c` - Static service registry (CameraControlService, AudioSearchService)
 - `src/core/transport/http/server/apache2/mod_axis2.c` - Android init, logging
 - `src/core/transport/http/server/apache2/apache2_worker.c` - Request processing
 
-**Application ([Kanaha](https://github.com/robertlazarski/kanaha) example):**
+**CameraControlService ([Kanaha Camera](https://github.com/robertlazarski/kanaha) — GPL v3+):**
 - `app/src/main/cpp/axis2c/camera_control_service.c` - Service impl with secure IPC
 - `app/src/main/java/org/kanaha/camera/CameraControlReceiver.java` - Java receiver with SecurityValidator
 - `app/src/main/assets/apache/httpd.conf` - Apache security config
 - `app/src/main/assets/apache/ssl.conf` - mTLS and CRL config
 - `docs/SECURITY.md` - Comprehensive security documentation
+
+**AudioSearchService ([Kanaha Audio](https://github.com/robertlazarski/kanaha-audio) — Apache 2.0):**
+- `app/src/main/cpp/axis2c/audio_search_service.c` - Service impl with direct whisper.cpp calls
+- `app/src/main/cpp/axis2c/axis2_static_service_adapter.c` - Strong symbol bridge to Axis2/C
+- `app/src/main/cpp/whisper/whisper_android_bridge.c` - whisper.cpp C API wrapper
+- `app/src/main/assets/axis2c/services/AudioSearchService/services.xml` - Service descriptor
 
 ---
 
