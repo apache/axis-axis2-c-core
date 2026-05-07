@@ -1123,22 +1123,35 @@ finbench_run_monte_carlo(
 
     } /* end of is_merton local scope */
 
-    /* Calculate statistics */
+    /* Calculate statistics — two-pass algorithm for variance.
+     * The one-pass formula (sum_sq/N - mean^2) suffers from catastrophic
+     * cancellation when std_dev << mean (common for low-vol strategies).
+     * Two-pass: compute mean first, then sum squared deviations. This is
+     * numerically stable and the extra pass over final_values[] is cheap
+     * relative to the simulation itself. */
     double mean = sum_final / request->n_simulations;
-    double variance = (sum_sq / request->n_simulations) - (mean * mean);
-    /* Clamp tiny negative variance produced by floating-point cancellation
-     * in the (sum_sq/N - mean^2) formula before the final sqrt. Magnitudes
-     * here are typically ~1e-16 to 1e-12 and occur for near-constant
-     * samples; a negative value would propagate NaN through std_dev and
-     * downstream consumers. */
-    if (variance < 0.0) variance = 0.0;
+    double variance;
+    {
+        double sum_sq_diff = 0.0;
+        for (sim = 0; sim < request->n_simulations; sim++) {
+            double d = final_values[sim] - mean;
+            sum_sq_diff += d * d;
+        }
+        variance = sum_sq_diff / request->n_simulations;
+    }
 
     /* Sort for percentiles */
     qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
 
     int n_sims = request->n_simulations;
-    int idx_5  = (int)(0.05 * n_sims);
-    int idx_1  = (int)(0.01 * n_sims);
+    /* Percentile indexing: ceil(p * N) - 1 selects the k-th order
+     * statistic such that exactly floor(p * N) observations are strictly
+     * below the VaR level. This matches the standard quantile definition
+     * and avoids the off-by-one that floor(p * N) introduces. */
+    int idx_5  = (int)ceil(0.05 * n_sims) - 1;
+    int idx_1  = (int)ceil(0.01 * n_sims) - 1;
+    if (idx_5 < 0) idx_5 = 0;
+    if (idx_1 < 0) idx_1 = 0;
 
     /* Sample median of a sorted array: for odd N take the middle element,
      * for even N average the two central elements. Using a single index
@@ -1179,7 +1192,8 @@ finbench_run_monte_carlo(
         for (pi = 0; pi < n_pct; pi++) {
             double p = request->percentiles[pi];
             if (p <= 0.0 || p >= 1.0) continue;
-            int idx = (int)(p * n_sims);
+            int idx = (int)ceil(p * n_sims) - 1;
+            if (idx < 0) idx = 0;
             if (idx >= n_sims) idx = n_sims - 1;
             response->percentile_levels[response->n_percentiles] = p;
             response->var_at_percentile[response->n_percentiles] =
