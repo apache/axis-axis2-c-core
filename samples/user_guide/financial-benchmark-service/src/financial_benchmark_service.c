@@ -1006,7 +1006,6 @@ finbench_run_monte_carlo(
      * drift reduces to the standard (μ − σ²/2)*dt.
      */
     {
-        double jump_lambda_dt = 0.0;
         double jump_compensation = 0.0;
         if (request->model == FINBENCH_MODEL_MERTON) {
             double jv = (request->jump_vol >= 0.0) ? request->jump_vol : 0.05;
@@ -1014,7 +1013,6 @@ finbench_run_monte_carlo(
             double ji = (request->jump_intensity >= 0.0) ? request->jump_intensity : 1.0;
             double k = exp(jm + 0.5 * jv * jv) - 1.0;
             jump_compensation = ji * k;
-            jump_lambda_dt = ji * dt;
         }
         drift = (request->expected_return - 0.5 * request->volatility * request->volatility
                  - jump_compensation) * dt;
@@ -1035,6 +1033,20 @@ finbench_run_monte_carlo(
                                      request->jump_intensity : 1.0) / (double)npy;
             jump_mean_local = request->jump_mean;
             jump_vol_local = (request->jump_vol >= 0.0) ? request->jump_vol : 0.05;
+
+            /* The Bernoulli approximation for a Poisson process is only valid
+             * when λ*dt << 1. For λ*dt > 0.1 the probability of ≥2 jumps per
+             * step becomes non-negligible; at λ*dt ≥ 1 the trial degenerates
+             * to a deterministic jump every step. Fail fast rather than produce
+             * silently incorrect tail risk estimates. */
+            if (jump_lambda_dt_local > 0.1) {
+                AXIS2_FREE(env->allocator, final_values);
+                response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+                response->error_message = axutil_strdup(env,
+                    "jump_intensity too high for time step: lambda*dt > 0.1. "
+                    "Reduce jump_intensity or increase n_periods_per_year.");
+                return response;
+            }
         }
 
     start_time = get_time_us();
