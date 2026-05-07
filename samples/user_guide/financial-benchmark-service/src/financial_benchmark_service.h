@@ -62,6 +62,10 @@ extern "C"
 /** Maximum number of percentile levels accepted in a monteCarlo request */
 #define FINBENCH_MAX_PERCENTILES    8
 
+/** Monte Carlo model selection constants */
+#define FINBENCH_MODEL_GBM          0   /* Geometric Brownian Motion (default) */
+#define FINBENCH_MODEL_MERTON       1   /* Merton (1976) jump-diffusion */
+
 /* Memory constraint for Android devices */
 #define FINBENCH_MEMORY_CONSTRAINT_MB   512
 
@@ -215,10 +219,23 @@ typedef struct finbench_portfolio_variance_response
  * Compute-intensive simulation for Value at Risk (VaR) calculations.
  * Demonstrates raw compute performance advantage of C over JVM.
  *
- * Model: Geometric Brownian Motion (GBM), the standard textbook process
- * for equity prices under the risk-neutral measure. Each period:
+ * Models:
+ *
+ * GBM (model=0, default): Geometric Brownian Motion, the standard textbook
+ * process for equity prices. Each period:
  *   S(t+dt) = S(t) * exp((μ − σ²/2) * dt  +  σ * sqrt(dt) * Z)
  *   where Z ~ N(0,1), μ = expected_return, σ = volatility, dt = 1/n_periods_per_year.
+ *
+ * Merton jump-diffusion (model=1): GBM plus a compound Poisson jump
+ * process that captures the fat tails and discontinuities (crashes, gaps)
+ * that GBM misses. Each period:
+ *   S(t+dt) = S(t) * exp((μ − σ²/2 − λk)*dt + σ√dt*Z) * J
+ *   where J = exp(μ_J + σ_J * W) with probability λ*dt, else J = 1.
+ *   Z,W ~ N(0,1) independent. k = exp(μ_J + σ_J²/2) − 1 is the
+ *   expected percentage jump, subtracted from drift to preserve
+ *   E[S(T)] = S(0)*exp(μ*T).
+ * Reference: Merton, R. (1976). "Option pricing when underlying stock
+ * returns are discontinuous." J. Financial Economics, 3(1-2): 125-144.
  *
  * Intuition for readers new to GBM:
  *   GBM produces log-normal terminal prices: S(T)/S(0) is log-normal, so
@@ -359,6 +376,67 @@ typedef struct finbench_monte_carlo_request
     /** Number of entries in percentiles[]. 0 → use defaults {0.01, 0.05}. */
     int n_percentiles;
 
+    /**
+     * Simulation model selection. Determines the stochastic process used
+     * to evolve prices at each time step.
+     *
+     *   0 = FINBENCH_MODEL_GBM (default): Geometric Brownian Motion.
+     *       Constant volatility, continuous paths (no jumps). The textbook
+     *       baseline — same process underlying Black-Scholes. Appropriate
+     *       when the caller wants a clean, analytically-tractable model
+     *       that matches every quant's intuition. Understates tail risk
+     *       because real return distributions exhibit excess kurtosis
+     *       (fat tails) and occasional discontinuities (gaps, flash crashes).
+     *
+     *   1 = FINBENCH_MODEL_MERTON: Merton (1976) jump-diffusion.
+     *       GBM plus a compound Poisson jump process:
+     *         S(t+dt) = S(t) * exp(drift_adj*dt + σ√dt*Z) * J
+     *       where J = exp(jump_mean + jump_vol * W) with probability λ*dt
+     *       per step, J = 1 otherwise. Z,W ~ N(0,1) independent.
+     *
+     *       The drift correction becomes (μ − σ²/2 − λ*k)*dt where
+     *       k = exp(jump_mean + jump_vol²/2) − 1 is the expected
+     *       percentage jump size. This ensures E[S(T)] = S(0)*exp(μ*T)
+     *       regardless of jump parameters — the same Itô-compensation
+     *       principle as GBM, extended to jumps.
+     *
+     *       Merton (1976). "Option pricing when underlying stock returns
+     *       are discontinuous." Journal of Financial Economics, 3(1-2):
+     *       125-144.
+     *
+     *       Calibration guidance:
+     *         jump_intensity = 1.0-3.0 (jumps per year; S&P 500 ≈ 1-2)
+     *         jump_mean = -0.02 to -0.05 (jumps are typically negative)
+     *         jump_vol  = 0.03 to 0.10 (jump size uncertainty)
+     *       These defaults produce 1-3 jumps per simulated year, each
+     *       averaging a few percent down with some variance — matching
+     *       the empirical observation that equity markets crash more
+     *       often and harder than GBM predicts.
+     */
+    int model;
+
+    /**
+     * Jump-diffusion parameters (Merton model only; ignored for GBM).
+     *
+     * jump_intensity: Expected number of jumps per YEAR (Poisson λ).
+     *   Must be >= 0. Default: 1.0. At λ=1, the expected number of jumps
+     *   per 252-day simulation is 1.0; the actual count follows Poisson(1).
+     *   Higher values increase kurtosis of the return distribution.
+     *
+     * jump_mean: Mean of the log-normal jump size distribution.
+     *   Negative values produce downward jumps on average (crashes).
+     *   Default: -0.03 (average jump = ~3% drop). A value of 0.0 means
+     *   jumps are symmetric around no-change.
+     *
+     * jump_vol: Volatility (std dev) of the log-normal jump size.
+     *   Controls how variable individual jump magnitudes are.
+     *   Default: 0.05. Must be >= 0. At jump_vol=0, every jump has
+     *   exactly the same size (exp(jump_mean)).
+     */
+    double jump_intensity;
+    double jump_mean;
+    double jump_vol;
+
     /** Request identifier */
     char *request_id;
 
@@ -413,6 +491,9 @@ typedef struct finbench_monte_carlo_response
 
     /** Memory used in KB */
     int memory_used_kb;
+
+    /** Model used for this simulation: "gbm" or "merton" */
+    char *model;
 
     /** Error message (if any) */
     char *error_message;

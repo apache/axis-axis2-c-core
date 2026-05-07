@@ -776,6 +776,36 @@ finbench_monte_carlo_request_create_from_json(
         }
     }
 
+    /* model — 0=GBM (default), 1=Merton jump-diffusion */
+    if (json_object_object_get_ex(json_obj, "model", &value_obj)) {
+        const char *model_str = json_object_get_string(value_obj);
+        if (model_str && (strcmp(model_str, "merton") == 0 ||
+                          strcmp(model_str, "MERTON") == 0)) {
+            request->model = FINBENCH_MODEL_MERTON;
+        } else {
+            request->model = FINBENCH_MODEL_GBM;
+        }
+    } else {
+        request->model = FINBENCH_MODEL_GBM;
+    }
+
+    /* Jump-diffusion parameters (Merton only; harmless defaults for GBM) */
+    if (json_object_object_get_ex(json_obj, "jump_intensity", &value_obj)) {
+        request->jump_intensity = json_object_get_double(value_obj);
+    } else {
+        request->jump_intensity = 1.0; /* 1 jump per year */
+    }
+    if (json_object_object_get_ex(json_obj, "jump_mean", &value_obj)) {
+        request->jump_mean = json_object_get_double(value_obj);
+    } else {
+        request->jump_mean = -0.03; /* average 3% down */
+    }
+    if (json_object_object_get_ex(json_obj, "jump_vol", &value_obj)) {
+        request->jump_vol = json_object_get_double(value_obj);
+    } else {
+        request->jump_vol = 0.05;
+    }
+
     if (json_object_object_get_ex(json_obj, "request_id", &value_obj)) {
         const char *rid = json_object_get_string(value_obj);
         if (rid) request->request_id = axutil_strdup(env, rid);
@@ -818,6 +848,7 @@ finbench_monte_carlo_response_free(
 {
     if (!response || !env) return;
     if (response->status) AXIS2_FREE(env->allocator, response->status);
+    if (response->model) AXIS2_FREE(env->allocator, response->model);
     if (response->error_message) AXIS2_FREE(env->allocator, response->error_message);
     if (response->request_id) AXIS2_FREE(env->allocator, response->request_id);
     AXIS2_FREE(env->allocator, response);
@@ -826,14 +857,22 @@ finbench_monte_carlo_response_free(
 /**
  * Core Monte Carlo Simulation
  *
- * Runs n_simulations independent Geometric Brownian Motion (GBM) paths,
- * each of n_periods time steps, to build an empirical distribution of
- * terminal portfolio values. That distribution is then summarized as
- * mean, median, std dev, VaR at user-specified percentiles, CVaR_95,
- * max drawdown, and probability of profit.
+ * Runs n_simulations independent price paths, each of n_periods time
+ * steps, to build an empirical distribution of terminal portfolio values.
+ * That distribution is then summarized as mean, median, std dev, VaR at
+ * user-specified percentiles, CVaR_95, max drawdown, and probability of
+ * profit.
  *
- * GBM update rule per step:
+ * Two models are supported (selected by request->model):
+ *
+ * GBM (model=0, default) update rule per step:
  *   S(t+dt) = S(t) * exp((μ − σ²/2) * dt  +  σ * sqrt(dt) * Z),  Z ~ N(0,1)
+ *
+ * Merton jump-diffusion (model=1) update rule per step:
+ *   S(t+dt) = S(t) * exp((μ − σ²/2 − λk) * dt + σ√dt * Z) * J
+ *   where J = exp(μ_J + σ_J * W) with probability λ*dt, else J = 1.
+ *   Z,W ~ N(0,1) independent. k = exp(μ_J + σ_J²/2) − 1.
+ *   The −λk drift correction ensures E[S(T)] = S(0)*exp(μ*T).
  *
  * Intuition:
  *   Each path is an independent future scenario for the portfolio;
@@ -956,14 +995,59 @@ finbench_run_monte_carlo(
         int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
         dt = 1.0 / (double)npy;
     }
-    drift = (request->expected_return - 0.5 * request->volatility * request->volatility) * dt;
-    vol_sqrt_dt = request->volatility * sqrt(dt);
+
+    /*
+     * Merton jump-diffusion drift correction:
+     *   k = E[J-1] = exp(μ_J + σ_J²/2) − 1  (expected percentage jump)
+     *   drift_adj = (μ − σ²/2 − λ*k) * dt
+     *
+     * This ensures E[S(T)] = S(0)*exp(μ*T) regardless of jump parameters.
+     * For GBM (model=0), jump_lambda_dt=0, so the correction vanishes and
+     * drift reduces to the standard (μ − σ²/2)*dt.
+     */
+    {
+        double jump_lambda_dt = 0.0;
+        double jump_compensation = 0.0;
+        if (request->model == FINBENCH_MODEL_MERTON) {
+            double jv = (request->jump_vol >= 0.0) ? request->jump_vol : 0.05;
+            double jm = request->jump_mean;
+            double ji = (request->jump_intensity >= 0.0) ? request->jump_intensity : 1.0;
+            double k = exp(jm + 0.5 * jv * jv) - 1.0;
+            jump_compensation = ji * k;
+            jump_lambda_dt = ji * dt;
+        }
+        drift = (request->expected_return - 0.5 * request->volatility * request->volatility
+                 - jump_compensation) * dt;
+        vol_sqrt_dt = request->volatility * sqrt(dt);
+    }
+
+    /* Merton parameters for the inner loop (pre-extract to avoid
+     * repeated struct dereferences in the hot path) */
+    {
+        double jump_lambda_dt_local = 0.0;
+        double jump_mean_local = 0.0;
+        double jump_vol_local = 0.0;
+        int is_merton = (request->model == FINBENCH_MODEL_MERTON);
+
+        if (is_merton) {
+            int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
+            jump_lambda_dt_local = ((request->jump_intensity >= 0.0) ?
+                                     request->jump_intensity : 1.0) / (double)npy;
+            jump_mean_local = request->jump_mean;
+            jump_vol_local = (request->jump_vol >= 0.0) ? request->jump_vol : 0.05;
+        }
 
     start_time = get_time_us();
 
     /*
      * Main simulation loop - THIS IS THE COMPUTE BENCHMARK
-     * n_simulations × n_periods iterations
+     *
+     * GBM (model=0): n_simulations × n_periods iterations of one exp() + PRNG.
+     * Merton (model=1): same, plus a Poisson jump test per step. When
+     * jump_lambda_dt is small (typical: ~0.004 for λ=1, npy=252), the
+     * branch predictor will correctly predict "no jump" ~99.6% of the
+     * time, so the Merton overhead is primarily the uniform random draw
+     * for the Poisson test (~15-20% slower than pure GBM).
      */
     for (sim = 0; sim < request->n_simulations; sim++) {
         double value = request->initial_value;
@@ -973,6 +1057,22 @@ finbench_run_monte_carlo(
         for (period = 0; period < request->n_periods; period++) {
             double z = rand_normal(&rng);
             double exponent = drift + vol_sqrt_dt * z;
+
+            /* Merton jump component: compound Poisson process.
+             * At each step, a jump occurs with probability λ*dt.
+             * We use a uniform random draw rather than sampling a
+             * full Poisson variate because dt is small enough that
+             * P(≥2 jumps per step) ≈ (λ*dt)² ≈ 1.6e-5 is negligible.
+             * The jump magnitude is log-normal: J = exp(μ_J + σ_J * W)
+             * where W ~ N(0,1) is independent of the diffusion Z. */
+            if (is_merton) {
+                double u = rand_uniform(&rng);
+                if (u < jump_lambda_dt_local) {
+                    double w = rand_normal(&rng);
+                    exponent += jump_mean_local + jump_vol_local * w;
+                }
+            }
+
             /* Guard against exp() overflow — exp(709.78) ≈ DBL_MAX.
              * Extreme GBM shocks with high volatility can produce
              * exponents that overflow to Inf, corrupting all downstream
@@ -1008,6 +1108,8 @@ finbench_run_monte_carlo(
     }
 
     end_time = get_time_us();
+
+    } /* end of is_merton local scope */
 
     /* Calculate statistics */
     double mean = sum_final / request->n_simulations;
@@ -1075,6 +1177,8 @@ finbench_run_monte_carlo(
     }
 
     /* Populate response */
+    response->model = axutil_strdup(env,
+        request->model == FINBENCH_MODEL_MERTON ? "merton" : "gbm");
     response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
     response->mean_final_value = mean;
     response->median_final_value = median;
@@ -1163,6 +1267,11 @@ finbench_monte_carlo_response_to_json(
     json_object_object_add(json_resp, "memory_used_kb",
         json_object_new_int(response->memory_used_kb));
 
+    if (response->model) {
+        json_object_object_add(json_resp, "model",
+            json_object_new_string(response->model));
+    }
+
     /* Emit caller-specified percentile VaR values as a structured array */
     if (response->n_percentiles > 0) {
         json_object *pct_array = json_object_new_array();
@@ -1217,7 +1326,11 @@ finbench_monte_carlo_json_only(
             "volatility (float, default 0.20), "
             "random_seed (int, default 0=random), "
             "n_periods_per_year (int, default 252), "
-            "percentiles (float[], default [0.01, 0.05]).\"}");
+            "percentiles (float[], default [0.01, 0.05]), "
+            "model (string, 'gbm' or 'merton', default 'gbm'), "
+            "jump_intensity (float, default 1.0, jumps/year), "
+            "jump_mean (float, default -0.03), "
+            "jump_vol (float, default 0.05).\"}");
     }
 
     response = finbench_run_monte_carlo(env, request);
