@@ -7,7 +7,7 @@ It includes 17 years of bug fixes, HTTP/2 support, and JSON-RPC services.
 
 | File | SHA-512 | Signature |
 |------|---------|-----------|
-| [axis2c-src-2.0.0.tar.gz](https://downloads.apache.org/axis/axis2/c/2.0.0/axis2c-src-2.0.0.tar.gz) | [SHA-512](https://downloads.apache.org/axis/axis2/c/2.0.0/axis2c-src-2.0.0.tar.gz.sha512) | [ASC](https://downloads.apache.org/axis/axis2/c/2.0.0/axis2c-src-2.0.0.tar.gz.asc) |
+| [axis2c-src-2.0.0.tar.gz](https://downloads.apache.org/axis/axis2/c/core/2.0.0/axis2c-src-2.0.0.tar.gz) | [SHA-512](https://downloads.apache.org/axis/axis2/c/core/2.0.0/axis2c-src-2.0.0.tar.gz.sha512) | [ASC](https://downloads.apache.org/axis/axis2/c/core/2.0.0/axis2c-src-2.0.0.tar.gz.asc) |
 
 **KEYS file**: [https://downloads.apache.org/axis/axis2/c/KEYS](https://downloads.apache.org/axis/axis2/c/KEYS)
 

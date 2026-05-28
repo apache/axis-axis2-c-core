@@ -254,7 +254,7 @@ git push
 ```
 
 Before building, ensure `docs/downloads.md` has the correct download links
-for the new version pointing to `downloads.apache.org/axis/axis2/c/${VERSION}/`.
+for the new version pointing to `downloads.apache.org/axis/axis2/c/core/${VERSION}/`.
 
 ## Step 5: Call for Vote
 
