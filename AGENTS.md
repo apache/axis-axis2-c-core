@@ -79,10 +79,12 @@ HTTP chunked transfer decoding.
 
 ### 6. Use-After-Free in Connection Handling
 
-HTTP connection lifecycle management involves complex cleanup ordering.
-A known 15-byte leak per connection exists in test scenarios
-(documented in `HTTP_CONNECTION_MAP_MEMORY_LEAK.md`). Scan for
-use-after-free in connection teardown, especially under error conditions.
+HTTP connection lifecycle management involves complex cleanup ordering,
+creating risks for use-after-free vulnerabilities. Scan for any use of
+connection or request-related objects after they have been freed,
+especially in error handling paths. A known memory leak exists in this
+area, indicating complex memory management where UAFs may also be
+present. Prioritize finding exploitable UAFs over simple memory leaks.
 
 Key files:
 - `src/core/transport/http/sender/http_client.c`
@@ -110,8 +112,9 @@ src/modules/       Apache httpd modules (mod_addr, mod_log)
 - **Security tests:** `test/security/` (XXE, buffer safety, JSON)
 - **Penetration tests:** `test/security/h2_penetration_test.sh` (HTTP/2 JSON)
 - **ASAN:** Build with `--enable-asan` for AddressSanitizer coverage
-- **Stress tests:** 500-asset covariance, 10M Monte Carlo simulations,
-  100 concurrent requests — zero ASAN errors
+- **Stress tests:** Framework stability validated under high concurrency
+  (100+ requests), large payloads, and long-running connections — zero
+  ASAN errors
 
 ## Reporting
 

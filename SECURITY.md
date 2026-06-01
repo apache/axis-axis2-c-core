@@ -120,7 +120,7 @@ Response serialization → transport out
 | **JSON-to-AXIOM reader** (HTTP/1.1) | Deep nesting; memory exhaustion during conversion | Fuzz-tested (`fuzz_json_reader`); size limits inherited from transport |
 | **HTTP request/status line parsing** | Oversized lines; malformed methods/URIs | Status line limit (512 bytes); request line parsed by delimiter |
 | **MTOM/XOP attachments** | Large attachment DoS; temp file exhaustion | Chunked transfer max (100MB default) |
-| **WSDL/XSD parsing** | XXE in imported schemas; recursive schema DoS | Uses chosen XML parser with its hardening; no explicit schema complexity limits |
+| **WSDL/XSD parsing** | XXE in imported schemas; recursive schema DoS | Uses chosen XML parser with its hardening for XXE. **No explicit limits on schema complexity or recursion depth during validation — potential DoS risk.** |
 | **HTTP client transport** (outbound) | TLS downgrade; weak ciphers; hostname bypass | TLS 1.2+ enforced; SSLv2/SSLv3/TLS 1.0-1.1 disabled; AEAD ciphers only; hostname validation enabled |
 | **mod_axis2** (Apache httpd) | Shared memory corruption; configuration injection | apr_pool allocation; apr_global_mutex for thread safety |
 
