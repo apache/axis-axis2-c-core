@@ -44,7 +44,7 @@ Two JSON processing paths exist with different risk profiles:
   with depth limit (64) and size limit (10MB). Native JSON objects
   bypass AXIOM/XML entirely. Fuzz-tested.
 - **HTTP/1.1 path (legacy):** JSON-to-AXIOM conversion in
-  `axis2_json_reader.c` (25K LOC). More complex, more attack surface.
+  `axis2_json_reader.c`. More complex, more attack surface.
   Fuzz-tested.
 
 Scan both paths for integer overflow in size calculations (CVE-2020-12762

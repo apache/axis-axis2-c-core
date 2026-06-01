@@ -61,7 +61,7 @@ For detailed deployment hardening guidance, see
   implementations are the service author's responsibility.
 - **Missing authentication.** Axis2/C does not ship built-in
   authentication. Securing endpoints is the responsibility of
-  Rampart/C, the servlet container (Apache httpd), or a reverse proxy.
+  Rampart/C, the web server (Apache httpd), or a reverse proxy.
 - **Hot-deployment with weak filesystem permissions.** If an attacker
   can write to the services directory, they can deploy arbitrary shared
   libraries. This is an OS-level access control issue.
