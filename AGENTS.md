@@ -55,6 +55,7 @@ method name injection and type confusion.
 Key files:
 - `src/core/transport/http/util/axis2_h2_transport_utils.c` (HTTP/2 JSON)
 - `src/core/transport/http/util/axis2_json_reader.c` (HTTP/1.1 JSON)
+- `src/core/receivers/axis2_http2_msg_recv.c` (HTTP/2 JSON-RPC dispatch)
 
 ### 3. Integer Overflow in Memory Allocation
 
@@ -65,6 +66,10 @@ Prioritize the HTTP/2 transport and JSON processing paths.
 
 Key locations: JSON message builders, HTTP/2 stream buffer management,
 attachment handlers, HTTP chunked transfer decoding.
+
+Key files:
+- `src/core/transport/http/common/http_transport_utils.c` (MIME processing)
+- `axiom/src/attachments/` (attachment data structure management)
 
 ### 4. Use-After-Free in Connection Handling
 
@@ -92,7 +97,19 @@ Key locations: All logging calls in transport, receiver, and dispatcher
 code that handle client-supplied data (URIs, headers, JSON-RPC method
 names, SOAP fault strings).
 
-### 6. XML Parser Security (libxml2 path, secondary)
+### 6. Memory Safety in Core Utilities
+
+The `util/` library provides fundamental data structures and memory
+management used throughout the entire project. A vulnerability here
+would have widespread impact. Scan for memory corruption, integer
+overflows, and logic errors in these foundational components.
+
+Key files:
+- `util/src/allocator.c` (memory allocation wrappers)
+- `util/src/string.c` (string manipulation)
+- `util/src/hash.c` (hash table implementation)
+
+### 7. XML Parser Security (libxml2 path, secondary)
 
 When built with `--enable-libxml2`, verify that the custom external
 entity loader (`axis2_secure_external_entity_loader`) cannot be
@@ -104,7 +121,7 @@ Key files:
 - `axiom/src/parser/libxml2/libxml2_reader_wrapper.c`
 - `guththila/src/guththila_xml_parser.c`
 
-### 7. Buffer Safety in HTTP/1.1 Parsing (secondary)
+### 8. Buffer Safety in HTTP/1.1 Parsing (secondary)
 
 Scan for `sprintf()` usage throughout the HTTP/1.1 transport code and
 verify that buffer allocations are correctly sized. The `sprintf()` in
