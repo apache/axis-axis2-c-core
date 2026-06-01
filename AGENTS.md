@@ -68,7 +68,7 @@ Key locations: JSON message builders, HTTP/2 stream buffer management,
 attachment handlers, HTTP chunked transfer decoding.
 
 Key files:
-- `src/core/transport/http/common/http_transport_utils.c` (MIME processing)
+- `src/core/transport/http/util/http_transport_utils.c` (MIME processing)
 - `axiom/src/attachments/` (attachment data structure management)
 
 ### 4. Use-After-Free in Connection Handling
