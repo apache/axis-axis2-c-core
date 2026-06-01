@@ -20,12 +20,12 @@ For detailed deployment hardening, see [docs/SECURITY.md](docs/SECURITY.md).
 Because this is a C codebase, **memory safety vulnerabilities take
 priority** alongside the logical vulnerabilities shared with Axis2/Java.
 
-### 1. HTTP Header Buffer Overflow (known issue)
+### 1. Buffer Safety in HTTP Parsing
 
-`http_header.c:150` uses unbounded `sprintf()` to format HTTP headers.
-Maliciously long header names or values can overflow the stack buffer.
-Scan for all `sprintf()` usage throughout the codebase and verify
-adequate bounds checking.
+Scan for `sprintf()` usage throughout the HTTP transport code and verify
+that buffer allocations are correctly sized. The known `sprintf()` in
+`http_header.c` uses a heap buffer sized from measured input lengths,
+but other call sites should be audited for similar correctness.
 
 Key files:
 - `src/core/transport/http/common/http_header.c`

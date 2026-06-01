@@ -115,7 +115,7 @@ Response serialization → transport out
 |-----------|---------|-------------|
 | **Guththila XML parser** | Malformed XML causing crashes; deep nesting stack exhaustion | Inherently XXE-safe (no entity processing); fuzz-tested via OSS-Fuzz |
 | **libxml2 parser** (optional) | XXE, SSRF, billion laughs, entity expansion | `XML_PARSE_NONET`; custom entity loader blocks all external resolution; depth limit (256); attribute limit (256); namespace limit (64) |
-| **HTTP header parsing** | Buffer overflow via `sprintf()` in `http_header.c:150` | **Known issue** — unbounded `sprintf()` on header name/value concatenation; mitigate with reverse proxy |
+| **HTTP header parsing** | Header injection (CRLF); malformed header parsing | `sprintf()` in `http_header.c` writes to a heap buffer sized from measured input lengths; fuzz-tested via OSS-Fuzz |
 | **JSON parser** (json-c, HTTP/2) | Deep nesting stack exhaustion; integer overflow (CVE-2020-12762 pattern); large payload DoS | Depth limit (64 levels); payload size limit (10MB); fuzz-tested |
 | **JSON-to-AXIOM reader** (HTTP/1.1) | Deep nesting; memory exhaustion during conversion | Fuzz-tested (`fuzz_json_reader`); size limits inherited from transport |
 | **HTTP request/status line parsing** | Oversized lines; malformed methods/URIs | Status line limit (512 bytes); request line parsed by delimiter |
@@ -138,7 +138,7 @@ As a C codebase, memory safety is a primary concern:
 
 | Category | Risk Level | Notes |
 |----------|-----------|-------|
-| **Buffer overflow** | Medium | `sprintf()` in HTTP header formatting (known); `snprintf()` used elsewhere |
+| **Buffer overflow** | Low | HTTP header formatting uses `sprintf()` with correctly-sized heap allocations; `snprintf()` used elsewhere |
 | **Use-after-free** | Low | Allocator-based memory management (`axutil_allocator_t`); ASAN testing |
 | **Format string** | Low | Risk if user input reaches logging macros without `%s` format; code review addressed (Jan 2026) |
 | **Integer overflow** | Low | Payload size limits prevent wrap-around in allocation; Gemini review findings addressed |
