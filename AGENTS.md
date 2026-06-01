@@ -55,9 +55,6 @@ method name injection and type confusion.
 Key files:
 - `src/core/transport/http/util/axis2_h2_transport_utils.c` (HTTP/2 JSON)
 - `src/core/transport/http/util/axis2_json_reader.c` (HTTP/1.1 JSON)
-- `samples/user_guide/bigdata-h2-service/src/axis2_json_rpc_msg_recv_native.c` (HTTP/2 JSON-RPC dispatch)
-- `samples/user_guide/bigdata-h2-service/src/axis2_json_msg_builder.c` (JSON message builder)
-- `samples/user_guide/bigdata-h2-service/src/axis2_json_streaming_msg_formatter.c` (streaming JSON output)
 
 ### 3. Integer Overflow in Memory Allocation
 
