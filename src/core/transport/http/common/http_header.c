@@ -145,6 +145,10 @@ axis2_http_header_to_external_form(
 
     AXIS2_PARAM_CHECK(env->error, http_header, NULL);
 
+    /* +8 covers ": " (2) + "\r\n" (2) + null (1) + padding (3).
+     * The buffer is heap-allocated to the measured size, so sprintf is safe
+     * here. Consider snprintf(external_form, len, ...) if this function
+     * ever accepts caller-supplied lengths instead of measured strings. */
     len = axutil_strlen(http_header->name) + axutil_strlen(http_header->value) + 8;
     external_form = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len);
     sprintf(external_form, "%s: %s%s", http_header->name, http_header->value, AXIS2_HTTP_CRLF);
