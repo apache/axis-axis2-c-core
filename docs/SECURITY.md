@@ -438,7 +438,10 @@ A single client can pin tens of GB of RSS in seconds against an unpatched server
 
 1. **Patch:** `mod_http2` 2.0.41+ makes Cookie crumbs count against
    `LimitRequestFields`. (Standalone release / httpd trunk; not yet in a 2.4.x
-   release as of June 2026.)
+   release as of June 2026.) Because the fix is not in a packaged 2.4.x release,
+   getting it means building httpd from source — see
+   [Compiling Apache httpd from Source with HTTP/2 Support](userguide/json-httpd-h2-userguide.md#compiling-apache-httpd-from-source-with-http2-support)
+   in the HTTP/2 user guide, and build `mod_http2` 2.0.41+ as part of that.
 2. **Disable HTTP/2** if it is not essential: `Protocols http/1.1`.
 3. **Bound the blast radius** if you must keep HTTP/2 on an unpatched build:
    lower `LimitRequestFieldSize` (caps the merged Cookie, and thus the crumb
