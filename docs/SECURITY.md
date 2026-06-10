@@ -280,8 +280,13 @@ When deploying Axis2/C with Apache httpd, keep httpd updated to address:
 | CVE-2024-40725 | Source code disclosure | 2.4.62 |
 | CVE-2024-40898 | SSRF on Windows | 2.4.62 |
 | CVE-2024-38476 | Information disclosure/SSRF | 2.4.60 |
+| CVE-2026-49975 | HTTP/2 Bomb DoS (HPACK indexed-reference bomb + zero-window stall) | mod_http2 2.0.41 |
 
-**Recommendation:** Use Apache httpd 2.4.62 or later.
+**Recommendation:** Use Apache httpd 2.4.62 or later. **If HTTP/2 is enabled
+(`mod_http2` + `Protocols h2`), also use `mod_http2` 2.0.41 or later** to close
+CVE-2026-49975 — see "HTTP/2 Bomb (CVE-2026-49975)" below. As of June 2026 the
+fix ships in the standalone `mod_http2` release and httpd trunk but is not yet in
+a 2.4.x release; if you cannot upgrade, disable HTTP/2 with `Protocols http/1.1`.
 
 ### Android/Kanaha Secure IPC Pattern
 
@@ -343,8 +348,15 @@ if (params->pattern && strstr(params->pattern, "..")) {
 ### HTTP/2 Specific Considerations
 
 1. **HPACK Header Compression**: HTTP/2 uses HPACK for header compression.
-   The nghttp2 library handles this securely, but ensure you're using
-   nghttp2 1.50.0 or later.
+   nghttp2 1.50.0+ bounds the classic decoded-size bomb (a large value
+   referenced many times) and the rapid-reset attack (CVE-2023-44487). It does
+   **not**, by itself, stop CVE-2026-49975 (the "HTTP/2 Bomb"): that variant
+   keeps each header nearly empty and amplifies via the *per-entry bookkeeping*
+   the HTTP server allocates around each decoded field, so the decoded-size
+   limit never fires. The fix lives in the terminating server (e.g. mod_http2
+   2.0.41), which must cap the **number** of header fields — counting each
+   Cookie crumb — independently of their total size. See "HTTP/2 Bomb
+   (CVE-2026-49975)" below.
 
 2. **Stream Multiplexing**: HTTP/2 multiplexes multiple requests over a single
    TCP connection. This means multiple concurrent requests from different clients
@@ -395,9 +407,58 @@ Timeout 60
 KeepAliveTimeout 5
 MaxKeepAliveRequests 100
 LimitRequestBody 10485760  # 10MB
-LimitRequestFields 50
-LimitRequestFieldSize 4094
+LimitRequestFields 50      # NOTE: does NOT count HTTP/2 Cookie crumbs before
+                           # mod_http2 2.0.41 — see CVE-2026-49975 below
+LimitRequestFieldSize 4094 # caps merged Cookie size -> bounds per-stream crumbs
 ```
+
+### HTTP/2 Bomb (CVE-2026-49975)
+
+When `mod_http2` is loaded and `Protocols h2` is enabled, Apache httpd (and the
+other major HTTP/2 terminators: nginx < 1.29.8, IIS, Envoy, Cloudflare Pingora)
+is exposed to the "HTTP/2 Bomb" remote DoS. It chains two known techniques:
+
+- **HPACK indexed-reference bomb** — seed the HPACK dynamic table with one entry,
+  then emit thousands of 1-byte indexed references to it. Each reference costs
+  the attacker one wire byte and the server a full per-field allocation. The new
+  twist: the header is nearly empty, so the amplification comes from the
+  server's per-entry *bookkeeping*, and the "max decoded header size" limit never
+  fires. For servers that cap the header-field *count*, splitting the request
+  Cookie into one crumb per field (RFC 9113 §8.2.3) bypasses the count, because
+  these servers were not counting crumbs.
+- **Zero-window flow-control stall** — advertise a zero-byte window so the server
+  can never finish its response, then drip 1-byte `WINDOW_UPDATE` frames to keep
+  resetting the send timeout, pinning every allocation for as long as the
+  server's timeout allows. The amplification is only half the attack; the *hold*
+  is what turns a modest ratio into an out-of-memory condition.
+
+A single client can pin tens of GB of RSS in seconds against an unpatched server.
+
+**Mitigations (in order of preference):**
+
+1. **Patch:** `mod_http2` 2.0.41+ makes Cookie crumbs count against
+   `LimitRequestFields`. (Standalone release / httpd trunk; not yet in a 2.4.x
+   release as of June 2026.)
+2. **Disable HTTP/2** if it is not essential: `Protocols http/1.1`.
+3. **Bound the blast radius** if you must keep HTTP/2 on an unpatched build:
+   lower `LimitRequestFieldSize` (caps the merged Cookie, and thus the crumb
+   count per stream — partial only, since the attacker multiplies across streams
+   and connections), reduce `H2MaxSessionStreams`, lower `H2StreamMaxMemSize`
+   (the dominant per-stalled-stream memory knob), and shorten `H2StreamTimeout`
+   so a stalled stream cannot be held for minutes.
+4. **OS backstop:** cap per-worker memory (systemd `MemoryMax=`, a cgroup, or
+   `ulimit -v`) so a bombed worker is OOM-killed and respawned before it drags
+   the host into swap.
+
+> A reference-hardened `httpd.conf` with these limits applied is in
+> `docs/userguide/httpd.conf`.
+
+**Note on application servers:** the Axis2/C `mod_axis2` handler runs *behind*
+httpd and never sees raw HTTP/2 frames — httpd terminates HTTP/2 before dispatch,
+so the fix belongs at the httpd layer, not in Axis2/C. (For comparison, an
+Axis2/**Java** deployment on WildFly/Undertow terminates HTTP/2 in the container,
+whose HPACK parser already caps the header-field count — default `max-headers`
+200, counting each Cookie crumb — and so is not exposed to this specific bypass.)
 
 ## Build Hardening
 
@@ -559,6 +620,7 @@ message contents. **This flag must never be used in production builds.**
 | json-c | 0.15+ | CVE-2020-12762 (integer overflow) |
 | nghttp2 | 1.50.0+ | CVE-2023-44487 (rapid reset) |
 | Apache httpd | 2.4.62+ | CVE-2024-40725, CVE-2024-40898 |
+| mod_http2 | 2.0.41+ | CVE-2026-49975 (HTTP/2 Bomb) — only if HTTP/2 is enabled |
 
 ### Checking Installed Versions
 
