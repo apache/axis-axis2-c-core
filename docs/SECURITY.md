@@ -269,7 +269,7 @@ CFLAGS="-DAXIS2_JSON_MAX_DEPTH=128 -DAXIS2_JSON_MAX_PAYLOAD_SIZE=52428800" ./con
 |-----|-------------|--------|
 | CVE-2020-12762 | Integer overflow with large JSON | Mitigated via payload size limit |
 
-**Recommendation:** Use json-c 0.15 or later which includes security fixes.
+**Recommendation:** Use json-c 0.18 or later (0.19 is current as of 2026-06-27).
 
 ### Apache httpd Security (mod_axis2)
 
@@ -280,13 +280,18 @@ When deploying Axis2/C with Apache httpd, keep httpd updated to address:
 | CVE-2024-40725 | Source code disclosure | 2.4.62 |
 | CVE-2024-40898 | SSRF on Windows | 2.4.62 |
 | CVE-2024-38476 | Information disclosure/SSRF | 2.4.60 |
-| CVE-2026-49975 | HTTP/2 Bomb DoS (HPACK indexed-reference bomb + zero-window stall) | mod_http2 2.0.41 |
+| CVE-2026-23918 | HTTP/2 double free, possible RCE on early reset | 2.4.67 |
+| CVE-2026-48913 | mod_http2 use-after-free when file handles exhausted | 2.4.68 |
+| CVE-2026-49975 | HTTP/2 Bomb DoS (HPACK indexed-reference bomb + zero-window stall) | httpd 2.4.68 / mod_http2 2.0.41 |
 
-**Recommendation:** Use Apache httpd 2.4.62 or later. **If HTTP/2 is enabled
-(`mod_http2` + `Protocols h2`), also use `mod_http2` 2.0.41 or later** to close
-CVE-2026-49975 — see "HTTP/2 Bomb (CVE-2026-49975)" below. As of June 2026 the
-fix ships in the standalone `mod_http2` release and httpd trunk but is not yet in
-a 2.4.x release; if you cannot upgrade, disable HTTP/2 with `Protocols http/1.1`.
+**Recommendation:** Use **Apache httpd 2.4.68 or later** (released 2026-06-08). It
+is the first packaged 2.4.x release to close **CVE-2026-49975** (the HTTP/2 Bomb),
+and it also fixes the HTTP/2 double-free **CVE-2026-23918** (2.4.67) and the
+mod_http2 use-after-free **CVE-2026-48913** — all reachable when `mod_http2` +
+`Protocols h2` are enabled. The earlier build-from-source path for the standalone
+`mod_http2` 2.0.41 release is now only a fallback for platforms without 2.4.68
+packages — see "HTTP/2 Bomb (CVE-2026-49975)" below. If you cannot upgrade and do
+not need HTTP/2, disable it with `Protocols http/1.1`.
 
 ### Android/Kanaha Secure IPC Pattern
 
@@ -348,9 +353,10 @@ if (params->pattern && strstr(params->pattern, "..")) {
 ### HTTP/2 Specific Considerations
 
 1. **HPACK Header Compression**: HTTP/2 uses HPACK for header compression.
-   nghttp2 1.50.0+ bounds the classic decoded-size bomb (a large value
-   referenced many times) and the rapid-reset attack (CVE-2023-44487). It does
-   **not**, by itself, stop CVE-2026-49975 (the "HTTP/2 Bomb"): that variant
+   nghttp2 1.61.0+ (the recommended floor) bounds the classic decoded-size bomb (a
+   large value referenced many times), the rapid-reset attack (CVE-2023-44487, since
+   1.50.0), and the unbounded CONTINUATION-frame flood (CVE-2024-28182, fixed in
+   1.61.0). It does **not**, by itself, stop CVE-2026-49975 (the "HTTP/2 Bomb"): that variant
    keeps each header nearly empty and amplifies via the *per-entry bookkeeping*
    the HTTP server allocates around each decoded field, so the decoded-size
    limit never fires. The fix lives in the terminating server (e.g. mod_http2
@@ -436,12 +442,13 @@ A single client can pin tens of GB of RSS in seconds against an unpatched server
 
 **Mitigations (in order of preference):**
 
-1. **Patch:** `mod_http2` 2.0.41+ makes Cookie crumbs count against
-   `LimitRequestFields`. (Standalone release / httpd trunk; not yet in a 2.4.x
-   release as of June 2026.) Because the fix is not in a packaged 2.4.x release,
-   getting it means building httpd from source — see
+1. **Patch:** Upgrade to **Apache httpd 2.4.68+** (released 2026-06-08) — the first
+   packaged 2.4.x release that makes Cookie crumbs count against
+   `LimitRequestFields` (the `mod_http2` 2.0.41 fix). Distribution packages are the
+   simplest path. If your platform has no 2.4.68 package yet, build httpd from
+   source with `mod_http2` 2.0.41+ — see
    [Compiling Apache httpd from Source with HTTP/2 Support](userguide/json-httpd-h2-userguide.md#compiling-apache-httpd-from-source-with-http2-support)
-   in the HTTP/2 user guide, and build `mod_http2` 2.0.41+ as part of that.
+   in the HTTP/2 user guide.
 2. **Disable HTTP/2** if it is not essential: `Protocols http/1.1`.
 3. **Bound the blast radius** if you must keep HTTP/2 on an unpatched build:
    lower `LimitRequestFieldSize` (caps the merged Cookie, and thus the crumb
@@ -618,12 +625,12 @@ message contents. **This flag must never be used in production builds.**
 
 | Dependency | Minimum Version | Critical CVEs Addressed |
 |------------|-----------------|------------------------|
-| OpenSSL | 1.1.1k+ | CVE-2021-3449, CVE-2021-3450 |
-| libxml2 | 2.9.10+ | CVE-2020-24977, CVE-2019-20388 |
-| json-c | 0.15+ | CVE-2020-12762 (integer overflow) |
-| nghttp2 | 1.50.0+ | CVE-2023-44487 (rapid reset) |
-| Apache httpd | 2.4.62+ | CVE-2024-40725, CVE-2024-40898 |
-| mod_http2 | 2.0.41+ | CVE-2026-49975 (HTTP/2 Bomb) — only if HTTP/2 is enabled |
+| OpenSSL | 3.0.16+ (prefer 3.5 LTS) | CVE-2022-0778 (BN_mod_sqrt DoS), CVE-2021-3449/3450. **1.1.1 reached EOL 2023-09-11 and receives no public fixes; 3.0 LTS reaches EOL 2026-09-07, so new deployments should target 3.5 LTS.** |
+| libxml2 | 2.13.9+ | CVE-2024-25062 (use-after-free, fixed 2.11.7/2.12.5/2.13.4), CVE-2020-24977, CVE-2019-20388 |
+| json-c | 0.18+ | CVE-2020-12762 (integer overflow); 0.19 is current (2026-06-27) |
+| nghttp2 | 1.61.0+ | CVE-2024-28182 (unbounded CONTINUATION-frame DoS, fixed 1.61.0), CVE-2023-44487 (rapid reset) |
+| Apache httpd | 2.4.68+ | CVE-2026-23918 (HTTP/2 double-free, possible RCE — 2.4.67), CVE-2026-48913 + CVE-2026-49975 (mod_http2 — 2.4.68), CVE-2024-40725, CVE-2024-40898 |
+| mod_http2 | shipped in httpd 2.4.68+ (or standalone 2.0.41+) | CVE-2026-49975 (HTTP/2 Bomb) — only if HTTP/2 is enabled |
 
 ### Checking Installed Versions
 
@@ -652,7 +659,9 @@ pkg-config --modversion libnghttp2
 Axis2/C maintains a **monthly CVE checker** via GitHub Actions (`.github/workflows/cve-check.yml`) that:
 
 1. Queries NVD for CVEs affecting Axis2/C dependencies
-2. Creates GitHub issues when new CVEs are discovered
+2. Publishes the report to the workflow run's job summary and uploads it as a
+   build artifact (GitHub Issues are disabled on Apache repositories, so no issue
+   is opened — maintainers review the run summary)
 3. Triggers updates to the minimum versions table above
 
 **Responsibility Chain:**
@@ -726,10 +735,10 @@ Before deploying Axis2/C in production:
 - [ ] Verify all dependencies are at minimum secure versions
 
 ### HTTP/2 JSON Mode (Axis2/C 2.0)
-- [ ] Use json-c 0.15 or later
+- [ ] Use json-c 0.18 or later
 - [ ] Verify JSON depth and payload limits are appropriate for your services
-- [ ] Update Apache httpd to 2.4.62 or later
-- [ ] Use nghttp2 1.50.0 or later
+- [ ] Update Apache httpd to 2.4.68 or later
+- [ ] Use nghttp2 1.61.0 or later
 - [ ] Implement input validation for all JSON fields
 - [ ] For Android: Use fork()/execvp() instead of system() for IPC
 
