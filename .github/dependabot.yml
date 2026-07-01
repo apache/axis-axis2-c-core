@@ -1,0 +1,18 @@
+# Dependabot keeps the SHA-pinned GitHub Actions current.
+#
+# The workflows pin each action to an immutable commit SHA (see
+# .github/workflows/*.yml) for supply-chain safety. The cost of pinning is that
+# security/patch updates to the actions no longer arrive automatically — so
+# Dependabot watches for new releases and opens a PR that bumps both the SHA and
+# its "# vX.Y.Z" comment, giving a reviewable, controlled update path.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    # "/" makes Dependabot scan .github/workflows/ for `uses:` entries.
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
