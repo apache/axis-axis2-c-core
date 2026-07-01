@@ -625,7 +625,7 @@ message contents. **This flag must never be used in production builds.**
 
 | Dependency | Minimum Version | Critical CVEs Addressed |
 |------------|-----------------|------------------------|
-| OpenSSL | 3.0.16+ (prefer 3.5 LTS) | CVE-2022-0778 (BN_mod_sqrt DoS), CVE-2021-3449/3450. **1.1.1 reached EOL 2023-09-11 and receives no public fixes; 3.0 LTS reaches EOL 2026-09-07, so new deployments should target 3.5 LTS.** |
+| OpenSSL | 3.0.21+ (prefer 3.5.7+ LTS) | June 2026 batch (CVE-2026-34180/34182/45445/45447/7383/9076, fixed 3.0.21 / 3.5.7), CVE-2022-0778 (BN_mod_sqrt DoS), CVE-2021-3449/3450. **1.1.1 reached EOL 2023-09-11 and receives no public fixes; 3.0 LTS reaches EOL 2026-09-07, so new deployments should target 3.5 LTS.** |
 | libxml2 | 2.13.9+ | CVE-2024-25062 (use-after-free, fixed 2.11.7/2.12.5/2.13.4), CVE-2020-24977, CVE-2019-20388 |
 | json-c | 0.18+ | CVE-2020-12762 (integer overflow); 0.19 is current (2026-06-27) |
 | nghttp2 | 1.61.0+ | CVE-2024-28182 (unbounded CONTINUATION-frame DoS, fixed 1.61.0), CVE-2023-44487 (rapid reset) |
