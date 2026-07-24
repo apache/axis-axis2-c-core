@@ -1241,7 +1241,11 @@ guththila_next(
         }
     }
     while(loop);
-    return c;
+    /* Fallthrough: no valid event was produced (e.g. malformed input such as
+     * an unrecognised <! declaration). c is a raw input byte here, never a
+     * GUTHTHILA_* event constant, so return the -1 error sentinel rather than
+     * leaking the byte to callers that use it as an event id / array index. */
+    return -1;
 }
 
 /* Process the XML declaration */
