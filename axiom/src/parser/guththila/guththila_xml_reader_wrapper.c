@@ -303,9 +303,18 @@ guththila_xml_reader_wrapper_next(
     axiom_xml_reader_t * parser,
     const axutil_env_t * env)
 {
+    guththila_xml_reader_wrapper_impl_t *parser_impl = AXIS2_INTF_TO_IMPL(parser);
     int i = -1;
-    i = guththila_next(AXIS2_INTF_TO_IMPL(parser)->guththila_parser, env);
-    return i == -1 ? -1 : AXIS2_INTF_TO_IMPL(parser)->event_map[i];
+    i = guththila_next(parser_impl->guththila_parser, env);
+    /* guththila_next() can return a raw input byte on malformed-input fallback
+     * paths rather than a defined GUTHTHILA_* event constant or -1. Validate
+     * the full range before using it as an index into event_map, otherwise a
+     * crafted document triggers an out-of-bounds read (CWE-125/CWE-129). */
+    if(i < 0 || i >= (int)(sizeof(parser_impl->event_map) / sizeof(parser_impl->event_map[0])))
+    {
+        return -1;
+    }
+    return parser_impl->event_map[i];
 }
 
 void AXIS2_CALL
