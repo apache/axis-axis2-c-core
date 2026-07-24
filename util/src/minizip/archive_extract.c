@@ -21,6 +21,7 @@
 #include <axutil_string.h>
 #include <zlib.h>
 #include <fcntl.h>
+#include <ctype.h>
 #include <axis2_unzip.h>
 #include <axis2_crypt.h>
 #include <axis2_ioapi.h>
@@ -98,6 +99,44 @@ axis2_create_dir(
     return 1;
 }
 
+/*
+ * Reject archive entry names that could escape the extraction directory.
+ * A crafted .aar/.zip entry whose name is an absolute path (POSIX "/...",
+ * Windows "\..." or "C:...") or contains a ".." parent-directory component
+ * would otherwise be written outside the intended extraction root, allowing
+ * an attacker to overwrite arbitrary files - including deployed service
+ * libraries, leading to native code execution (CWE-22/CWE-23/CWE-36).
+ * Returns AXIS2_TRUE if the name is safe to extract, AXIS2_FALSE otherwise.
+ */
+static axis2_bool_t
+axis2_archive_entry_name_is_safe(
+    const axis2_char_t *name)
+{
+    const axis2_char_t *p;
+
+    if (!name || name[0] == '\0')
+        return AXIS2_FALSE;
+
+    /* Absolute POSIX/Windows path, or Windows drive-letter path. */
+    if (name[0] == '/' || name[0] == '\\')
+        return AXIS2_FALSE;
+    if (isalpha((unsigned char) name[0]) && name[1] == ':')
+        return AXIS2_FALSE;
+
+    /* Any ".." that stands alone as a path component escapes the root. */
+    for (p = name; *p; p++)
+    {
+        if (p[0] == '.' && p[1] == '.' &&
+            (p[2] == '\0' || p[2] == '/' || p[2] == '\\') &&
+            (p == name || p[-1] == '/' || p[-1] == '\\'))
+        {
+            return AXIS2_FALSE;
+        }
+    }
+
+    return AXIS2_TRUE;
+}
+
 int
 axis2_extract_currentfile(
     unzFile uf,
@@ -121,6 +160,17 @@ axis2_extract_currentfile(
     if (err != UNZ_OK)
     {
         return err;
+    }
+
+    /* Reject path-traversal / absolute-path entries before using the name to
+     * open a file for writing, otherwise a crafted archive can overwrite files
+     * outside the extraction directory (CWE-22/CWE-23/CWE-36). */
+    if (!axis2_archive_entry_name_is_safe(filename_inzip))
+    {
+        fprintf(stderr,
+                "axis2_archive_extract: rejected unsafe archive entry '%s'\n",
+                filename_inzip);
+        return UNZ_BADZIPFILE;
     }
 
     size_buf = WRITEBUFFERSIZE;
