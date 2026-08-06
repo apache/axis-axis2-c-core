@@ -369,6 +369,18 @@ extern "C"
 #define AXIS2_ADD_XML_DECLARATION "insert"
 
     /* globally enable MTOM */
+/** Parameter controlling whether ?wsdl and the service listing are served */
+#define AXIS2_EXPOSE_SERVICE_METADATA "exposeServiceMetadata"
+
+/** Parameter bounding the request body the transport will accept, in bytes */
+#define AXIS2_MAX_REQUEST_SIZE "maxRequestSize"
+
+/** Ceiling applied when maxRequestSize is not configured: 100 MB */
+#define AXIS2_MAX_REQUEST_SIZE_DEFAULT ((axis2_ssize_t)104857600)
+
+/** Sentinel for "no ceiling", the behaviour before this check existed */
+#define AXIS2_MAX_REQUEST_SIZE_UNLIMITED ((axis2_ssize_t)-1)
+
 #define AXIS2_ENABLE_MTOM "enableMTOM"
 #define AXIS2_ATTACHMENT_DIR "attachmentDIR"
 #define AXIS2_MTOM_BUFFER_SIZE "MTOMBufferSize"

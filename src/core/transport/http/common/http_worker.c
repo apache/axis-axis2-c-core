@@ -210,6 +210,29 @@ axis2_http_worker_process_request(
         return AXIS2_FALSE;
     }
 
+    /* Bound the body before anything reads it. Without this the transport will
+     * happily buffer whatever Content-Length claims, so the caller picks the
+     * allocation. A chunked body reports -1 here and is bounded further down by
+     * AXIS2_CHUNKED_CONTENT_LENGTH instead. */
+    if(content_length > 0)
+    {
+        axis2_ssize_t max_request_size =
+            axis2_http_transport_utils_get_max_request_size(env, conf_ctx);
+
+        if((max_request_size != AXIS2_MAX_REQUEST_SIZE_UNLIMITED)
+            && (content_length > max_request_size))
+        {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "Refusing request body of %d bytes; %s is %d",
+                (int)content_length, AXIS2_MAX_REQUEST_SIZE, (int)max_request_size);
+            axis2_http_simple_response_set_status_line(response, env, http_version,
+                AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL,
+                AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME);
+            axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
+            return AXIS2_TRUE;
+        }
+    }
+
     /* if length is not given and it is not chunked, then return error to client */
     if((content_length < 0) && encoding_header_value
         && (0 != axutil_strcmp(encoding_header_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
@@ -560,6 +583,47 @@ axis2_http_worker_process_request(
 
             /* processing request for WSDL via "?wsdl" */
             wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
+            if(is_services_path || (!is_delete && wsdl))
+            {
+                /* Both of these publish service metadata to whoever asked, and
+                 * neither sits behind authentication, so honour
+                 * exposeServiceMetadata before generating anything. The service
+                 * listing has no single service to consult, so it is governed by
+                 * the global setting alone. */
+                const axis2_char_t *gate_svc = NULL;
+                axis2_char_t **wsdl_url_tok = NULL;
+
+                if(!is_services_path)
+                {
+                    wsdl_url_tok = axutil_parse_request_url_for_svc_and_op(env,
+                        url_external_form);
+                    if(wsdl_url_tok && wsdl_url_tok[0])
+                    {
+                        gate_svc = wsdl_url_tok[0];
+                    }
+                }
+
+                if(!axis2_http_transport_utils_is_metadata_exposed(env, conf_ctx, gate_svc))
+                {
+                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                        "Refusing service metadata request; %s is false",
+                        AXIS2_EXPOSE_SERVICE_METADATA);
+                    axis2_http_simple_response_set_status_line(response, env, http_version,
+                        AXIS2_HTTP_RESPONSE_FORBIDDEN_CODE_VAL,
+                        AXIS2_HTTP_RESPONSE_HTTP_FORBIDDEN_CODE_NAME);
+                    axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
+                    if(wsdl_url_tok)
+                    {
+                        AXIS2_FREE(env->allocator, wsdl_url_tok);
+                    }
+                    return AXIS2_TRUE;
+                }
+                if(wsdl_url_tok)
+                {
+                    AXIS2_FREE(env->allocator, wsdl_url_tok);
+                }
+            }
+
             if(is_services_path)
             {
                 /* request for service */

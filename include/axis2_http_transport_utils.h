@@ -440,7 +440,41 @@ extern "C"
         const axutil_env_t * env,
         axis2_conf_ctx_t * conf_ctx);
 
-    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    /**
+ * Whether service metadata may be served to an unauthenticated caller.
+ *
+ * Reads the "exposeServiceMetadata" parameter, first from the named service
+ * and then from axis2.xml, so it can be disabled globally or per service.
+ * Defaults to true, which is the behaviour of releases before this check
+ * existed.
+ *
+ * @param env pointer to environment struct
+ * @param conf_ctx configuration context
+ * @param svc_name service being asked about, or NULL for the service listing
+ * @return AXIS2_TRUE if the metadata may be served
+ */
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_http_transport_utils_is_metadata_exposed(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    const axis2_char_t * svc_name);
+
+/**
+ * Largest request body the transport will accept, in bytes.
+ *
+ * Reads the "maxRequestSize" parameter from axis2.xml. A value of -1 means
+ * no limit, which is what releases before this check effectively had.
+ *
+ * @param env pointer to environment struct
+ * @param conf_ctx configuration context
+ * @return the ceiling in bytes, or -1 for unlimited
+ */
+AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
+axis2_http_transport_utils_get_max_request_size(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx);
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 
     axis2_http_transport_utils_get_services_static_wsdl(
         const axutil_env_t * env,

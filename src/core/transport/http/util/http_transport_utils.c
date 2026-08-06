@@ -2074,6 +2074,120 @@ axis2_http_transport_utils_get_services_html(
     return ret;
 }
 
+/**
+ * Read a named parameter as a boolean, treating only an explicit "false" as
+ * false. Mirrors how the rest of the codebase reads axis2.xml booleans.
+ */
+static axis2_bool_t
+axis2_http_transport_utils_param_is_false(
+    const axutil_env_t * env,
+    axutil_param_t * param)
+{
+    axis2_char_t *value = NULL;
+
+    if(!param)
+    {
+        return AXIS2_FALSE;
+    }
+    value = (axis2_char_t *)axutil_param_get_value(param, env);
+    if(!value)
+    {
+        return AXIS2_FALSE;
+    }
+    return (axis2_bool_t)(0 == axutil_strcasecmp(value, "false"));
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_http_transport_utils_is_metadata_exposed(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    const axis2_char_t * svc_name)
+{
+    axis2_conf_t *conf = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_TRUE);
+
+    if(!conf_ctx)
+    {
+        return AXIS2_TRUE;
+    }
+    conf = axis2_conf_ctx_get_conf(conf_ctx, env);
+    if(!conf)
+    {
+        return AXIS2_TRUE;
+    }
+
+    /* A per-service setting wins over the global one, so a deployment can
+     * hide a single service without turning metadata off everywhere. */
+    if(svc_name)
+    {
+        axis2_svc_t *svc = axis2_conf_get_svc(conf, env, (axis2_char_t *)svc_name);
+        if(svc)
+        {
+            axutil_param_t *svc_param = axis2_svc_get_param(svc, env,
+                AXIS2_EXPOSE_SERVICE_METADATA);
+            if(svc_param)
+            {
+                return (axis2_bool_t)(!axis2_http_transport_utils_param_is_false(env, svc_param));
+            }
+        }
+    }
+
+    return (axis2_bool_t)(!axis2_http_transport_utils_param_is_false(env,
+        axis2_conf_get_param(conf, env, AXIS2_EXPOSE_SERVICE_METADATA)));
+}
+
+AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
+axis2_http_transport_utils_get_max_request_size(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    axis2_conf_t *conf = NULL;
+    axutil_param_t *param = NULL;
+    axis2_char_t *value = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_MAX_REQUEST_SIZE_UNLIMITED);
+
+    if(!conf_ctx)
+    {
+        return AXIS2_MAX_REQUEST_SIZE_DEFAULT;
+    }
+    conf = axis2_conf_ctx_get_conf(conf_ctx, env);
+    if(!conf)
+    {
+        return AXIS2_MAX_REQUEST_SIZE_DEFAULT;
+    }
+
+    param = axis2_conf_get_param(conf, env, AXIS2_MAX_REQUEST_SIZE);
+    if(!param)
+    {
+        return AXIS2_MAX_REQUEST_SIZE_DEFAULT;
+    }
+    value = (axis2_char_t *)axutil_param_get_value(param, env);
+    if(!value || !*value)
+    {
+        return AXIS2_MAX_REQUEST_SIZE_DEFAULT;
+    }
+
+    {
+        char *end = NULL;
+        long long parsed = strtoll(value, &end, 10);
+
+        if(end == value || (end && *end))
+        {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "Ignoring non-numeric value '%s' for %s; using the default",
+                value, AXIS2_MAX_REQUEST_SIZE);
+            return AXIS2_MAX_REQUEST_SIZE_DEFAULT;
+        }
+        if(parsed < 0)
+        {
+            return AXIS2_MAX_REQUEST_SIZE_UNLIMITED;
+        }
+        return (axis2_ssize_t)parsed;
+    }
+}
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_static_wsdl(
     const axutil_env_t * env,

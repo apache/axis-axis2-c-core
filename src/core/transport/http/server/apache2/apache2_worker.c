@@ -620,6 +620,42 @@ axis2_apache2_worker_process_request(
                 }
             }
             wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
+
+            /* Same gate the simple server applies: these two routes publish
+             * service metadata to an unauthenticated caller, so honour
+             * exposeServiceMetadata before generating anything. */
+            if(is_services_path || (M_DELETE != request->method_number && wsdl))
+            {
+                const axis2_char_t *gate_svc = NULL;
+                axis2_char_t **wsdl_url_tok = NULL;
+
+                if(!is_services_path)
+                {
+                    wsdl_url_tok = axutil_parse_request_url_for_svc_and_op(env,
+                        (axis2_char_t *)url_external_form);
+                    if(wsdl_url_tok && wsdl_url_tok[0])
+                    {
+                        gate_svc = wsdl_url_tok[0];
+                    }
+                }
+
+                if(!axis2_http_transport_utils_is_metadata_exposed(env, conf_ctx, gate_svc))
+                {
+                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                        "Refusing service metadata request; %s is false",
+                        AXIS2_EXPOSE_SERVICE_METADATA);
+                    if(wsdl_url_tok)
+                    {
+                        AXIS2_FREE(env->allocator, wsdl_url_tok);
+                    }
+                    return HTTP_FORBIDDEN;
+                }
+                if(wsdl_url_tok)
+                {
+                    AXIS2_FREE(env->allocator, wsdl_url_tok);
+                }
+            }
+
             if(is_services_path)
             {
                 body_string = axis2_http_transport_utils_get_services_html(env, conf_ctx);

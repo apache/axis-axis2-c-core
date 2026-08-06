@@ -34,6 +34,19 @@
     <!-- Enable REST -->
     <parameter name="enableREST" locked="false">true</parameter>
 
+    <!-- Whether ?wsdl and the /services listing are served to callers. These
+         routes sit in front of no authentication, so a deployment that does not
+         intend to publish its service descriptions should turn this off. It may
+         also be set per service in services.xml, which wins over this value.
+         Defaults to true, the behaviour of releases before the check existed. -->
+    <parameter name="exposeServiceMetadata" locked="false">true</parameter>
+
+    <!-- Largest request body the HTTP transport will accept, in bytes. Without
+         a ceiling the caller decides how much the server buffers. -1 restores
+         the previous unbounded behaviour. Default 100 MB. -->
+    <parameter name="maxRequestSize" locked="false">104857600</parameter>
+
+
     <!-- Uncomment following to persist op_ctx, useful with RM -->
     <!--parameter name="persistOperationContext" locked="false">true</parameter-->
 
