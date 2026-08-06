@@ -28,6 +28,9 @@
 #include <axutil_qname.h>
 #include <axis2_core_dll_desc.h>
 
+    /** Forward declaration; including axis2_conf_ctx.h here would be circular. */
+    typedef struct axis2_conf_ctx axis2_conf_ctx_t;
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -96,6 +99,36 @@ extern "C"
         axis2_char_t * url,
         axutil_hash_t *rest_map,
         axis2_op_t *op_desc);
+
+    /**
+     * Whether a wsa:ReplyTo or wsa:FaultTo taken off an inbound message may be
+     * used as the destination of a server-initiated send.
+     *
+     * A non-anonymous response endpoint makes the server open a connection to
+     * an address the caller chose. Unless WS-Security is engaged to bind that
+     * endpoint reference to a trusted issuer, the WS-Addressing specification
+     * leaves it to the receiver to decide whether to honour it, so this
+     * declines by default.
+     *
+     * Controlled by three parameters, read from the service then axis2.xml:
+     *  - allowNonAnonymousResponseEndpoints (default false) refuses every
+     *    non-anonymous response endpoint outright.
+     *  - allowedResponseEndpointSchemes (default "https") restricts which
+     *    schemes may carry a reply once they are permitted at all.
+     *  - blockPrivateNetworkResponseEndpoints (default false) additionally
+     *    refuses loopback and private literal addresses. Link-local, wildcard
+     *    and multicast literals are refused whatever this is set to.
+     *
+     * @param env pointer to environment struct
+     * @param conf_ctx configuration context, for parameter lookup
+     * @param address the endpoint reference address, or NULL
+     * @return AXIS2_TRUE if the server may send to this address
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_core_utils_is_response_endpoint_allowed(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx,
+        const axis2_char_t * address);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_core_utils_free_rest_map (

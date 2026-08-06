@@ -46,6 +46,31 @@
          the previous unbounded behaviour. Default 100 MB. -->
     <parameter name="maxRequestSize" locked="false">104857600</parameter>
 
+    <!-- WS-Addressing response endpoints. A non-anonymous wsa:ReplyTo or
+         wsa:FaultTo makes the server open a connection to an address the caller
+         chose, so it is declined by default; replies travel back down the
+         inbound connection only. Set to true only where decoupled responses are
+         genuinely used.
+
+         allowedResponseEndpointSchemes then restricts which schemes may carry a
+         reply, defaulting to https alone. The instance metadata services this
+         class of abuse targets are HTTP-only, so refusing the scheme removes
+         that target outright.
+
+         Link-local, wildcard and multicast literal addresses are refused
+         whatever these are set to. blockPrivateNetworkResponseEndpoints
+         additionally refuses loopback and private literals; it is off by
+         default because a callback inside the same private network is how most
+         decoupled deployments are wired.
+
+         Note that host names are not resolved before the address check, so a
+         name pointing at an internal address is not caught here. Pair this with
+         network egress controls where that matters. -->
+    <parameter name="allowNonAnonymousResponseEndpoints" locked="false">false</parameter>
+    <parameter name="allowedResponseEndpointSchemes" locked="false">https</parameter>
+    <parameter name="blockPrivateNetworkResponseEndpoints" locked="false">false</parameter>
+
+
 
     <!-- Uncomment following to persist op_ctx, useful with RM -->
     <!--parameter name="persistOperationContext" locked="false">true</parameter-->

@@ -80,6 +80,274 @@ axis2_core_utils_match_url_component_with_pattern(
     axutil_array_list_t *param_keys,
     axutil_array_list_t *param_values);
 
+
+/* ------------------------------------------------------------------------
+ * WS-Addressing response endpoint policy
+ * ---------------------------------------------------------------------- */
+
+static axis2_bool_t
+axis2_core_utils_param_is_true(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    const axis2_char_t * name,
+    axis2_bool_t default_value)
+{
+    axis2_conf_t *conf = NULL;
+    axutil_param_t *param = NULL;
+    axis2_char_t *value = NULL;
+
+    if(!conf_ctx)
+    {
+        return default_value;
+    }
+    conf = axis2_conf_ctx_get_conf(conf_ctx, env);
+    if(!conf)
+    {
+        return default_value;
+    }
+    param = axis2_conf_get_param(conf, env, name);
+    if(!param)
+    {
+        return default_value;
+    }
+    value = (axis2_char_t *)axutil_param_get_value(param, env);
+    if(!value || !*value)
+    {
+        return default_value;
+    }
+    return (axis2_bool_t)(0 == axutil_strcasecmp(value, "true"));
+}
+
+static axis2_char_t *
+axis2_core_utils_param_string(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    const axis2_char_t * name)
+{
+    axis2_conf_t *conf = NULL;
+    axutil_param_t *param = NULL;
+
+    if(!conf_ctx)
+    {
+        return NULL;
+    }
+    conf = axis2_conf_ctx_get_conf(conf_ctx, env);
+    if(!conf)
+    {
+        return NULL;
+    }
+    param = axis2_conf_get_param(conf, env, name);
+    if(!param)
+    {
+        return NULL;
+    }
+    return (axis2_char_t *)axutil_param_get_value(param, env);
+}
+
+/**
+ * Whether the scheme appears in a comma separated allow list.
+ */
+static axis2_bool_t
+axis2_core_utils_scheme_allowed(
+    const axutil_env_t * env,
+    const axis2_char_t * scheme,
+    size_t scheme_len,
+    const axis2_char_t * allow_list)
+{
+    const axis2_char_t *p = allow_list;
+
+    (void)env;
+    while(p && *p)
+    {
+        const axis2_char_t *start = p;
+        const axis2_char_t *end = NULL;
+        size_t len = 0;
+
+        while(*start == ' ' || *start == '\t' || *start == ',')
+        {
+            start++;
+        }
+        if(!*start)
+        {
+            break;
+        }
+        end = start;
+        while(*end && *end != ',')
+        {
+            end++;
+        }
+        len = (size_t)(end - start);
+        while(len > 0 && (start[len - 1] == ' ' || start[len - 1] == '\t'))
+        {
+            len--;
+        }
+        if(len == scheme_len && 0 == axutil_strncasecmp(start, scheme, (int)len))
+        {
+            return AXIS2_TRUE;
+        }
+        p = (*end) ? end + 1 : end;
+    }
+    return AXIS2_FALSE;
+}
+
+/**
+ * Classify a literal IPv4 address in the host portion of the address.
+ *
+ * Deliberately does not resolve host names. Adding a resolver here would put a
+ * blocking lookup on the request path and buy less than it appears: the gate
+ * above is off by default, so this only ever runs for a deployment that has
+ * already opted in. The consequence is that a name pointing at an internal
+ * address is not caught -- such a deployment should use
+ * allowedResponseEndpointHosts style restriction at the network layer.
+ */
+static axis2_bool_t
+axis2_core_utils_literal_is_restricted(
+    const axis2_char_t * host,
+    axis2_bool_t block_private)
+{
+    unsigned int a = 0, b = 0, c = 0, d = 0;
+
+    if(!host)
+    {
+        return AXIS2_FALSE;
+    }
+    if(4 != sscanf(host, "%u.%u.%u.%u", &a, &b, &c, &d))
+    {
+        return AXIS2_FALSE; /* not a dotted quad; nothing to classify */
+    }
+    if(a > 255 || b > 255 || c > 255 || d > 255)
+    {
+        return AXIS2_FALSE;
+    }
+
+    /* Never a legitimate reply destination, whatever the configuration says.
+     * 169.254/16 is what covers the cloud instance metadata address. */
+    if(a == 169 && b == 254)
+    {
+        return AXIS2_TRUE;
+    }
+    if(a == 0)
+    {
+        return AXIS2_TRUE; /* wildcard / this-network */
+    }
+    if(a >= 224)
+    {
+        return AXIS2_TRUE; /* multicast and reserved */
+    }
+
+    if(block_private)
+    {
+        if(a == 127)
+        {
+            return AXIS2_TRUE;
+        }
+        if(a == 10)
+        {
+            return AXIS2_TRUE;
+        }
+        if(a == 192 && b == 168)
+        {
+            return AXIS2_TRUE;
+        }
+        if(a == 172 && b >= 16 && b <= 31)
+        {
+            return AXIS2_TRUE;
+        }
+        if(a == 100 && b >= 64 && b <= 127)
+        {
+            return AXIS2_TRUE; /* RFC 6598 shared address space */
+        }
+    }
+    return AXIS2_FALSE;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_core_utils_is_response_endpoint_allowed(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    const axis2_char_t * address)
+{
+    const axis2_char_t *scheme_end = NULL;
+    const axis2_char_t *host = NULL;
+    const axis2_char_t *host_end = NULL;
+    axis2_char_t *allow_list = NULL;
+    axis2_char_t host_buf[256];
+    size_t host_len = 0;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+
+    /* Anonymous and none mean "reply on the inbound connection" and drive no
+     * outbound send at all, so they are always fine. */
+    if(!address || !*address)
+    {
+        return AXIS2_TRUE;
+    }
+    if(0 == axutil_strcmp(address, AXIS2_WSA_ANONYMOUS_URL)
+        || 0 == axutil_strcmp(address, AXIS2_WSA_ANONYMOUS_URL_SUBMISSION)
+        || 0 == axutil_strcmp(address, AXIS2_WSA_NONE_URL))
+    {
+        return AXIS2_TRUE;
+    }
+
+    if(!axis2_core_utils_param_is_true(env, conf_ctx,
+        AXIS2_ALLOW_NON_ANONYMOUS_RESPONSE_ENDPOINTS, AXIS2_FALSE))
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Refusing non-anonymous WS-Addressing response endpoint; %s is false",
+            AXIS2_ALLOW_NON_ANONYMOUS_RESPONSE_ENDPOINTS);
+        return AXIS2_FALSE;
+    }
+
+    scheme_end = strstr(address, "://");
+    if(!scheme_end)
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Refusing WS-Addressing response endpoint with no scheme");
+        return AXIS2_FALSE;
+    }
+
+    allow_list = axis2_core_utils_param_string(env, conf_ctx,
+        AXIS2_ALLOWED_RESPONSE_ENDPOINT_SCHEMES);
+    if(!allow_list || !*allow_list)
+    {
+        allow_list = AXIS2_ALLOWED_RESPONSE_ENDPOINT_SCHEMES_DEFAULT;
+    }
+    if(!axis2_core_utils_scheme_allowed(env, address, (size_t)(scheme_end - address), allow_list))
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Refusing WS-Addressing response endpoint with a scheme outside %s",
+            AXIS2_ALLOWED_RESPONSE_ENDPOINT_SCHEMES);
+        return AXIS2_FALSE;
+    }
+
+    host = scheme_end + 3;
+    host_end = host;
+    while(*host_end && *host_end != ':' && *host_end != '/' && *host_end != '?'
+        && *host_end != '#')
+    {
+        host_end++;
+    }
+    host_len = (size_t)(host_end - host);
+    if(host_len == 0 || host_len >= sizeof(host_buf))
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Refusing WS-Addressing response endpoint with an unusable host");
+        return AXIS2_FALSE;
+    }
+    memcpy(host_buf, host, host_len);
+    host_buf[host_len] = '\0';
+
+    if(axis2_core_utils_literal_is_restricted(host_buf, axis2_core_utils_param_is_true(env,
+        conf_ctx, AXIS2_BLOCK_PRIVATE_NETWORK_RESPONSE_ENDPOINTS, AXIS2_FALSE)))
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Refusing WS-Addressing response endpoint at a restricted address");
+        return AXIS2_FALSE;
+    }
+
+    return AXIS2_TRUE;
+}
+
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_core_utils_create_out_msg_ctx(
     const axutil_env_t * env,

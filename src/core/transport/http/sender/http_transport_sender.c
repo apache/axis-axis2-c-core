@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#include <axis2_core_utils.h>
 #include <axis2_http_transport_sender.h>
 #include <axutil_string.h>
 #include <axis2_endpoint_ref.h>
@@ -231,6 +232,19 @@ axis2_http_transport_sender_invoke(
             axis2_endpoint_ref_get_address(ctx_epr, env)) && !(axutil_strstr(
             axis2_endpoint_ref_get_address(ctx_epr, env), AXIS2_WS_RM_ANONYMOUS_URL)))
         {
+            /* This is the point where a caller-nominated address becomes the
+             * destination of a server-initiated send, so it is the last place
+             * the policy can be applied however the endpoint reference arrived.
+             * Only server-side sends are screened; a client calling out is
+             * choosing its own destination. */
+            if(axis2_msg_ctx_get_server_side(msg_ctx, env)
+                && !axis2_core_utils_is_response_endpoint_allowed(env,
+                    axis2_msg_ctx_get_conf_ctx(msg_ctx, env),
+                    axis2_endpoint_ref_get_address(ctx_epr, env)))
+            {
+                AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+                return AXIS2_FAILURE;
+            }
             epr = ctx_epr;
         }
     }

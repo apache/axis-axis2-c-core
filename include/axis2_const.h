@@ -370,6 +370,18 @@ extern "C"
 
     /* globally enable MTOM */
 /** Parameter controlling whether ?wsdl and the service listing are served */
+/** Whether a non-anonymous wsa:ReplyTo/FaultTo may be used as a send target */
+#define AXIS2_ALLOW_NON_ANONYMOUS_RESPONSE_ENDPOINTS "allowNonAnonymousResponseEndpoints"
+
+/** Comma separated schemes a decoupled reply may use */
+#define AXIS2_ALLOWED_RESPONSE_ENDPOINT_SCHEMES "allowedResponseEndpointSchemes"
+
+/** Only https by default; the metadata services this targets are HTTP-only */
+#define AXIS2_ALLOWED_RESPONSE_ENDPOINT_SCHEMES_DEFAULT "https"
+
+/** Also refuse loopback and private literal reply addresses */
+#define AXIS2_BLOCK_PRIVATE_NETWORK_RESPONSE_ENDPOINTS "blockPrivateNetworkResponseEndpoints"
+
 #define AXIS2_EXPOSE_SERVICE_METADATA "exposeServiceMetadata"
 
 /** Parameter bounding the request body the transport will accept, in bytes */
