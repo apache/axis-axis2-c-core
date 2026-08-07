@@ -270,6 +270,59 @@ axis2_apache2_worker_process_request(
         }
     }
 
+    /* Metadata exposure is decided here, before any request processor runs.
+     * Deciding it further down, after the JSON path has already written a
+     * response, produces a committed 200 with the refusal appended to it --
+     * the status says success and the body carries both answers. */
+    if(request->unparsed_uri)
+    {
+        const axis2_char_t *svc_seg = strstr(request->unparsed_uri, AXIS2_REQUEST_URL_PREFIX);
+        axis2_bool_t wants_listing = AXIS2_FALSE;
+        axis2_bool_t wants_wsdl = (axis2_bool_t)(NULL != strstr(request->unparsed_uri,
+            AXIS2_REQUEST_WSDL));
+
+        if(svc_seg)
+        {
+            const axis2_char_t *after = svc_seg + strlen(AXIS2_REQUEST_URL_PREFIX);
+            if(*after == '/')
+            {
+                after++;
+            }
+            wants_listing = (axis2_bool_t)(!*after || *after == '?' || *after == '#');
+        }
+
+        if(wants_listing || wants_wsdl)
+        {
+            const axis2_char_t *gate_svc = NULL;
+            axis2_char_t **tok = NULL;
+
+            if(!wants_listing)
+            {
+                tok = axutil_parse_request_url_for_svc_and_op(env,
+                    (axis2_char_t *)request->unparsed_uri);
+                if(tok && tok[0])
+                {
+                    gate_svc = tok[0];
+                }
+            }
+            if(!axis2_http_transport_utils_is_metadata_exposed(env, conf_ctx, gate_svc))
+            {
+                AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                    "Refusing service metadata request; %s is false",
+                    AXIS2_EXPOSE_SERVICE_METADATA);
+                if(tok)
+                {
+                    AXIS2_FREE(env->allocator, tok);
+                }
+                return HTTP_FORBIDDEN;
+            }
+            if(tok)
+            {
+                AXIS2_FREE(env->allocator, tok);
+            }
+        }
+    }
+
     http_version = request->protocol;
 
     request_url = axutil_url_create(env, "http", request->hostname, request->parsed_uri.port,
@@ -639,41 +692,6 @@ axis2_apache2_worker_process_request(
                 }
             }
             wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
-
-            /* Same gate the simple server applies: these two routes publish
-             * service metadata to an unauthenticated caller, so honour
-             * exposeServiceMetadata before generating anything. */
-            if(is_services_path || (M_DELETE != request->method_number && wsdl))
-            {
-                const axis2_char_t *gate_svc = NULL;
-                axis2_char_t **wsdl_url_tok = NULL;
-
-                if(!is_services_path)
-                {
-                    wsdl_url_tok = axutil_parse_request_url_for_svc_and_op(env,
-                        (axis2_char_t *)url_external_form);
-                    if(wsdl_url_tok && wsdl_url_tok[0])
-                    {
-                        gate_svc = wsdl_url_tok[0];
-                    }
-                }
-
-                if(!axis2_http_transport_utils_is_metadata_exposed(env, conf_ctx, gate_svc))
-                {
-                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-                        "Refusing service metadata request; %s is false",
-                        AXIS2_EXPOSE_SERVICE_METADATA);
-                    if(wsdl_url_tok)
-                    {
-                        AXIS2_FREE(env->allocator, wsdl_url_tok);
-                    }
-                    return HTTP_FORBIDDEN;
-                }
-                if(wsdl_url_tok)
-                {
-                    AXIS2_FREE(env->allocator, wsdl_url_tok);
-                }
-            }
 
             if(is_services_path)
             {
