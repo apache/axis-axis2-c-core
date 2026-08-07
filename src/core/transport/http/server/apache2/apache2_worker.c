@@ -251,6 +251,25 @@ axis2_apache2_worker_process_request(
     }
     content_length = (int)request->remaining;
     /* We are sure that the difference lies within the int range */
+
+    /* Bound the body before anything reads it. The simple server applies the
+     * same ceiling; leaving it out here would mean the limit did nothing on the
+     * deployment people actually run, which is behind Apache. */
+    if(content_length > 0)
+    {
+        axis2_ssize_t max_request_size =
+            axis2_http_transport_utils_get_max_request_size(env, conf_ctx);
+
+        if((max_request_size != AXIS2_MAX_REQUEST_SIZE_UNLIMITED)
+            && ((axis2_ssize_t)content_length > max_request_size))
+        {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "Refusing request body of %d bytes; %s is %d",
+                content_length, AXIS2_MAX_REQUEST_SIZE, (int)max_request_size);
+            return HTTP_REQUEST_ENTITY_TOO_LARGE;
+        }
+    }
+
     http_version = request->protocol;
 
     request_url = axutil_url_create(env, "http", request->hostname, request->parsed_uri.port,
