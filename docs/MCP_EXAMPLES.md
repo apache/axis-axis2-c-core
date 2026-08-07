@@ -290,22 +290,37 @@ curl -k --http2 -s \
           "asset_id": 1,
           "current_price": 150.00,
           "position_size": 100,
-          "scenario_prices": [165.0, 157.5, 150.0, 142.5, 135.0],
-          "probabilities": [0.15, 0.25, 0.30, 0.20, 0.10]
+          "scenarios": [
+              {"price": 165.0, "probability": 0.15},
+              {"price": 157.5, "probability": 0.25},
+              {"price": 150.0, "probability": 0.30},
+              {"price": 142.5, "probability": 0.20},
+              {"price": 135.0, "probability": 0.10}
+          ]
         },
         {
           "asset_id": 2,
           "current_price": 75.00,
           "position_size": 200,
-          "scenario_prices": [82.5, 78.75, 75.0, 71.25, 67.5],
-          "probabilities": [0.15, 0.25, 0.30, 0.20, 0.10]
+          "scenarios": [
+              {"price": 82.5, "probability": 0.15},
+              {"price": 78.75, "probability": 0.25},
+              {"price": 75.0, "probability": 0.30},
+              {"price": 71.25, "probability": 0.20},
+              {"price": 67.5, "probability": 0.10}
+          ]
         },
         {
           "asset_id": 3,
           "current_price": 200.00,
           "position_size": 50,
-          "scenario_prices": [220.0, 210.0, 200.0, 190.0, 180.0],
-          "probabilities": [0.15, 0.25, 0.30, 0.20, 0.10]
+          "scenarios": [
+              {"price": 220.0, "probability": 0.15},
+              {"price": 210.0, "probability": 0.25},
+              {"price": 200.0, "probability": 0.30},
+              {"price": 190.0, "probability": 0.20},
+              {"price": 180.0, "probability": 0.10}
+          ]
         }
       ],
       "use_hash_lookup": true
@@ -330,7 +345,7 @@ curl -k --http2 -s \
 
 **MCP stdio:**
 ```bash
-echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"scenarioAnalysis","arguments":{"n_assets":3,"assets":[{"asset_id":1,"current_price":150.0,"position_size":100,"scenario_prices":[165.0,157.5,150.0,142.5,135.0],"probabilities":[0.15,0.25,0.30,0.20,0.10]},{"asset_id":2,"current_price":75.0,"position_size":200,"scenario_prices":[82.5,78.75,75.0,71.25,67.5],"probabilities":[0.15,0.25,0.30,0.20,0.10]},{"asset_id":3,"current_price":200.0,"position_size":50,"scenario_prices":[220.0,210.0,200.0,190.0,180.0],"probabilities":[0.15,0.25,0.30,0.20,0.10]}],"use_hash_lookup":true}}}' \
+echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"scenarioAnalysis","arguments":{"n_assets":3,"assets":[{"asset_id":1,"current_price":150.0,"position_size":100,"scenarios":[{"price":165.0,"probability":0.15},{"price":157.5,"probability":0.25},{"price":150.0,"probability":0.30},{"price":142.5,"probability":0.20},{"price":135.0,"probability":0.10}]},{"asset_id":2,"current_price":75.0,"position_size":200,"scenarios":[{"price":82.5,"probability":0.15},{"price":78.75,"probability":0.25},{"price":75.0,"probability":0.30},{"price":71.25,"probability":0.20},{"price":67.5,"probability":0.10}]},{"asset_id":3,"current_price":200.0,"position_size":50,"scenarios":[{"price":220.0,"probability":0.15},{"price":210.0,"probability":0.25},{"price":200.0,"probability":0.30},{"price":190.0,"probability":0.20},{"price":180.0,"probability":0.10}]}],"use_hash_lookup":true}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 

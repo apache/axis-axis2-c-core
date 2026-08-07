@@ -61,7 +61,14 @@ This guide covers five **fully implemented** service demonstrations:
 
 **Stateless Architecture**: All services are stateless—each request is processed independently without HTTP cookies or server-side session storage. This enables horizontal scaling where any server instance can handle any request.
 
-**⚠️ Protocol Requirement**: These services are **HTTP/2-only** for performance optimization. HTTP/1.1 requests will receive **HTTP 426 "Upgrade Required"** responses. Always use `curl --http2` for testing.
+**⚠️ Protocol Requirement**: These services are designed for **HTTP/2**, so always use
+`curl --http2` when testing. Note what an HTTP/1.1 request actually gets with the
+shipped configuration: **HTTP 202 with an empty body** and `Upgrade: h2` /
+`Connection: Upgrade` headers — a success-looking status and no result, which is easy
+to mistake for a working call. To have HTTP/1.1 refused outright with
+**HTTP 426 "Upgrade Required"**, uncomment the HTTP/2 enforcement block at the end of
+the virtual host in [`httpd.conf`](httpd.conf); it ships commented out so the
+configuration also works for HTTP/1.1 clients.
 
 More documentation concerning Axis2/C and JSON can be found in the [HTTP/2 JSON Architecture](../AXIS2C_HTTP2_MIGRATION_STATE.md) and [HTTP/2 Configuration](../HTTP2_AXIS2_DOT_XML.md).
 

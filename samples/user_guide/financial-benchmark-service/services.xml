@@ -232,14 +232,18 @@
                                         "description": "Array of asset scenario objects. Length must equal n_assets.",
                                         "items": {
                                             "type": "object",
-                                            "required": ["asset_id", "current_price", "scenario_prices", "probabilities", "position_size"],
+                                            "required": ["asset_id", "current_price", "scenarios", "position_size"],
                                             "properties": {
                                                 "asset_id":       {"type": "integer"},
                                                 "current_price":  {"type": "number"},
-                                                "scenario_prices":{"type": "array", "minItems": 2, "items": {"type": "number"},
-                                                                   "description": "Price in each scenario. Must have equal length to probabilities."},
-                                                "probabilities":  {"type": "array", "minItems": 2, "items": {"type": "number"},
-                                                                   "description": "Probability weight per scenario (must sum to 1.0). Must have equal length to scenario_prices."},
+                                                "scenarios":      {"type": "array", "minItems": 2,
+                                                                   "description": "One entry per scenario; probabilities must sum to 1.0.",
+                                                                   "items": {"type": "object",
+                                                                             "required": ["price", "probability"],
+                                                                             "properties": {
+                                                                                 "price":       {"type": "number", "description": "Target price in this scenario"},
+                                                                                 "probability": {"type": "number", "description": "Probability weight of this scenario"}
+                                                                             }}},
                                                 "position_size":  {"type": "number", "description": "Shares held (integer positions; fractional positions not supported by C implementation)"}
                                             }
                                         }},
@@ -262,8 +266,13 @@
                         {
                             "asset_id": 12345,
                             "current_price": 150.00,
-                            "scenario_prices": [165.0, 157.5, 150.0, 142.5, 135.0],
-                            "probabilities": [0.15, 0.25, 0.30, 0.20, 0.10],
+                            "scenarios": [
+                                {"price": 165.0, "probability": 0.15},
+                                {"price": 157.5, "probability": 0.25},
+                                {"price": 150.0, "probability": 0.30},
+                                {"price": 142.5, "probability": 0.20},
+                                {"price": 135.0, "probability": 0.10}
+                            ],
                             "position_size": 100
                         },
                         ...

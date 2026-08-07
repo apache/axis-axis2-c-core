@@ -121,7 +121,7 @@ if [ -f "libfinancial_benchmark_service.so" ] && [ -f "financial-benchmark-mcp" 
     echo ""
     echo "4. Test Scenario Analysis:"
     echo '   curl -k --http2 -H "Content-Type: application/json" \'
-    echo '        -d '"'"'{"assets":[{"asset_id":1,"current_price":100,"position_size":10,"scenario_prices":[110,100,90],"probabilities":[0.4,0.35,0.25]}]}'"'"' \'
+    echo '        -d '"'"'{"assets":[{"asset_id":1,"current_price":100,"position_size":10,"scenarios":[{"price":110,"probability":0.4},{"price":100,"probability":0.35},{"price":90,"probability":0.25}]}]}'"'"' \'
     echo '        https://localhost:443/services/FinancialBenchmarkService/scenarioAnalysis'
     echo ""
     echo "5. Test Monte Carlo VaR (10,000 simulations):"
