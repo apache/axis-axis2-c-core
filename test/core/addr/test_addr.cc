@@ -23,6 +23,8 @@
 #include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axis2_endpoint_ref.h>
+#include <axis2_core_utils.h>
+#include <axis2_addr.h>
 #include <stdio.h>
 
 
@@ -113,4 +115,40 @@ TEST_F(TestAddr, test_msg_info_headers)
     ASSERT_EQ(status, AXIS2_SUCCESS);
 
     axis2_msg_info_headers_free(axis2_msg_info_headers, m_env);
+}
+
+
+/* ------------------------------------------------------------------------
+ * Response endpoint policy
+ *
+ * A non-anonymous wsa:ReplyTo/FaultTo names the destination of a
+ * server-initiated send, so it is declined unless a deployment opts in.
+ * These cases pin the decisions that policy makes; a NULL conf_ctx exercises
+ * the shipped defaults, which is what an unconfigured deployment gets.
+ * ---------------------------------------------------------------------- */
+
+TEST_F(TestAddr, test_response_endpoint_anonymous_always_allowed)
+{
+    /* Anonymous and none mean "reply on the inbound connection" and drive no
+     * outbound send, so refusing them would break ordinary in-out messaging. */
+    ASSERT_TRUE(axis2_core_utils_is_response_endpoint_allowed(
+        m_env, NULL, AXIS2_WSA_ANONYMOUS_URL));
+    ASSERT_TRUE(axis2_core_utils_is_response_endpoint_allowed(
+        m_env, NULL, AXIS2_WSA_ANONYMOUS_URL_SUBMISSION));
+    ASSERT_TRUE(axis2_core_utils_is_response_endpoint_allowed(
+        m_env, NULL, AXIS2_WSA_NONE_URL));
+    ASSERT_TRUE(axis2_core_utils_is_response_endpoint_allowed(m_env, NULL, NULL));
+    ASSERT_TRUE(axis2_core_utils_is_response_endpoint_allowed(m_env, NULL, ""));
+}
+
+TEST_F(TestAddr, test_response_endpoint_declined_by_default)
+{
+    /* Nothing non-anonymous is honoured until allowNonAnonymousResponseEndpoints
+     * is turned on, whatever the address happens to be. */
+    ASSERT_FALSE(axis2_core_utils_is_response_endpoint_allowed(
+        m_env, NULL, "https://198.51.100.7/callback"));
+    ASSERT_FALSE(axis2_core_utils_is_response_endpoint_allowed(
+        m_env, NULL, "http://169.254.169.254/latest/meta-data/"));
+    ASSERT_FALSE(axis2_core_utils_is_response_endpoint_allowed(
+        m_env, NULL, "file:///etc/passwd"));
 }
