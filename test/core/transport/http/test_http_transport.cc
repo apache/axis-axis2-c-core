@@ -28,6 +28,14 @@
 #include <axis2_http_header.h>
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
+#include <axis2_conf_ctx.h>
+#include <axis2_conf.h>
+#include <axis2_msg_ctx.h>
+#include <axis2_endpoint_ref.h>
+#include <axis2_transport_out_desc.h>
+#include <axis2_addr.h>
+#include <axis2_core_utils.h>
+#include <axis2_http_transport_sender.h>
 #include <axutil_url.h>
 #include <axis2_http_client.h>
 #ifdef AXIS2_JSON_ENABLED
@@ -1481,4 +1489,121 @@ TEST_F(TestHTTPTransport, test_AXIS2C_1494_utf8_response_not_truncated)
     axiom_node_free_tree(root_node, m_env);
 
     printf("\n _______ END TEST AXIS2C-1494 _______ \n\n");
+}
+
+
+/* ------------------------------------------------------------------------
+ * WS-Addressing response endpoint policy: the call site
+ *
+ * axis2_core_utils_is_response_endpoint_allowed is covered on its own in
+ * test/core/addr. What these cover is that the transport sender actually
+ * consults it, which is a separate thing and the part most likely to rot: a
+ * check can be perfectly correct and simply never reached.
+ *
+ * The sender decides the endpoint before it looks at the SOAP envelope, so a
+ * message context with no envelope discriminates cleanly between the two
+ * outcomes:
+ *
+ *   refused by the policy      -> AXIS2_FAILURE (returns at the check)
+ *   got past the policy        -> AXIS2_SUCCESS (falls through, no envelope)
+ *
+ * Any future change that drops or bypasses the check turns the first case into
+ * AXIS2_SUCCESS and fails these tests.
+ * ---------------------------------------------------------------------- */
+
+class TestResponseEndpointCallSite : public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {
+        m_allocator = axutil_allocator_init(NULL);
+        m_error = axutil_error_create(m_allocator);
+        m_log = axutil_log_create(m_allocator, NULL, NULL);
+        m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_log);
+        m_conf = axis2_conf_create(m_env);
+        m_conf_ctx = axis2_conf_ctx_create(m_env, m_conf);
+        m_out_desc = axis2_transport_out_desc_create(m_env, AXIS2_TRANSPORT_ENUM_HTTP);
+    }
+
+    void TearDown() override
+    {
+        if (m_conf_ctx) axis2_conf_ctx_free(m_conf_ctx, m_env);
+    }
+
+    /* A message context shaped the way the sender sees a response: a
+     * destination the caller chose, and nothing else set. */
+    axis2_msg_ctx_t *make_ctx(axis2_bool_t server_side, const axis2_char_t *to)
+    {
+        axis2_msg_ctx_t *mc = axis2_msg_ctx_create(m_env, m_conf_ctx, NULL, m_out_desc);
+        axis2_msg_ctx_set_server_side(mc, m_env, server_side);
+        axis2_msg_ctx_set_to(mc, m_env, axis2_endpoint_ref_create(m_env, to));
+        return mc;
+    }
+
+    axutil_allocator_t *m_allocator = NULL;
+    axutil_error_t *m_error = NULL;
+    axutil_log_t *m_log = NULL;
+    axutil_env_t *m_env = NULL;
+    axis2_conf_t *m_conf = NULL;
+    axis2_conf_ctx_t *m_conf_ctx = NULL;
+    axis2_transport_out_desc_t *m_out_desc = NULL;
+};
+
+TEST_F(TestResponseEndpointCallSite, refuses_caller_nominated_destination)
+{
+    /* Decoupled responses are declined by default, so the sender must stop
+     * here rather than reach the envelope. */
+    axis2_msg_ctx_t *mc = make_ctx(AXIS2_TRUE, "https://198.51.100.7/callback");
+    axis2_transport_sender_t *sender = axis2_http_transport_sender_create(m_env);
+    ASSERT_TRUE(sender != NULL);
+
+    ASSERT_EQ(AXIS2_FAILURE,
+        AXIS2_TRANSPORT_SENDER_INVOKE(sender, m_env, mc));
+
+    AXIS2_TRANSPORT_SENDER_FREE(sender, m_env);
+    axis2_msg_ctx_free(mc, m_env);
+}
+
+TEST_F(TestResponseEndpointCallSite, refuses_metadata_address)
+{
+    axis2_msg_ctx_t *mc = make_ctx(AXIS2_TRUE, "http://169.254.169.254/latest/meta-data/");
+    axis2_transport_sender_t *sender = axis2_http_transport_sender_create(m_env);
+    ASSERT_TRUE(sender != NULL);
+
+    ASSERT_EQ(AXIS2_FAILURE,
+        AXIS2_TRANSPORT_SENDER_INVOKE(sender, m_env, mc));
+
+    AXIS2_TRANSPORT_SENDER_FREE(sender, m_env);
+    axis2_msg_ctx_free(mc, m_env);
+}
+
+TEST_F(TestResponseEndpointCallSite, anonymous_destination_is_not_screened)
+{
+    /* An anonymous reply travels back down the inbound connection, so the
+     * policy must not intercept it; the sender gets as far as the envelope. */
+    axis2_msg_ctx_t *mc = make_ctx(AXIS2_TRUE, AXIS2_WSA_ANONYMOUS_URL);
+    axis2_transport_sender_t *sender = axis2_http_transport_sender_create(m_env);
+    ASSERT_TRUE(sender != NULL);
+
+    ASSERT_EQ(AXIS2_SUCCESS,
+        AXIS2_TRANSPORT_SENDER_INVOKE(sender, m_env, mc));
+
+    AXIS2_TRANSPORT_SENDER_FREE(sender, m_env);
+    axis2_msg_ctx_free(mc, m_env);
+}
+
+TEST_F(TestResponseEndpointCallSite, client_side_send_is_not_screened)
+{
+    /* A client calling out chooses its own destination, so the same address
+     * that is refused server-side must pass here. This is what keeps the
+     * policy from breaking Axis2/C as a client. */
+    axis2_msg_ctx_t *mc = make_ctx(AXIS2_FALSE, "https://198.51.100.7/callback");
+    axis2_transport_sender_t *sender = axis2_http_transport_sender_create(m_env);
+    ASSERT_TRUE(sender != NULL);
+
+    ASSERT_EQ(AXIS2_SUCCESS,
+        AXIS2_TRANSPORT_SENDER_INVOKE(sender, m_env, mc));
+
+    AXIS2_TRANSPORT_SENDER_FREE(sender, m_env);
+    axis2_msg_ctx_free(mc, m_env);
 }
