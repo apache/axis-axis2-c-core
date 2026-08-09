@@ -36,6 +36,7 @@ test_description_LDADD   =  \
 			$(top_builddir)/src/core/addr/libaxis2_addr.la \
 			$(top_builddir)/src/core/receivers/libaxis2_receivers.la \
 			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+			$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 			$(top_builddir)/$(GTEST)/libgtest.a \
 			$(top_builddir)/$(GTEST)/libgtest_main.a
 

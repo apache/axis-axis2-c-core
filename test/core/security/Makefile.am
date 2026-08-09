@@ -54,6 +54,7 @@ test_buffer_safety_SOURCES = test_buffer_safety.cc
 test_buffer_safety_LDADD = \
 			../../../util/src/libaxutil.la \
 			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+			$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 			$(top_builddir)/$(GTEST)/libgtest.a \
 			$(top_builddir)/$(GTEST)/libgtest_main.a \
 			-lpthread
