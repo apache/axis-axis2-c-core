@@ -15,6 +15,26 @@ See [SECURITY.md](SECURITY.md) for the full threat model, including:
 
 For detailed deployment hardening, see [docs/SECURITY.md](docs/SECURITY.md).
 
+## SOAP is the majority deployment
+
+Recent work here targets JSON over HTTP/2, and the scan areas below reflect
+that. It is not the whole picture: Axis2/C is twenty years old and most
+installations run SOAP, so most security findings land on SOAP paths. Weight
+them accordingly rather than treating HTTP/2 JSON as the only live surface.
+
+Both front ends handle SOAP. The JSON processor in `apache2_worker.c` is chosen
+at runtime by `is_json_http2_request()`, not compiled in unconditionally — the
+absence of `#ifdef AXIS2_JSON_ENABLED` around it does not mean SOAP was compiled
+out.
+
+Before testing anything SOAP, read
+[`docs/userguide/soap-testing-guide.md`](docs/userguide/soap-testing-guide.md).
+It records the setup traps that each produce a symptom reading as "SOAP is
+broken" while actually being a configuration mistake — a commented-out
+`transportReceiver` that segfaults the standalone server, an unregistered
+service whose 404 is answered by the JSON error handler, and
+`build_for_tests.sh` running `make distclean` over an existing configuration.
+
 ## High-Priority Scan Areas
 
 Modern Axis2/C deployments use **HTTP/2 with pure JSON** — not HTTP/1.1
