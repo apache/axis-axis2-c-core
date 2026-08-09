@@ -44,6 +44,7 @@ test_clientapi_LDADD   =  \
 				 $(top_builddir)/src/core/engine/libaxis2_engine.la \
 				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la  \
+				 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
@@ -56,9 +57,11 @@ test_client_LDADD   =  \
 				 $(top_builddir)/src/core/engine/libaxis2_engine.la \
 				 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				 $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
 				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
@@ -71,6 +74,7 @@ test_svc_client_handler_count_LDADD   =  \
 				$(top_builddir)/src/core/engine/libaxis2_engine.la \
 				$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
 
@@ -84,6 +88,7 @@ test_axis2c_1355_LDADD   =  \
 				$(top_builddir)/src/core/engine/libaxis2_engine.la \
 				$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
 

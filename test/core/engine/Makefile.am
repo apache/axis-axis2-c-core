@@ -52,6 +52,7 @@ test_engine_LDADD   =   \
 				../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 				$(top_builddir)/src/core/engine/libaxis2_engine.la \
 				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				$(top_builddir)/neethi/src/libneethi.la \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
@@ -63,6 +64,7 @@ test_phase_LDADD   =   \
 				../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 				$(top_builddir)/src/core/engine/libaxis2_engine.la \
 				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				$(top_builddir)/neethi/src/libneethi.la \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
