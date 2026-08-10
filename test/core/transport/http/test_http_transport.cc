@@ -36,6 +36,8 @@
 #include <axis2_addr.h>
 #include <axis2_core_utils.h>
 #include <axis2_http_transport_sender.h>
+#include <axutil_http_chunked_stream.h>
+#include <axutil_stream.h>
 #include <axutil_url.h>
 #include <axis2_http_client.h>
 #ifdef AXIS2_JSON_ENABLED
@@ -1528,6 +1530,8 @@ protected:
     void TearDown() override
     {
         if (m_conf_ctx) axis2_conf_ctx_free(m_conf_ctx, m_env);
+        if (m_out_desc) axis2_transport_out_desc_free(m_out_desc, m_env);
+        axutil_env_free(m_env);
     }
 
     /* A message context shaped the way the sender sees a response: a
@@ -1606,4 +1610,156 @@ TEST_F(TestResponseEndpointCallSite, client_side_send_is_not_screened)
 
     AXIS2_TRANSPORT_SENDER_FREE(sender, m_env);
     axis2_msg_ctx_free(mc, m_env);
+}
+
+/* ----------------------------------------------------------------------
+ * The ceiling on a chunked request body.
+ *
+ * The workers refuse an oversized body by looking at Content-Length, which a
+ * chunked request does not send. Such a request arrives with content_length of
+ * -1, so the worker check is skipped, and unread_len -- the other bound -- is
+ * disabled for the same reason: on_data_request only consults it when
+ * content_length is not -1. The read was therefore unbounded, and the caller
+ * decided how much the server buffered.
+ *
+ * on_data_request is the single point every chunked read passes through, from
+ * either worker and from all three callback contexts, so that is where the
+ * bound lives and where these test it. It is not in a public header -- it is
+ * reached by function pointer from the XML reader -- hence the declaration.
+ * ---------------------------------------------------------------------- */
+
+extern "C" int AXIS2_CALL
+axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
+
+class TestChunkedBodyCeiling : public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {
+        m_allocator = axutil_allocator_init(NULL);
+        m_error = axutil_error_create(m_allocator);
+        m_log = axutil_log_create(m_allocator, NULL, NULL);
+        m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_log);
+    }
+
+    void TearDown() override
+    {
+        axutil_env_free(m_env);
+    }
+
+    /* A chunked body of total_len bytes, split into 64-byte chunks. */
+    std::string encode(int total_len)
+    {
+        std::string out;
+        int done = 0;
+        while (done < total_len)
+        {
+            int n = (total_len - done < 64) ? (total_len - done) : 64;
+            char hdr[16];
+            snprintf(hdr, sizeof(hdr), "%x\r\n", n);
+            out += hdr;
+            out.append((size_t)n, 'A');
+            out += "\r\n";
+            done += n;
+        }
+        out += "0\r\n\r\n";
+        return out;
+    }
+
+    /* Drain the body through the callback. Returns the terminating value: 0 on
+     * a clean end of stream, -1 when the ceiling refused it. bytes receives
+     * how much was handed to the parser before that.
+     *
+     * The body arrives over a socketpair rather than a basic stream. That is
+     * not incidental: axutil_stream_read_basic reads count-1 bytes to reserve
+     * room for a NUL, so a one-byte read returns zero, and the chunk-header
+     * parser reads exactly one byte at a time. A basic stream therefore looks
+     * like an immediate end of chunks and every case below would pass without
+     * reading anything. A socket stream is also what the workers really hand
+     * this code.
+     */
+    int drain(int max_body_size, int total_len, int *bytes)
+    {
+        std::string wire = encode(total_len);
+        axis2_callback_info_t cb;
+        char buf[128];
+        int sv[2];
+        int len = 0;
+        size_t off = 0;
+
+        if (socketpair(AF_UNIX, SOCK_STREAM, 0, sv) != 0)
+        {
+            ADD_FAILURE() << "socketpair failed";
+            return -2;
+        }
+        while (off < wire.size())
+        {
+            ssize_t w = write(sv[1], wire.data() + off, wire.size() - off);
+            if (w <= 0) break;
+            off += (size_t)w;
+        }
+        shutdown(sv[1], SHUT_WR);
+
+        cb.env = m_env;
+        cb.in_stream = axutil_stream_create_socket(m_env, sv[0]);
+        cb.content_length = -1;   /* what a chunked request actually arrives with */
+        cb.unread_len = -1;
+        cb.chunked_stream = axutil_http_chunked_stream_create(
+            m_env, (axutil_stream_t *)cb.in_stream);
+        cb.max_body_size = max_body_size;
+        cb.body_read = 0;
+
+        *bytes = 0;
+        while ((len = axis2_http_transport_utils_on_data_request(
+                    buf, (int)sizeof(buf), &cb)) > 0)
+        {
+            *bytes += len;
+        }
+
+        axutil_http_chunked_stream_free(cb.chunked_stream, m_env);
+        axutil_stream_free((axutil_stream_t *)cb.in_stream, m_env);
+        close(sv[1]);
+        return len;
+    }
+
+    axutil_allocator_t *m_allocator = NULL;
+    axutil_error_t *m_error = NULL;
+    axutil_log_t *m_log = NULL;
+    axutil_env_t *m_env = NULL;
+};
+
+TEST_F(TestChunkedBodyCeiling, refuses_a_body_over_the_ceiling)
+{
+    int bytes = 0;
+    ASSERT_EQ(-1, drain(256, 4096, &bytes));
+
+    /* Overshoot is bounded by the buffer in hand, not by the body on the wire.
+     * Without the ceiling this would have been the whole 4096. */
+    ASSERT_LE(bytes, 256 + 128);
+}
+
+TEST_F(TestChunkedBodyCeiling, accepts_a_body_under_the_ceiling)
+{
+    int bytes = 0;
+    ASSERT_EQ(0, drain(4096, 1024, &bytes));
+    ASSERT_EQ(1024, bytes);
+}
+
+TEST_F(TestChunkedBodyCeiling, unlimited_still_means_unlimited)
+{
+    /* maxRequestSize of -1 restores the old behaviour and must not be read as
+     * a ceiling of -1, which would refuse everything. */
+    int bytes = 0;
+    ASSERT_EQ(0, drain((int)AXIS2_MAX_REQUEST_SIZE_UNLIMITED, 4096, &bytes));
+    ASSERT_EQ(4096, bytes);
+}
+
+TEST_F(TestChunkedBodyCeiling, boundary_is_not_off_by_one)
+{
+    int bytes = 0;
+    ASSERT_EQ(0, drain(1024, 1024, &bytes));
+    ASSERT_EQ(1024, bytes);
+
+    bytes = 0;
+    ASSERT_EQ(-1, drain(1023, 1024, &bytes));
 }
