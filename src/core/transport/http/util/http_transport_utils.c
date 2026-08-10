@@ -40,6 +40,7 @@
 #include <axis2_msg.h>
 #include <axutil_string_util.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <axutil_uuid_gen.h>
 #include <platforms/axutil_platform_auto_sense.h>
 #include <axiom_mime_part.h>
@@ -305,6 +306,45 @@ axis2_http_transport_utils_transport_in_uninit(
     return AXIS2_SUCCESS;
 }
 
+/**
+ * Arm the ceiling that bounds a chunked body.
+ *
+ * Every callback context gets this, but only the chunked read enforces it. A
+ * request that declares Content-Length is already refused at the worker before
+ * a byte is read, and the non-chunked read is bounded by unread_len. A chunked
+ * request declares nothing, so without this the caller decides how much the
+ * server buffers.
+ */
+static void
+axis2_http_transport_utils_arm_body_ceiling(
+    const axutil_env_t * env,
+    axis2_callback_info_t * callback_ctx,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    axis2_ssize_t max = AXIS2_MAX_REQUEST_SIZE_UNLIMITED;
+
+    if(!callback_ctx)
+    {
+        return;
+    }
+    callback_ctx->body_read = 0;
+    callback_ctx->max_body_size = (int)AXIS2_MAX_REQUEST_SIZE_UNLIMITED;
+
+    if(!msg_ctx)
+    {
+        return;
+    }
+    max = axis2_http_transport_utils_get_max_request_size(env,
+        axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
+    if(max == AXIS2_MAX_REQUEST_SIZE_UNLIMITED)
+    {
+        return;
+    }
+    /* The counters are int to match the callback's existing members; clamp
+     * rather than wrap on a configured value beyond int range. */
+    callback_ctx->max_body_size = (max > (axis2_ssize_t)INT_MAX) ? INT_MAX : (int)max;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_process_http_post_request(
     const axutil_env_t * env,
@@ -386,6 +426,7 @@ axis2_http_transport_utils_process_http_post_request(
     callback_ctx->content_length = content_length;
     callback_ctx->unread_len = content_length;
     callback_ctx->chunked_stream = NULL;
+    axis2_http_transport_utils_arm_body_ceiling(env, callback_ctx, msg_ctx);
 
     soap_action = (axis2_char_t *)axutil_string_get_buffer(soap_action_header, env);
     soap_action_len = axutil_string_get_length(soap_action_header, env);
@@ -598,6 +639,8 @@ axis2_http_transport_utils_process_http_post_request(
                     mime_cb_ctx->content_length = callback_ctx->content_length;
                     mime_cb_ctx->unread_len = callback_ctx->unread_len;
                     mime_cb_ctx->chunked_stream = callback_ctx->chunked_stream;
+                    mime_cb_ctx->max_body_size = callback_ctx->max_body_size;
+                    mime_cb_ctx->body_read = callback_ctx->body_read;
                 }
             }
 
@@ -1091,6 +1134,7 @@ axis2_http_transport_utils_process_http_put_request(
     callback_ctx->content_length = content_length;
     callback_ctx->unread_len = content_length;
     callback_ctx->chunked_stream = NULL;
+    axis2_http_transport_utils_arm_body_ceiling(env, callback_ctx, msg_ctx);
 
     headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
     if(headers)
@@ -2417,6 +2461,24 @@ axis2_http_transport_utils_on_data_request(
         if(len >= 0)
         {
             buffer[len] = AXIS2_ESC_NULL;
+
+            /* The only point a chunked body can be bounded. The worker's
+             * Content-Length check never sees one, and unread_len does not
+             * apply because content_length stays -1 for chunked. Overshoot is
+             * limited to the buffer in hand. Returning -1 fails the parse,
+             * which fails the request. */
+            if(cb_ctx->max_body_size != (int)AXIS2_MAX_REQUEST_SIZE_UNLIMITED)
+            {
+                cb_ctx->body_read += len;
+                if(cb_ctx->body_read > cb_ctx->max_body_size)
+                {
+                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                        "Refusing chunked request body; %s is %d and at least "
+                        "%d bytes have been read", AXIS2_MAX_REQUEST_SIZE,
+                        cb_ctx->max_body_size, cb_ctx->body_read);
+                    return -1;
+                }
+            }
         }
     }
     else
@@ -2478,6 +2540,7 @@ axis2_http_transport_utils_create_soap_msg(
     callback_ctx->content_length = -1;
     callback_ctx->unread_len = -1;
     callback_ctx->chunked_stream = NULL;
+    axis2_http_transport_utils_arm_body_ceiling(env, callback_ctx, msg_ctx);
 
     property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if(property)

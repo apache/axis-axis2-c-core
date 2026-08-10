@@ -212,8 +212,9 @@ axis2_http_worker_process_request(
 
     /* Bound the body before anything reads it. Without this the transport will
      * happily buffer whatever Content-Length claims, so the caller picks the
-     * allocation. A chunked body reports -1 here and is bounded further down by
-     * AXIS2_CHUNKED_CONTENT_LENGTH instead. */
+     * allocation. A chunked body declares no length and reports -1 here, so it
+     * cannot be screened at this point; it is bounded during the read instead,
+     * in axis2_http_transport_utils_on_data_request. */
     if(content_length > 0)
     {
         axis2_ssize_t max_request_size =

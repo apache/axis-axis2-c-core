@@ -49,6 +49,13 @@ extern "C"
         int content_length;
         int unread_len;
         axutil_http_chunked_stream_t *chunked_stream;
+        /* A chunked body carries no Content-Length, so the ceiling the workers
+         * apply to that header never sees it. These bound the chunked read
+         * itself. max_body_size is AXIS2_MAX_REQUEST_SIZE_UNLIMITED (-1) for no
+         * limit; body_read counts what has been handed to the parser so far.
+         * Appended to keep the offsets of the existing members unchanged. */
+        int max_body_size;
+        int body_read;
     };
     typedef struct axis2_callback_info axis2_callback_info_t;
 
