@@ -191,6 +191,70 @@ axis2_core_utils_scheme_allowed(
 }
 
 /**
+ * Parse exactly four dotted decimal octets, consuming the whole string.
+ *
+ * sscanf("%u.%u.%u.%u") was the obvious way and is too permissive for a check
+ * whose answer decides whether to open a connection. It stops once it has four
+ * numbers and says nothing about what follows, so ::ffff:127.0.0.1.evil.com
+ * would parse as 127.0.0.1 with the rest quietly dropped; %u also accepts a
+ * sign and leading whitespace. Inside brackets there is no name to fall back
+ * on -- the text is either a literal or it is malformed -- so this rejects
+ * anything it does not fully consume.
+ *
+ * Leading zeros are refused rather than interpreted: 010 is ten to this parser
+ * and eight to anything reading it as octal, and a classifier that disagrees
+ * with the resolver about which address it just approved is worse than one
+ * that refuses the input.
+ */
+static axis2_bool_t
+axis2_core_utils_parse_ipv4_quad(
+    const axis2_char_t * s,
+    unsigned char out[4])
+{
+    int octet;
+
+    if(!s)
+    {
+        return AXIS2_FALSE;
+    }
+    for(octet = 0; octet < 4; octet++)
+    {
+        unsigned int value = 0;
+        int digits = 0;
+
+        if(octet > 0)
+        {
+            if(*s != '.')
+            {
+                return AXIS2_FALSE;
+            }
+            s++;
+        }
+        if(*s == '0' && *(s + 1) >= '0' && *(s + 1) <= '9')
+        {
+            return AXIS2_FALSE; /* leading zero */
+        }
+        while(*s >= '0' && *s <= '9')
+        {
+            value = (value * 10) + (unsigned int)(*s - '0');
+            digits++;
+            if(digits > 3 || value > 255)
+            {
+                return AXIS2_FALSE;
+            }
+            s++;
+        }
+        if(digits == 0)
+        {
+            return AXIS2_FALSE;
+        }
+        out[octet] = (unsigned char)value;
+    }
+    /* Four octets and nothing after them, or it is not an address. */
+    return (*s == '\0') ? AXIS2_TRUE : AXIS2_FALSE;
+}
+
+/**
  * Parse an IPv6 literal into its 16 bytes.
  *
  * Hand-rolled because the tree has no inet_pton dependency -- util's network
@@ -301,13 +365,9 @@ axis2_core_utils_parse_ipv6(
             /* Embedded IPv4 tail. `start` still points at its first octet --
              * the digits just scanned were that octet, not a hex group -- so
              * rescan the whole quad from there. It always ends the address. */
-            unsigned int a = 0, b = 0, c = 0, d = 0;
+            unsigned char quad[4];
 
-            if(4 != sscanf(start, "%u.%u.%u.%u", &a, &b, &c, &d))
-            {
-                return AXIS2_FALSE;
-            }
-            if(a > 255 || b > 255 || c > 255 || d > 255)
+            if(!axis2_core_utils_parse_ipv4_quad(start, quad))
             {
                 return AXIS2_FALSE;
             }
@@ -315,10 +375,10 @@ axis2_core_utils_parse_ipv6(
             {
                 return AXIS2_FALSE; /* no room for four more bytes */
             }
-            buf[filled++] = (unsigned char)a;
-            buf[filled++] = (unsigned char)b;
-            buf[filled++] = (unsigned char)c;
-            buf[filled++] = (unsigned char)d;
+            buf[filled++] = quad[0];
+            buf[filled++] = quad[1];
+            buf[filled++] = quad[2];
+            buf[filled++] = quad[3];
             p += strlen(start);
             break;
         }

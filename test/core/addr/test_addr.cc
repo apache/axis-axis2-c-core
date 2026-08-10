@@ -278,6 +278,27 @@ TEST_F(TestResponseEndpointIPv6, refuses_malformed_bracketed_hosts)
     ASSERT_FALSE(allowed("https://[fe80::1%eth0]/callback"));
 }
 
+TEST_F(TestResponseEndpointIPv6, embedded_quad_must_be_the_whole_host)
+{
+    /* sscanf would stop at the fourth number and drop the rest, classifying
+     * this as 127.0.0.1 while the text says something else entirely. Inside
+     * brackets there is no name to fall back on, so it is refused. */
+    ASSERT_FALSE(allowed("https://[::ffff:127.0.0.1.evil.com]/callback"));
+    ASSERT_FALSE(allowed("https://[::ffff:1.2.3.4.5]/callback"));
+    ASSERT_FALSE(allowed("https://[::ffff:1.2.3]/callback"));
+    ASSERT_FALSE(allowed("https://[::ffff:1.2.3.999]/callback"));
+    ASSERT_FALSE(allowed("https://[::ffff:1.2.3.4junk]/callback"));
+
+    /* Leading zeros are ambiguous -- ten here, eight to an octal reader -- so
+     * they are refused rather than guessed at. */
+    ASSERT_FALSE(allowed("https://[::ffff:010.0.0.1]/callback"));
+
+    /* The control: strictness must not have broken well-formed mapped
+     * addresses in either direction. */
+    ASSERT_TRUE(allowed("https://[::ffff:198.51.100.7]/callback"));
+    ASSERT_FALSE(allowed("https://[::ffff:169.254.169.254]/callback"));
+}
+
 TEST_F(TestResponseEndpointIPv6, ipv4_classification_still_holds)
 {
     ASSERT_FALSE(allowed("https://169.254.169.254/latest/meta-data/"));

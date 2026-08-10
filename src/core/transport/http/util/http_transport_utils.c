@@ -2469,15 +2469,22 @@ axis2_http_transport_utils_on_data_request(
              * which fails the request. */
             if(cb_ctx->max_body_size != (int)AXIS2_MAX_REQUEST_SIZE_UNLIMITED)
             {
-                cb_ctx->body_read += len;
-                if(cb_ctx->body_read > cb_ctx->max_body_size)
+                /* Compare before adding. body_read is int, and a ceiling at or
+                 * near INT_MAX -- which is what a configured maxRequestSize of
+                 * 2GB or more clamps to -- would let the running total wrap
+                 * negative on the way past it. A negative total is never
+                 * greater than the ceiling, so the limit would silently stop
+                 * applying at exactly the size it exists to refuse. Subtracting
+                 * cannot overflow: len is one buffer and max_body_size >= 0. */
+                if(cb_ctx->body_read > cb_ctx->max_body_size - len)
                 {
                     AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-                        "Refusing chunked request body; %s is %d and at least "
-                        "%d bytes have been read", AXIS2_MAX_REQUEST_SIZE,
-                        cb_ctx->max_body_size, cb_ctx->body_read);
+                        "Refusing chunked request body; %s is %d and the body "
+                        "has passed it", AXIS2_MAX_REQUEST_SIZE,
+                        cb_ctx->max_body_size);
                     return -1;
                 }
+                cb_ctx->body_read += len;
             }
         }
     }

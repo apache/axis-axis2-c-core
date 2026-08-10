@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 
 #include <stdio.h>
+#include <limits.h>
 #include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -1680,6 +1681,13 @@ protected:
      */
     int drain(int max_body_size, int total_len, int *bytes)
     {
+        return drain_from(max_body_size, total_len, 0, bytes);
+    }
+
+    /* start_at seeds the running total, so a test can reach the far end of the
+     * int range without sending two gigabytes. */
+    int drain_from(int max_body_size, int total_len, int start_at, int *bytes)
+    {
         std::string wire = encode(total_len);
         axis2_callback_info_t cb;
         char buf[128];
@@ -1707,7 +1715,7 @@ protected:
         cb.chunked_stream = axutil_http_chunked_stream_create(
             m_env, (axutil_stream_t *)cb.in_stream);
         cb.max_body_size = max_body_size;
-        cb.body_read = 0;
+        cb.body_read = start_at;
 
         *bytes = 0;
         while ((len = axis2_http_transport_utils_on_data_request(
@@ -1752,6 +1760,17 @@ TEST_F(TestChunkedBodyCeiling, unlimited_still_means_unlimited)
     int bytes = 0;
     ASSERT_EQ(0, drain((int)AXIS2_MAX_REQUEST_SIZE_UNLIMITED, 4096, &bytes));
     ASSERT_EQ(4096, bytes);
+}
+
+TEST_F(TestChunkedBodyCeiling, running_total_does_not_wrap_past_the_ceiling)
+{
+    /* A maxRequestSize of 2GB or more clamps the ceiling to INT_MAX. Adding to
+     * the running total before comparing would wrap it negative on the way
+     * past, and a negative total never exceeds the ceiling -- so the limit
+     * would stop applying at exactly the size it exists to refuse. Seeded near
+     * the top of the range rather than sending the bytes. */
+    int bytes = 0;
+    ASSERT_EQ(-1, drain_from(INT_MAX, 4096, INT_MAX - 64, &bytes));
 }
 
 TEST_F(TestChunkedBodyCeiling, boundary_is_not_off_by_one)
