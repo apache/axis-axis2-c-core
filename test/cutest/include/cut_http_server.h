@@ -43,6 +43,11 @@ AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
 AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
 axutil_thread_t *thread_http_server = NULL;
 
+/* Tests using this helper POST to a deployed service and wait for a reply, so
+ * they need a populated repository. With none at AXIS2C_HOME they fall back
+ * here, and if that is empty too they time out rather than fail cleanly --
+ * which reads as a transport or SOAP defect and is not one. See
+ * docs/userguide/soap-testing-guide.md, "Reading test results". */
 #define DEFAULT_REPO_PATH "/usr/local/axis2c/"
 
 /***************************** Function headers *******************************/

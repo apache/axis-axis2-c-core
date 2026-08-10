@@ -169,6 +169,58 @@ sh build_for_tests.sh   # in a clean copy - see Trap 3
 sh run_tests.sh
 ```
 
+## Reading test results
+
+The suite has several red herrings that look like defects. Each one cost real
+time before being recognised.
+
+**Some tests need a populated `/usr/local/axis2c/`.** `test/cutest/include/cut_http_server.h`
+starts its in-process server from `$AXIS2C_HOME`, falling back to
+`DEFAULT_REPO_PATH`, which is `/usr/local/axis2c/`. `test_http_client` then
+POSTs to `/axis2/services/echo/echo` and waits for a reply. With no deployed
+echo service at that path it times out after ~2000 ms. `test_deployment`
+depends on deployment state the same way. Neither failure means the transport
+or SOAP is broken; they mean the environment has no deployment.
+
+**`make check` and running a test binary directly do not agree.** The harness
+supplies configuration a bare invocation does not, so a target can pass under
+`make check` and fail when run by hand, or the reverse. Compare like with like
+before concluding anything, and say which one you ran.
+
+**`make check` interleaves output from every test binary.** A crash in the
+combined log does not necessarily belong to the target that reported FAIL.
+Re-run the single binary before attributing a backtrace to it.
+
+**ASAN is preloaded into every process the harness spawns.** Leak reports
+naming `/usr/bin/sed` or `/usr/bin/ls` are from those tools, not from Axis2/C.
+Only stacks mentioning `axis2_`/`axutil_` frames are yours. A separate 15-byte
+leak in the connection map is known and accepted — see
+[`HTTP_CONNECTION_MAP_MEMORY_LEAK.md`](../../HTTP_CONNECTION_MAP_MEMORY_LEAK.md).
+
+**Classify a failure by baselining, not by reasoning.** Build the same target
+from `origin/master` and run it identically:
+
+```bash
+git archive origin/master | tar -x -C /tmp/a2c-base
+cd /tmp/a2c-base && sh build_for_tests.sh
+```
+
+A story about why a failure must be pre-existing is not evidence, and it is
+easy to reproduce your own mistake against a baseline and call that
+confirmation. Only run the two side by side and compare.
+
+## Linking tests against the HTTP libraries
+
+`http_transport_utils.c` lives in `libaxis2_http_util`, while the workers live
+in `libaxis2_http_common`. A test linking `common` needs `util` on the line as
+well, **after** it, and after *every* occurrence — several test Makefile.am
+files declare more than one program, and fixing only the first leaves the rest
+failing one target at a time with the same unresolved symbols.
+
+This only surfaces under `build_for_tests.sh`. The Apache module links `util`
+explicitly and an ordinary `make` stops before the test targets, so both stay
+green while the tests will not link.
+
 ## Checklist before reporting "SOAP is broken"
 
 1. Is the service registered? Check the `/services` listing is non-empty.
