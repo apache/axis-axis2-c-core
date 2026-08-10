@@ -191,6 +191,307 @@ axis2_core_utils_scheme_allowed(
 }
 
 /**
+ * Parse an IPv6 literal into its 16 bytes.
+ *
+ * Hand-rolled because the tree has no inet_pton dependency -- util's network
+ * handler still uses inet_addr, which is IPv4-only. Textual prefix matching was
+ * the alternative and is not sound: fe80::1, FE80:0:0:0:0:0:0:1 and
+ * fe80:0000::1 are the same address written three ways, so anything short of
+ * parsing can be walked around by rewriting the literal.
+ *
+ * The grammar handled here is the one that can appear in a URI host, so no zone
+ * suffix (%eth0) and no surrounding brackets -- the caller strips those.
+ *
+ * The shape of the algorithm:
+ *
+ *   - Groups are written into a scratch buffer left to right, two bytes each.
+ *   - "::" stands for a run of zero groups whose length is only known at the
+ *     end, so its position is remembered in `gap` and the tail is slid to the
+ *     right of the result once the total is known.
+ *   - A trailing dotted quad (::ffff:169.254.169.254) contributes four bytes
+ *     rather than two groups, and always ends the address.
+ *
+ * Worked example, "fe80::1":
+ *
+ *   after "fe80"   buf = fe 80                 filled = 2   gap = -1
+ *   at    "::"                                 filled = 2   gap = 2
+ *   after "1"      buf = fe 80 00 01           filled = 4
+ *   slide          out = fe 80 <10 zero bytes> 00 01
+ *
+ * Returns AXIS2_FALSE for anything that is not a well-formed literal; the
+ * caller treats that as a host to refuse rather than a name to allow.
+ */
+static axis2_bool_t
+axis2_core_utils_parse_ipv6(
+    const axis2_char_t * host,
+    unsigned char out[16])
+{
+    unsigned char buf[16]; /* groups in the order written, before the slide */
+    int filled = 0;        /* bytes written to buf so far */
+    int gap = -1;          /* buf offset where "::" stood, -1 if absent */
+    const axis2_char_t *p = host;
+
+    if(!host || !*host)
+    {
+        return AXIS2_FALSE;
+    }
+    memset(buf, 0, sizeof(buf));
+
+    /* A leading colon is only legal as part of "::". Handle it before the main
+     * loop, which otherwise would see an empty first group. */
+    if(p[0] == ':')
+    {
+        if(p[1] != ':')
+        {
+            return AXIS2_FALSE; /* a single leading colon is malformed */
+        }
+        gap = 0;
+        p += 2;
+        if(!*p)
+        {
+            memcpy(out, buf, sizeof(buf)); /* "::" on its own, all zeroes */
+            return AXIS2_TRUE;
+        }
+    }
+
+    while(*p)
+    {
+        unsigned int group = 0;
+        int digits = 0;
+        const axis2_char_t *start = p;
+
+        /* Accumulate one group of up to four hex digits. The terminator tells
+         * us what kind of group it was: ':' means another group follows, '.'
+         * means this was really the first octet of a dotted quad. */
+        while(*p && *p != ':' && *p != '.')
+        {
+            axis2_char_t ch = *p;
+            unsigned int nibble;
+
+            if(ch >= '0' && ch <= '9')
+            {
+                nibble = (unsigned int)(ch - '0');
+            }
+            else if(ch >= 'a' && ch <= 'f')
+            {
+                nibble = (unsigned int)(ch - 'a') + 10;
+            }
+            else if(ch >= 'A' && ch <= 'F')
+            {
+                nibble = (unsigned int)(ch - 'A') + 10;
+            }
+            else
+            {
+                /* Anything else ends the parse rather than the group: this
+                 * rejects '%zone' and any stray character, which is what we
+                 * want given the result decides whether to allow a send. */
+                return AXIS2_FALSE;
+            }
+            group = (group << 4) | nibble;
+            digits++;
+            if(digits > 4)
+            {
+                return AXIS2_FALSE; /* a group is at most 16 bits */
+            }
+            p++;
+        }
+
+        if(*p == '.')
+        {
+            /* Embedded IPv4 tail. `start` still points at its first octet --
+             * the digits just scanned were that octet, not a hex group -- so
+             * rescan the whole quad from there. It always ends the address. */
+            unsigned int a = 0, b = 0, c = 0, d = 0;
+
+            if(4 != sscanf(start, "%u.%u.%u.%u", &a, &b, &c, &d))
+            {
+                return AXIS2_FALSE;
+            }
+            if(a > 255 || b > 255 || c > 255 || d > 255)
+            {
+                return AXIS2_FALSE;
+            }
+            if(filled > 12)
+            {
+                return AXIS2_FALSE; /* no room for four more bytes */
+            }
+            buf[filled++] = (unsigned char)a;
+            buf[filled++] = (unsigned char)b;
+            buf[filled++] = (unsigned char)c;
+            buf[filled++] = (unsigned char)d;
+            p += strlen(start);
+            break;
+        }
+
+        if(digits == 0)
+        {
+            return AXIS2_FALSE; /* an empty group, e.g. "1:::2" */
+        }
+        if(filled > 14)
+        {
+            return AXIS2_FALSE; /* more than eight groups */
+        }
+        buf[filled++] = (unsigned char)((group >> 8) & 0xff);
+        buf[filled++] = (unsigned char)(group & 0xff);
+
+        if(!*p)
+        {
+            break; /* address ended on a group */
+        }
+        p++; /* step over the ':' that ended the group */
+
+        if(*p == ':')
+        {
+            /* Second colon: this is the "::" run. */
+            if(gap >= 0)
+            {
+                return AXIS2_FALSE; /* only one "::" is legal */
+            }
+            gap = filled;
+            p++;
+            if(!*p)
+            {
+                break; /* address ended on "::" */
+            }
+        }
+        else if(!*p)
+        {
+            return AXIS2_FALSE; /* trailing single colon, e.g. "fe80:" */
+        }
+    }
+
+    if(gap < 0)
+    {
+        /* No "::", so every group had to be written out in full. */
+        if(filled != 16)
+        {
+            return AXIS2_FALSE;
+        }
+        memcpy(out, buf, sizeof(buf));
+        return AXIS2_TRUE;
+    }
+    if(filled >= 16)
+    {
+        return AXIS2_FALSE; /* "::" has to stand for at least one zero group */
+    }
+
+    /* Slide the tail right, leaving zeroes in the middle: everything before the
+     * gap keeps its position, everything after it ends flush against byte 16. */
+    memset(out, 0, 16);
+    memcpy(out, buf, (size_t)gap);
+    memcpy(out + 16 - (filled - gap), buf + gap, (size_t)(filled - gap));
+    return AXIS2_TRUE;
+}
+
+/**
+ * Classify a literal IPv6 address, mirroring the IPv4 rules below.
+ *
+ * The IPv4-mapped and IPv4-compatible forms are deliberately handed back to the
+ * IPv4 classifier: ::ffff:169.254.169.254 reaches the same metadata service the
+ * dotted quad does, and refusing one while allowing the other would be a gap
+ * rather than a policy.
+ */
+static axis2_bool_t
+axis2_core_utils_literal_is_restricted(
+    const axis2_char_t * host,
+    axis2_bool_t block_private);
+
+static axis2_bool_t
+axis2_core_utils_ipv6_is_restricted(
+    const axis2_char_t * host,
+    axis2_bool_t block_private)
+{
+    unsigned char a[16];
+    int i;
+
+    if(!axis2_core_utils_parse_ipv6(host, a))
+    {
+        return AXIS2_FALSE; /* not an IPv6 literal; nothing to classify */
+    }
+
+    /* ::ffff:0:0/96 mapped and ::a.b.c.d compatible both carry a v4 address in
+     * the last four bytes, and both reach the v4 destination. Hand them to the
+     * v4 classifier rather than duplicating its rules. */
+    {
+        axis2_bool_t leading_zero = AXIS2_TRUE;
+        axis2_char_t v4[16];
+
+        for(i = 0; i < 10; i++)
+        {
+            if(a[i] != 0)
+            {
+                leading_zero = AXIS2_FALSE;
+                break;
+            }
+        }
+        if(leading_zero && a[10] == 0xff && a[11] == 0xff)
+        {
+            /* ::ffff:a.b.c.d is always a v4 address, 0.0.0.0 included. */
+            snprintf(v4, sizeof(v4), "%u.%u.%u.%u", a[12], a[13], a[14], a[15]);
+            return axis2_core_utils_literal_is_restricted(v4, block_private);
+        }
+        if(leading_zero && a[10] == 0 && a[11] == 0
+            && !(a[12] == 0 && a[13] == 0 && a[14] == 0 && a[15] <= 1))
+        {
+            /* ::a.b.c.d compatible. :: and ::1 fit the same pattern but are
+             * v6 addresses in their own right, so they are excluded here and
+             * classified as v6 below -- reading ::1 as 0.0.0.1 would put
+             * loopback in the wrong bucket. */
+            snprintf(v4, sizeof(v4), "%u.%u.%u.%u", a[12], a[13], a[14], a[15]);
+            return axis2_core_utils_literal_is_restricted(v4, block_private);
+        }
+    }
+
+    /* Never a legitimate reply destination, whatever the configuration says. */
+    if(a[0] == 0xff)
+    {
+        return AXIS2_TRUE; /* ff00::/8 multicast */
+    }
+    if((a[0] == 0xfe) && ((a[1] & 0xc0) == 0x80))
+    {
+        return AXIS2_TRUE; /* fe80::/10 link-local, the v6 metadata route */
+    }
+    {
+        axis2_bool_t all_zero = AXIS2_TRUE;
+
+        for(i = 0; i < 16; i++)
+        {
+            if(a[i] != 0)
+            {
+                all_zero = AXIS2_FALSE;
+                break;
+            }
+        }
+        if(all_zero)
+        {
+            return AXIS2_TRUE; /* :: unspecified / wildcard */
+        }
+    }
+
+    if(block_private)
+    {
+        axis2_bool_t loopback = (a[15] == 1);
+
+        for(i = 0; i < 15 && loopback; i++)
+        {
+            if(a[i] != 0)
+            {
+                loopback = AXIS2_FALSE;
+            }
+        }
+        if(loopback)
+        {
+            return AXIS2_TRUE; /* ::1 */
+        }
+        if((a[0] & 0xfe) == 0xfc)
+        {
+            return AXIS2_TRUE; /* fc00::/7 unique local */
+        }
+    }
+    return AXIS2_FALSE;
+}
+
+/**
  * Classify a literal IPv4 address in the host portion of the address.
  *
  * Deliberately does not resolve host names. Adding a resolver here would put a
@@ -273,6 +574,7 @@ axis2_core_utils_is_response_endpoint_allowed(
     axis2_char_t *allow_list = NULL;
     axis2_char_t host_buf[256];
     size_t host_len = 0;
+    axis2_bool_t is_bracketed = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
@@ -321,11 +623,35 @@ axis2_core_utils_is_response_endpoint_allowed(
     }
 
     host = scheme_end + 3;
-    host_end = host;
-    while(*host_end && *host_end != ':' && *host_end != '/' && *host_end != '?'
-        && *host_end != '#')
+
+    /* An IPv6 literal is bracketed and full of colons, so the scan below would
+     * stop at the first one and classify a host of "[". Take the brackets
+     * first and hand the classifier what is inside them. */
+    if(*host == '[')
     {
-        host_end++;
+        host++;
+        host_end = host;
+        while(*host_end && *host_end != ']')
+        {
+            host_end++;
+        }
+        if(*host_end != ']')
+        {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "Refusing WS-Addressing response endpoint with an unterminated "
+                "IPv6 literal");
+            return AXIS2_FALSE;
+        }
+        is_bracketed = AXIS2_TRUE;
+    }
+    else
+    {
+        host_end = host;
+        while(*host_end && *host_end != ':' && *host_end != '/' && *host_end != '?'
+            && *host_end != '#')
+        {
+            host_end++;
+        }
     }
     host_len = (size_t)(host_end - host);
     if(host_len == 0 || host_len >= sizeof(host_buf))
@@ -337,15 +663,37 @@ axis2_core_utils_is_response_endpoint_allowed(
     memcpy(host_buf, host, host_len);
     host_buf[host_len] = '\0';
 
-    if(axis2_core_utils_literal_is_restricted(host_buf, axis2_core_utils_param_is_true(env,
-        conf_ctx, AXIS2_BLOCK_PRIVATE_NETWORK_RESPONSE_ENDPOINTS, AXIS2_FALSE)))
+    {
+        axis2_bool_t block_private = axis2_core_utils_param_is_true(env, conf_ctx,
+            AXIS2_BLOCK_PRIVATE_NETWORK_RESPONSE_ENDPOINTS, AXIS2_FALSE);
+        axis2_bool_t restricted = is_bracketed
+            ? axis2_core_utils_ipv6_is_restricted(host_buf, block_private)
+            : axis2_core_utils_literal_is_restricted(host_buf, block_private);
+
+        /* A bracketed host that will not parse as IPv6 is malformed, not a name;
+         * nothing legitimate produces it, so do not let it through unclassified. */
+        if(is_bracketed && !restricted)
+        {
+            unsigned char probe[16];
+
+            if(!axis2_core_utils_parse_ipv6(host_buf, probe))
+            {
+                AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                    "Refusing WS-Addressing response endpoint with an unparseable "
+                    "IPv6 literal");
+                return AXIS2_FALSE;
+            }
+        }
+        if(!restricted)
+        {
+            return AXIS2_TRUE;
+        }
+    }
     {
         AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
             "Refusing WS-Addressing response endpoint at a restricted address");
         return AXIS2_FALSE;
     }
-
-    return AXIS2_TRUE;
 }
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
