@@ -221,6 +221,27 @@ This only surfaces under `build_for_tests.sh`. The Apache module links `util`
 explicitly and an ordinary `make` stops before the test targets, so both stay
 green while the tests will not link.
 
+## Writing tests against the transport internals
+
+Two ownership rules that ASAN will catch and reading will not.
+
+**A basic stream cannot feed the chunked reader.** `axutil_stream_read_basic`
+returns `count - 1` bytes, reserving the last for a NUL, so a one-byte read
+returns zero. `axutil_http_chunked_stream_start_chunk` reads the chunk header
+one byte at a time, so over a basic stream it sees nothing, concludes the
+chunk size is 0, and reports end-of-chunks immediately. A test built that way
+passes while reading no data at all. Use a `socketpair` and
+`axutil_stream_create_socket`, which is also what the workers really hand it.
+
+**`axutil_param_create` copies the name but not the value.** It strdups the
+name and takes the value pointer as-is, and `axutil_param_free` releases both.
+So a caller must strdup the value and must *not* strdup the name — copying the
+name leaks it. The asymmetry looks like a mistake and is not.
+
+Fixtures own what they create: free the `conf_ctx`, any
+`transport_out_desc`, and then the env. A leaking fixture turns a clean binary
+into a failing one and costs the suite the signal this guide is about.
+
 ## Checklist before reporting "SOAP is broken"
 
 1. Is the service registered? Check the `/services` listing is non-empty.

@@ -43,7 +43,12 @@
 
     <!-- Largest request body the HTTP transport will accept, in bytes. Without
          a ceiling the caller decides how much the server buffers. -1 restores
-         the previous unbounded behaviour. Default 100 MB. -->
+         the previous unbounded behaviour. Default 100 MB.
+
+         Applies to chunked requests too. Those declare no Content-Length, so
+         they cannot be refused before the read the way a declared body is;
+         they are measured as they are read and cut off once the ceiling is
+         passed, which costs one buffer of overshoot. -->
     <parameter name="maxRequestSize" locked="false">104857600</parameter>
 
     <!-- WS-Addressing response endpoints. A non-anonymous wsa:ReplyTo or
@@ -62,6 +67,10 @@
          additionally refuses loopback and private literals; it is off by
          default because a callback inside the same private network is how most
          decoupled deployments are wired.
+
+         Both switches understand IPv6 literals, including the IPv4-mapped
+         forms: [::ffff:169.254.169.254] is classified as the metadata address
+         it reaches, not as an unrecognised host.
 
          Note that host names are not resolved before the address check, so a
          name pointing at an internal address is not caught here. Pair this with
