@@ -103,6 +103,47 @@ git archive HEAD | tar -x -C /tmp/a2c-soap && cd /tmp/a2c-soap
 
 The real ELF binary is in the adjacent `.libs/` directory. Use that under gdb.
 
+## Trap 5: `AXIS2_CHUNKED_CONTENT_LENGTH` is not a limit
+
+The name reads like a ceiling on a chunked body, and the value reinforces it:
+
+```c
+/* http_transport_utils.c */
+#define AXIS2_CHUNKED_CONTENT_LENGTH 100000000
+```
+
+It bounds nothing. There is exactly one assignment, and it sits in the `else`
+branch taken when the request has *no* transport headers to inspect — the
+documented hack for transports that strip the chunking themselves and then
+report a content length of zero:
+
+```c
+/* this is an UGLY hack to get some of the transports working
+   e.g. PHP transport where it strips the chunking info ... */
+callback_ctx->content_length = AXIS2_CHUNKED_CONTENT_LENGTH;
+```
+
+A chunked request arriving over HTTP takes the other branch. That one builds a
+`chunked_stream` and leaves `content_length` at -1, so the constant never
+applies to it. Confirm before relying on it:
+
+```bash
+grep -rn AXIS2_CHUNKED_CONTENT_LENGTH --include=*.c --include=*.h .
+```
+
+One definition, one assignment, on a path an HTTP request does not take.
+
+This matters beyond the naming. `content_length` staying -1 also disables the
+`unread_len` bound in `axis2_http_transport_utils_on_data_request`, which is
+only consulted when `content_length != -1`. Both apparent bounds on a chunked
+body are therefore absent at once, which is why the real ceiling had to be
+enforced during the read instead — see the `max_body_size` and `body_read`
+counters in that function, driven by the `maxRequestSize` parameter.
+
+The general form of this trap: a constant whose name states a policy is not
+evidence the policy is enforced. Find its assignments and check which branch
+they are on before concluding a limit exists.
+
 ## A working SOAP setup
 
 The supported route produces a correct runtime layout; prefer it over
