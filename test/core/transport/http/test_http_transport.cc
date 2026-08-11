@@ -1773,6 +1773,27 @@ TEST_F(TestChunkedBodyCeiling, running_total_does_not_wrap_past_the_ceiling)
     ASSERT_EQ(-1, drain_from(INT_MAX, 4096, INT_MAX - 64, &bytes));
 }
 
+TEST_F(TestChunkedBodyCeiling, ceiling_smaller_than_a_single_read)
+{
+    /* A review read `max_body_size - len` as mixed-sign arithmetic that would
+     * wrap to a huge unsigned value whenever one read exceeded the whole
+     * ceiling, silently disabling the limit. It does not: `len` is int, as is
+     * `size`, so the subtraction is int arithmetic and simply goes negative,
+     * and body_read is never less than zero. Covered here because the case was
+     * genuinely untested -- every other case has a ceiling larger than one
+     * buffer.
+     *
+     * Refusal happens on the first read, before anything is counted, so no
+     * bytes reach the parser at all. */
+    int bytes = -1;
+    ASSERT_EQ(-1, drain(10, 4096, &bytes));
+    ASSERT_EQ(0, bytes);
+
+    bytes = -1;
+    ASSERT_EQ(-1, drain(0, 4096, &bytes));
+    ASSERT_EQ(0, bytes);
+}
+
 TEST_F(TestChunkedBodyCeiling, boundary_is_not_off_by_one)
 {
     int bytes = 0;
