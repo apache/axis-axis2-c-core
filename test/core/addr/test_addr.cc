@@ -306,3 +306,49 @@ TEST_F(TestResponseEndpointIPv6, ipv4_classification_still_holds)
     ASSERT_FALSE(allowed("https://239.255.255.250/callback"));
     ASSERT_TRUE(allowed("https://198.51.100.7/callback"));
 }
+
+/* ----------------------------------------------------------------------
+ * Non-canonical IPv4 literal forms.
+ *
+ * The classifier used to recognise an address only through
+ * sscanf("%u.%u.%u.%u"), i.e. canonical dotted decimal. The socket, though, is
+ * opened with inet_addr() (util/src/network_handler.c), which also honours
+ * octal, hex, abbreviated and bare-integer notations. Anything the classifier
+ * did not recognise as a quad fell through as "nothing to classify" -- allowed
+ * -- while inet_addr() still dialled the restricted address. Each address below
+ * is a second spelling of a target the canonical tests already refuse; the fix
+ * classifies with inet_addr() so the two can no longer disagree.
+ *
+ * inet_addr()'s octet mapping for these is verified: 0251.0376.0251.0376,
+ * 2852039166 and 0xa9fea9fe all resolve to 169.254.169.254, and 0177.0.0.1,
+ * 0x7f.0.0.1, 127.1 and 2130706433 all resolve to 127.0.0.1.
+ * ---------------------------------------------------------------------- */
+
+TEST_F(TestResponseEndpointIPv6, refuses_metadata_in_alternate_literal_forms)
+{
+    /* 169.254.169.254 is refused unconditionally, so the private-network switch
+     * stays off here -- these must fail on the metadata rule alone. */
+    ASSERT_FALSE(allowed("http://0251.0376.0251.0376/latest/meta-data/")); /* octal */
+    ASSERT_FALSE(allowed("http://2852039166/latest/meta-data/"));          /* decimal int */
+    ASSERT_FALSE(allowed("http://0xa9fea9fe/latest/meta-data/"));          /* hex int */
+}
+
+TEST_F(TestResponseEndpointIPv6, refuses_loopback_in_alternate_literal_forms)
+{
+    /* Loopback follows the private-network switch, so open it first; without it
+     * these would pass for the wrong reason. */
+    set_param(AXIS2_BLOCK_PRIVATE_NETWORK_RESPONSE_ENDPOINTS, "true");
+    ASSERT_FALSE(allowed("http://0177.0.0.1/callback")); /* octal first octet */
+    ASSERT_FALSE(allowed("http://0x7f.0.0.1/callback")); /* hex first octet */
+    ASSERT_FALSE(allowed("http://127.1/callback"));      /* abbreviated */
+    ASSERT_FALSE(allowed("http://2130706433/callback")); /* decimal int */
+}
+
+TEST_F(TestResponseEndpointIPv6, alternate_forms_do_not_over_block)
+{
+    /* The fix must reject the bypasses without turning every unusual host into a
+     * refusal. A public dotted quad and a name both remain allowed: the name is
+     * not a literal, so it is left for the network layer to police. */
+    ASSERT_TRUE(allowed("https://198.51.100.7/callback"));
+    ASSERT_TRUE(allowed("https://service.example.com/callback"));
+}

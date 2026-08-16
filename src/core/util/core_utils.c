@@ -554,32 +554,56 @@ axis2_core_utils_ipv6_is_restricted(
 /**
  * Classify a literal IPv4 address in the host portion of the address.
  *
+ * The literal is parsed with inet_addr(), the same call the network handler
+ * (util/src/network_handler.c) makes to open the outbound socket. Agreeing with
+ * the resolver is the whole point of the exercise: inet_addr() honours octal
+ * (0177.0.0.1), hex (0x7f.0.0.1), abbreviated (127.1) and bare 32-bit integer
+ * (2130706433) notations, and every one of those dials 127.0.0.1 -- just as
+ * 0251.0376.0251.0376, 2852039166 and 0xa9fea9fe all dial the metadata address
+ * 169.254.169.254. A classifier that recognised only canonical dotted decimal
+ * (the sscanf("%u.%u.%u.%u") this replaced) waved every one of those through
+ * while the socket connected to the restricted address anyway -- a rewrite of
+ * the same address in a second notation turned the filter into a no-op. Parsing
+ * the address exactly as the resolver will closes that gap by construction.
+ *
  * Deliberately does not resolve host names. Adding a resolver here would put a
  * blocking lookup on the request path and buy less than it appears: the gate
  * above is off by default, so this only ever runs for a deployment that has
  * already opted in. The consequence is that a name pointing at an internal
  * address is not caught -- such a deployment should use
- * allowedResponseEndpointHosts style restriction at the network layer.
+ * allowedResponseEndpointHosts style restriction at the network layer. A host
+ * inet_addr() rejects (INADDR_NONE) is treated the same way: not a literal, so
+ * nothing to classify here. The one numeric literal that shares INADDR_NONE is
+ * the limited broadcast address 255.255.255.255, which the resolver likewise
+ * hands to gethostbyname() -- so the classifier stays consistent with the send
+ * path, and 255.255.255.255 is not a metadata, loopback or private target in
+ * any case.
  */
 static axis2_bool_t
 axis2_core_utils_literal_is_restricted(
     const axis2_char_t * host,
     axis2_bool_t block_private)
 {
-    unsigned int a = 0, b = 0, c = 0, d = 0;
+    struct in_addr parsed;
+    unsigned char octets[4];
+    unsigned int a = 0, b = 0;
 
     if(!host)
     {
         return AXIS2_FALSE;
     }
-    if(4 != sscanf(host, "%u.%u.%u.%u", &a, &b, &c, &d))
+    parsed.s_addr = inet_addr(host);
+    if(parsed.s_addr == AXIS2_INADDR_NONE)
     {
-        return AXIS2_FALSE; /* not a dotted quad; nothing to classify */
+        return AXIS2_FALSE; /* a name (or 255.255.255.255); nothing to classify */
     }
-    if(a > 255 || b > 255 || c > 255 || d > 255)
-    {
-        return AXIS2_FALSE;
-    }
+    /* inet_addr() yields the address in network byte order, so its bytes are the
+     * octets most-significant first regardless of host endianness. Classify the
+     * address the socket will actually dial. Only the first two octets decide
+     * every rule below. */
+    memcpy(octets, &parsed.s_addr, sizeof(octets));
+    a = octets[0];
+    b = octets[1];
 
     /* Never a legitimate reply destination, whatever the configuration says.
      * 169.254/16 is what covers the cloud instance metadata address. */
