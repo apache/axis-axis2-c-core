@@ -22,7 +22,6 @@ install_manifest.txt
 
 # Autotools generated files
 Makefile
-!gtest/Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache/
