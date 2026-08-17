@@ -171,9 +171,40 @@ axis2_http_server_create(
         }
 		conf = axis2_conf_ctx_get_conf(server_impl->conf_ctx_private, env);
 		transport_in = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+
+		/* A configuration with no <transportReceiver name="http"> leaves this
+		 * NULL, and that is the shipped default: axis2.xml comments the block
+		 * out because the HTTP/2 JSON mode behind Apache does not use it.
+		 * Dereferencing it here crashed the standalone server on its own
+		 * default configuration, and the backtrace pointed at
+		 * transport_in_desc.c rather than at the missing block, so the symptom
+		 * read as "the server is broken" instead of "this config is not for
+		 * standalone use". Report the real cause and fail instead. */
+		if(!transport_in)
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+				"No <transportReceiver name=\"http\"> configured in the "
+				"repository at %s; the standalone HTTP server needs one. "
+				"Uncomment the http transportReceiver block in axis2.xml "
+				"(the http transportSender too, for the response path).", repo);
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_CONF, AXIS2_FAILURE);
+			axis2_http_server_free((axis2_transport_receiver_t *)server_impl, env);
+			return NULL;
+		}
+
 		receiver = axis2_transport_in_desc_get_recv(transport_in, env);
+		if(!receiver)
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+				"The http transportReceiver in the repository at %s declares no "
+				"receiver class; cannot set the listening port.", repo);
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_CONF, AXIS2_FAILURE);
+			axis2_http_server_free((axis2_transport_receiver_t *)server_impl, env);
+			return NULL;
+		}
+
 		AXIS2_INTF_TO_IMPL(receiver)->port = port;
-		
+
 		server_impl->conf_ctx = server_impl->conf_ctx_private;
     }
 
@@ -228,10 +259,35 @@ axis2_http_server_create_with_file(
         }
 		conf = axis2_conf_ctx_get_conf(server_impl->conf_ctx_private, env);
 		transport_in = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+
+		/* Same NULL as in axis2_http_server_create above, reached the same way:
+		 * a configuration with the http transportReceiver block commented out,
+		 * which is what axis2.xml ships. Kept in step with that function. */
+		if(!transport_in)
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+				"No <transportReceiver name=\"http\"> configured in %s; the "
+				"standalone HTTP server needs one. Uncomment the http "
+				"transportReceiver block (the http transportSender too, for "
+				"the response path).", file);
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_CONF, AXIS2_FAILURE);
+			axis2_http_server_free((axis2_transport_receiver_t *)server_impl, env);
+			return NULL;
+		}
+
 		receiver = axis2_transport_in_desc_get_recv(transport_in, env);
+		if(!receiver)
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+				"The http transportReceiver in %s declares no receiver class; "
+				"cannot set the listening port.", file);
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_CONF, AXIS2_FAILURE);
+			axis2_http_server_free((axis2_transport_receiver_t *)server_impl, env);
+			return NULL;
+		}
+
 		AXIS2_INTF_TO_IMPL(receiver)->port = port;
-		
-		
+
         server_impl->conf_ctx = server_impl->conf_ctx_private;
     }
 

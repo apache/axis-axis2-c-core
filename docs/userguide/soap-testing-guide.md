@@ -48,18 +48,40 @@ receiver:
 </transportReceiver-->
 ```
 
-Hand that config to the standalone server and it looks up its receiver, gets
-NULL, and dereferences it:
+Hand that config to the standalone server and it looks up its receiver and gets
+NULL. `axis2_http_server_create` now recognises that and refuses to start,
+naming the missing block:
+
+```
+[error] http_receiver.c No <transportReceiver name="http"> configured in the
+repository at <path>; the standalone HTTP server needs one. Uncomment the http
+transportReceiver block in axis2.xml (the http transportSender too, for the
+response path).
+```
+
+Before that check existed the same config dereferenced the NULL, and the
+backtrace named `transport_in_desc.c` rather than the missing configuration, so
+the symptom read as a broken server:
 
 ```
 #0  axis2_transport_in_desc_get_recv (transport_in=0x0, ...) at transport_in_desc.c:197
 #1  axis2_http_server_create (...) at http_receiver.c:174
 ```
 
-That crash is a missing `<transportReceiver>`, not a broken server. Uncomment
-the block before using this config standalone. (`http_receiver.c:174` could
-usefully check for NULL and report the real problem; until it does, recognise
-the backtrace.)
+Recognise that backtrace on any build predating the check.
+
+**Uncomment the transport *sender* as well.** It is commented out in the same
+file, for the same reason, and the receiver alone is not enough: the request is
+accepted and dispatched, then the response path fails with
+
+```
+[error] engine.c Transport out is not set in message context
+```
+
+which surfaces at the client as a SOAP fault with no `Content-Type` and a send
+status of `-1` — a failure that looks like the service is broken rather than like
+a missing sender. Both blocks have to be uncommented before this config serves
+SOAP standalone.
 
 ## Trap 2: a service directory is not a deployed service
 
