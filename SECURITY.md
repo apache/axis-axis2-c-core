@@ -142,7 +142,23 @@ As a C codebase, memory safety is a primary concern:
 | **Use-after-free** | Low | Allocator-based memory management (`axutil_allocator_t`); ASAN testing |
 | **Format string** | Low | Risk if user input reaches logging macros without `%s` format; code review addressed (Jan 2026) |
 | **Integer overflow** | Low | Payload size limits prevent wrap-around in allocation; Gemini review findings addressed |
-| **Null dereference** | Low | Defensive null checks throughout; `env` parameter validated at entry points |
+| **Null dereference** | Low | Untrusted input is null-checked on the paths that parse it. `env` is **not** systematically validated: `AXIS2_ENV_CHECK` expands to nothing (see below), so the ~620 entry points that appear to use it do not check. `env` is supplied by the framework rather than by a caller across the trust boundary, so a NULL one is a programming error and not remotely reachable |
+
+#### `AXIS2_ENV_CHECK` is a no-op
+
+`AXIS2_ENV_CHECK(env, return_value)` is defined empty in
+`util/include/axutil_env.h`. It reads like a guard and sits at the top of
+several hundred functions, but it compiles to nothing, so none of those
+functions reject a NULL `env`.
+
+It cannot simply be switched back on: 24 call sites pass `void` as the return
+value, which would expand to `return void;` and fail to compile. Enabling it
+would mean giving those sites a void-specific form and accepting an early
+return at roughly 620 entry points.
+
+Treat it as documentation of intent, not as a check. Where a NULL `env` needs
+handling, write the check explicitly — `axutil_strdup` does, because a test
+asserts it.
 
 ### Build-Time Hardening
 

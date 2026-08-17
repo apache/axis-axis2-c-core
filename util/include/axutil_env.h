@@ -213,15 +213,29 @@ extern "C"
     
 
 
-/* AXIS2_ENV_CHECK is a macro to check environment pointer.
-   Currently this is set to an empty value.
-   But it was used to be defined as:
-   #define AXIS2_ENV_CHECK(env, error_return) \
-       if(!env) \
-       { \
-           return error_return; \
-       }
-*/
+/* AXIS2_ENV_CHECK expands to NOTHING. It does not check anything.
+ *
+ * It reads like a guard and appears at the top of roughly 620 functions, none
+ * of which reject a NULL env as a result. Do not add a call site expecting it
+ * to; write the check explicitly instead, as axutil_strdup does.
+ *
+ * It used to be defined as below. Restoring that is not a one-line change: 24
+ * call sites pass `void` as the return value, which would expand to
+ * `return void;` and fail to compile, so they would need a void-specific form
+ * first. The result would be an early return at every one of those entry
+ * points, which is a behavioural change well beyond this header -- hence the
+ * empty definition rather than a quiet flip.
+ *
+ * Note that env is supplied by the framework, not by a caller across a trust
+ * boundary, so a NULL one is a programming error rather than something a
+ * request can cause.
+ *
+ *   #define AXIS2_ENV_CHECK(env, error_return) \
+ *       if(!env) \
+ *       { \
+ *           return error_return; \
+ *       }
+ */
 #define AXIS2_ENV_CHECK(env, error_return)
 
     /** @} */
