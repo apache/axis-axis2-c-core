@@ -261,6 +261,15 @@ axutil_strdup(
     const axutil_env_t *env,
     const void *ptr)
 {
+    /* Checked explicitly rather than with AXIS2_ENV_CHECK, which expands to
+     * nothing (see axutil_env.h) and so guards none of the call sites that
+     * appear to use it. Without this, a NULL env reached env->allocator below
+     * and crashed, which is what the existing NullEnvHandling test asserts
+     * against; the ptr check alone does not cover it. */
+    if(!env)
+    {
+        return NULL;
+    }
     if(ptr)
     {
         int len = axutil_strlen(ptr);

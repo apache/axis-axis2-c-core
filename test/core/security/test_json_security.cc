@@ -86,11 +86,34 @@ TEST_F(JSONSecurityTest, ValidJSONParses) {
 }
 
 /**
- * Test that NULL input is handled safely
+ * Test that a NUL-terminated-but-empty buffer is handled safely.
+ *
+ * This case used to pass NULL to json_tokener_parse and assert it returned
+ * NULL. json-c does not offer that: its contract is a NUL-terminated string,
+ * and it calls strlen() on what it is given, so NULL segfaulted inside the
+ * library. Because a SEGV takes the whole gtest process with it, that one
+ * assertion cost the eight tests declared after it -- including
+ * DeeplyNestedJSONDepthLimit, which is what covers the documented 64-level
+ * limit. The suite reported a failure for the crash and silent nothing for the
+ * tests that never ran.
+ *
+ * Axis2/C guards this at its own boundary instead, which is where the
+ * guarantee actually belongs: every json_tokener_parse call site checks its
+ * input first -- axis2_h2_transport_utils.c after its allocation,
+ * axis2_json_rpc_msg_recv.c at the parameter check in the direct-invoke path
+ * and at the caller of the Android static path, and
+ * axis2_apache2_request_processor_json_impl.c after its buffer read. Those
+ * guards, not json-c, are what keep NULL away from the parser, and they are
+ * exercised by the transport tests rather than from here.
+ *
+ * What is left to check at this level is the degenerate input json-c does
+ * define behaviour for, which is a zero-length string.
  */
-TEST_F(JSONSecurityTest, NullInputSafe) {
-    json_object *obj = json_tokener_parse(NULL);
-    EXPECT_EQ(obj, nullptr) << "NULL input should return NULL";
+TEST_F(JSONSecurityTest, ZeroLengthBufferSafe) {
+    const char buffer[1] = { '\0' };
+
+    json_object *obj = json_tokener_parse(buffer);
+    EXPECT_EQ(obj, nullptr) << "Zero-length input should return NULL";
 }
 
 /**
@@ -111,7 +134,6 @@ TEST_F(JSONSecurityTest, MalformedJSONRejected) {
         "{\"key\"",
         "}{",
         "[[[",
-        "{\"a\":\"b\",}",  /* trailing comma */
         NULL
     };
 
@@ -121,6 +143,33 @@ TEST_F(JSONSecurityTest, MalformedJSONRejected) {
         if (obj) {
             json_object_put(obj);
         }
+    }
+}
+
+/**
+ * A trailing comma is accepted, which is json-c's documented default.
+ *
+ * This case used to sit in the list above, asserting rejection. It never ran:
+ * the NULL-input case earlier in this file segfaulted and took the process with
+ * it, so the wrong expectation was never contradicted. Rejecting a trailing
+ * comma requires JSON_TOKENER_STRICT, which none of the Axis2/C call sites set
+ * -- they all use json_tokener_parse(), whose flags default to lenient.
+ *
+ * Pinned rather than removed because it is the kind of leniency worth noticing
+ * if it ever changes: a document this server accepts and a stricter parser in
+ * front of or behind it rejects is exactly the disagreement that lets two hops
+ * read one request differently. Switching the transport to strict mode is a
+ * deliberate decision with a compatibility cost for clients that emit trailing
+ * commas today, so it is recorded here rather than made here.
+ */
+TEST_F(JSONSecurityTest, TrailingCommaAcceptedByDefault) {
+    json_object *obj = json_tokener_parse("{\"a\":\"b\",}");
+
+    EXPECT_NE(obj, nullptr)
+        << "json-c accepts a trailing comma unless JSON_TOKENER_STRICT is set; "
+           "if this now returns NULL the parser or its flags changed";
+    if (obj) {
+        json_object_put(obj);
     }
 }
 
