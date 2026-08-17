@@ -105,6 +105,10 @@ guththila/tests/resources/
 # Test and log files
 axis2.log
 *.log
+# Rotated logs. axutil_log renames a log to .old once it passes
+# maxLogFileSize, and the running tests pass it easily, so these appear as
+# untracked files large enough to be swept into a commit by a wildcard add.
+*.log.old
 test_*.o
 wtf.txt
 wtf2.txt
