@@ -1147,7 +1147,41 @@ axis2_apache2_json_processor_parse_and_process_json(
                     env, out_stream, "Payload too large", 413);
             }
 
-            /* Copy to AXIS2-managed buffer for consistent memory management */
+            /* Hand the body back to the Axis2 allocator, and free the scratch
+             * buffer here rather than anywhere downstream.
+             *
+             * This is the one point where ownership crosses between the two
+             * allocators in this function, and the copy is not redundant. The
+             * loop above deliberately uses raw malloc/realloc, because under
+             * mod_axis2 -- which is the deployment this file exists for -- the
+             * env allocator is replaced wholesale by APR pool functions
+             * (mod_axis2.c, axis2_module_malloc/realloc/free):
+             *
+             *   AXIS2_MALLOC  -> apr_palloc(current_pool)
+             *   AXIS2_FREE    -> does nothing at all
+             *   AXIS2_REALLOC -> returns NULL, unconditionally
+             *
+             * apr_palloc has no counterpart to free a single block; a pool is
+             * reclaimed as a whole when it is destroyed at the end of the
+             * request. That is why AXIS2_FREE is a no-op there, and why
+             * AXIS2_REALLOC cannot be implemented over it -- the source says as
+             * much: "can't be easily implemented". A growth loop built on
+             * AXIS2_REALLOC would therefore fail on its first growth under
+             * Apache while working under the standalone server, whose allocator
+             * really does call realloc(). Hence raw malloc/realloc here.
+             *
+             * The consequence to respect: a pointer must be released by the
+             * same allocator that produced it. Handing temp_buffer onward would
+             * eventually meet an AXIS2_FREE, which under mod_axis2 does nothing
+             * -- a genuine leak of up to maxRequestSize per request, invisible
+             * because the pool hides everything else. Passing an apr_palloc
+             * pointer to free() would be worse. So the scratch buffer never
+             * leaves this function, and everything downstream sees only
+             * allocator memory, which the request pool reclaims on its own.
+             *
+             * Keeping the copy also bounds the raw allocation to this function:
+             * a request that dies on a later error path leaks nothing, because
+             * by then the only live buffer is pool-owned. */
             json_request_buffer = AXIS2_MALLOC(env->allocator, total_read + 1);
             if (json_request_buffer)
             {

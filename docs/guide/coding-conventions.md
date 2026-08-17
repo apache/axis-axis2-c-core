@@ -125,8 +125,11 @@ axis2_svc_client_create(const axutil_env_t *env,
 
 ### Allocation
 
+Use the environment allocator for anything that outlives the current function
+or is passed to other Axis2/C code. The one exception is growing a buffer, which
+needs raw `realloc` — see [Growing a buffer](#growing-a-buffer) below.
+
 ```c
-/* Always use environment allocator */
 char *buffer = AXIS2_MALLOC(env->allocator, size);
 if (!buffer) {
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -161,6 +164,67 @@ axis2_svc_client_free(axis2_svc_client_t *svc_client,
     AXIS2_FREE(env->allocator, svc_client);
 }
 ```
+
+### What the allocator actually is
+
+`env->allocator` is an indirection, not a fixed implementation, and the two
+deployments put very different things behind it. The standalone server uses the
+default implementation in `util/src/allocator.c`, which is a thin wrapper over
+C's `malloc`, `realloc` and `free`. Under `mod_axis2` the allocator is replaced
+wholesale, in `mod_axis2.c`, by functions built on APR pools:
+
+| Macro | Standalone | mod_axis2 |
+|-------|-----------|-----------|
+| `AXIS2_MALLOC` | `malloc` | `apr_palloc(current_pool)` |
+| `AXIS2_FREE` | `free` | **does nothing** |
+| `AXIS2_REALLOC` | `realloc` | **returns NULL, unconditionally** |
+
+An APR pool is a region that is allocated from cheaply and released all at once.
+`apr_palloc` carves a block out of the pool and there is no call to hand one
+block back; the memory returns when the pool itself is destroyed, which for
+request-scoped work happens at the end of the request. Two consequences follow,
+and neither is visible from the call site:
+
+**`AXIS2_FREE` is a no-op under Apache.** Not a leak in the usual sense — the
+pool reclaims everything eventually — but a loop that allocates and frees
+repeatedly within one request holds every allocation until that request ends.
+Peak memory can be far above what the code appears to use. Size such loops by
+what they will hold at once, not by what is live at any instant.
+
+**`AXIS2_REALLOC` cannot be used under Apache.** It has no pool implementation
+("can't be easily implemented", says the source) and returns NULL every time.
+A buffer-growth loop written on it works in development against the standalone
+server and fails on the first growth in production. Do not write one.
+
+### Growing a buffer
+
+Because `AXIS2_REALLOC` is unusable in the deployment that matters, grow with
+raw `malloc`/`realloc`, then copy the result into allocator memory and free the
+scratch buffer before returning:
+
+```c
+/* Scratch buffer: raw malloc/realloc, because AXIS2_REALLOC returns NULL
+ * under mod_axis2. It must not leave this function. */
+char *temp = malloc(size);
+/* ... grow with realloc() as needed ... */
+
+/* Ownership crosses to the allocator here, at exactly one point. */
+buffer = AXIS2_MALLOC(env->allocator, total + 1);
+if (buffer) {
+    memcpy(buffer, temp, total + 1);
+}
+free(temp);
+```
+
+The rule this enforces is the one to remember: **release a pointer with the same
+allocator that produced it.** A raw-`malloc` pointer that escapes into code
+which later calls `AXIS2_FREE` is a real leak under Apache, where that call does
+nothing. An `apr_palloc` pointer passed to `free()` corrupts the heap. Keeping
+the scratch buffer local and copying once keeps every pointer that travels
+anywhere pool-owned, so the request pool cleans up after error paths for free.
+
+`axis2_apache2_request_processor_json_impl.c` is the worked example, with the
+reasoning recorded at the handoff.
 
 ## Error Handling
 
