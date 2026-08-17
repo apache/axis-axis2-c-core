@@ -48,7 +48,9 @@
          Applies to chunked requests too. Those declare no Content-Length, so
          they cannot be refused before the read the way a declared body is;
          they are measured as they are read and cut off once the ceiling is
-         passed, which costs one buffer of overshoot. -->
+         passed, which costs one buffer of overshoot. The JSON reader under
+         mod_axis2 measures its own read against this same value; it used to
+         stop at a hardcoded 10 MB regardless of what is set here. -->
     <parameter name="maxRequestSize" locked="false">104857600</parameter>
 
     <!-- WS-Addressing response endpoints. A non-anonymous wsa:ReplyTo or

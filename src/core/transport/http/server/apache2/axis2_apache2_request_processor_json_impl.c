@@ -988,14 +988,31 @@ axis2_apache2_json_processor_parse_and_process_json(
         AXIS2_LOG_INFO(env->log,
             "[JSON_PROCESSOR_WARN] Stream length unknown, attempting incremental buffer read");
 
-        /* Incremental buffer growth: 64KB initial, doubles up to 10MB max
-         * This optimizes for IoT (small payloads) while supporting enterprise (large payloads)
+        /* Incremental buffer growth: 64KB initial, doubling to the ceiling.
          * Uses standard C malloc/realloc since AXIS2_REALLOC is unreliable
          *
          * SECURITY: Integer overflow protection added for all arithmetic operations
-         * to prevent heap overflow vulnerabilities from malicious payloads */
+         * to prevent heap overflow vulnerabilities from malicious payloads
+         *
+         * The ceiling is maxRequestSize, the same one the workers apply to a
+         * declared Content-Length. This read is where a chunked JSON body is
+         * bounded: it declares no length, so apache2_worker cannot screen it
+         * beforehand, and it never passes through on_data_request, so the
+         * chunked ceiling armed for the AXIOM path does not see it either.
+         * This used to be a hardcoded 10MB, which meant the setting did not
+         * govern this path in either direction -- axis2.xml documents it as
+         * applying to chunked requests and defaults it to 100MB, so a body
+         * between 10MB and the configured value was refused with 413 while the
+         * configuration said to accept it, and lowering the setting to bound
+         * per-request memory did not lower this. */
         const size_t initial_size = 65536;     /* 64KB - efficient for IoT/camera payloads */
-        const size_t max_buffer = 10485760;    /* 10MB - supports 500+ asset portfolios */
+        axis2_ssize_t configured_max = axis2_http_transport_utils_get_max_request_size(
+            env, msg_ctx ? axis2_msg_ctx_get_conf_ctx(msg_ctx, env) : NULL);
+        /* -1 is the documented opt-out; carry it as "no ceiling" rather than
+         * letting it become a huge or negative size_t. */
+        const axis2_bool_t bounded =
+            (configured_max != AXIS2_MAX_REQUEST_SIZE_UNLIMITED) ? AXIS2_TRUE : AXIS2_FALSE;
+        const size_t max_buffer = bounded ? (size_t)configured_max : SIZE_MAX;
         size_t current_size = initial_size;
         size_t total_read = 0;
         int bytes_read;
@@ -1067,11 +1084,22 @@ axis2_apache2_json_processor_parse_and_process_json(
                 }
 
                 /* SECURITY: Safe doubling with overflow check
-                 * If current_size > max_buffer/2, cap at max_buffer instead of doubling */
+                 * If current_size > max_buffer/2, cap at max_buffer instead of doubling.
+                 * With no ceiling configured max_buffer is SIZE_MAX, and capping
+                 * at it would ask realloc for the whole address space, so double
+                 * in that case and let the allocation failure above bound it. */
                 size_t new_size;
-                if (current_size > max_buffer / 2)
+                if (bounded && current_size > max_buffer / 2)
                 {
                     new_size = max_buffer;
+                }
+                else if (current_size > SIZE_MAX / 2)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[JSON_PROCESSOR_ERROR] Buffer cannot grow past %zu bytes", current_size);
+                    free(temp_buffer);
+                    return axis2_apache2_json_processor_write_json_error_response(
+                        env, out_stream, "Payload too large", 413);
                 }
                 else
                 {
