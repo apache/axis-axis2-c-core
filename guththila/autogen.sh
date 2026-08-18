@@ -22,7 +22,7 @@ else
     LIBTOOLIZE=libtoolize
 fi
 
-if $LIBTOOLIZE --force > /dev/null 2>&1; then
+if $LIBTOOLIZE --force --copy > /dev/null 2>&1; then
 
 	echo 'done.'
 else
@@ -55,7 +55,7 @@ else
 fi
 
 echo -n 'Running automake...'
-if automake --add-missing > /dev/null 2>&1; then
+if automake --add-missing --copy > /dev/null 2>&1; then
 	echo 'done.'
 else
 	echo 'failed.'

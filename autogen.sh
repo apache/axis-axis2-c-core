@@ -32,6 +32,20 @@ sh autogen.sh
 echo 'Running autogen.sh in Axis2/C'
 cd ..
 
+# --copy on libtoolize and automake below is deliberate; do not drop it.
+#
+# Without it both tools install their helper scripts -- ltmain.sh, test-driver,
+# compile, missing, install-sh, config.guess, config.sub, depcomp -- as symlinks
+# into /usr/share/automake-X.Y and /usr/share/libtool. The version is in that
+# path, so the next automake upgrade deletes the directory the links point at
+# and every one of them dangles. The tree then fails in ways that do not name
+# the cause: configure reports "cannot find required auxiliary files", make
+# check dies with "test-driver: No such file or directory", and rsync refuses
+# the tree with "symlink has no referent". A distribution that upgrades on a
+# six-month cadence hits this roughly every six months.
+#
+# With --copy they are real files, so the tree keeps working across upgrades and
+# survives being copied to another machine.
 echo -n 'Running libtoolize...'
 if [ `uname -s` = Darwin ]
 then
@@ -40,7 +54,7 @@ else
     LIBTOOLIZE=libtoolize
 fi
 
-if $LIBTOOLIZE --force > /dev/null 2>&1; then
+if $LIBTOOLIZE --force --copy > /dev/null 2>&1; then
 
 	echo 'done.'
 else
@@ -73,7 +87,7 @@ else
 fi
 
 echo -n 'Running automake...'
-if automake --add-missing > /dev/null 2>&1; then
+if automake --add-missing --copy > /dev/null 2>&1; then
 	echo 'done.'
 else
 	echo 'failed.'
