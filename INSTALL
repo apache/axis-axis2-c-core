@@ -811,13 +811,14 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
     NOTE : To do the following tasks, you might need super user privileges 
 		   on your machine.
 
-    Copy the mod_axis2 (libmod_axis2.so.0.7.0 on Linux and mod_axis2.dll
+    Copy the mod_axis2 (libmod_axis2.so on Linux and mod_axis2.dll
 	on Windows) to "<apache2 modules directory>" as mod_axis2.so
 
-	NOTE: The 0.7.0 version in the library filename reflects libtool's shared library versioning for ABI compatibility tracking and differs from the project release version (2.0.0). 
+	NOTE: mod_axis2 is built with libtool's -avoid-version, so unlike the
+	      other libraries it carries no version suffix in its filename.
     
 	Example:
-    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.7.0 
+    	cp $AXIS2C_HOME/lib/libmod_axis2.so 
 		/usr/lib/apache2/modules/mod_axis2.so (on Linux)
 		
 		copy C:\axis2c\build\deploy\lib\mod_axis2.dll 
