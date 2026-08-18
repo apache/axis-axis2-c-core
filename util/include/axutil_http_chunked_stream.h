@@ -53,7 +53,14 @@ extern "C"
          * apply to that header never sees it. These bound the chunked read
          * itself. max_body_size is AXIS2_MAX_REQUEST_SIZE_UNLIMITED (-1) for no
          * limit; body_read counts what has been handed to the parser so far.
-         * Appended to keep the offsets of the existing members unchanged. */
+         * Appended to keep the offsets of the existing members unchanged, which
+         * is only safe as long as nothing outside these libraries allocates
+         * this struct: http_transport_utils.c is the one place that does, and
+         * everyone else receives a pointer. Allocating it by size from a
+         * separately built binary would write the two members below past the
+         * end of a smaller allocation. Appending again means bumping
+         * VERSION_NO; removing or reordering means bumping it with age reset
+         * to 0, which changes the soname and forces consumers to relink. */
         int max_body_size;
         int body_read;
     };

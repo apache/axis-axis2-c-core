@@ -667,7 +667,17 @@ OPENSSLINC=$opensslinc
 OPENSSLLIB=$openssllib
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
-VERSION_NO="7:0:7"
+dnl libtool current:revision:age. axis2_callback_info_t gained two members in
+dnl the chunked-body ceiling work, so the library no longer presents the
+dnl interface 7 described and current has to move. age moves with it: the
+dnl members were appended, offsets of the existing ones are unchanged, and the
+dnl struct is only ever allocated inside libaxis2_http_util, so a caller that
+dnl merely holds a pointer is unaffected and the soname stays at 0.
+dnl
+dnl Set age to 0 instead -- giving soname 8 and forcing every consumer to
+dnl relink -- if a member is ever removed or reordered, or if anything outside
+dnl these libraries starts allocating a public struct by size.
+VERSION_NO="8:0:8"
 QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)
