@@ -12,6 +12,7 @@ Table of Contents
 			(a) With Guththila
 			(b) With libxml2
 		1.3.3 Building Samples
+		1.3.4 Building on a Second Machine
 	1.4 Running Samples
 		1.4.1 HTTP Transport
 			(a) Server
@@ -111,10 +112,33 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
           automake libtool make gcc g++ libssl-dev zlib1g-dev
 
     For testing and development (optional):
-        $ sudo apt install libgtest-dev valgrind
+        $ sudo apt install googletest libgtest-dev valgrind
 
-    Note: On modern Ubuntu/Debian systems, libgtest-dev provides pre-built
-    libraries that are automatically detected by the build system.
+    Note: the test build needs Google Test in BOTH forms, and installing only
+    one of them fails in a way that does not say so.
+
+      - The Google Test SOURCE tree, passed as --with-gtest=PATH (the googletest
+        package installs it at /usr/src/googletest/googletest). The build
+        compiles $(GTEST_DIR)/src/gtest-all.cc itself into gtest/libgtest.a; it
+        does not use a pre-built library for this part. Section 4 explains why.
+
+      - A library named libgtest/libgtest_main on the linker path, which is what
+        libgtest-dev provides. The Makefile.am files under util/test link
+        -lgtest -lgtest_main directly rather than against the copy the build just
+        compiled, so without it those tests fail to link with
+        "cannot find -lgtest" even though --with-gtest was given and the rest of
+        the suite built.
+
+    On a machine where installing libgtest-dev is not an option, point the
+    linker at the copy this build produces instead:
+
+        $ ./configure --enable-tests --with-gtest=/path/to/googletest \
+              LDFLAGS="-L$PWD/gtest"
+
+    gtest/ builds before util/, and its libgtest.a and libgtest_main.a carry
+    exactly the names -lgtest and -lgtest_main look for, so this resolves
+    without a system package. Verified on Ubuntu 22.04 with no Google Test
+    installed at all.
 
     Note: Apache httpd web server is NOT required for unit tests or basic
     development. Axis2/C includes a built-in simple HTTP server for testing.
@@ -469,8 +493,53 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
   	Please run './configure --help' in samples folder for more information on 
 	configure options.
 
-   	NOTE : If you don't provide a --prefix configure option, samples will by 
+   	NOTE : If you don't provide a --prefix configure option, samples will by
 		   default be installed into '/usr/local/axis2c/samples' directory.
+
+	NOTE : Export AXIS2C_HOME before running samples/build.sh. It is used both
+	       as the --prefix the samples install into and as the place their
+	       headers are found. build.sh now refuses to run without it, because
+	       an empty value produced "axis2_svc_skeleton.h: No such file or
+	       directory" for every service -- which reads as a missing dependency
+	       rather than a missing variable -- and left no services deployed, so
+	       the transport tests failed afterwards for an apparently unrelated
+	       reason.
+
+	1.3.4 Building on a Second Machine
+	----------------------------------
+
+	Copying a configured tree to another machine rather than checking it out
+	there is convenient -- it carries local changes without a push -- but two
+	things in it are machine-specific and must be dealt with.
+
+	Do not reuse the generated Makefiles. configure bakes absolute paths into
+	every Makefile it writes, including gtest/Makefile, which records the
+	--with-gtest path from the machine that ran configure. Copying those over a
+	tree that was already configured on the target reintroduces the source
+	machine's paths, and the build fails with
+
+	    No rule to make target '/usr/src/googletest/googletest/src/gtest-all.cc'
+
+	naming a path that exists only on the machine you copied from. Re-run
+	configure on the target after any copy; that is what regenerates them.
+
+	Copy the build-aux scripts as files, not as links. autogen.sh passes --copy
+	to libtoolize and automake so that ltmain.sh, test-driver, compile, missing,
+	install-sh, config.guess, config.sub and depcomp are real files rather than
+	symlinks into a versioned /usr/share/automake-X.Y directory. A tree
+	generated before that change still holds symlinks, which arrive dangling on
+	any machine with a different automake version -- or none. The symptoms name
+	the file rather than the cause:
+
+	    configure: error: cannot find required auxiliary files: compile missing
+	    ../../../test-driver: No such file or directory
+	    rsync: symlink has no referent
+
+	Re-running autogen.sh on the source tree replaces them. Note that automake
+	only installs files it considers missing, so links that already exist
+	survive --copy; delete them first, then run autogen.sh. rsync --copy-unsafe-
+	links dereferences such links in transit, but it cannot help with ones that
+	are already broken at the source.
 
 	1.4 Running Samples
 	-------------------
