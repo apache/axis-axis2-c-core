@@ -167,6 +167,32 @@ AC_SUBST(GUTHTHILA_LIBS)
 dnl AC_SUBST(NTLM_DIR) - NTLM removed
 AC_SUBST(DICLIENT_DIR)
 
+dnl user_guide/Makefile.am guards the HTTP/2 JSON sample services with these
+dnl two conditionals. They are declared in the top-level configure.ac, but this
+dnl subproject has its own, and until they were declared here as well automake
+dnl refused the tree with "AXIS2_JSON_ENABLED does not appear in AM_CONDITIONAL".
+dnl autogen.sh sends automake to /dev/null and reports only "failed", so the
+dnl samples build kept working off an already-generated configure and the
+dnl breakage stayed invisible until someone regenerated.
+dnl
+dnl Defaults match the top level: both off unless asked for.
+AC_ARG_ENABLE(json, [  --enable-json           enable json support (default=no)],
+[ case "${enableval}" in
+  no) samples_json_enabled=false ;;
+  *)  samples_json_enabled=true ;;
+  esac ],
+  samples_json_enabled=false)
+
+AC_ARG_ENABLE(http2, [  --enable-http2          enable HTTP/2 transport support (default=no)],
+[ case "${enableval}" in
+  no) samples_http2_enabled=false ;;
+  *)  samples_http2_enabled=true ;;
+  esac ],
+  samples_http2_enabled=false)
+
+AM_CONDITIONAL(AXIS2_JSON_ENABLED, test x$samples_json_enabled = xtrue)
+AM_CONDITIONAL(WITH_NGHTTP2, test x$samples_http2_enabled = xtrue)
+
 AC_CONFIG_FILES([Makefile \
     server/Makefile \
     server/echo/Makefile \
@@ -192,8 +218,8 @@ AC_CONFIG_FILES([Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     mtom_caching_callback/Makefile \
-    mtom_sending_callback/Makefile    
+    mtom_sending_callback/Makefile
     ])
-    
+
 AC_OUTPUT
 
