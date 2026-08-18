@@ -341,9 +341,21 @@ cmake -DHTTP2_JSON_ONLY_MODE=ON -DWITH_NGHTTP2=ON ..
 ```
 
 ### **Flag Dependencies**
-- `HTTP2_JSON_ONLY_MODE=1` - **Required** - Enables conditional compilation
-- `WITH_NGHTTP2=1` - **Required** - Enables HTTP/2 protocol support
+- `WITH_NGHTTP2=1` - **Required for HTTP/2 at all** - set by `--enable-http2`
+- `HTTP2_JSON_ONLY_MODE=1` - **Required for JSON-only mode, optional otherwise**
+  - Serving JSON over HTTP/2 does not need it: `--enable-http2 --enable-json`
+    alone is enough, and is what the build in INSTALL uses. What this define
+    adds is the elimination described above -- `mod_axis2.c` then skips the
+    AXIOM XML reader includes and its initialisation, and takes a pool
+    allocator instead of shared memory. It also drops SOAP from the module,
+    so set it only when the deployment is JSON-only.
 - Standard Axis2/C flags remain unchanged for compatibility
+
+> **Not to be confused with** `AXIS2_H2_JSON_ONLY_BUILD`. That define was
+> passed by `src/core/receivers/Makefile.am` and by the build recipe in
+> INSTALL, but no source file ever tested it, so it did nothing; both have
+> since dropped it. `HTTP2_JSON_ONLY_MODE`, documented here, is the one that
+> gates behaviour.
 
 ## 🎯 **Usage Guidelines**
 

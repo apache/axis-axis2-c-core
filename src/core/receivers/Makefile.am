@@ -25,8 +25,7 @@ libaxis2_receivers_la_CPPFLAGS = -I$(top_srcdir)/include \
                                 -I$(top_srcdir)/util/include \
                                 -I$(top_srcdir)/axiom/include \
                                 -I/usr/include/json-c \
-                                -DAXIS2_JSON_ENABLED \
-                                -DAXIS2_H2_JSON_ONLY_BUILD
+                                -DAXIS2_JSON_ENABLED
 libaxis2_receivers_la_LIBADD = -ljson-c
 else
 libaxis2_receivers_la_SOURCES = msg_recv.c \

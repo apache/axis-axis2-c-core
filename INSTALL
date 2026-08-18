@@ -81,9 +81,29 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 	            --with-apr=/usr/include/apr-1.0 \
 	            PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
 	            APACHE2_HOME=/usr \
-	            CFLAGS="$CFLAGS -DAXIS2_H2_JSON_ONLY_BUILD -DAXIS2_JSON_ENABLED -O2" \
-	            CPPFLAGS="$CPPFLAGS -DAXIS2_H2_JSON_ONLY_BUILD -DAXIS2_JSON_ENABLED" \
+	            CFLAGS="$CFLAGS -DAXIS2_JSON_ENABLED -O2" \
+	            CPPFLAGS="$CPPFLAGS -DAXIS2_JSON_ENABLED" \
 	            LDFLAGS="$LDFLAGS -L/usr/lib/x86_64-linux-gnu"
+
+	    The two configure flags are what matter: --enable-http2 turns on the
+	    transport, and --enable-json populates JSON_CFLAGS and JSON_LIBS through
+	    pkg-config, which the HTTP/2 code needs. HTTP/2 JSON works with the
+	    command above; nothing further has to be defined by hand.
+
+	    Earlier revisions of this file passed -DAXIS2_H2_JSON_ONLY_BUILD here.
+	    That define is never tested anywhere in the tree -- src/core/receivers/
+	    Makefile.am sets it and no source reads it -- so passing it had no
+	    effect. It has been dropped rather than left as a flag that looks
+	    load-bearing.
+
+	    The define that does gate behaviour is HTTP2_JSON_ONLY_MODE, which
+	    mod_axis2.c tests to skip the XML reader includes and initialisation and
+	    to take a pool allocator instead of shared memory. It is optional -- the
+	    build above serves JSON over HTTP/2 without it -- and switching it on
+	    also drops SOAP support from the module. See
+	    docs/HTTP2_CONDITIONAL_COMPILATION.md before using it; that document
+	    describes the supported combinations, which are HTTP/2 with JSON and
+	    HTTP/1.1 with SOAP, but not HTTP/2 with SOAP.
 
 	    Note: HTTP/2 transport provides:
 	    - Enterprise-grade stream multiplexing (100 concurrent streams)
