@@ -2,8 +2,16 @@
 # Deploy enhanced Apache module with pthread debugging
 set -e
 
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+MODULE="$REPO_ROOT/src/core/transport/http/server/apache2/.libs/libmod_axis2.so"
+
+if [ ! -f "$MODULE" ]; then
+    echo "No built module at $MODULE; build first." >&2
+    exit 1
+fi
+
 echo "Deploying enhanced module with pthread debugging..."
-echo "Module timestamp: $(stat -c '%y' /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so)"
+echo "Module timestamp: $(stat -c '%y' "$MODULE")"
 
 # Stop Apache
 echo "Stopping Apache..."
@@ -11,10 +19,10 @@ sudo systemctl stop apache2-custom
 
 # Deploy to both locations
 echo "Copying enhanced module to Apache modules directory..."
-sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/apache2/modules/mod_axis2.so
+sudo cp "$MODULE" /usr/local/apache2/modules/mod_axis2.so
 
 echo "Copying enhanced module to axis2c lib directory..."
-sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so
+sudo cp "$MODULE" /usr/local/axis2c/lib/libmod_axis2.so
 
 # Verify deployment
 echo "Verifying deployment timestamps..."

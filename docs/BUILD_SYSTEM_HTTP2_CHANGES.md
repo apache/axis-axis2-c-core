@@ -1,8 +1,8 @@
 # Apache Axis2/C Build System: HTTP/2 Architecture Changes
 
 **Document Date:** December 10, 2025
-**Development Branch Analysis:** /home/robert/repos/axis-axis2-c-core
-**Clean Baseline:** /home/robert/w2/axis-axis2-c-core
+**Development Branch Analysis:** the working checkout
+**Clean Baseline:** a separate unmodified checkout
 **Latest Regression Testing:** ✅ 2/2 HTTP/2 unit tests PASSING
 
 ## Executive Summary

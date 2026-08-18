@@ -2,17 +2,25 @@
 # Deploy Enhanced Memory-Safe Module Script
 # Date: Dec 19, 2025
 
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+MODULE="$REPO_ROOT/src/core/transport/http/server/apache2/.libs/libmod_axis2.so"
+
+if [ ! -f "$MODULE" ]; then
+    echo "No built module at $MODULE; build first." >&2
+    exit 1
+fi
+
 echo "=== Enhanced Memory-Safe Module Deployment ==="
-echo "Source: /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so"
+echo "Source: $MODULE"
 echo "Built: Dec 19 00:28 (Enhanced memory corruption fixes)"
 echo "Size: 327,712 bytes"
 echo ""
 
 echo "Step 1: Deploy enhanced module to Apache module path"
-sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so
+sudo cp "$MODULE" /usr/local/axis2c/lib/libmod_axis2.so
 
 echo "Step 2: Also copy to Apache modules directory"
-sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/apache2/modules/mod_axis2.so
+sudo cp "$MODULE" /usr/local/apache2/modules/mod_axis2.so
 
 echo "Step 3: Restart Apache to clear module cache"
 sudo systemctl stop apache2-custom

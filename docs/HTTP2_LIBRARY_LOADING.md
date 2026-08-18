@@ -796,7 +796,7 @@ service_class_name = "camera_control_service"; // WORKS PERFECTLY
 **Library File Size Analysis**:
 ```bash
 # Track library size changes across corruption fix iterations
-ls -la /home/robert/w2/axis-axis2-c-core/src/core/receivers/.libs/libaxis2_receivers.a
+ls -la src/core/receivers/.libs/libaxis2_receivers.a
 # 190,846 bytes - With complex memory validation (caused hangs)
 # 188,806 bytes - With ultra-safe hardcoded fallback (works perfectly)
 
