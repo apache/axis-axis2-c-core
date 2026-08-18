@@ -1031,12 +1031,39 @@ sudo make install
 export AXIS2C_HOME=/usr/local/axis2c
 export LD_LIBRARY_PATH=/usr/local/axis2c/lib:$LD_LIBRARY_PATH
 
-# Build and install HTTP/2 sample services
-cd samples/user_guide/bigdata-h2-service && bash build_json_service.sh && cd ../../..
-cd samples/user_guide/login-service && bash build_json_service.sh && cd ../../..
-cd samples/user_guide/testws-service && bash build_json_service.sh && cd ../../..
-cd samples/user_guide/camera-control-service && bash build_camera_service.sh && cd ../../..
-cd samples/user_guide/financial-benchmark-service && bash build_financial_service.sh && cd ../../..
+# Build and install the HTTP/2 JSON sample services
+#
+# Both flags are required, for the reasons given in
+# docs/HTTP2_CONDITIONAL_COMPILATION.md: --enable-http2 turns on the transport,
+# and --enable-json is what populates JSON_CFLAGS and JSON_LIBS through
+# pkg-config. With --enable-json missing, JSON_LIBS is empty; the services still
+# link, because a shared library tolerates undefined symbols, and the failure
+# only appears later as undefined json_object_* references in the one executable
+# among them.
+cd samples
+./configure --prefix=${AXIS2C_HOME} --enable-json --enable-http2
+make -C user_guide
+make -C user_guide install
+cd ..
+
+# The per-service build_*.sh scripts beside each service still work and are what
+# earlier revisions of this guide used, but prefer the build above. The scripts
+# hardcode /usr/local/axis2c for headers, libraries and the install directory
+# (so they need sudo), and they link the service against -laxutil and
+# -laxis2_engine from that one prefix. That binding is baked into the .so and
+# takes precedence over LD_LIBRARY_PATH, so such a service cannot be pointed at
+# a second Axis2/C installation, and it ties the service to the core libraries
+# it was built against. The autotools build installs into ${AXIS2C_HOME} and
+# links neither: a service is dlopened by mod_axis2 and resolves its symbols
+# from the host process, which is also what the SOAP samples under samples/server
+# have always done.
+
+# Build user_guide, not the whole samples tree. SUBDIRS also covers the SOAP
+# clients, which are not part of an HTTP/2 JSON configuration -- see the
+# supported-configuration table in docs/HTTP2_CONDITIONAL_COMPILATION.md, which
+# lists HTTP/2 + JSON and HTTP/1.1 + SOAP but not HTTP/2 + SOAP. A bare `make`
+# here stops in client/math on an unrelated SOAP link error before it reaches
+# any of the JSON services.
 
 # Check which source files exist vs what's expected by Makefile.am
 echo "=== BigDataH2Service ==="
