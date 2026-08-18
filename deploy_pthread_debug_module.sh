@@ -14,12 +14,12 @@ echo "Copying enhanced module to Apache modules directory..."
 sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/apache2/modules/mod_axis2.so
 
 echo "Copying enhanced module to axis2c lib directory..."
-sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so.0.7.0
+sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so
 
 # Verify deployment
 echo "Verifying deployment timestamps..."
 ls -la /usr/local/apache2/modules/mod_axis2.so
-ls -la /usr/local/axis2c/lib/libmod_axis2.so.0.7.0
+ls -la /usr/local/axis2c/lib/libmod_axis2.so
 
 # Start Apache
 echo "Starting Apache with enhanced pthread debugging module..."

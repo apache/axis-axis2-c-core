@@ -9,7 +9,7 @@ echo "Size: 327,712 bytes"
 echo ""
 
 echo "Step 1: Deploy enhanced module to Apache module path"
-sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so.0.7.0
+sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/axis2c/lib/libmod_axis2.so
 
 echo "Step 2: Also copy to Apache modules directory"
 sudo cp /home/robert/w2/axis-axis2-c-core/src/core/transport/http/server/apache2/.libs/libmod_axis2.so /usr/local/apache2/modules/mod_axis2.so
@@ -21,7 +21,7 @@ sudo pkill -f apache2 2>/dev/null || true
 sudo systemctl start apache2-custom
 
 echo "Step 4: Verify deployment"
-ls -la /usr/local/axis2c/lib/libmod_axis2.so.0.7.0
+ls -la /usr/local/axis2c/lib/libmod_axis2.so
 ls -la /usr/local/apache2/modules/mod_axis2.so
 
 echo "=== Deployment Complete ==="
