@@ -70,10 +70,11 @@ make install
 # Build sample services (skip CameraControlService — Android only)
 echo ""
 echo "── Building sample services ──"
-cd samples/user_guide/bigdata-h2-service && bash build_json_service.sh && cd "$AXIS2C_SRC"
-cd samples/user_guide/login-service && bash build_json_service.sh && cd "$AXIS2C_SRC"
-cd samples/user_guide/testws-service && bash build_json_service.sh && cd "$AXIS2C_SRC"
-cd samples/user_guide/financial-benchmark-service && bash build_financial_service.sh && cd "$AXIS2C_SRC"
+cd samples
+./configure --prefix="${AXIS2C_HOME}" --enable-json --enable-http2
+make -C user_guide
+make -C user_guide install
+cd "$AXIS2C_SRC"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Step 3: Enable Apache modules

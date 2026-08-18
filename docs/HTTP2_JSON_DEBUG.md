@@ -409,10 +409,10 @@ Many issues stem from path differences between these two environments:
 | Service management | `systemctl restart apache2` | `httpd -k restart` |
 
 The `deploy-localhost.sh` script and `axis2-services.conf` are designed for
-the **packaged** Apache. The individual service build scripts
-(`build_json_service.sh`, etc.) detect source-built Apache at
-`/usr/local/apache2` and configure it automatically; otherwise they skip
-module installation and defer to `deploy-localhost.sh`.
+the **packaged** Apache. The services themselves are built through the
+samples build system (`./configure --enable-json --enable-http2` in
+`samples`, then `make -C user_guide`), which installs them under
+`${AXIS2C_HOME}` and leaves module installation to `deploy-localhost.sh`.
 
 ---
 

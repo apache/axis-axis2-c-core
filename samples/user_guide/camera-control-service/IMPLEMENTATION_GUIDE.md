@@ -90,7 +90,7 @@ libcamera_control_service_la_LIBADD += \
     -ladditional_deps
 ```
 
-#### 2. Update build_camera_service.sh
+#### 2. Update Makefile.am
 
 ```bash
 # Add camera-specific compile flags

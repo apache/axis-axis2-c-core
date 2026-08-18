@@ -131,7 +131,6 @@ camera-control-service/
 │   └── camera_control_service.c          # Service implementation with stubs
 ├── services.xml                          # HTTP/2 service configuration
 ├── Makefile.am                          # Build system integration
-├── build_camera_service.sh              # Quick build script
 ├── README.md                            # This documentation
 └── IMPLEMENTATION_GUIDE.md              # Detailed implementation examples
 ```
@@ -185,14 +184,13 @@ See `IMPLEMENTATION_GUIDE.md` for detailed examples and integration patterns.
 ### Build and Install
 
 ```bash
-# Navigate to service directory
-cd /path/to/axis-axis2-c-core/samples/user_guide/camera-control-service
-
 # Install dependencies (Ubuntu/Debian)
 sudo apt install libjson-c-dev
 
-# Build the service
-./build_camera_service.sh
+# Build and install the service
+cd /path/to/axis-axis2-c-core/samples
+./configure --prefix="${AXIS2C_HOME}" --enable-json --enable-http2
+make -C user_guide/camera-control-service install
 
 # Service is automatically installed to:
 # /usr/local/axis2c/services/CameraControlService/

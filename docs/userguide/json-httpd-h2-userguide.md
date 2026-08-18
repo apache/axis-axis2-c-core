@@ -1571,8 +1571,10 @@ This benchmark demonstrates that Axis2/C can perform enterprise financial calcul
 
 **Build the service:**
 ```bash
-cd samples/user_guide/financial-benchmark-service
-bash build_financial_service.sh
+cd samples
+./configure --prefix=${AXIS2C_HOME} --enable-json --enable-http2
+make -C user_guide/financial-benchmark-service
+make -C user_guide/financial-benchmark-service install
 ```
 
 ## Architecture Comparison: Spring Boot vs Apache httpd

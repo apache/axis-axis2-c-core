@@ -46,7 +46,7 @@ service_DATA = services.xml
 confdir = $(datadir)/axis2c/samples/user_guide/camera-control-service
 conf_DATA = README.md IMPLEMENTATION_GUIDE.md
 
-EXTRA_DIST = services.xml README.md IMPLEMENTATION_GUIDE.md build_camera_service.sh
+EXTRA_DIST = services.xml README.md IMPLEMENTATION_GUIDE.md
 
 # Clean generated files
 CLEANFILES = *.la *.lo *.o
