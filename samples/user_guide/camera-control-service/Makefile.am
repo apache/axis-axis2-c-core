@@ -7,17 +7,13 @@ libcamera_control_service_la_SOURCES = \
     src/camera_control_service.c
 
 libcamera_control_service_la_CPPFLAGS = \
-    -I$(top_srcdir)/include \
-    -I$(top_srcdir)/util/include \
-    -I$(top_srcdir)/src/core/transport/http/util \
+    @AXIS2INC@ \
     $(JSON_CFLAGS) \
     -DAXIS2_JSON_ENABLED \
     -DWITH_NGHTTP2
 
 libcamera_control_service_la_LDFLAGS = -module -avoid-version
 libcamera_control_service_la_LIBADD = \
-    $(top_builddir)/util/src/libaxutil.la \
-    $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
     $(JSON_LIBS)
 
 # Note: Use curl for HTTP/2 camera control testing

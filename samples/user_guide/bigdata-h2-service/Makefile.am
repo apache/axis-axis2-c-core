@@ -11,18 +11,13 @@ libbigdata_h2_service_la_SOURCES = \
     src/bigdata_h2_service_handler.c
 
 libbigdata_h2_service_la_CPPFLAGS = \
-    -I$(top_srcdir)/include \
-    -I$(top_srcdir)/util/include \
-    -I$(top_srcdir)/axiom/include \
-    -I$(top_srcdir)/src/core/transport/http/util \
+    @AXIS2INC@ \
     $(JSON_CFLAGS) \
     -DAXIS2_JSON_ENABLED \
     -DWITH_NGHTTP2
 
 libbigdata_h2_service_la_LDFLAGS = -module -avoid-version
 libbigdata_h2_service_la_LIBADD = \
-    $(top_builddir)/util/src/libaxutil.la \
-    $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
     $(JSON_LIBS) \
     -lm
 

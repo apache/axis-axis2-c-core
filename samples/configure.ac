@@ -155,6 +155,16 @@ AC_ARG_WITH(axis2,
   AC_MSG_RESULT(no)
 )
 
+dnl Executables under samples (as opposed to dlopened service modules) have to
+dnl link the Axis2/C libraries, so they need the library directory as well as
+dnl the include directory. AXIS2INC already carries the latter; derive the
+dnl former from the same AXIS2C_HOME.
+if test -d "${AXIS2C_HOME}/lib"; then
+    axis2lib="-L${AXIS2C_HOME}/lib"
+fi
+AXIS2LIB=$axis2lib
+AC_SUBST(AXIS2LIB)
+
 APACHE2INC=$apache2inc
 AXIS2INC=$axis2inc
 APRINC=$aprinc
@@ -182,6 +192,14 @@ AC_ARG_ENABLE(json, [  --enable-json           enable json support (default=no)]
   *)  samples_json_enabled=true ;;
   esac ],
   samples_json_enabled=false)
+
+dnl The JSON services reference JSON_CFLAGS and JSON_LIBS. Populate them the way
+dnl the top-level configure.ac does; without this both are empty, and because a
+dnl shared library tolerates undefined symbols the services still link while the
+dnl one executable among them fails on json_object_new_object and friends.
+if test x$samples_json_enabled = xtrue; then
+    PKG_CHECK_MODULES([JSON], [json-c >= 0.11])
+fi
 
 AC_ARG_ENABLE(http2, [  --enable-http2          enable HTTP/2 transport support (default=no)],
 [ case "${enableval}" in
@@ -217,6 +235,11 @@ AC_CONFIG_FILES([Makefile \
     client/session/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
+    user_guide/bigdata-h2-service/Makefile \
+    user_guide/camera-control-service/Makefile \
+    user_guide/financial-benchmark-service/Makefile \
+    user_guide/login-service/Makefile \
+    user_guide/testws-service/Makefile \
     mtom_caching_callback/Makefile \
     mtom_sending_callback/Makefile
     ])

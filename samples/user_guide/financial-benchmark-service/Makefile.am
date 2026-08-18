@@ -34,16 +34,10 @@ libfinancial_benchmark_service_la_SOURCES = \
     src/axis2_json_secure_fault.c
 
 libfinancial_benchmark_service_la_CPPFLAGS = \
-    -I$(top_srcdir)/include \
-    -I$(top_srcdir)/util/include \
-    -I$(top_srcdir)/axiom/include \
-    -I$(top_srcdir)/neethi/include \
+    @AXIS2INC@ \
     $(JSON_CFLAGS)
 
 libfinancial_benchmark_service_la_LIBADD = \
-    $(top_builddir)/src/core/engine/libaxis2_engine.la \
-    $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-    $(top_builddir)/util/src/libaxutil.la \
     $(JSON_LIBS) \
     -lm
 
@@ -71,16 +65,11 @@ financial_benchmark_mcp_SOURCES = \
     src/finbench_mcp_main.c
 
 financial_benchmark_mcp_CPPFLAGS = \
-    -I$(top_srcdir)/include \
-    -I$(top_srcdir)/util/include \
-    -I$(top_srcdir)/axiom/include \
-    -I$(top_srcdir)/neethi/include \
+    @AXIS2INC@ \
     $(JSON_CFLAGS)
 
 financial_benchmark_mcp_LDADD = \
-    $(top_builddir)/src/core/engine/libaxis2_engine.la \
-    $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-    $(top_builddir)/util/src/libaxutil.la \
+    @AXIS2LIB@ -laxutil -laxis2_engine \
     $(JSON_LIBS) \
     -lm
 
