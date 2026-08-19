@@ -86,12 +86,11 @@ axis2_engine_free(
     axis2_engine_t * engine,
     const axutil_env_t * env)
 {
-    /* Clean up HTTP service provider singleton */
-    axis2_http_service_provider_t* service_provider = axis2_http_service_provider_get_impl(env);
-    if (service_provider) {
-        service_provider->free(service_provider, env);
-        axis2_http_service_provider_set_impl(env, NULL);
-    }
+    /* The HTTP service provider is a process-wide singleton and engines are
+     * created and freed per request, so tearing it down here destroyed an
+     * object other in-flight requests were still using. Its lifetime belongs
+     * to module init and process shutdown; freeing the engine must not touch
+     * it. */
 
     AXIS2_FREE(env->allocator, engine);
     return;

@@ -765,7 +765,15 @@ axiom_soap_builder_construct_xop_include(
     /* everything looks fine, so recursively build the OM tree, so that we can get data handlers */
     while(!axiom_node_is_complete(om_element_node, env))
     {
-        axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
+        /* next_with_token returns -1 on error. Discarding it means malformed
+         * XML that never completes the node spins here forever; om_node.c
+         * checks the same call the same way. */
+        if(-1 == axiom_stax_builder_next_with_token(soap_builder->om_builder, env))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Building the xop:Include subtree failed before the node completed");
+            return AXIS2_FAILURE;
+        }
     }
 
     if(soap_builder->mime_body_parts)

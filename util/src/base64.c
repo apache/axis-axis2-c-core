@@ -129,6 +129,11 @@ axutil_base64_decode_len(
     if(nprbytes & 0x03)
         nbytesdecoded += (nprbytes & 0x03) - 1;
 
+    /* This is the decoded data length, not a buffer size, and the two callers
+     * differ: axutil_base64_decode_binary writes exactly this many bytes, so
+     * this is the allocation it needs, while axutil_base64_decode also writes
+     * a terminating NUL at [len] and therefore needs one more. Allocating only
+     * this much and then calling the latter overruns by a byte. */
     return nbytesdecoded;
 
 }

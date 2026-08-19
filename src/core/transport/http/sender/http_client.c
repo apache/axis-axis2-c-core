@@ -1423,6 +1423,14 @@ axis2_http_client_connect_ssl_host(
                 break;
             }
         }
+        if(read <= 0 && AXIS2_FALSE == end_of_line)
+        {
+            /* The peer closed or errored part-way through a header line. The
+             * inner loop leaves end_of_line clear in that case, so without
+             * this the outer loop would keep re-entering a read that returns
+             * 0 at once -- a pinned thread on a truncated CONNECT response. */
+            break;
+        }
         if(AXIS2_TRUE == end_of_line)
         {
             if(0 == axutil_strcmp(str_header, AXIS2_HTTP_CRLF))
@@ -1433,6 +1441,10 @@ axis2_http_client_connect_ssl_host(
             {
                 end_of_line = AXIS2_FALSE;
                 memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
+                /* Reset with the buffer: this counts the current line, and
+                 * leaving it accumulating trips the length check on a later,
+                 * short line. */
+                str_header_length = 0;
             }
 
         }

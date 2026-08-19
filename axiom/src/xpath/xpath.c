@@ -302,10 +302,16 @@ axiom_xpath_cast_node_to_string(
     }
     else if (node->type == AXIOM_XPATH_TYPE_NUMBER)
     {
-        /* Allocate 50 bytes */
-        res = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 50);
+        /* %lf of a large double runs to 318 characters (-DBL_MAX), which the
+         * old 50-byte allocation could not hold. Size for the worst case and
+         * bound the write regardless. */
+        res = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 320);
+        if(!res)
+        {
+            return NULL;
+        }
 
-        sprintf(res, "%lf", *(double *)(node->value));
+        snprintf(res, 320, "%lf", *(double *)(node->value));
 
         return res;
     }
