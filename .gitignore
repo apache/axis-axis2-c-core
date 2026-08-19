@@ -126,8 +126,6 @@ test-suite.log
 
 # Build scripts (generated)
 axis2c_build.sh
-bindist.sh
-dist.sh
 clean
 
 # Personal/temporary files

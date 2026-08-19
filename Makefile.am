@@ -70,11 +70,9 @@ dist-hook:
 	find $(distdir) -name "*.gcno" -delete
 	find $(distdir) -path "*/gtest/gtest-all.cc" -delete
 	find $(distdir) -path "*/gtest/gtest_main.cc" -delete
-	sh dist.sh
 
 bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
-	sh bindist.sh
 	mkdir axis2c-bin-${PACKAGE_VERSION}-linux
 	cp -r `pwd`/deploy/* axis2c-bin-${PACKAGE_VERSION}-linux
 	cp AUTHORS axis2c-bin-${PACKAGE_VERSION}-linux

@@ -767,8 +767,6 @@ AC_CONFIG_FILES([Makefile \
     ides/Makefile \
     include/Makefile \
     axis2c.pc \
-    dist.sh \
-	bindist.sh \
 	axis2c_build.sh
     ])
 

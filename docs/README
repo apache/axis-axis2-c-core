@@ -1,1 +1,2 @@
-If you're using a git checkout docs are inside the xdocs directory.
+The documentation sources are in this directory and are published with
+mkdocs (see mkdocs.yml at the repository root).
