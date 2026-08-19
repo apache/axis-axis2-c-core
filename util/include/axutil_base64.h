@@ -90,19 +90,35 @@ extern "C"
         int len_plain_src);
 
     /*
-     * Determine the length of a plain text string given the encoded version
+     * Determine the length of the decoded data for a given encoded string.
+     *
+     * This is the length of the decoded data, NOT the buffer size the decode
+     * functions require, and the two differ:
+     *   axutil_base64_decode_binary() writes exactly this many bytes, so this
+     *     value is the allocation it needs.
+     *   axutil_base64_decode() writes those bytes AND a terminating NUL at
+     *     [len], so it needs this value PLUS ONE.
+     * Allocating only this much and then calling axutil_base64_decode()
+     * overruns the buffer by a byte.
+     *
      * @param coded_src The encoded string
-     * @return the length of the plain text string
+     * @return the length of the decoded data, or -1 if coded_src is NULL
      */
     AXIS2_EXTERN int AXIS2_CALL
     axutil_base64_decode_len(
         const char *coded_src);
 
     /*
-     * Decode a string to plain text
-     * @param plain_dst The destination string for the plain text. size of this should be axutil_base64_decode_len + 1
+     * Decode a string to plain text and NUL terminate it.
+     *
+     * @param plain_dst The destination buffer for the plain text.
+     *                  Must be at least axutil_base64_decode_len(coded_src) + 1
+     *                  bytes: this function writes a terminating NUL after the
+     *                  decoded data. Use axutil_base64_decode_binary() if you
+     *                  do not want the terminator and sized the buffer without
+     *                  the extra byte.
      * @param coded_src The encoded string
-     * @return the length of the plain text string
+     * @return the length of the decoded data, excluding the terminating NUL
      */
     AXIS2_EXTERN int AXIS2_CALL
     axutil_base64_decode(
@@ -110,10 +126,16 @@ extern "C"
         const char *coded_src);
 
     /*
-     * Decode an EBCDIC string to plain text
-     * @param plain_dst The destination string for the plain text. size of this should be axutil_base64_decode_len
+     * Decode a string to plain text without adding a terminator. Identical to
+     * axutil_base64_decode() except that no NUL is written, and on EBCDIC
+     * machines where the decoded bytes are not translated.
+     *
+     * @param plain_dst The destination buffer for the plain text.
+     *                  Must be at least axutil_base64_decode_len(coded_src)
+     *                  bytes. No terminator is written, so no extra byte is
+     *                  needed.
      * @param coded_src The encoded string
-     * @return the length of the plain text string
+     * @return the length of the decoded data
      */
     AXIS2_EXTERN int AXIS2_CALL
     axutil_base64_decode_binary(
