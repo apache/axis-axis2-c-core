@@ -700,14 +700,21 @@ axutil_url_encode(
     int i;
     for(i = 0; i < len && buff[i]; i++)
     {
-        if(isalnum(buff[i]) || is_safe_or_unreserve(buff[i]))
+        if(isalnum((unsigned char)buff[i]) || is_safe_or_unreserve(buff[i]))
         {
-            sprintf(string, "%c", buff[i]);
+            snprintf(string, sizeof(string), "%c", buff[i]);
         }
         else
         {
-            /* %%%x is to print % mark with the hex value */
-            sprintf(string, "%%%x", buff[i]);
+            /* %%%02x is to print % mark with the hex value.
+             *
+             * The cast and the width are both load-bearing. axis2_char_t is
+             * signed, so any byte from 0x80 up was promoted to a negative int
+             * and printed as eight hex digits -- "%ffffffab" -- which is nine
+             * characters into this four-byte buffer. As an unsigned char with
+             * %02x it is always two digits, so "%ab" plus the NUL fits
+             * exactly. */
+            snprintf(string, sizeof(string), "%%%02x", (unsigned char)buff[i]);
         }
 
         if(((int)strlen(dest) + 4) > len)

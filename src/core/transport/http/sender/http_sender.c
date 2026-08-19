@@ -961,7 +961,9 @@ axis2_http_sender_send(
     if(!doing_mtom)
     {
         axis2_http_simple_request_set_body_string(request, env, buffer, buffer_size);
-	AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, buffer);
+	/* Must stay "%s": buffer is the serialized request body, which carries
+	 * application and upstream-influenced content. */
+	AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "%s", buffer);
     }
 
     /* HTTPS request processing */
@@ -3291,8 +3293,9 @@ axis2_http_sender_get_param_string(
             value = axiom_element_get_text(element, env, node);
             if(value)
             {
-                encoded_value = (axis2_char_t *)AXIS2_MALLOC(env->allocator, strlen(value));
-                memset(encoded_value, 0, strlen(value));
+                /* +1 so the buffer has room for the terminator the encoder writes. */
+                encoded_value = (axis2_char_t *)AXIS2_MALLOC(env->allocator, strlen(value) + 1);
+                memset(encoded_value, 0, strlen(value) + 1);
                 encoded_value = axutil_url_encode(env, encoded_value, value, (int)strlen(value));
                 /* We are sure that the difference lies within the int range */
 
