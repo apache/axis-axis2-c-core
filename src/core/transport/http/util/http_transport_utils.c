@@ -41,6 +41,7 @@
 #include <axutil_string_util.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <stdint.h>
 #include <axutil_uuid_gen.h>
 #include <platforms/axutil_platform_auto_sense.h>
 #include <axiom_mime_part.h>
@@ -431,16 +432,29 @@ axis2_http_transport_utils_process_http_post_request(
     soap_action = (axis2_char_t *)axutil_string_get_buffer(soap_action_header, env);
     soap_action_len = axutil_string_get_length(soap_action_header, env);
 
-    if(soap_action && (soap_action_len > 0))
+    /* soap_action_len is unsigned and axutil_string_get_length returns -1 on
+     * error, so a failure here reads as UINT_MAX rather than as a failure. */
+    if(soap_action && (soap_action_len > 0) && (soap_action_len != (unsigned int)-1))
     {
-        /* remove leading and trailing " s */
+        size_t sa_len;
+
+        /* remove leading and trailing " s.
+         *
+         * The trailing index was soap_action_len - 2 against the length taken
+         * before the memmove below. That happened to land on the last
+         * character when a leading quote had just been removed, and one short
+         * of it otherwise -- and for a one-byte header the unsigned
+         * subtraction wrapped, indexing at UINT_MAX. Re-derive the length
+         * after any shift and index the real last character. */
         if(AXIS2_DOUBLE_QUOTE == soap_action[0])
         {
-            memmove(soap_action, soap_action + sizeof(char), soap_action_len - 1 + sizeof(char));
+            memmove(soap_action, soap_action + sizeof(char), strlen(soap_action));
         }
-        if(AXIS2_DOUBLE_QUOTE == soap_action[soap_action_len - 2])
+
+        sa_len = strlen(soap_action);
+        if(sa_len >= 1 && AXIS2_DOUBLE_QUOTE == soap_action[sa_len - 1])
         {
-            soap_action[soap_action_len - 2] = AXIS2_ESC_NULL;
+            soap_action[sa_len - 1] = AXIS2_ESC_NULL;
         }
     }
     else
@@ -906,6 +920,31 @@ axis2_http_transport_utils_process_http_post_request(
     {
         axis2_char_t *buffer = NULL;
         axis2_char_t *new_url = NULL;
+        /* content_length is size_t here, but the workers hand a request with
+         * no usable Content-Length -- a chunked body, or none declared at all
+         * -- the -1 sentinel, which arrives as SIZE_MAX. content_length + 1
+         * then wraps to 0 and the allocation below is zero bytes, into which
+         * on_data_request writes the whole body: an unbounded heap overflow
+         * whose length and contents the caller chooses. The ceiling the
+         * workers apply does not catch it, because they only screen a
+         * positive declared length. Refuse both the sentinel and anything
+         * past maxRequestSize before allocating.
+         *
+         * A refusal is the right answer rather than a bounded read: this path
+         * exists to turn a form-urlencoded body into a query string, and a
+         * body of unknown length has no place there. */
+        axis2_ssize_t max_request_size =
+            axis2_http_transport_utils_get_max_request_size(env, conf_ctx);
+
+        if(content_length == SIZE_MAX
+            || (max_request_size != AXIS2_MAX_REQUEST_SIZE_UNLIMITED
+                && content_length > (size_t)max_request_size))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Refusing form-urlencoded body with no usable length or past %s",
+                AXIS2_MAX_REQUEST_SIZE);
+            return AXIS2_FAILURE;
+        }
         buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (content_length + 1));
         if(!buffer)
         {
@@ -1419,6 +1458,31 @@ axis2_http_transport_utils_process_http_put_request(
     {
         axis2_char_t *buffer = NULL;
         axis2_char_t *new_url = NULL;
+        /* content_length is size_t here, but the workers hand a request with
+         * no usable Content-Length -- a chunked body, or none declared at all
+         * -- the -1 sentinel, which arrives as SIZE_MAX. content_length + 1
+         * then wraps to 0 and the allocation below is zero bytes, into which
+         * on_data_request writes the whole body: an unbounded heap overflow
+         * whose length and contents the caller chooses. The ceiling the
+         * workers apply does not catch it, because they only screen a
+         * positive declared length. Refuse both the sentinel and anything
+         * past maxRequestSize before allocating.
+         *
+         * A refusal is the right answer rather than a bounded read: this path
+         * exists to turn a form-urlencoded body into a query string, and a
+         * body of unknown length has no place there. */
+        axis2_ssize_t max_request_size =
+            axis2_http_transport_utils_get_max_request_size(env, conf_ctx);
+
+        if(content_length == SIZE_MAX
+            || (max_request_size != AXIS2_MAX_REQUEST_SIZE_UNLIMITED
+                && content_length > (size_t)max_request_size))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Refusing form-urlencoded body with no usable length or past %s",
+                AXIS2_MAX_REQUEST_SIZE);
+            return AXIS2_FAILURE;
+        }
         buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (content_length + 1));
         if(!buffer)
         {
@@ -2447,6 +2511,18 @@ axis2_http_transport_utils_on_data_request(
     if(!buffer || !ctx)
     {
         return 0;
+    }
+    /* size counts the caller's buffer including the slot this function
+     * reserves for the trailing NUL, so anything at or below zero is a
+     * caller whose length arithmetic already went wrong -- most of them
+     * derived it from a wire-supplied Content-Length. Both branches below
+     * decrement first and hand the result to a read that treats it as a
+     * count, so 0 would become -1 and read without bound into a buffer that
+     * has no room at all. Refuse here as well as at the call sites: this is
+     * the one point every body read passes through. */
+    if(size <= 0)
+    {
+        return -1;
     }
     env = ((axis2_callback_info_t *)ctx)->env;
     if(cb_ctx->unread_len <= 0 && -1 != cb_ctx->content_length)

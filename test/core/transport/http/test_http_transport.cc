@@ -1736,6 +1736,30 @@ protected:
     axutil_env_t *m_env = NULL;
 };
 
+/* A caller whose length arithmetic wrapped hands on_data_request a size of
+ * zero. Both branches decrement before reading, so zero becomes -1 and the
+ * read would treat it as an enormous count into a buffer with no room. The
+ * callers that can produce it are guarded too, but this is the single point
+ * every body read passes through, so the refusal is pinned here.
+ *
+ * No callback context is needed: the check sits above every dereference of
+ * ctx, which is also what makes it safe to reach with a stack-allocated one. */
+TEST_F(TestChunkedBodyCeiling, refuses_a_nonpositive_read_size)
+{
+    axis2_callback_info_t cb;
+    char buf[16];
+
+    memset(&cb, 0, sizeof(cb));
+    cb.env = m_env;
+
+    ASSERT_EQ(-1, axis2_http_transport_utils_on_data_request(buf, 0, &cb));
+    ASSERT_EQ(-1, axis2_http_transport_utils_on_data_request(buf, -1, &cb));
+
+    /* The existing contract for a missing buffer or context is unchanged. */
+    ASSERT_EQ(0, axis2_http_transport_utils_on_data_request(NULL, 64, &cb));
+    ASSERT_EQ(0, axis2_http_transport_utils_on_data_request(buf, 64, NULL));
+}
+
 TEST_F(TestChunkedBodyCeiling, refuses_a_body_over_the_ceiling)
 {
     int bytes = 0;
