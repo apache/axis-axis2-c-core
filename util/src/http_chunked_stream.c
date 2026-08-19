@@ -19,6 +19,7 @@
 #include <axutil_string.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #define AXIS2_HTTP_CRLF "\r\n"
 
@@ -105,6 +106,13 @@ axutil_http_chunked_stream_read(
         {
             len = axutil_stream_read(chunked_stream->stream, env, (axis2_char_t *)buffer + count
                 - yet_to_read, chunked_stream->unread_len);
+            /* A peer that closes mid-chunk returns 0, and an error returns -1;
+             * subtracting either leaves yet_to_read positive -- -1 raises it --
+             * so the loop would never finish. */
+            if(len <= 0)
+            {
+                break;
+            }
             yet_to_read -= len;
             chunked_stream->unread_len -= len;
             if(chunked_stream->unread_len <= 0)
@@ -116,6 +124,10 @@ axutil_http_chunked_stream_read(
         {
             len = axutil_stream_read(chunked_stream->stream, env, (axis2_char_t *)buffer + count
                 - yet_to_read, yet_to_read);
+            if(len <= 0)
+            {
+                break;
+            }
             yet_to_read -= len;
             chunked_stream->unread_len -= len;
         }
@@ -167,6 +179,7 @@ axutil_http_chunked_stream_start_chunk(
     axis2_char_t tmp_buf[3] = "";
     axis2_char_t str_chunk_len[512] = "";
     axis2_char_t *tmp = NULL;
+    size_t len_pos = 0;
     int read = -1;
 
     /* remove the last CRLF of the previous chunk if any */
@@ -175,16 +188,34 @@ axutil_http_chunked_stream_start_chunk(
         read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 2);
         chunked_stream->chunk_started = AXIS2_FALSE;
     }
-    /* read the len and chunk extension */
-    while((read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 1)) > 0)
+    /* Read the len and chunk extension.
+     *
+     * The accumulation is indexed and capped: the old strcat appended into a
+     * fixed 512-byte stack buffer for as long as the peer withheld a CRLF, so
+     * a long chunk-size line simply ran off the end of it. Reaching the cap
+     * without a CRLF is a malformed line, not something to keep reading. */
+    while(len_pos + 1 < sizeof(str_chunk_len)
+        && (read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 1)) > 0)
     {
-        tmp_buf[read] = '\0';
-        strcat(str_chunk_len, tmp_buf);
+        str_chunk_len[len_pos++] = tmp_buf[0];
+        str_chunk_len[len_pos] = '\0';
         if(0 != strstr(str_chunk_len, AXIS2_HTTP_CRLF))
         {
             break;
         }
     }
+
+    if(0 == strstr(str_chunk_len, AXIS2_HTTP_CRLF))
+    {
+        /* No terminated size line: either the peer went away mid-line or it
+         * exceeded the cap. Callers ignore this function's return value, so
+         * end the stream here or the read loop keeps calling back. */
+        chunked_stream->end_of_chunks = AXIS2_TRUE;
+        chunked_stream->current_chunk_size = 0;
+        chunked_stream->unread_len = 0;
+        return AXIS2_FAILURE;
+    }
+
     /* check whether we have extensions */
     tmp = strchr(str_chunk_len, ';');
     if(tmp)
@@ -192,7 +223,33 @@ axutil_http_chunked_stream_start_chunk(
         /* we don't use extensions right now */
         *tmp = '\0';
     }
-    chunked_stream->current_chunk_size = strtol(str_chunk_len, NULL, 16);
+
+    /* strtol accepted a leading '-', so a chunk size of "-1" became a negative
+     * current_chunk_size and then a negative read count. Parse unsigned,
+     * reject a sign outright, require at least one hex digit, and refuse a
+     * value that will not fit the int this is stored in. */
+    {
+        char *endp = NULL;
+        unsigned long parsed = 0;
+
+        if('-' == str_chunk_len[0] || '+' == str_chunk_len[0])
+        {
+            chunked_stream->end_of_chunks = AXIS2_TRUE;
+            chunked_stream->current_chunk_size = 0;
+            chunked_stream->unread_len = 0;
+            return AXIS2_FAILURE;
+        }
+
+        parsed = strtoul(str_chunk_len, &endp, 16);
+        if(endp == str_chunk_len || parsed > (unsigned long)INT_MAX)
+        {
+            chunked_stream->end_of_chunks = AXIS2_TRUE;
+            chunked_stream->current_chunk_size = 0;
+            chunked_stream->unread_len = 0;
+            return AXIS2_FAILURE;
+        }
+        chunked_stream->current_chunk_size = (int)parsed;
+    }
     if(0 == chunked_stream->current_chunk_size)
     {
         /* Read the last CRLF */
