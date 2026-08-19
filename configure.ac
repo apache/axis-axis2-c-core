@@ -678,7 +678,6 @@ dnl Set age to 0 instead -- giving soname 8 and forcing every consumer to
 dnl relink -- if a member is ever removed or reordered, or if anything outside
 dnl these libraries starts allocating a public struct by size.
 VERSION_NO="8:0:8"
-QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(APACHE2INC)

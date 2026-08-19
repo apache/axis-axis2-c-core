@@ -64,7 +64,6 @@ Authentication Support</a></li>
 Support</a></li>
 <li><a href="#wsdl2c">WSDL2C Tool</a></li>
 <li><a href="#tcptrans">TCP Transport</a></li>
-<li><a href="#amqptrans">AMQP Transport</a></li>
 <li><a href="#archive">Archive Based Deployment</a></li>
 <li><a href="#tcpmon">TCPMon Tool</a></li>
 <li><a href="#appA">Appendix A - axis2.xml</a></li>
@@ -2196,101 +2195,10 @@ Axis2C enabling tcp.</li>
 </ul>
 <p style="margin-bottom: 0in;"><br />
 </p>
-<p><a name="amqptrans"></a></p>
-</div>
-</div>
-<div class="section">
-<h2>19. AMQP Transport</h2>
-<div class="subsection">
-<h3>19.1 Building AXIS2C enabling AMQP</h3>
-<p>This section will guide you through installing Axis2C with
-AMQP
-enabled, and this also includes how to test it by running samples.
-Please note that both the Server and the Client must be built with AMQP
-enabled.</p>
-</div>
-<div class="subsection">
-<h3>19.1.1 Linux Based Systems</h3>
-<ol>
-<li>When you are installing, you have to use the configure
-command with
-the option --with-qpid as follows</li>
-<pre> ./configure --with-qpid=path/to/qpid home<br /> make<br /> make install</pre>
-<li>Then to confirm that you have successfully built the source
-with AMQP enabled you can check in your $AXIS2C_HOME/lib folder for
-following files:</li>
-<pre> libaxis2_qmqp_sender.so<br /> libaxis2_amqp_reciever.so</pre>
-<li>To setup the AMQP transport, you have to edit the
-axis2.xml and add the following entries:</li>
-<pre> &lt;transportReceiver name="amqp" class="axis2_amqp_receiver"&gt;<br /> &lt;parameter name="qpid_broker_ip" locked="false"&gt;127.0.0.1&lt;/parameter&gt;<br /> &lt;parameter name="qpid_broker_port" locked="false"&gt;5672&lt;/parameter&gt;<br /> &lt;/transportReceiver&gt;<br /><br /> &lt;transportSender name="amqp" class="axis2_amqp_sender"/&gt;</pre>
-</ol>
-</div>
-<div class="subsection">
-<h3>19.1.2 MS Windows Based Systems</h3>
-Axis2/C does not support AMQP transport on Windows.
-<ol>
-</ol>
-</div>
-<div class="subsection">
-<h3>19.2 Server Side<span style="font-family: monospace;"></span></h3>
-Start the Qpid broker as follows.<br />
-<br />
-<pre>$ cd ${QPID_HOME}/sbin<br />$ ./qpidd --data-dir ./</pre>
-<br />
-Start the axis2_amqp_server as follows.<br />
-<br />
-<pre>$ cd ${AXIS2C_HOME}/bin<br />$ ./axis2_amqp_server<br /> </pre>
-You should see the message<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Started
-Simple Axis2 AMQP Server...<br />
-<br />
-This will connect to the Qpid broker listening on 127.0.0.1:5672. <br />
-To see the possible command line options run<br />
-<br />
-<pre>$ ./axis2_amqp_server -h<br /></pre>
-<br />
-NOTE : You have the flexibility of starting the Qpid broker first and
-then axis2_amqp_server or vise versa.<br />
-<div class="subsection">
-<div style="text-align: left;"></div>
-<h3>19.2.1 Simple Axis2 AMQP Server</h3>
-<p>Simple Axis2 AMQP Server is the inbuilt AMQP server of Axis2/C.<br />
-</p>
-</div>
-<div class="subsection">
-<h3>19.2.1.1 Linux Based Systems</h3>
-<p>Synopsis :</p>
-<div class="source">
-<pre> axis2_amqp_server [-i QPID_BROKER_IP] [-p QPID_BROKER_PORT] [-r REPO_PATH] [-l LOG_LEVEL] [-f LOG_FILE] [-s LOG_FILE_SIZE]<br /><br /></pre>
-</div>
-<p>You can use the following options with simple axis AMQP server.</p>
-<div class="source">
-<pre> -i IP where the Qpid broker is running, default IP is 127.0.0.1<br /> -p PORT port number the Qpid broker listens on, default port is 5672<br /> -r REPO_PATH repository path, default is ../<br /> -l LOG_LEVEL log level, available log levels:<br /> 0 - critical <br />	1 - errors <br />	2 - warnings<br /> 3 - information <br />	4 - debug <br />	5- user <br />	6 - trace<br /> Default log level is 4(debug).<br /> -f LOG_FILE log file, default is $AXIS2C_HOME/logs/axis2.log or axis2.log in current folder if AXIS2C_HOME not set<br /> -s LOG_FILE_SIZE Maximum log file size in mega bytes, default maximum size is 1MB.<br /> -h display the help screen.<br /><br /></pre>
-</div>
-<p>Example :</p>
-<div class="source">
-<pre> axis2_amqp_server -i 127.0.0.1 -p 5050 -r $AXIS2C_HOME -f /dev/stderr<br /><br /></pre>
-</div>
-</div>
-<div class="subsection">
-<h3>19.3 Client Side</h3>
-<ul>
-</ul>
-<p style="margin-bottom: 0in;">
-When the axis2_amqp_server is up and running, you can run the sample
-clients in a new shell as follows.<br />
-<br />
-</p>
-<pre>$ cd ${AXIS2C_HOME}/samples/bin/amqp<br /><br />$ ./echo_blocking<br /></pre>
-This will invoke the echo service.<br />
-<br />
-To see the possible command line options for sample clients run them
-with '-h' option<br />
-<p><a name="archive"></a></p>
 </div>
 </div>
 <div class="section"><a name="19__Archive_Based_Deployment"></a>
-<h2>20. Archive Based Deployment</h2>
+<h2>19. Archive Based Deployment</h2>
 <p>Axis2/C supports two main deployment models,<br />
 </p>
 <ol>
@@ -2372,7 +2280,7 @@ that are found inside the archive, once unzipped.</li>
 </div>
 </div>
 <div class="section"><a name="20__TCPMon_Tool"></a>
-<h2>21. TCPMon Tool</h2>
+<h2>20. TCPMon Tool</h2>
 <p>TCPMon is a TCP Monitor tool provided by Axis2/C for
 monitoring payloads exchanged between client and server. If you are
 using a source distribution, this may or may not be built for you by
@@ -3981,6 +3889,5 @@ AXIS2_TRUE to enable, AXIS2_FALSE to disable</td>
 </div>
 <div class="clear">
 <hr /></div>
-</div>
 
 </body></html>
