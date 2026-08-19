@@ -1,5 +1,25 @@
 github:
+  description: >-
+    Apache Axis2/C - JSON/REST and SOAP web services framework in C. Runs as an
+    Apache httpd module, standalone, or embedded; supports HTTP/2, Android and MCP.
   homepage: https://axis.apache.org/axis2/c/core/
+  labels:
+    - c
+    - json
+    - rest
+    - rest-api
+    - json-rpc
+    - soap
+    - web-services
+    - web-framework
+    - web-server
+    - apache-httpd
+    - http2
+    - android
+    - embedded
+    - mcp
+    - model-context-protocol
+    - wsdl
   rulesets:
     - name: "Default Branch Protection"
       type: branch
