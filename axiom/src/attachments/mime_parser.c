@@ -1376,9 +1376,11 @@ axiom_mime_parser_search_for_attachment(
                     /* Some times content-ids urls, hence we need to encode them 
                      * becasue we can't create files with / */
 
+                    /* +1 so the buffer has room for the terminator the
+                     * encoder writes. */
                     encoded_mime_id = AXIS2_MALLOC(env->allocator, (sizeof(axis2_char_t))
-                        * (strlen(mime_id)));
-                    memset(encoded_mime_id, 0, strlen(mime_id));
+                        * (strlen(mime_id) + 1));
+                    memset(encoded_mime_id, 0, strlen(mime_id) + 1);
                     encoded_mime_id = axutil_url_encode(env, encoded_mime_id, mime_id, (int)strlen(
                         mime_id));
                     if(!encoded_mime_id)
@@ -1737,7 +1739,27 @@ axiom_mime_parser_search_string(
 
             pos = NULL;
 
-            search_length = search_info->buffer1 + search_info->len1 - old_pos - str_length + 1;
+            /* search_length is size_t, so the guard below can never fire and
+             * is kept only to preserve the loop's exit shape. A buffer holding
+             * fewer bytes than the token being searched for makes this
+             * subtraction wrap to near SIZE_MAX, and memchr then scans far
+             * past the buffer. Compare the remaining bytes against the token
+             * length first, and subtract only when it fits. */
+            {
+                size_t remaining;
+
+                if(old_pos < search_info->buffer1
+                    || old_pos > search_info->buffer1 + search_info->len1)
+                {
+                    break;
+                }
+                remaining = (size_t)(search_info->buffer1 + search_info->len1 - old_pos);
+                if(remaining < str_length)
+                {
+                    break;
+                }
+                search_length = remaining - str_length + 1;
+            }
 
             if(search_length < 0)
             {
@@ -1788,6 +1810,15 @@ axiom_mime_parser_search_string(
 
         if(search_info->buffer2)
         {
+            /* Forming old_pos below subtracts the token length from the end of
+             * buffer1, so a buffer shorter than the token produces a pointer
+             * before the buffer -- undefined at formation, and read from at
+             * the memchr further down. Only enter the split-buffer scan when
+             * buffer1 is long enough to hold the token. */
+            if(search_info->len1 < str_length)
+            {
+                return NULL;
+            }
             old_pos = search_info->buffer1 + search_info->len1 - str_length + 1;
             do
             {
@@ -1795,7 +1826,12 @@ axiom_mime_parser_search_string(
                 pos = NULL;
                 found = NULL;
 
-                search_length = search_info->buffer1 + search_info->len1 - old_pos;
+                if(old_pos < search_info->buffer1
+                    || old_pos > search_info->buffer1 + search_info->len1)
+                {
+                    break;
+                }
+                search_length = (size_t)(search_info->buffer1 + search_info->len1 - old_pos);
 
                 if(search_length < 0)
                 {
@@ -1898,9 +1934,11 @@ axiom_mime_parser_store_attachment(
                 /* Some times content-ids urls, hence we need to encode them 
                  * becasue we can't create files with / */
 
+                /* +1 so the buffer has room for the terminator the encoder
+                 * writes. */
                 encoded_mime_id = AXIS2_MALLOC(env->allocator, (sizeof(axis2_char_t)) * (strlen(
-                    mime_id)));
-                memset(encoded_mime_id, 0, strlen(mime_id));
+                    mime_id) + 1));
+                memset(encoded_mime_id, 0, strlen(mime_id) + 1);
                 encoded_mime_id = axutil_url_encode(
                     env, encoded_mime_id, mime_id, (int)strlen(mime_id));
                 if(!encoded_mime_id)
