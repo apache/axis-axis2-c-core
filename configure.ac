@@ -807,17 +807,21 @@ AXIS2C_GTEST_STUB
         fi])
 fi
 
-dnl Conditionally configure HTTP/2 transport subdirectories
-if test x$http2_enabled = xtrue; then
-    AC_CONFIG_FILES([
-        src/core/transport/h2/Makefile
-        src/core/transport/h2/util/Makefile
-        src/core/transport/h2/sender/Makefile
-        src/core/transport/h2/server/Makefile
-        src/core/transport/h2/server/apache2/Makefile
-        src/core/transport/h2/test/Makefile
-    ])
-fi
+dnl The HTTP/2 transport builds only when --enable-http2 is given -- that is
+dnl what H2_DIR in src/core/transport/Makefile.am gates -- but its Makefiles
+dnl have to be generated either way. DIST_SUBDIRS there names h2
+dnl unconditionally, and rightly so, since a source release must carry the
+dnl transport whatever flags the release was configured with. Generating these
+dnl only under the conditional left make dist and make distclean recursing into
+dnl a directory with no Makefile: "No rule to make target 'distdir'".
+AC_CONFIG_FILES([
+    src/core/transport/h2/Makefile
+    src/core/transport/h2/util/Makefile
+    src/core/transport/h2/sender/Makefile
+    src/core/transport/h2/server/Makefile
+    src/core/transport/h2/server/apache2/Makefile
+    src/core/transport/h2/test/Makefile
+])
 
 dnl samples/user_guide is in samples/SUBDIRS unconditionally, so its Makefile must
 dnl always be generated. The service subdirs are in DIST_SUBDIRS (automake union),
