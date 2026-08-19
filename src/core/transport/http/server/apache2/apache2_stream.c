@@ -107,18 +107,31 @@ apache2_stream_read(
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 
-    while(count - len > 0)
+    /* apache2_ap_get_client_block signals failure by returning -1 as an
+     * apr_size_t. The old comparison here was against the literal 0xFFFFFFFF,
+     * which is that value only where apr_size_t is 32 bits; on LP64 the two
+     * never match, so an error was booked as a read of SIZE_MAX bytes. len
+     * then wrapped, `count - len` stayed non-zero because the subtraction is
+     * unsigned, and the loop carried on handing the block reader a wild
+     * buffer pointer -- a pinned worker at best.
+     *
+     * Compare against the sentinel at its real width, and drive the loop on
+     * len < count rather than an unsigned subtraction. */
+    while(len < count)
     {
         read = apache2_ap_get_client_block(stream_impl->request, (char *) buffer + len,
                                    count - len);
-        if(read > 0 && read != 0xFFFFFFFF)
-        {
-            len += read;
-        }
-        else
+        if(read == (size_t) -1 || read == 0)
         {
             break;
         }
+        if(read > count - len)
+        {
+            /* Cannot happen from a correct callee, but len must never pass
+             * count: everything after this point indexes buffer with it. */
+            break;
+        }
+        len += read;
     }
 
     return (int)len;

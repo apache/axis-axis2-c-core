@@ -977,8 +977,15 @@ axis2_get_session(
     ap_dbd_t *(*authn_dbd_acquire_fn)(request_rec*) = NULL;
     request = (request_rec *) req;
 
+    /* APR_RETRIEVE_OPTIONAL_FN yields NULL when mod_dbd is not loaded, so this
+     * has to be checked before the call and not only afterwards on dbd -- the
+     * sibling below already does. Calling through the null pointer takes the
+     * worker down on any request carrying a cookie. */
     authn_dbd_acquire_fn = APR_RETRIEVE_OPTIONAL_FN(ap_dbd_acquire);
-    dbd = authn_dbd_acquire_fn(request);
+    if(authn_dbd_acquire_fn)
+    {
+        dbd = authn_dbd_acquire_fn(request);
+    }
     if (!dbd) 
     {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,

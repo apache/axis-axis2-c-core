@@ -38,6 +38,7 @@
 #include <axiom_mime_part.h>
 #include <axiom_mtom_sending_callback.h>
 #include <axis2_apache2_request_processor.h>
+#include <limits.h>
 
 /* Android logging macro - use INFO level for trace messages */
 #ifdef __ANDROID__
@@ -249,8 +250,17 @@ axis2_apache2_worker_process_request(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT, AXIS2_FAILURE);
         return AXIS2_CRITICAL_FAILURE;
     }
+    /* request->remaining is apr_off_t, which is 64-bit where int is not, so a
+     * declared length above INT_MAX narrowed to a small positive value and
+     * sailed through the ceiling check below. Refuse it before narrowing
+     * rather than assuming, as the old comment here did, that it fits. */
+    if(request->remaining > (apr_off_t)INT_MAX)
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Refusing request body: declared length exceeds the representable range");
+        return HTTP_REQUEST_ENTITY_TOO_LARGE;
+    }
     content_length = (int)request->remaining;
-    /* We are sure that the difference lies within the int range */
 
     /* Bound the body before anything reads it. The simple server applies the
      * same ceiling; leaving it out here would mean the limit did nothing on the
@@ -330,7 +340,11 @@ axis2_apache2_worker_process_request(
     if(request_url)
     {
         url_external_form = axutil_url_to_external_form(request_url, env);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, url_external_form);
+        /* Must stay "%s". This string is built from the Host header and the
+         * unparsed URI, so it is attacker-controlled; passing it as the format
+         * argument hands the caller the conversion specifiers, and the default
+         * log level here is DEBUG, so the sink fires in ordinary config. */
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "%s", url_external_form);
         axutil_url_free(request_url, env);
         request_url = NULL;
     }
