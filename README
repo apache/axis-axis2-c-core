@@ -3,25 +3,57 @@
   What is it?
   -----------
 
-  The Apache Axis2/C is a SOAP engine implementation that can be used 
-  to provide and consume Web Services. Axis2/C is an effort to implement Axis2 
-  architecture, in C. Please have a look at 
-  http://axis.apache.org/axis2/java/core/docs/Axis2ArchitectureGuide.html
-  for an overview on Axis2 architecture.
-  
-  Axis2/C supports both SOAP 1.1 and SOAP 1.2. The soap processing model is
-  built on the AXIOM XML object model. Axis2/C is capable of handling 
-  one-way messaging (In-Only) as well as request response messaging (In-Out).
-  It can be used in both synchronous and asynchronous modes.
+  Apache Axis2/C is a web services framework written in C, for building and
+  consuming JSON/REST and SOAP services. It is embeddable: the same engine runs
+  as an Apache httpd module, inside a standalone server, or linked directly into
+  an application binary.
 
-  Axis2/C has built in WS-Addressing support. It implements WS-Addressing 1.0
-  specification completely. It also has built in MTOM/XOP support for handling
-  binary attachments.
-  
-  As a project of the Apache Software Foundation, the
-  developers aim to collaboratively develop and maintain a robust,
-  commercial-grade, standards-based Web Services stack implementation with 
-  freely available source code.
+  It is written in C with no runtime beyond libc and its transport dependencies,
+  which makes it usable where a managed runtime is not an option: as a module in
+  an existing Apache httpd deployment, in embedded and resource-constrained
+  environments, and on Android, where the build produces a native library and
+  services are linked statically into the host process.
+
+  Features
+  --------
+
+    * JSON/REST services over HTTP/1.1 and HTTP/2, with a JSON reader and
+      writer and a JSON-RPC message receiver.
+
+    * Runs as an Apache httpd module, as a standalone HTTP server, or embedded
+      in an application.
+
+    * Android and other static-linking targets. Service functions are declared
+      as weak symbols, so the framework compiles and links with no service
+      implementation present and an application supplies strong implementations
+      at link time. This is what allows services to be linked into a single
+      native binary on platforms that do not load shared modules at runtime.
+      configure detects an Android target and builds accordingly.
+
+    * Model Context Protocol (MCP) support, so deployed services can be called
+      as tools by an AI agent. Demonstrated in the financial-benchmark-service
+      sample, with two transports: a JSON-RPC 2.0 stdio server for MCP clients
+      that launch a subprocess, and an HTTP catalog endpoint that builds the
+      tool list by walking the deployed services at request time. Tool
+      descriptions, JSON Schema and the read-only, idempotent and destructive
+      hints come from parameters in services.xml, so an existing service is
+      exposed as an MCP tool by adding metadata rather than writing code.
+
+    * SOAP 1.1 and SOAP 1.2, built on the AXIOM XML object model, with complete
+      WS-Addressing 1.0 support and MTOM/XOP for binary attachments.
+
+    * One-way (In-Only) and request-response (In-Out) messaging, synchronous or
+      asynchronous.
+
+    * A code generator that produces C stubs and skeletons from WSDL.
+
+  For an overview of the architecture Axis2/C implements, see
+  http://axis.apache.org/axis2/java/core/docs/Axis2ArchitectureGuide.html
+
+  As a project of the Apache Software Foundation, the developers aim to
+  collaboratively develop and maintain a robust, commercial-grade,
+  standards-based web services stack implementation with freely available
+  source code.
 
   The Latest Version
   ------------------
