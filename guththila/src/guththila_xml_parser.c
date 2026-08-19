@@ -1800,7 +1800,15 @@ guththila_next_char(
             m->buffer.cur_buff = 0;
             temp = guththila_reader_read(m->reader, m->buffer.buff[0], 0,
                 GUTHTHILA_BUFFER_DEF_SIZE, env);
-            m->buffer.data_size[0] = temp;
+            /* data_size is size_t, so recording a -1 error return here makes
+             * the buffer appear to hold SIZE_MAX bytes and every later read
+             * trusts that. Nothing was read on 0 either, so there is no byte
+             * to hand back. */
+            if(temp <= 0)
+            {
+                return -1;
+            }
+            m->buffer.data_size[0] = (size_t)temp;
             c = m->buffer.buff[0][m->next++];
             return c;
         }
@@ -1873,8 +1881,15 @@ guththila_next_no_char(
                 m->buffer.data_size = temp3;
                 m->buffer.no_buffers *= 2;
             }
+            /* Size this from buffs_size, the buffer's capacity, not data_size,
+             * which is only how much of it currently holds data. The line below
+             * records the new capacity as buffs_size * 2, so allocating from a
+             * data_size that is smaller -- which it is whenever a read left the
+             * buffer partly filled -- produces a block smaller than the
+             * capacity the next reader_read is allowed to fill. The sibling
+             * grow path in guththila_next_char uses buffs_size for both. */
             m->buffer.buff[m->buffer.cur_buff + 1] = (guththila_char_t *)AXIS2_MALLOC(
-                env->allocator, sizeof(guththila_char_t) * m->buffer.data_size[m->buffer.cur_buff]
+                env->allocator, sizeof(guththila_char_t) * m->buffer.buffs_size[m->buffer.cur_buff]
                     * 2);
             if(!m->buffer.buff[m->buffer.cur_buff + 1])
                 return -1;
