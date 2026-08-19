@@ -252,8 +252,14 @@ fault_code        =
 
     wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx,
         env);
-    sprintf (exception, "Service Not Found, Endpoint referance address is %s and wsa\
- actions is %s", address, wsa_action);
+    /* exception is a fixed 1 KB stack buffer. address is the request URI
+     * verbatim and wsa_action is the WS-Addressing Action header; both come
+     * off the wire with no length bound, and both can be NULL here -- the
+     * log call above already guards address the same way. Bound the write. */
+    snprintf (exception, sizeof(exception),
+        "Service Not Found, Endpoint referance address is %s and wsa"
+        " actions is %s", (address) ? address : "NULL",
+        (wsa_action) ? wsa_action : "NULL");
 
     axiom_soap_fault_set_exception (soap_fault, env, exception);
     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
@@ -307,8 +313,12 @@ if (!op)
 
     wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx,
         env);
-    sprintf (exception, "Operation Not Found, Endpoint referance address is %s and wsa\
- actions is %s", address, wsa_action);
+    /* Same fixed 1 KB buffer and same two unbounded, possibly NULL wire
+     * strings as the Service Not Found path above. */
+    snprintf (exception, sizeof(exception),
+        "Operation Not Found, Endpoint referance address is %s and wsa"
+        " actions is %s", (address) ? address : "NULL",
+        (wsa_action) ? wsa_action : "NULL");
 
     axiom_soap_fault_set_exception (soap_fault, env, exception);
     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
