@@ -185,7 +185,13 @@ axiom_xpath_literal_operator(
     /* This is not required; it gives some problems */
     /* context->node = NULL;*/
 
-    node->value = op->par1;
+    /* Copy, do not alias. op->par1 belongs to the compiled expression and is
+     * freed by axiom_xpath_free_expression. Result nodes of type TEXT are
+     * treated as owning their value -- AXIOM_XPATH_CAST_SET_VALUE and the
+     * predicate evaluator both free node->value for non-node types -- so
+     * pushing the expression's own pointer here had evaluation free it, and
+     * then the expression free it again. Every result node owns its value. */
+    node->value = axutil_strdup(context->env, (axis2_char_t *)op->par1);
     node->type = AXIOM_XPATH_TYPE_TEXT;
 
     axutil_stack_push(context->stack, context->env, node);
@@ -207,7 +213,13 @@ axiom_xpath_number_operator(
     /* This is not required; it gives some problems */
     /* context->node = NULL;*/
 
-    node->value = op->par1;
+    /* Same ownership rule as the literal operator above: par1 here is the
+     * compiled expression's double, so hand the stack a copy of it. */
+    node->value = AXIS2_MALLOC(context->env->allocator, sizeof(double));
+    if(node->value)
+    {
+        *((double *)node->value) = *((double *)op->par1);
+    }
     node->type = AXIOM_XPATH_TYPE_NUMBER;
 
     axutil_stack_push(context->stack, context->env, node);
@@ -284,7 +296,12 @@ axiom_xpath_orexpr_operator(
 {
     axiom_xpath_result_node_t *node;
     axiom_xpath_result_node_t *res_node;
-    int n_nodes[2];
+    /* Both entries must be defined before the pop loops below use them as
+     * bounds. An operand that the parser ended early is skipped by the
+     * evaluation loop, which then leaves its count unwritten -- a truncated
+     * expression such as a trailing '=' produces exactly that shape, and the
+     * pop loop ran against whatever was on the stack. */
+    int n_nodes[2] = { 0, 0 };
     int i, j;
     int op12[2];
     axutil_array_list_t *arr[2];
@@ -358,7 +375,12 @@ axiom_xpath_andexpr_operator(
 {
     axiom_xpath_result_node_t *node;
     axiom_xpath_result_node_t *res_node;
-    int n_nodes[2];
+    /* Both entries must be defined before the pop loops below use them as
+     * bounds. An operand that the parser ended early is skipped by the
+     * evaluation loop, which then leaves its count unwritten -- a truncated
+     * expression such as a trailing '=' produces exactly that shape, and the
+     * pop loop ran against whatever was on the stack. */
+    int n_nodes[2] = { 0, 0 };
     int i, j;
     int op12[2];
     axutil_array_list_t *arr[2];
@@ -432,7 +454,12 @@ axiom_xpath_equalexpr_operator(
 {
     axiom_xpath_result_node_t *node;
     axiom_xpath_result_node_t *res_node;
-    int n_nodes[2];
+    /* Both entries must be defined before the pop loops below use them as
+     * bounds. An operand that the parser ended early is skipped by the
+     * evaluation loop, which then leaves its count unwritten -- a truncated
+     * expression such as a trailing '=' produces exactly that shape, and the
+     * pop loop ran against whatever was on the stack. */
+    int n_nodes[2] = { 0, 0 };
     int i, j;
     int op12[2];
     axutil_array_list_t *arr[2];

@@ -968,6 +968,13 @@ axiom_xpath_compile_literal(
 
     while(AXIOM_XPATH_HAS_MORE && AXIOM_XPATH_CURRENT != del)
     {
+        /* Same fixed frame buffer, same unbounded source: everything up to the
+         * closing quote was copied in regardless of how much of it there was.
+         * Refuse a literal that does not fit rather than write past lit. */
+        if(i >= (int)sizeof(lit) - 1)
+        {
+            return NULL;
+        }
         lit[i] = AXIOM_XPATH_CURRENT;
         AXIOM_XPATH_READ(1);
         ++i;
@@ -1133,6 +1140,15 @@ axiom_xpath_compile_ncname(
     while(AXIOM_XPATH_HAS_MORE && (isalnum(AXIOM_XPATH_CURRENT) || AXIOM_XPATH_CURRENT == '_'
         || AXIOM_XPATH_CURRENT == '.' || AXIOM_XPATH_CURRENT == '-'))
     {
+        /* name is a fixed frame buffer and the token length comes from the
+         * expression text, so the copy has to stop at the buffer rather than
+         * at the end of the name. A name that does not fit is a name this
+         * parser cannot represent -- refuse it instead of truncating to
+         * something that would silently match a different node. */
+        if(i >= (int)sizeof(name) - 1)
+        {
+            return NULL;
+        }
         name[i] = AXIOM_XPATH_CURRENT;
         AXIOM_XPATH_READ(1);
         ++i;

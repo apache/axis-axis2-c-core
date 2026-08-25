@@ -1042,6 +1042,12 @@ axiom_soap_builder_set_mime_body_parts(
     const axutil_env_t * env,
     axutil_hash_t * map)
 {
+    /* Callers reach here after a multipart body has been parsed, which is
+     * decided from the Content-Type independently of whether that same header
+     * selected a builder. The two can disagree, so a NULL builder is a state
+     * the wire can produce, not a programming error. */
+    AXIS2_PARAM_CHECK(env->error, soap_builder, AXIS2_FAILURE);
+
     soap_builder->mime_body_parts = map;
     return AXIS2_SUCCESS;
 }
@@ -1193,9 +1199,15 @@ axiom_soap_builder_replace_xop(
                                         data_handler, &data_om_node);
 
                                     axiom_text_set_content_id(data_text, env, id_decoded);
-                                    /*axiom_stax_builder_set_lastnode
-                                     (soap_builder->om_builder, env,
-                                     parent);*/
+                                    /* The free_tree above can have taken the
+                                     * builder's lastnode with it -- it points
+                                     * into the subtree that just went away.
+                                     * Repoint it at the surviving parent, which
+                                     * is what the streaming path does after the
+                                     * identical free. This call was commented
+                                     * out, leaving the cursor dangling. */
+                                    axiom_stax_builder_set_lastnode(builder->om_builder, env,
+                                        parent);
                                     is_replaced = AXIS2_TRUE;
                                 }
                                 if(id_decoded)

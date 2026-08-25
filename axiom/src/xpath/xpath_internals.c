@@ -18,7 +18,18 @@
 #include <axiom_xpath.h>
 #include "xpath_internals.h"
 
-/* Make a copy of the xpath expression */
+/* Attach the expression to the context.
+ *
+ * The name says copy; nothing is copied, and nothing should be freed here
+ * either. The context borrows the expression -- the caller compiled it, the
+ * caller owns it, and axiom_xpath_free_expression is public API for exactly
+ * that. Freeing the previous expression at this point had two ways to go
+ * wrong: evaluating the same expression twice on one context freed it and then
+ * walked the operations list below, and evaluating a second expression freed
+ * the first one out from under a caller still holding it. The matching half of
+ * this is axiom_xpath_free_context, which no longer frees the expression
+ * either.
+ */
 void
 axiom_xpath_expression_copy(
     axiom_xpath_context_t *context,
@@ -27,8 +38,8 @@ axiom_xpath_expression_copy(
     int i;
     axiom_xpath_operation_t *op;
 
-    if (context->expr)
-        axiom_xpath_free_expression(context->env, context->expr);
+    if (!expr)
+        return;
 
     context->expr = expr;
 

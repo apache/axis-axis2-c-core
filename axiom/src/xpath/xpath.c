@@ -372,13 +372,12 @@ axiom_xpath_free_context(
 {
     if (context)
     {
-        /* Free the expression if not freed */
-        if (context->expr)
-        {
-            axiom_xpath_free_expression(env, context->expr);
-
-            context->expr = NULL;
-        }
+        /* The expression is borrowed, not owned -- see the note in
+         * axiom_xpath_expression_copy. Freeing it here made the documented
+         * sequence compile -> evaluate -> free_expression -> free_context a
+         * double free, since the caller frees what it compiled. Drop the
+         * reference and leave the object to its owner. */
+        context->expr = NULL;
 
         if (context->root_node)
         {
