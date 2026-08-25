@@ -827,6 +827,14 @@ guththila_next(
     else if(m->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
     {
         elem = (guththila_element_t *)guththila_stack_pop(&m->elem, env);
+        /* guththila_stack_pop returns NULL on an empty stack. The END_ELEMENT
+         * path below already tests for that; this one did not, and an empty
+         * element that never pushed a frame -- see the name-start check in the
+         * start-element path -- brings the stack up short here. */
+        if(!elem)
+        {
+            return -1;
+        }
         if(elem->is_namesp)
         {
             nmsp = (guththila_elem_namesp_t *)guththila_stack_pop(&m->namesp, env);
@@ -907,7 +915,19 @@ guththila_next(
                     elem->prefix = m->prefix;
                     elem->is_namesp = 0;
                     guththila_stack_push(&m->elem, elem, env);
-#endif  
+#endif
+                }
+                else
+                {
+                    /* Not a name-start character, so no element frame was
+                     * pushed above. Falling through to the attribute loop still
+                     * lets "/>" report an EMPTY_ELEMENT, and the cleanup for
+                     * that event pops a frame this element never pushed --
+                     * taking an ancestor's frame each time, then reading a NULL
+                     * pop once the stack runs out. An element must not be
+                     * announced without its stack transition, so refuse the
+                     * document here. */
+                    return -1;
                 }
                 GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
                 /* Process the attributes */
@@ -1923,6 +1943,15 @@ guththila_next_no_char(
             {
                 return -1;
             }
+            /* A read returning something is not the same as a read returning
+             * enough. The copy below takes exactly no bytes whatever arrived,
+             * so a short read has it walk past the data and out of the buffer.
+             * The caller decides how much arrives per read. */
+            if(GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)
+                + m->buffer.data_size[m->buffer.cur_buff] < m->next + no)
+            {
+                return -1;
+            }
             for(i = 0; i < no; i++)
             {
                 bytes[i] = m->buffer.buff[m->buffer.cur_buff][m->next++
@@ -1939,7 +1968,19 @@ guththila_next_no_char(
             m->buffer.cur_buff = 0;
             temp = guththila_reader_read(m->reader, m->buffer.buff[0], 0,
                 GUTHTHILA_BUFFER_DEF_SIZE, env);
+            if(temp <= 0)
+            {
+                return -1;
+            }
             m->buffer.data_size[0] = temp;
+            /* Same short-read check as the grow path above: this is the first
+             * read of the document, and it is under no obligation to return
+             * the no bytes the copy below is about to take. */
+            if(GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer) + m->buffer.data_size[0]
+                < m->next + no)
+            {
+                return -1;
+            }
             for(i = 0; i < no; i++)
             {
                 bytes[i] = m->buffer.buff[m->buffer.cur_buff][m->next++

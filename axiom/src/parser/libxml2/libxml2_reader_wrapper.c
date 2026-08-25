@@ -1041,6 +1041,23 @@ axis2_libxml2_reader_wrapper_fill_maps(
 
             xmlFree(q_name);
             q_name = NULL;
+
+            /* The check above this loop is against the sum of the two limits,
+             * which is the only thing knowable before the attributes are
+             * classified. It is not the limit that was declared: 320 namespaces
+             * and no attributes passes it, and so does 320 attributes. Now that
+             * each one has been counted, apply the per-category caps the
+             * constants actually name. */
+            if(attr_count > AXIS2_XML_MAX_ATTRIBUTES || ns_count > AXIS2_XML_MAX_NAMESPACES)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Security: XML element has too many attributes (%d, max %d) or "
+                    "namespaces (%d, max %d). Possible DoS attack.",
+                    attr_count, AXIS2_XML_MAX_ATTRIBUTES,
+                    ns_count, AXIS2_XML_MAX_NAMESPACES);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE, AXIS2_FAILURE);
+                return AXIS2_FAILURE;
+            }
         }
 
         parser_impl->current_attribute_count = attr_count;
