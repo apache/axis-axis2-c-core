@@ -308,13 +308,19 @@ axis2_http_transport_utils_transport_in_uninit(
 }
 
 /**
- * Arm the ceiling that bounds a chunked body.
+ * Arm the ceiling that bounds a request body.
  *
- * Every callback context gets this, but only the chunked read enforces it. A
- * request that declares Content-Length is already refused at the worker before
- * a byte is read, and the non-chunked read is bounded by unread_len. A chunked
- * request declares nothing, so without this the caller decides how much the
- * server buffers.
+ * Both read branches in on_data_request enforce this. It is tempting to think
+ * the non-chunked branch does not need it, because a declared Content-Length
+ * is refused at the worker and unread_len bounds the rest -- that was the
+ * reasoning here, and it is wrong. unread_len only bounds a body whose length
+ * was declared: when content_length is -1 the early return above the read is
+ * skipped by design and unread_len is never a limit. Bodies arrive that way on
+ * more than an odd path -- mod_axis2 hands chunked requests to httpd to
+ * dechunk and sets content_length to -1, so the production JSON and SOAP
+ * routes both land there, as does a standalone request that simply omits the
+ * header. Without metering both branches the configured maxRequestSize bounds
+ * only the requests that volunteer their size.
  */
 static void
 axis2_http_transport_utils_arm_body_ceiling(
@@ -969,6 +975,19 @@ axis2_http_transport_utils_process_http_post_request(
 
     if(binary_data_map)
     {
+        /* A multipart body was parsed, so its parts have to be attached to a
+         * builder. Whether a builder exists was decided separately, by matching
+         * the same Content-Type against the known SOAP/XML/form media types --
+         * a header can satisfy the multipart test and match none of those, for
+         * instance multipart/related with a type parameter this build does not
+         * route. That left a NULL builder here. Refuse the request rather than
+         * attach the parts to nothing. */
+        if(!soap_builder)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Multipart request whose content type selected no message builder");
+            return AXIS2_FAILURE;
+        }
         axiom_soap_builder_set_mime_body_parts(soap_builder, env, binary_data_map);
     }
 
@@ -1507,6 +1526,19 @@ axis2_http_transport_utils_process_http_put_request(
 
     if(binary_data_map)
     {
+        /* A multipart body was parsed, so its parts have to be attached to a
+         * builder. Whether a builder exists was decided separately, by matching
+         * the same Content-Type against the known SOAP/XML/form media types --
+         * a header can satisfy the multipart test and match none of those, for
+         * instance multipart/related with a type parameter this build does not
+         * route. That left a NULL builder here. Refuse the request rather than
+         * attach the parts to nothing. */
+        if(!soap_builder)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Multipart request whose content type selected no message builder");
+            return AXIS2_FAILURE;
+        }
         axiom_soap_builder_set_mime_body_parts(soap_builder, env, binary_data_map);
     }
 
@@ -2488,6 +2520,27 @@ axis2_http_transport_utils_get_charset_enc(
 
     if(tmp)
     {
+        axis2_char_t *scan = tmp;
+
+        /* This value is echoed back into the response Content-Type. The header
+         * line it came from was split on CRLF only, so a request header
+         * containing a bare LF arrives here with that byte still in it, and
+         * writing it out unaltered lets the caller start a header line of
+         * their own. Keep only characters that can legitimately appear in a
+         * charset token and cut the value at the first one that cannot -- that
+         * removes CR, LF and every other control byte without needing to guess
+         * at the caller's intent. */
+        while(*scan)
+        {
+            if(!isalnum((int)(unsigned char)*scan) && *scan != '-' && *scan != '_'
+                && *scan != '.' && *scan != ':' && *scan != '+')
+            {
+                *scan = AXIS2_ESC_NULL;
+                break;
+            }
+            scan++;
+        }
+
         str = axutil_string_create(env, tmp);
     }
     else
@@ -2574,6 +2627,27 @@ axis2_http_transport_utils_on_data_request(
         {
             buffer[len] = AXIS2_ESC_NULL;
             ((axis2_callback_info_t *)ctx)->unread_len -= len;
+
+            /* Meter here too, not only in the chunked branch. unread_len is no
+             * ceiling when content_length is -1: the early return above is
+             * skipped for exactly that case, so this loop otherwise reads until
+             * the peer stops sending. That is the state mod_axis2 puts every
+             * chunked request in, httpd having already dechunked it. Same
+             * compare-before-add as the chunked branch, for the same reason --
+             * a ceiling near INT_MAX would wrap the running total negative and
+             * disable itself. */
+            if(cb_ctx->max_body_size != (int)AXIS2_MAX_REQUEST_SIZE_UNLIMITED)
+            {
+                if(cb_ctx->body_read > cb_ctx->max_body_size - len)
+                {
+                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                        "Refusing request body; %s is %d and the body has "
+                        "passed it", AXIS2_MAX_REQUEST_SIZE,
+                        cb_ctx->max_body_size);
+                    return -1;
+                }
+                cb_ctx->body_read += len;
+            }
         }
         else if(len == 0)
         {
@@ -2913,6 +2987,7 @@ axis2_http_transport_utils_get_value_from_content_type(
     axis2_char_t *tmp = NULL;
     axis2_char_t *tmp_content_type = NULL;
     axis2_char_t *tmp2 = NULL;
+    size_t xop_len = 0;
 
     AXIS2_PARAM_CHECK(env->error, content_type, NULL);
     AXIS2_PARAM_CHECK(env->error, key, NULL);
@@ -2951,6 +3026,8 @@ axis2_http_transport_utils_get_value_from_content_type(
     }
     if(*tmp2 == AXIS2_DOUBLE_QUOTE)
     {
+        size_t stripped_len;
+
         tmp = tmp2;
         tmp2 = axutil_strdup(env, tmp + 1);
         if(tmp)
@@ -2962,7 +3039,20 @@ axis2_http_transport_utils_get_value_from_content_type(
         {
             return NULL;
         }
-        tmp2[strlen(tmp2) - 1] = AXIS2_ESC_NULL;
+        /* The opening quote has been consumed by the strdup above; the closing
+         * one is only assumed. A header ending at the opening quote --
+         * 'boundary="' -- duplicates to the empty string, and indexing
+         * strlen()-1 of that writes the byte before the allocation. The length
+         * has to be checked before the store, not after. A value with no
+         * closing quote is malformed, so refuse it rather than guess where it
+         * ends. */
+        stripped_len = strlen(tmp2);
+        if(stripped_len < 1 || tmp2[stripped_len - 1] != AXIS2_DOUBLE_QUOTE)
+        {
+            AXIS2_FREE(env->allocator, tmp2);
+            return NULL;
+        }
+        tmp2[stripped_len - 1] = AXIS2_ESC_NULL;
     }
     /* handle XOP */
     if(tmp2 && *tmp2 == AXIS2_B_SLASH && *(tmp2 + 1) == '\"')
@@ -2978,7 +3068,16 @@ axis2_http_transport_utils_get_value_from_content_type(
         {
             return NULL;
         }
-        tmp2[strlen(tmp2) - 3] = AXIS2_ESC_NULL;
+        /* Same underflow as the plain-quote branch, three bytes wide: this
+         * strips a trailing backslash-quote pair plus one more character, so
+         * anything shorter than three bytes indexes before the allocation. */
+        xop_len = strlen(tmp2);
+        if(xop_len < 3)
+        {
+            AXIS2_FREE(env->allocator, tmp2);
+            return NULL;
+        }
+        tmp2[xop_len - 3] = AXIS2_ESC_NULL;
     }
     return tmp2;
 }

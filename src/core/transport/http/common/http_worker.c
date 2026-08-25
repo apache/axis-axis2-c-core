@@ -130,6 +130,7 @@ axis2_http_worker_process_request(
     axis2_status_t status = AXIS2_FAILURE;
     int content_length = -1;
     axis2_http_header_t *encoding_header = NULL;
+    axis2_http_header_t *content_length_header = NULL;
     axis2_char_t *encoding_header_value = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *svr_ip = NULL;
@@ -234,9 +235,61 @@ axis2_http_worker_process_request(
         }
     }
 
-    /* if length is not given and it is not chunked, then return error to client */
-    if((content_length < 0) && encoding_header_value
-        && (0 != axutil_strcmp(encoding_header_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
+    /* A Content-Length that is present has to parse as a non-negative integer.
+     * get_content_length runs the value through ATOI and returns -1 when the
+     * header is absent, so "Content-Length: -1" and "Content-Length: junk"
+     * both come back as values the rest of the transport reads as "no length
+     * was declared" -- the same state a chunked request is in. Distinguish the
+     * two here, where the header itself is still in hand, rather than letting a
+     * declared-but-nonsense length borrow the no-length path. */
+    content_length_header = axis2_http_simple_request_get_first_header(simple_request, env,
+        AXIS2_HTTP_HEADER_CONTENT_LENGTH);
+    if(content_length_header)
+    {
+        const axis2_char_t *cl_value = axis2_http_header_get_value(content_length_header, env);
+        const axis2_char_t *cl_scan = cl_value;
+
+        if(!cl_scan || !*cl_scan)
+        {
+            cl_scan = NULL;
+        }
+        else
+        {
+            while(*cl_scan)
+            {
+                if(*cl_scan < '0' || *cl_scan > '9')
+                {
+                    cl_scan = NULL;
+                    break;
+                }
+                cl_scan++;
+            }
+        }
+
+        if(!cl_scan || content_length < 0)
+        {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "Refusing request with unparsable %s header",
+                AXIS2_HTTP_HEADER_CONTENT_LENGTH);
+            axis2_http_simple_response_set_status_line(response, env, http_version,
+                AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL,
+                AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME);
+
+            status = axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
+            axis2_http_simple_response_free(response, env);
+            return status;
+        }
+    }
+
+    /* if length is not given and it is not chunked, then return error to client.
+     *
+     * The encoding_header_value test used to be a precondition, so this only
+     * fired when a Transfer-Encoding header was present and named something
+     * other than chunked. A POST carrying neither header therefore skipped the
+     * 411 entirely and reached the reader with content_length -1. Absent counts
+     * as not-chunked, which is what the comment above always claimed. */
+    if((content_length < 0) && (!encoding_header_value
+        || (0 != axutil_strcmp(encoding_header_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))))
     {
         if(0 == axutil_strcasecmp(http_method, AXIS2_HTTP_POST)
             || 0 == axutil_strcasecmp(http_method, AXIS2_HTTP_PUT))
@@ -1154,8 +1207,25 @@ axis2_http_worker_process_request(
                 out_stream);
 
             /* Clear the message context's reference to avoid double-free.
-             * The HTTP response now owns the stream and will be responsible for freeing it. */
-            axis2_msg_ctx_reset_transport_out_stream(msg_ctx, env);
+             * The HTTP response now owns the stream and will be responsible for freeing it.
+             *
+             * It is fault_ctx that has to be cleared, not msg_ctx.
+             * axis2_engine_create_fault_msg_ctx moved the stream onto fault_ctx
+             * and reset it on msg_ctx already, so clearing msg_ctx here did
+             * nothing and fault_ctx was left holding the stream that
+             * set_body_stream just gave to the response. Freeing fault_ctx
+             * below then released the stream, and went on to free the
+             * out_transport_info it also owns, which frees the response, which
+             * frees the same stream a second time. Leave out_transport_info on
+             * fault_ctx -- that is still how the response gets freed. */
+            if(fault_ctx)
+            {
+                axis2_msg_ctx_reset_transport_out_stream(fault_ctx, env);
+            }
+            else
+            {
+                axis2_msg_ctx_reset_transport_out_stream(msg_ctx, env);
+            }
 
             stream_len = axutil_stream_get_len (out_stream, env);
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
