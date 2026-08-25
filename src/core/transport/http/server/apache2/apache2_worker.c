@@ -1037,6 +1037,16 @@ axis2_apache2_worker_process_request(
             axis2_engine_send_fault(engine, env, fault_ctx);
             if(fault_ctx)
             {
+                /* axis2_engine_create_fault_msg_ctx moved the transport out
+                 * stream from msg_ctx onto fault_ctx, and axis2_msg_ctx_free
+                 * releases it unconditionally -- while out_stream below is
+                 * still the worker's pointer to that same object, read for its
+                 * buffer and length and then written to the wire. Hand the
+                 * stream back before freeing the context so the worker keeps
+                 * the only claim on it. Under mod_axis2's pool allocator the
+                 * free is a no-op and this never bit, which is exactly why it
+                 * must not be left resting on that. */
+                axis2_msg_ctx_reset_transport_out_stream(fault_ctx, env);
                 axis2_msg_ctx_free(fault_ctx, env);
             }
             axis2_engine_free(engine, env);

@@ -617,7 +617,14 @@ axis2_apache2_json_processor_process_request_body_impl(
             }
         }
 
+        /* NULL after freeing, here and in the two blocks below. The engine
+         * block further down frees request_body and out_stream again on every
+         * path it returns from, so a pointer left set is handed to
+         * axutil_stream_free a second time. It survives today only because
+         * mod_axis2 installs an allocator whose free is a no-op for pool
+         * memory -- the code must not depend on that. */
         axutil_stream_free(out_stream, env);
+        out_stream = NULL;
     }
     else if (direct_response_written)
     {
@@ -625,6 +632,7 @@ axis2_apache2_json_processor_process_request_body_impl(
             "[JSON_PROCESSOR_SUCCESS] Skipping stream-based response - direct response already written");
         if (out_stream) {
             axutil_stream_free(out_stream, env);
+            out_stream = NULL;
         }
     }
 
@@ -632,6 +640,7 @@ axis2_apache2_json_processor_process_request_body_impl(
     if (request_body)
     {
         axutil_stream_free(request_body, env);
+        request_body = NULL;
     }
 
     AXIS2_LOG_INFO(env->log,
@@ -690,10 +699,10 @@ axis2_apache2_json_processor_process_request_body_impl(
                     "[JSON_PROCESSOR_SUCCESS] JSON response delivered to client successfully!");
 
                 /* Clean up streams */
-                if (request_body) axutil_stream_free(request_body, env);
-                if (out_stream) axutil_stream_free(out_stream, env);
-                if (engine_input_stream) axutil_stream_free(engine_input_stream, env);
-                if (engine_output_stream) axutil_stream_free(engine_output_stream, env);
+                if (request_body) { axutil_stream_free(request_body, env); request_body = NULL; }
+                if (out_stream) { axutil_stream_free(out_stream, env); out_stream = NULL; }
+                if (engine_input_stream) { axutil_stream_free(engine_input_stream, env); engine_input_stream = NULL; }
+                if (engine_output_stream) { axutil_stream_free(engine_output_stream, env); engine_output_stream = NULL; }
 
                 return AXIS2_APACHE2_PROCESSING_SUCCESS;
             } else {
@@ -709,10 +718,10 @@ axis2_apache2_json_processor_process_request_body_impl(
                 "[JSON_PROCESSOR_ANTI_DUP] Engine succeeded but no JSON_RESPONSE property - service may have written response directly");
 
             /* Clean up streams and return success to prevent duplicate error responses */
-            if (request_body) axutil_stream_free(request_body, env);
-            if (out_stream) axutil_stream_free(out_stream, env);
-            if (engine_input_stream) axutil_stream_free(engine_input_stream, env);
-            if (engine_output_stream) axutil_stream_free(engine_output_stream, env);
+            if (request_body) { axutil_stream_free(request_body, env); request_body = NULL; }
+            if (out_stream) { axutil_stream_free(out_stream, env); out_stream = NULL; }
+            if (engine_input_stream) { axutil_stream_free(engine_input_stream, env); engine_input_stream = NULL; }
+            if (engine_output_stream) { axutil_stream_free(engine_output_stream, env); engine_output_stream = NULL; }
 
             return AXIS2_APACHE2_PROCESSING_SUCCESS;
         }
@@ -1376,8 +1385,14 @@ process_json:
                 "[JSON_PROCESSOR_DELEGATION] Setting JSON processing flags on message context");
 
             /* Set JSON processing flag (equivalent to JsonConstant.IS_JSON_STREAM in Java) */
-            axutil_property_t* json_stream_prop = axutil_property_create(env);
-            axutil_property_set_value(json_stream_prop, env, (void*)AXIS2_TRUE);
+            /* The value is the constant 1 cast to a pointer, not an allocation,
+             * so the property must not own it. axutil_property_create defaults
+             * own_value to TRUE with no free_func, which sends the value
+             * straight to AXIS2_FREE at teardown -- free((void *)1). Create it
+             * explicitly non-owning. Sibling properties in this block hold
+             * strdup'ed strings and are owned; this one is the odd case. */
+            axutil_property_t* json_stream_prop = axutil_property_create_with_args(env,
+                AXIS2_SCOPE_REQUEST, AXIS2_FALSE, NULL, (void*)AXIS2_TRUE);
             axis2_msg_ctx_set_property(msg_ctx, env, "IS_JSON_STREAM", json_stream_prop);
             AXIS2_LOG_INFO(env->log,
                 " [JSON_PROCESSOR_DELEGATION] Set IS_JSON_STREAM = true");
