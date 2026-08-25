@@ -43,6 +43,14 @@ extern "C"
 
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 1000
 
+/* Most attachments one message may carry.
+ *
+ * The parts map is keyed by the Content-ID the sender chose, through a
+ * times-33 hash, so a sender who picks colliding ids turns every lookup into a
+ * walk of one bucket. Bounding the number of parts bounds that walk, and
+ * bounds the per-message memory the map itself accounts for. */
+#define AXIOM_MIME_PARSER_MAX_PARTS 1024
+
 
     typedef struct axiom_mime_parser axiom_mime_parser_t;
 

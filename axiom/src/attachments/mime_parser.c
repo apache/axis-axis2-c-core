@@ -563,6 +563,11 @@ axiom_mime_parser_parse_for_soap(
                  * SOAP */
 
                 buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
+                if(!buffer)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    return AXIS2_FAILURE;
+                }
 
                 memset(buffer, 0, size + 1);
                 if(malloc_len > 0)
@@ -578,11 +583,19 @@ axiom_mime_parser_parse_for_soap(
                     len = 0;
                 }
                 axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                if(len >= 0)
+                if(len < 0)
                 {
-                    buf_array[buf_num] = buffer;
-                    len_array[buf_num] = malloc_len + len;
+                    /* clear_buffers frees and NULLs every slot from part_start through
+                     * buf_num inclusive, and only a successful read puts a buffer back.
+                     * Falling through on a read error therefore left buf_array[buf_num]
+                     * NULL for the end_of_mime dereference further down. The peer
+                     * decides when that read fails, so this has to stop here rather
+                     * than continue with an empty slot. */
+                    AXIS2_FREE(env->allocator, buffer);
+                    return AXIS2_FAILURE;
                 }
+                buf_array[buf_num] = buffer;
+                len_array[buf_num] = malloc_len + len;
             }
         }
         else
@@ -619,6 +632,11 @@ axiom_mime_parser_parse_for_soap(
             else
             {
                 buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
+                if(!buffer)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    return AXIS2_FAILURE;
+                }
 
                 if(malloc_len > 0)
                 {
@@ -634,11 +652,16 @@ axiom_mime_parser_parse_for_soap(
                     len = 0;
                 }
                 axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                if(len >= 0)
+                if(len < 0)
                 {
-                    buf_array[buf_num] = buffer;
-                    len_array[buf_num] = malloc_len + len;
+                    /* Same read-error case as the sibling branch above: the slot has
+                     * been cleared and nothing refills it, so bail rather than reach
+                     * the end_of_mime dereference with a NULL. */
+                    AXIS2_FREE(env->allocator, buffer);
+                    return AXIS2_FAILURE;
                 }
+                buf_array[buf_num] = buffer;
+                len_array[buf_num] = malloc_len + len;
             }
         }
         else
@@ -656,6 +679,16 @@ axiom_mime_parser_parse_for_soap(
      * boundary after the soap will end up with --
      * So we will check that here and if we found then the logic inside the 
      * while loop will not be executed */
+
+    /* Both branches above guarantee a buffer in this slot on success, but several
+     * other paths in this file clear the array too; keep the guard so a cleared
+     * slot can never be dereferenced here. */
+    if(!buf_array[buf_num])
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "MIME parse ended with no buffer to test for the closing boundary.");
+        return AXIS2_FAILURE;
+    }
 
     end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num])) && (AXIOM_MIME_BOUNDARY_BYTE
         == *(buf_array[buf_num] + 1));
@@ -1167,6 +1200,18 @@ axiom_mime_parser_search_for_crlf(
     {
         /*Let's read another buffer and do a boundary search in both*/
 
+        /* buf_array and len_array hold exactly mime_parser->max_buffers
+         * entries. A slot is consumed per callback return, not per full
+         * buffer, so a peer that dribbles one segment per read reaches the
+         * last slot on a body far below any byte ceiling. Stop at the array
+         * bound rather than writing past it. */
+        if(*buf_num + 1 >= mime_parser->max_buffers)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "MIME parse exceeded the %d buffer slots available",
+                mime_parser->max_buffers);
+            return NULL;
+        }
         *buf_num = *buf_num + 1;
         buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
 
@@ -1245,6 +1290,18 @@ axiom_mime_parser_search_for_soap(
         /* We need to create the second buffer and do the search for the 
          * mime_boundary in the both the buffers */
 
+        /* buf_array and len_array hold exactly mime_parser->max_buffers
+         * entries. A slot is consumed per callback return, not per full
+         * buffer, so a peer that dribbles one segment per read reaches the
+         * last slot on a body far below any byte ceiling. Stop at the array
+         * bound rather than writing past it. */
+        if(*buf_num + 1 >= mime_parser->max_buffers)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "MIME parse exceeded the %d buffer slots available",
+                mime_parser->max_buffers);
+            return NULL;
+        }
         *buf_num = *buf_num + 1;
         buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
 
@@ -1398,7 +1455,21 @@ axiom_mime_parser_search_for_attachment(
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Caching file name creation error");
                         return NULL;
                     }
-                    search_info->handler = (void *)fopen(file_name, "ab+");
+                    /* Truncate, do not append. The name is the sender's
+                     * Content-ID run through the URL encoder, so it is the
+                     * sender who decides which file in attachmentDir this
+                     * opens. In append mode a repeated Content-ID adds to
+                     * whatever is already there -- across requests, without
+                     * bound, and on top of any content that was in the file
+                     * beforehand. Each attachment is written once, in one pass
+                     * from here, so truncating loses nothing this parser needs.
+                     *
+                     * This does not make the name unpredictable, and the file
+                     * is still opened by a name the peer influences. Fixing
+                     * that means generating the name here and carrying it to
+                     * the retrieval site, which reconstructs the same string
+                     * from the Content-ID -- a larger change than this one. */
+                    search_info->handler = (void *)fopen(file_name, "wb+");
                     if(!(search_info->handler))
                     {
                         return NULL;
@@ -1443,6 +1514,18 @@ axiom_mime_parser_search_for_attachment(
          *So we can create the second buffer */
         else
         {
+            /* buf_array and len_array hold exactly mime_parser->max_buffers
+             * entries. A slot is consumed per callback return, not per full
+             * buffer, so a peer that dribbles one segment per read reaches the
+             * last slot on a body far below any byte ceiling. Stop at the array
+             * bound rather than writing past it. */
+            if(*buf_num + 1 >= mime_parser->max_buffers)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "MIME parse exceeded the %d buffer slots available",
+                    mime_parser->max_buffers);
+                return NULL;
+            }
             *buf_num = *buf_num + 1;
             buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
 
@@ -1503,6 +1586,18 @@ axiom_mime_parser_search_for_attachment(
             /* deduct last 2 CRLF character.
              * For buffering case, it will be done when creating datahandler.*/
 
+            /* Only if there are two characters to deduct. The boundary can
+             * begin within the first two bytes of this buffer, and both users
+             * of the difference below get it wrong in that case: the callback
+             * takes it as an int and goes negative, cache_to_file takes it as
+             * size_t and writes a count near SIZE_MAX. */
+            if((found - buf_array[*buf_num]) < 2)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "MIME boundary too close to the buffer start to hold a CRLF");
+                return AXIS2_FAILURE;
+            }
+
             if(mime_parser->mtom_caching_callback)
             {
                 status = AXIOM_MTOM_CACHING_CALLBACK_CACHE(mime_parser->mtom_caching_callback, env,
@@ -1542,8 +1637,18 @@ axiom_mime_parser_search_for_attachment(
         }
         else if(search_info->match_len2 > 0)
         {
-            /*Here the curent buffer has partial mime boundary. So we need 
+            /*Here the curent buffer has partial mime boundary. So we need
              to cache only the previous buffer. */
+
+            /* Same CRLF deduction, same requirement that there be two
+             * characters to deduct: match_len1 is how much of the boundary fell
+             * in the previous buffer and can be 0 or 1. */
+            if(search_info->match_len1 < 2)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Split MIME boundary leaves no room for a terminating CRLF");
+                return AXIS2_FAILURE;
+            }
 
             if(mime_parser->mtom_caching_callback)
             {
@@ -1972,6 +2077,18 @@ axiom_mime_parser_store_attachment(
 
             else if(mime_binary)
             {
+                /* The -2 drops the CRLF that precedes the boundary. A part
+                 * whose body is shorter than that CRLF has none to drop, and
+                 * mime_binary_len is size_t, so the subtraction wraps to a
+                 * length near SIZE_MAX which the data handler then hands to
+                 * every later reader of this attachment. The boundary position
+                 * is attacker-chosen, so a one-byte part is reachable. */
+                if(mime_binary_len < 2)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "MIME part too short to carry a terminating CRLF");
+                    return AXIS2_FAILURE;
+                }
                 data_handler = axiom_data_handler_create(env, NULL, mime_type);
                 if(data_handler)
                 {
@@ -1980,6 +2097,18 @@ axiom_mime_parser_store_attachment(
                 }
             }
             axiom_data_handler_set_mime_id(data_handler, env, mime_id);
+
+            /* Refuse past the cap rather than keep accepting parts. Both the
+             * map's size and its worst-case lookup cost are set by how many
+             * parts the sender chooses to send and what ids they give them. */
+            if(axutil_hash_count(mime_parser->mime_parts_map)
+                >= AXIOM_MIME_PARSER_MAX_PARTS)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "MIME message carries more than %d parts",
+                    AXIOM_MIME_PARSER_MAX_PARTS);
+                return AXIS2_FAILURE;
+            }
 
             axutil_hash_set(mime_parser->mime_parts_map, mime_id, AXIS2_HASH_KEY_STRING,
                 data_handler);
@@ -2035,6 +2164,15 @@ axiom_mime_parser_process_mime_headers(
             {
                 type++;
             }
+            /* The loop stops either on the colon or on the terminator, and the
+             * step past it is only valid in the first case. mime_headers is an
+             * exact-size allocation, so stepping off the NUL of a header with
+             * no colon walks straight out of it. Absent delimiter means a
+             * malformed part, not a position to keep reading from. */
+            if(*type != ':')
+            {
+                return NULL;
+            }
             type++;
             while(type && *type && *type == ' ')
             {
@@ -2071,6 +2209,15 @@ axiom_mime_parser_process_mime_headers(
                 while(id && *id && *id != '<')
                 {
                     id++;
+                }
+                /* Same as the Content-Type scan above: step past '<' only if
+                 * the scan actually stopped on one. Without this a Content-ID
+                 * with no '<' walks past the end of mime_headers and the
+                 * strstr below reads out of the allocation -- and any '>' it
+                 * finds out there becomes the attachment's map key. */
+                if(*id != '<')
+                {
+                    return NULL;
                 }
                 id++;
                 pos = axutil_strstr(id, ">");
