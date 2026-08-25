@@ -94,6 +94,13 @@ if test "$GCC" = "yes"; then
     dnl Use gnu99 mode for compatibility with json-c and other modern libraries
     dnl The -ansi flag conflicts with json-c headers which use C99 inline
     CFLAGS="$CFLAGS -std=gnu99 -Wall -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+    dnl Wire-derived strings must never land in a format-argument position. The
+    dnl logging macros take a format, and a request URL passed straight to one
+    dnl hands the caller the conversion specifiers. The tree is clean under this
+    dnl warning today; keeping the flag on is what stops the next one being
+    dnl noticed only by a reader. -Werror is deliberately not used here -- a
+    dnl warning that fails a downstream distro build helps nobody.
+    CFLAGS="$CFLAGS -Wformat-security"
     AC_MSG_NOTICE([Using -std=gnu99 for compatibility])
 fi
 
@@ -550,10 +557,18 @@ AC_ARG_ENABLE(json, [  --enable-json
     ;;
   *)
     AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS $JSON_CFLAGS -DAXIS2_JSON_ENABLED"
-    CPPFLAGS="$CPPFLAGS $JSON_LIBS -DAXIS2_JSON_ENABLED"
-    json_enabled=true
+    dnl PKG_CHECK_MODULES is what defines JSON_CFLAGS and JSON_LIBS, so it has
+    dnl to run before they are used. This check used to sit below the two
+    dnl appends, which therefore expanded to nothing: the json-c include path
+    dnl never reached CFLAGS and the build only worked on systems where json-c
+    dnl sits on the default include path. Keep it first.
     PKG_CHECK_MODULES([JSON], [json-c >= 0.11])
+    dnl JSON_LIBS does not belong in CPPFLAGS -- that is preprocessor flags,
+    dnl not libraries. Targets that link json-c pull it in through $(JSON_LIBS)
+    dnl in their own LDADD, which PKG_CHECK_MODULES has AC_SUBSTed for them.
+    CFLAGS="$CFLAGS $JSON_CFLAGS -DAXIS2_JSON_ENABLED"
+    CPPFLAGS="$CPPFLAGS $JSON_CFLAGS -DAXIS2_JSON_ENABLED"
+    json_enabled=true
     ;;
   esac ],
   AC_MSG_RESULT(no)
@@ -595,9 +610,28 @@ Fedora:
 
 Alternatively, disable HTTP/2 support by removing --enable-http2 from configure.
 
-For more help, see: HTTP2_TROUBLESHOOTING.md
+For more help, see: docs/HTTP2_CONDITIONAL_COMPILATION.md
         ])
     ])
+
+    dnl The HTTP/2 transport is JSON-only by design: axis2_http2_handler.c and
+    dnl axis2_h2_transport_sender.c call json-c directly, and the h2 Makefile.am
+    dnl files get the include path from $(JSON_CFLAGS), which only --enable-json
+    dnl defines. Without it the tree compiles and then fails at link with
+    dnl undefined references to json_tokener_parse, several hundred targets in.
+    dnl Fail here instead, where the cause is still visible.
+    if test "x$json_enabled" != "xtrue"; then
+        AC_MSG_ERROR([
+--enable-http2 requires --enable-json.
+
+The HTTP/2 transport serves JSON only and links against json-c. Re-run
+configure with both flags:
+
+    ./configure --enable-http2 --enable-json ...
+
+See docs/HTTP2_CONDITIONAL_COMPILATION.md for the full flag matrix.
+        ])
+    fi
 
     dnl Check for OpenSSL (required for HTTPS/HTTP2)
     PKG_CHECK_MODULES([OPENSSL], [openssl >= 1.0.0], [

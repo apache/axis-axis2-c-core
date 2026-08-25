@@ -182,13 +182,17 @@ Two specific include path fixes were applied:
 ## 🔍 **Test Verification Commands**
 
 ### **Verify HTTP/2 Configuration:**
+
+Both flags are added to `CFLAGS` by configure as `-D` options; neither is
+written to `config.h`, so grep the generated Makefile rather than the header:
+
 ```bash
 # Should show nghttp2 and JSON flags enabled
-grep -E "(NGHTTP2|JSON)" config.h
+grep -m1 '^CFLAGS = ' Makefile
 
-# Expected output:
-# #define AXIS2_JSON_ENABLED 1
-# #define WITH_NGHTTP2 1
+# Expected: the line contains both
+#   -DAXIS2_JSON_ENABLED
+#   -DWITH_NGHTTP2
 ```
 
 ### **Verify HTTP/2 Libraries Built:**
