@@ -238,7 +238,6 @@ sudo apt-get install -y \
     apache2-dev \
     libapache2-mod-h2 \
     libssl-dev \
-    libcurl4-openssl-dev \
     openssl
 
 # Install JSON-C library
@@ -249,7 +248,6 @@ sudo apt-get install -y \
 # Install additional dependencies for Axis2/C
 sudo apt-get install -y \
     libxml2-dev \
-    libcurl4-openssl-dev \
     uuid-dev \
     zlib1g-dev
 ```
@@ -286,7 +284,6 @@ sudo dnf install -y \
 # Install additional dependencies for Axis2/C
 sudo dnf install -y \
     libxml2-devel \
-    libcurl-devel \
     libuuid-devel \
     zlib-devel
 ```
@@ -1096,7 +1093,6 @@ echo "🧪 Use curl for comprehensive HTTP/2 JSON testing including XSS protecti
     --prefix=/usr/local/axis2c \
     --enable-json \
     --enable-ssl \
-    --enable-libcurl \
     --with-apache2=/usr/include/apache2 \
     --with-apr=/usr/include/apr-1.0 \
     PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
@@ -1115,7 +1111,6 @@ echo "🧪 Use curl for comprehensive HTTP/2 JSON testing including XSS protecti
     --prefix=/usr/local/axis2c \
     --enable-json \
     --enable-ssl \
-    --enable-libcurl \
     --with-apache2=/usr/include/httpd \
     --with-apr=/usr/include/apr-1 \
     PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib64/pkgconfig \

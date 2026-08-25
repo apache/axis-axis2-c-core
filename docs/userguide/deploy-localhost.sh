@@ -32,7 +32,7 @@ echo "── Step 1: Installing build dependencies ──"
 apt-get update -qq
 apt-get install -y -qq \
     build-essential autotools-dev autoconf automake libtool pkg-config \
-    apache2-dev libssl-dev libcurl4-openssl-dev libjson-c-dev libjson-c5 \
+    apache2-dev libssl-dev libjson-c-dev libjson-c5 \
     libxml2-dev uuid-dev zlib1g-dev libnghttp2-dev openssl
 
 # ─────────────────────────────────────────────────────────────────────────────

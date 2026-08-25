@@ -72,28 +72,6 @@ int AXIS2_CALL axis2_ssl_stream_read(axutil_stream_t *stream,
 - Hostname verification (`client->validate_ssl_hostname`)
 - Proxy CONNECT tunneling for HTTPS through HTTP proxy
 
-### Alternative: libcurl Transport (AXIS2_LIBCURL_ENABLED)
-
-When compiled with `--with-libcurl`, an alternative HTTP client using libcurl is available:
-
-```c
-/* libcurl_stream.c - libcurl-based stream */
-typedef struct libcurl_stream_impl
-{
-    axutil_stream_t stream;
-    axutil_stream_type_t stream_type;
-    axis2_char_t *buffer;         /* Response buffer from curl */
-    int size;
-    int read_len;
-} libcurl_stream_impl_t;
-```
-
-**libcurl advantages:**
-- Built-in HTTP/1.1 and HTTP/2 support
-- Automatic redirect handling
-- Connection pooling and keep-alive
-- Platform SSL/TLS (not just OpenSSL)
-
 ### Server-Side Stream Adapters
 
 Different server environments require custom stream adapters:
@@ -149,7 +127,6 @@ The prepend stream demonstrates how streams can be composed:
 The prepend stream can wrap either:
 - A plain socket stream (HTTP)
 - An SSL stream (HTTPS)
-- Potentially a libcurl stream
 
 This composition is transparent to the caller - they just see a single `axutil_stream_t*`.
 
