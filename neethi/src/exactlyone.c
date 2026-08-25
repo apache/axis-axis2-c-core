@@ -93,6 +93,11 @@ neethi_exactlyone_get_policy_components(
     neethi_exactlyone_t *neethi_exactlyone,
     const axutil_env_t *env)
 {
+    /* Mirrors the guard in neethi_all_get_policy_components. */
+    if(!neethi_exactlyone)
+    {
+        return NULL;
+    }
     return neethi_exactlyone->policy_components;
 }
 

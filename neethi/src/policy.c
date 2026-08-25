@@ -155,6 +155,15 @@ neethi_policy_get_policy_components(
     neethi_policy_t *neethi_policy,
     const axutil_env_t *env)
 {
+    /* The secpolicy builders call neethi_policy_get_alternatives on whatever
+     * neethi_engine_get_normalize returned, and that is NULL for a policy this
+     * engine cannot normalize -- a nested PolicyReference with no registry, for
+     * one, which a policy document is free to contain. The NULL arrives here
+     * two calls later, so this is where it has to be handled. */
+    if(!neethi_policy)
+    {
+        return NULL;
+    }
     return neethi_policy->policy_components;
 }
 

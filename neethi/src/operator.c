@@ -114,6 +114,14 @@ neethi_operator_get_type(
     neethi_operator_t *neethi_operator,
     const axutil_env_t *env)
 {
+    /* The policy builders reach this with the result of
+     * axutil_array_list_get(alternatives, env, 0), which is NULL whenever the
+     * alternatives list is empty or normalization failed -- both of which a
+     * policy document can ask for. Answer defensively instead of faulting. */
+    if(!neethi_operator)
+    {
+        return OPERATOR_TYPE_UNKNOWN;
+    }
     return neethi_operator->type;
 }
 
@@ -122,6 +130,11 @@ neethi_operator_get_value(
     neethi_operator_t *neethi_operator,
     const axutil_env_t *env)
 {
+    /* Same NULL source as get_type above. */
+    if(!neethi_operator)
+    {
+        return NULL;
+    }
     return neethi_operator->value;
 }
 

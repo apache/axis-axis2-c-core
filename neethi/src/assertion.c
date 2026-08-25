@@ -262,6 +262,13 @@ neethi_assertion_get_type(
     neethi_assertion_t *neethi_assertion,
     const axutil_env_t *env)
 {
+    /* Callers walk a component list and take each element's value as an
+     * assertion; a component holding something else, or nothing, yields NULL
+     * here. Report unknown rather than fault. */
+    if(!neethi_assertion)
+    {
+        return ASSERTION_TYPE_UNKNOWN;
+    }
     return neethi_assertion->type;
 }
 
@@ -270,6 +277,11 @@ neethi_assertion_get_value(
     neethi_assertion_t *neethi_assertion,
     const axutil_env_t *env)
 {
+    /* Same NULL source as get_type above. */
+    if(!neethi_assertion)
+    {
+        return NULL;
+    }
     return neethi_assertion->value;
 }
 

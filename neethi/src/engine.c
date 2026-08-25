@@ -19,19 +19,34 @@
 #include <neethi_assertion_builder.h>
 #include <axiom_attribute.h>
 
+/* Deepest policy nesting this engine will parse or normalize.
+ *
+ * Both recursions below descend once per nested wsp:Policy/All/ExactlyOne
+ * element and cost several stack frames per level, and neither the axiom
+ * builder nor guththila bounds document nesting in the default build, so the
+ * document alone decided how deep the C stack went. 64 matches the depth
+ * limit the JSON path already applies. */
+#define NEETHI_ENGINE_MAX_POLICY_DEPTH 64
+
+/* Most alternatives normalization will materialize. See the note in
+ * neethi_engine_get_cross_product. */
+#define NEETHI_ENGINE_MAX_POLICY_ALTERNATIVES 1024
+
 /*Private functions*/
 
 static neethi_all_t *
 neethi_engine_get_operator_all(
     const axutil_env_t *env,
     axiom_node_t *node,
-    axiom_element_t *element);
+    axiom_element_t *element,
+    int depth);
 
 static neethi_exactlyone_t *
 neethi_engine_get_operator_exactlyone(
     const axutil_env_t *env,
     axiom_node_t *node,
-    axiom_element_t *element);
+    axiom_element_t *element,
+    int depth);
 
 static neethi_reference_t *
 neethi_engine_get_operator_reference(
@@ -43,14 +58,16 @@ static neethi_policy_t *
 neethi_engine_get_operator_neethi_policy(
     const axutil_env_t *env,
     axiom_node_t *node,
-    axiom_element_t *element);
+    axiom_element_t *element,
+    int depth);
 
 static axis2_status_t
 neethi_engine_process_operation_element(
     const axutil_env_t *env,
     neethi_operator_t *neethi_operator,
     axiom_node_t *node,
-    axiom_element_t *element);
+    axiom_element_t *element,
+    int depth);
 
 static axis2_status_t
 neethi_engine_add_policy_component(
@@ -79,7 +96,8 @@ neethi_engine_normalize_operator(
     neethi_operator_t *operator,
     neethi_registry_t *registry,
     axis2_bool_t deep,
-    const axutil_env_t *env);
+    const axutil_env_t *env,
+    int depth);
 
 static neethi_exactlyone_t *
 neethi_engine_get_cross_product(
@@ -104,14 +122,15 @@ neethi_engine_get_policy(
 {
     /* This function will be called recursively */
 
-    return neethi_engine_get_operator_neethi_policy(env, node, element);
+    return neethi_engine_get_operator_neethi_policy(env, node, element, 0);
 }
 
 static neethi_all_t *
 neethi_engine_get_operator_all(
     const axutil_env_t *env,
     axiom_node_t *node,
-    axiom_element_t *element)
+    axiom_element_t *element,
+    int depth)
 {
     neethi_all_t *all = NULL;
     neethi_operator_t *neethi_operator = NULL;
@@ -133,7 +152,7 @@ neethi_engine_get_operator_all(
     }
     neethi_operator_set_value(neethi_operator, env, all, OPERATOR_TYPE_ALL);
 
-    status = neethi_engine_process_operation_element(env, neethi_operator, node, element);
+    status = neethi_engine_process_operation_element(env, neethi_operator, node, element, depth);
 
     neethi_operator_set_value_null(neethi_operator, env);
     neethi_operator_free(neethi_operator, env);
@@ -154,7 +173,8 @@ static neethi_exactlyone_t *
 neethi_engine_get_operator_exactlyone(
     const axutil_env_t *env,
     axiom_node_t *node,
-    axiom_element_t *element)
+    axiom_element_t *element,
+    int depth)
 {
     neethi_exactlyone_t *exactlyone = NULL;
     neethi_operator_t *neethi_operator = NULL;
@@ -178,7 +198,7 @@ neethi_engine_get_operator_exactlyone(
         return NULL;
     }
     neethi_operator_set_value(neethi_operator, env, exactlyone, OPERATOR_TYPE_EXACTLYONE);
-    status = neethi_engine_process_operation_element(env, neethi_operator, node, element);
+    status = neethi_engine_process_operation_element(env, neethi_operator, node, element, depth);
 
     neethi_operator_set_value_null(neethi_operator, env);
     neethi_operator_free(neethi_operator, env);
@@ -237,7 +257,8 @@ static neethi_policy_t *
 neethi_engine_get_operator_neethi_policy(
     const axutil_env_t *env,
     axiom_node_t *node,
-    axiom_element_t *element)
+    axiom_element_t *element,
+    int depth)
 {
     neethi_policy_t *neethi_policy = NULL;
     neethi_operator_t *neethi_operator = NULL;
@@ -268,7 +289,7 @@ neethi_engine_get_operator_neethi_policy(
     /* This function will do all the processing and build the 
      * policy object model */
 
-    status = neethi_engine_process_operation_element(env, neethi_operator, node, element);
+    status = neethi_engine_process_operation_element(env, neethi_operator, node, element, depth);
 
     /* To prevent freeing the policy object from the operator
      * we set it to null. This object will be freed from a parent 
@@ -299,8 +320,20 @@ neethi_engine_process_operation_element(
     const axutil_env_t *env,
     neethi_operator_t *neethi_operator,
     axiom_node_t *node,
-    axiom_element_t *element)
+    axiom_element_t *element,
+    int depth)
 {
+    /* The policy tree's depth comes from the document, and each level costs
+     * several frames across these four mutually recursive functions. Nothing
+     * upstream bounds it: the axiom builder is iterative, so a deeply nested
+     * document builds fine and the first recursive consumer is this one. Stop
+     * at a fixed depth rather than at the end of the stack. */
+    if(depth > NEETHI_ENGINE_MAX_POLICY_DEPTH)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Policy nesting deeper than %d levels", NEETHI_ENGINE_MAX_POLICY_DEPTH);
+        return AXIS2_FAILURE;
+    }
 
     neethi_operator_type_t type;
     axiom_element_t *child_element = NULL;
@@ -434,7 +467,7 @@ neethi_engine_process_operation_element(
                             {
                                 neethi_policy_t *neethi_policy = NULL;
                                 neethi_policy = neethi_engine_get_operator_neethi_policy(env,
-                                    child_node, child_element);
+                                    child_node, child_element, depth + 1);
                                 if(neethi_policy)
                                 {
                                     operator = neethi_operator_create(env);
@@ -457,7 +490,8 @@ neethi_engine_process_operation_element(
                             {
                                 neethi_all_t *all = NULL;
                                 all
-                                    = neethi_engine_get_operator_all(env, child_node, child_element);
+                                    = neethi_engine_get_operator_all(env, child_node, child_element,
+                                        depth + 1);
                                 if(all)
                                 {
                                     operator = neethi_operator_create(env);
@@ -479,7 +513,7 @@ neethi_engine_process_operation_element(
                             {
                                 neethi_exactlyone_t *exactlyone = NULL;
                                 exactlyone = neethi_engine_get_operator_exactlyone(env, child_node,
-                                    child_element);
+                                    child_element, depth + 1);
                                 if(exactlyone)
                                 {
                                     operator = neethi_operator_create(env);
@@ -728,7 +762,7 @@ neethi_engine_normalize(
     /* When we call the normalization it should always return an exactlyone as the 
      * out put. */
 
-    exactlyone = neethi_engine_normalize_operator(operator, registry, deep, env);
+    exactlyone = neethi_engine_normalize_operator(operator, registry, deep, env, 0);
 
     /* We are frreing the operator used to wrap the object */
 
@@ -911,12 +945,22 @@ neethi_engine_normalize_operator(
     neethi_operator_t *operator,
     neethi_registry_t *registry,
     axis2_bool_t deep,
-    const axutil_env_t *env)
+    const axutil_env_t *env,
+    int depth)
 {
     axutil_array_list_t *child_component_list = NULL;
     neethi_operator_t *child_component = NULL;
     axutil_array_list_t *arraylist = NULL;
     int i = 0;
+
+    /* Same bound as the parse recursion above, for the same reason. */
+    if(depth > NEETHI_ENGINE_MAX_POLICY_DEPTH)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Policy nesting deeper than %d levels during normalization",
+            NEETHI_ENGINE_MAX_POLICY_DEPTH);
+        return NULL;
+    }
 
     neethi_operator_type_t type = neethi_operator_get_type(operator, env);
 
@@ -1025,7 +1069,8 @@ neethi_engine_normalize_operator(
                     }
                     neethi_operator_set_value(to_normalize, env, all, OPERATOR_TYPE_ALL);
                     exactlyone
-                        = neethi_engine_normalize_operator(to_normalize, registry, deep, env);
+                        = neethi_engine_normalize_operator(to_normalize, registry, deep, env,
+                            depth + 1);
                     if(exactlyone)
                     {
                         axutil_array_list_add(child_component_list, env, exactlyone);
@@ -1082,7 +1127,14 @@ neethi_engine_normalize_operator(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] No entry for the given uri");
                 return NULL;
             }
-            neethi_operator_set_value(child_component, env, policy, OPERATOR_TYPE_POLICY);
+            /* The registry owns what it just handed back, and it keeps owning
+             * it. Repointing child_component at that policy used to happen
+             * here, which gave the operator a second claim on an object it did
+             * not create -- and, since set_value overwrites the pointer without
+             * freeing, dropped the reference object the operator did own. The
+             * lookup result is already in hand; use it directly and leave the
+             * child as the REFERENCE it is. Only the children are copied below,
+             * into an All of our own. */
 
             all = neethi_all_create(env);
             if(!all)
@@ -1092,7 +1144,6 @@ neethi_engine_normalize_operator(
                 return NULL;
             }
 
-            policy = (neethi_policy_t *)neethi_operator_get_value(child_component, env);
             if(policy)
             {
                 children = neethi_policy_get_policy_components(policy, env);
@@ -1108,7 +1159,8 @@ neethi_engine_normalize_operator(
                     }
                     neethi_operator_set_value(to_normalize, env, all, OPERATOR_TYPE_ALL);
                     exactlyone
-                        = neethi_engine_normalize_operator(to_normalize, registry, deep, env);
+                        = neethi_engine_normalize_operator(to_normalize, registry, deep, env,
+                            depth + 1);
                     if(exactlyone)
                     {
                         axutil_array_list_add(child_component_list, env, exactlyone);
@@ -1127,7 +1179,8 @@ neethi_engine_normalize_operator(
         else
         {
             neethi_exactlyone_t *exactlyone = NULL;
-            exactlyone = neethi_engine_normalize_operator(child_component, registry, deep, env);
+            exactlyone = neethi_engine_normalize_operator(child_component, registry, deep, env,
+                depth + 1);
             if(exactlyone)
             {
                 axutil_array_list_add(child_component_list, env, exactlyone);
@@ -1297,6 +1350,25 @@ neethi_engine_get_cross_product(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] No children policy components");
+        return NULL;
+    }
+
+    /* This materializes |list1| x |list2| alternatives, each copying both
+     * constituent lists, and the caller folds sibling groups through here one
+     * after another -- so k groups of m alternatives ask for m^k. WS-Policy
+     * normalization is exponential in the worst case by construction, which is
+     * why the count has to be capped somewhere; a few KB of nested ExactlyOne
+     * elements otherwise runs the machine out of memory. Check before
+     * allocating, not while allocating. */
+    if(axutil_array_list_size(array_list1, env) > 0
+        && axutil_array_list_size(array_list2, env)
+            > NEETHI_ENGINE_MAX_POLICY_ALTERNATIVES / axutil_array_list_size(array_list1, env))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_CROSS_PRODUCT_FAILED, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[neethi] Policy normalization would exceed %d alternatives",
+            NEETHI_ENGINE_MAX_POLICY_ALTERNATIVES);
+        neethi_exactlyone_free(cross_product, env);
         return NULL;
     }
 

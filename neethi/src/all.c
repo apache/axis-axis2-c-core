@@ -93,6 +93,13 @@ neethi_all_get_policy_components(
     neethi_all_t *neethi_all,
     const axutil_env_t *env)
 {
+    /* Callers get this straight from neethi_operator_get_value, which is NULL
+     * for a missing alternative. axutil_array_list_size treats a NULL list as
+     * empty, so returning NULL lets the caller's loop run zero times. */
+    if(!neethi_all)
+    {
+        return NULL;
+    }
     return neethi_all->policy_components;
 }
 
