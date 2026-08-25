@@ -411,6 +411,17 @@ axis2_simple_http_svr_conn_get_peer_ip(
     return axutil_network_handler_get_peer_ip(env, svr_conn->socket);
 }
 
+/* Longest request or header line this server will assemble, in bytes.
+ *
+ * There was no bound at all: the loop below appends every 2047-byte read onto
+ * str_line until it finds a CRLF, so a peer that never sends one decides how
+ * much the server allocates -- and each append is a fresh copy of everything
+ * accumulated so far, so the cost is quadratic well before memory runs out.
+ * maxRequestSize does not help here; it bounds bodies, not the header block.
+ * 8KB matches the httpd defaults for LimitRequestLine and
+ * LimitRequestFieldSize, which is the limit clients are already built for. */
+#define AXIS2_HTTP_MAX_LINE_LENGTH (8 * 1024)
+
 static axis2_char_t *
 axis2_simple_http_svr_conn_read_line(
     axis2_simple_http_svr_conn_t * svr_conn,
@@ -419,6 +430,7 @@ axis2_simple_http_svr_conn_read_line(
     axis2_char_t* str_line = NULL;
     axis2_char_t tmp_buf[2048];
     int read = -1;
+    size_t accumulated = 0;
 
     /* peek for 2047 characters to verify whether it contains CRLF character */
     while((read = axutil_stream_peek(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
@@ -486,6 +498,21 @@ axis2_simple_http_svr_conn_read_line(
             if(read > 0)
             {
                 axis2_char_t* tmp_str_line = NULL;
+
+                accumulated += (size_t)read;
+                if(accumulated > AXIS2_HTTP_MAX_LINE_LENGTH)
+                {
+                    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                        "Refusing HTTP line longer than %d bytes",
+                        AXIS2_HTTP_MAX_LINE_LENGTH);
+                    if(str_line)
+                    {
+                        AXIS2_FREE(env->allocator, str_line);
+                        str_line = NULL;
+                    }
+                    return NULL;
+                }
+
                 tmp_buf[read] = AXIS2_ESC_NULL;
                 tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
                 if(tmp_str_line)

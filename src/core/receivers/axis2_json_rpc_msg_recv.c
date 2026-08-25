@@ -913,8 +913,16 @@ response_ready:
             "[JSON RPC MSG RECV] DEBUG: About to ALSO set JSON_RESPONSE property in in_msg_ctx: %p", (void*)in_msg_ctx);
         if (in_msg_ctx && in_msg_ctx != out_msg_ctx) {
             // Create another property object for in_msg_ctx (don't reuse the same property)
+            /* This must be a copy of the string, not the same pointer. A property
+             * created here defaults to own_value AXIS2_TRUE with no free_func, so
+             * axutil_property_free hands its value straight to AXIS2_FREE. Both
+             * contexts are torn down at the end of the operation, so sharing one
+             * allocation between the two properties frees it twice. Copying is
+             * what keeps "one allocation, one owner" true on the normal in-out
+             * path, which is every request where out_msg_ctx is distinct. */
             axutil_property_t* json_prop_in = axutil_property_create(env);
-            axutil_property_set_value(json_prop_in, env, json_response);
+            axis2_char_t* json_response_in = axutil_strdup(env, json_response);
+            axutil_property_set_value(json_prop_in, env, json_response_in);
             axis2_msg_ctx_set_property(in_msg_ctx, env, "JSON_RESPONSE", json_prop_in);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "[JSON RPC MSG RECV] DEBUG: Set JSON_RESPONSE property in in_msg_ctx: %p", (void*)in_msg_ctx);
@@ -927,7 +935,10 @@ response_ready:
                 void* verification_value_in = axutil_property_get_value(verification_prop_in, env);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "[JSON RPC MSG RECV] DEBUG: Verification - JSON_RESPONSE value in in_msg_ctx: %p", verification_value_in);
-                if (verification_value_in == json_response) {
+                /* Compare against the copy handed to this property, not the
+                 * out_msg_ctx allocation -- they are deliberately no longer the
+                 * same pointer. */
+                if (verification_value_in == json_response_in) {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "[JSON RPC MSG RECV] DEBUG: SUCCESS: JSON_RESPONSE property correctly stored in in_msg_ctx");
                 } else {

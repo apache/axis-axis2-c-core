@@ -387,6 +387,40 @@ axis2_msg_recv_delete_svc_obj(
     return axutil_class_loader_delete_dll(env, dll_desc);
 }
 
+/**
+ * Discard the OUT context after it has been registered with the op_ctx.
+ *
+ * Two things have to happen before the free, and every failure exit below
+ * needs both. The reset is what breaks the aliasing that create_out_msg_ctx
+ * set up: the OUT context shares its transport_out_stream, out_transport_info
+ * and To epr with the IN context, and axis2_msg_ctx_free releases all of them
+ * unconditionally, so freeing without the reset hands the IN context's teardown
+ * a second free of each. Clearing the op_ctx slot matters just as much --
+ * axis2_op_ctx_add_msg_ctx stores the bare pointer and takes no reference, so a
+ * slot left populated is a dangling pointer that worker cleanup reads and frees
+ * again.
+ */
+static void
+axis2_msg_recv_discard_out_msg_ctx(
+    const axutil_env_t * env,
+    axis2_op_ctx_t * op_ctx,
+    axis2_msg_ctx_t * out_msg_ctx)
+{
+    axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
+
+    if(op_ctx)
+    {
+        axis2_msg_ctx_t **msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+
+        if(msg_ctx_map && msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] == out_msg_ctx)
+        {
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
+        }
+    }
+
+    axis2_msg_ctx_free(out_msg_ctx, env);
+}
+
 static axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive_impl(
     axis2_msg_recv_t * msg_recv,
@@ -434,8 +468,7 @@ axis2_msg_recv_receive_impl(
     status = axis2_msg_recv_invoke_business_logic(msg_recv, env, msg_ctx, out_msg_ctx);
     if(AXIS2_SUCCESS != status)
     {
-        axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-        axis2_msg_ctx_free(out_msg_ctx, env);
+        axis2_msg_recv_discard_out_msg_ctx(env, op_ctx, out_msg_ctx);
         return status;
     }
     svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
@@ -443,7 +476,7 @@ axis2_msg_recv_receive_impl(
     engine = axis2_engine_create(env, conf_ctx);
     if(!engine)
     {
-        axis2_msg_ctx_free(out_msg_ctx, env);
+        axis2_msg_recv_discard_out_msg_ctx(env, op_ctx, out_msg_ctx);
         return AXIS2_FAILURE;
     }
     if(axis2_msg_ctx_get_soap_envelope(out_msg_ctx, env))

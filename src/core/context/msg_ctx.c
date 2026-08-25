@@ -775,7 +775,12 @@ axis2_msg_ctx_set_fault_to(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers, env, reference);
+        /* set_fault_to, not set_to. This delegated to the To setter, so the
+         * field written was never the field axis2_msg_ctx_get_fault_to reads
+         * back -- fault_to stayed NULL while the epr landed in the To slot,
+         * where msg_info_headers_free treats it as its own and frees it out
+         * from under whoever passed it in. */
+        return axis2_msg_info_headers_set_fault_to(msg_ctx->msg_info_headers, env, reference);
     }
 
     return AXIS2_SUCCESS;
