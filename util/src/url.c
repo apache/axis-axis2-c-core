@@ -164,7 +164,13 @@ axutil_url_parse_string(
         }
     }
 
-    if(axutil_strlen(host) < 3 * sizeof(axis2_char_t))
+    /* Compare against a plain integer, not sizeof. sizeof yields size_t, and an
+     * unsigned operand converts the signed length to a large positive value --
+     * which is how a -1 error return from axutil_strlen reads as "long enough"
+     * rather than as a failure. host cannot be NULL here, so this is about the
+     * shape of the test rather than a live defect, but the shape is the one
+     * that hides the error channel. 3 * sizeof(axis2_char_t) is 3. */
+    if(axutil_strlen(host) < 3)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid IP or hostname");

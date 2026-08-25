@@ -231,7 +231,15 @@ dnl
 dnl Set age to 0 instead -- giving soname 8 and forcing every consumer to
 dnl relink -- if a member is ever removed or reordered, or if anything outside
 dnl these libraries starts allocating a public struct by size.
-VERSION_NO="8:0:8"
+dnl
+dnl revision moved to 1 for the axis2_ssize_t signedness change. That is a
+dnl revision and not a current bump: int and unsigned int have the same width,
+dnl alignment and register class everywhere this builds, so the exported
+dnl signatures are byte-identical and an already-compiled consumer receives
+dnl exactly the bits it did before. What changes is the meaning of comparisons
+dnl in code compiled against the new header, which is a source-level property.
+dnl All five configure.ac files carry this number and move together.
+VERSION_NO="8:1:8"
 
 AC_SUBST(UTILINC)
 AC_SUBST(VERSION_NO)

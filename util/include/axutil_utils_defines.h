@@ -80,7 +80,13 @@ extern "C"
     typedef int axis2_bool_t;
     typedef int axis2_status_t;
     typedef int axis2_scope_t;
-    typedef unsigned int axis2_ssize_t;
+    /* Signed, as the name says. This was unsigned int, which made every -1
+     * error return from a function declared to return it arrive as UINT_MAX
+     * and every "< 0" test against one unreachable -- the checks were written,
+     * compiled, and never able to fire. Same width and alignment as before, so
+     * a binary compiled against the old header passes and receives identical
+     * bytes; what changes is that comparisons now mean what they read as. */
+    typedef int axis2_ssize_t;
     typedef char axis2_byte_t;
 	typedef unsigned char axis2_unsigned_byte_t;
 

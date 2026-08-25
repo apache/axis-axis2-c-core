@@ -48,7 +48,11 @@ extern "C"
      *         Since the hash table merely references the provided key (rather
      *         than copying it), axutil_hash_this() will return the NUL-term'd key.
      */
-#define AXIS2_HASH_KEY_STRING     (unsigned int)(-1)
+/* Typed to match the axis2_ssize_t parameters it is passed to and compared
+ * against. Same value and same bits as the previous (unsigned int)(-1); naming
+ * the real type just keeps the comparison in axutil_hash_this from mixing
+ * signedness now that axis2_ssize_t is signed. */
+#define AXIS2_HASH_KEY_STRING     ((axis2_ssize_t)-1)
 
     /**
      * Abstract type for hash tables.

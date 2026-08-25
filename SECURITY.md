@@ -149,21 +149,22 @@ cover. Add a row here only if you can say both halves.
 | **Buffer overflow** | Heap allocations for formatted output are sized from the value being formatted; `snprintf()` elsewhere | Fixed-size stack buffers remain on the fault and header-formatting paths. Each is bounded at its own site; no general rule covers them |
 | **Use-after-free** | Allocator-based memory management (`axutil_allocator_t`); `--enable-asan` builds detect it | ASan is not run in CI. The gtest suite, which is what exercises the SOAP paths, is only built when `--with-gtest` is given, so a default `make check` does not reach them |
 | **Format string** | `-Wformat-security` is in `CFLAGS` by default and the tree compiles clean under it | Nothing, on this axis — it is a compiler-enforced property rather than the outcome of a review, so it holds for code written after this was documented |
-| **Integer overflow** | Length arithmetic on the parser paths compares operands before subtracting, rather than subtracting and testing the result | `axis2_ssize_t` is `unsigned` (see below), so `-1` returns from `axutil_strlen` and `axutil_string_get_length` are not representable and `< 0` tests against them are dead code |
+| **Integer overflow** | Length arithmetic on the parser paths compares operands before subtracting, rather than subtracting and testing the result | `axis2_ssize_t` is signed, but a `size_t` or unsigned operand on the other side of a comparison still converts a `-1` error return to a large positive value and hides it (see below) |
 | **Null dereference** | Untrusted input is null-checked on the paths that parse it | `env` is **not** systematically validated: `AXIS2_ENV_CHECK` expands to nothing (see below), so the ~620 entry points that appear to use it do not check. `env` is supplied by the framework rather than by a caller across the trust boundary, so a NULL one is a programming error and not remotely reachable |
 
-#### `axis2_ssize_t` is unsigned
+#### `axis2_ssize_t` and testing the sign
 
-`axis2_ssize_t` is `typedef unsigned int` in
-`util/include/axutil_utils_defines.h`. The name promises a signed type and the
-functions returning it document `-1` for failure, but that value arrives as
-`UINT_MAX`, and every `< 0` check written against one is unreachable.
+`axis2_ssize_t` is `typedef int`. It was `unsigned int`, which meant the `-1`
+that `axutil_strlen` and `axutil_string_get_length` document for failure
+arrived as `UINT_MAX`, and every `< 0` test written against one was
+unreachable — the checks compiled and could never fire.
 
-Callers must test for the wrapped value explicitly, or compare against a known
-bound, rather than testing the sign. Making the type signed would change the
-size of a value in the public API: it needs `-version-info` with `age` reset to
-0, a new soname, and consumers relinking, so it belongs to a major release
-rather than a point fix.
+Making it signed is not enough on its own, and this is the part worth
+remembering: an unsigned *other operand* re-hides the error return. Comparing a
+length against `sizeof(...)`, a `size_t`, or an unsigned constant converts the
+signed value to a large positive one, so `-1` reads as "long enough" and the
+guard passes. Compare against a plain signed constant, or test for the error
+value explicitly, and build with `-Wsign-compare` when touching this code.
 
 #### `AXIS2_ENV_CHECK` is a no-op
 
