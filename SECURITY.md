@@ -136,13 +136,34 @@ Response serialization → transport out
 
 As a C codebase, memory safety is a primary concern:
 
-| Category | Risk Level | Notes |
-|----------|-----------|-------|
-| **Buffer overflow** | Low | HTTP header formatting uses `sprintf()` with correctly-sized heap allocations; `snprintf()` used elsewhere |
-| **Use-after-free** | Low | Allocator-based memory management (`axutil_allocator_t`); ASAN testing |
-| **Format string** | Low | Risk if user input reaches logging macros without `%s` format; code review addressed (Jan 2026) |
-| **Integer overflow** | Low | Payload size limits prevent wrap-around in allocation; Gemini review findings addressed |
-| **Null dereference** | Low | Untrusted input is null-checked on the paths that parse it. `env` is **not** systematically validated: `AXIS2_ENV_CHECK` expands to nothing (see below), so the ~620 entry points that appear to use it do not check. `env` is supplied by the framework rather than by a caller across the trust boundary, so a NULL one is a programming error and not remotely reachable |
+This table carried a per-category risk rating until it was checked against an
+external review. Every rating said Low and none of them survived. A rating is
+not a property of the code — nobody can test it, and it decays silently as the
+code moves underneath it. What the review did engage with was the second
+column, because a claim that names a mechanism can be shown false. So the
+ratings are gone and the mechanisms stay, each with the ground it does not
+cover. Add a row here only if you can say both halves.
+
+| Category | What holds it | What it does not cover |
+|----------|---------------|------------------------|
+| **Buffer overflow** | Heap allocations for formatted output are sized from the value being formatted; `snprintf()` elsewhere | Fixed-size stack buffers remain on the fault and header-formatting paths. Each is bounded at its own site; no general rule covers them |
+| **Use-after-free** | Allocator-based memory management (`axutil_allocator_t`); `--enable-asan` builds detect it | ASan is not run in CI. The gtest suite, which is what exercises the SOAP paths, is only built when `--with-gtest` is given, so a default `make check` does not reach them |
+| **Format string** | `-Wformat-security` is in `CFLAGS` by default and the tree compiles clean under it | Nothing, on this axis — it is a compiler-enforced property rather than the outcome of a review, so it holds for code written after this was documented |
+| **Integer overflow** | Length arithmetic on the parser paths compares operands before subtracting, rather than subtracting and testing the result | `axis2_ssize_t` is `unsigned` (see below), so `-1` returns from `axutil_strlen` and `axutil_string_get_length` are not representable and `< 0` tests against them are dead code |
+| **Null dereference** | Untrusted input is null-checked on the paths that parse it | `env` is **not** systematically validated: `AXIS2_ENV_CHECK` expands to nothing (see below), so the ~620 entry points that appear to use it do not check. `env` is supplied by the framework rather than by a caller across the trust boundary, so a NULL one is a programming error and not remotely reachable |
+
+#### `axis2_ssize_t` is unsigned
+
+`axis2_ssize_t` is `typedef unsigned int` in
+`util/include/axutil_utils_defines.h`. The name promises a signed type and the
+functions returning it document `-1` for failure, but that value arrives as
+`UINT_MAX`, and every `< 0` check written against one is unreachable.
+
+Callers must test for the wrapped value explicitly, or compare against a known
+bound, rather than testing the sign. Making the type signed would change the
+size of a value in the public API: it needs `-version-info` with `age` reset to
+0, a new soname, and consumers relinking, so it belongs to a major release
+rather than a point fix.
 
 #### `AXIS2_ENV_CHECK` is a no-op
 

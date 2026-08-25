@@ -477,7 +477,7 @@ whose HPACK parser already caps the header-field count — default `max-headers`
 For production deployments, build Axis2/C with security hardening flags:
 
 ```bash
-CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -fPIE -Wformat -Wformat-security" \
+CFLAGS="-fstack-protector-strong -D_FORTIFY_SOURCE=2 -fPIE" \
 LDFLAGS="-pie -Wl,-z,relro,-z,now" \
 ./configure [options]
 ```
@@ -487,8 +487,11 @@ LDFLAGS="-pie -Wl,-z,relro,-z,now" \
 | `-fstack-protector-strong` | Stack buffer overflow detection |
 | `-D_FORTIFY_SOURCE=2` | Runtime buffer overflow checks for string/memory functions |
 | `-fPIE -pie` | Full ASLR for executables |
-| `-Wformat-security` | Format string vulnerability warnings |
 | `-Wl,-z,relro,-z,now` | Full RELRO - protects GOT from overwrites |
+
+`-Wformat-security` is no longer listed here because configure adds it to
+`CFLAGS` for every GCC build. Passing it again is harmless, but leaving it out
+of a production `CFLAGS` no longer loses the check.
 
 ### Development Builds with AddressSanitizer
 
