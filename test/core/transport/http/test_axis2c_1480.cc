@@ -129,8 +129,26 @@ static void *mock_http_server_thread(void *arg)
     {
         if (ctx->chunk_size <= 0 || (size_t)ctx->chunk_size >= ctx->response_len)
         {
-            /* Send all at once */
-            send(client_fd, ctx->response_data, ctx->response_len, 0);
+            /* Send all at once.
+             *
+             * Still a loop, because send() returns how much it queued and is
+             * under no obligation to take the whole buffer -- it takes what
+             * fits in the socket send buffer. Ignoring the return value and
+             * closing discards the remainder, which the client sees as headers
+             * that stop mid-stream. Responses of a few hundred bytes always
+             * fit, so this only shows up on the large ones, and whether it
+             * shows up at all depends on the kernel's socket buffer autotuning.
+             * That is what made security_many_headers a platform-dependent
+             * failure rather than a consistent one. */
+            size_t sent = 0;
+            while (sent < ctx->response_len)
+            {
+                ssize_t written = send(client_fd, ctx->response_data + sent,
+                                       ctx->response_len - sent, 0);
+                if (written <= 0)
+                    break;
+                sent += (size_t)written;
+            }
         }
         else
         {
@@ -150,6 +168,36 @@ static void *mock_http_server_thread(void *arg)
                 if (ctx->chunk_delay_us > 0 && sent < ctx->response_len)
                     usleep(ctx->chunk_delay_us);
             }
+        }
+    }
+
+    /* Half-close and drain before the full close.
+     *
+     * close() on a socket that still has unread data in its receive queue
+     * sends RST rather than FIN, and the peer's in-flight reads then fail with
+     * ECONNRESET. This server does a single recv() of the request, so anything
+     * the client writes after that -- a body sent in its own write, a pipelined
+     * byte -- is still queued here when we close. The client is reading our
+     * response at that moment, so it loses whatever had not yet arrived.
+     *
+     * That is the race behind security_many_headers: it only bites when the
+     * response is large enough that the client is still reading when we close,
+     * which is why the small-response tests never saw it and why the failure
+     * came and went between runs and between machines. SHUT_WR tells the client
+     * our response is complete, and draining clears the queue so the close is
+     * an orderly FIN. */
+    shutdown(client_fd, SHUT_WR);
+    {
+        struct timeval drain_tv;
+        char drain_buf[1024];
+
+        drain_tv.tv_sec = 0;
+        drain_tv.tv_usec = 200000;
+        setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, &drain_tv, sizeof(drain_tv));
+
+        while (recv(client_fd, drain_buf, sizeof(drain_buf), 0) > 0)
+        {
+            /* discard */
         }
     }
 
