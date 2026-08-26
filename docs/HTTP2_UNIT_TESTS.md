@@ -177,6 +177,32 @@ Two specific include path fixes were applied:
 
 **Avoid:** Experimental flags like `HTTP2_JSON_ONLY_MODE` unless specifically testing.
 
+#### **Issue: `ASan runtime does not come first in initial library list`**
+
+**Problem:** A test binary exits immediately with that message and runs nothing.
+The build succeeded and the test was never ASan-instrumented.
+
+**Cause:** `LD_LIBRARY_PATH` is searched before the binary's `RUNPATH`, so an
+Axis2/C install left on that path is loaded in preference to the tree you just
+built. If that install came from `build_for_tests.sh`, it was built with
+`--enable-asan`, and a non-instrumented binary loading an instrumented
+`libaxutil` aborts before `main`.
+
+**Check what is actually being loaded:**
+```bash
+ldd .libs/<test-binary> | grep -E "libaxutil|libasan"
+```
+
+**Solution:** Point `LD_LIBRARY_PATH` at the tree under test, or unset it and
+let the libtool wrapper supply the build-tree paths. Deleting a stale `deploy/`
+works too.
+
+**Why it matters beyond the error:** when the path resolves to some *other*
+working install rather than an ASan one, there is no error at all — the tests
+run happily against code you did not build. Results then depend on what each
+machine happens to have installed, which is a good way to spend an afternoon on
+a "platform-specific" failure that is nothing of the kind.
+
 ---
 
 ## 🔍 **Test Verification Commands**
