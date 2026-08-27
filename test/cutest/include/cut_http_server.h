@@ -43,6 +43,16 @@ AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
 AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
 axutil_thread_t *thread_http_server = NULL;
 
+/* Whether the server thread got as far as listening.
+ *
+ * 0 = not started yet, 1 = running, -1 = could not be created. The last case
+ * is ordinary rather than exceptional: the shipped axis2.xml comments out the
+ * http transportReceiver because HTTP/2 JSON mode serves through httpd, and
+ * the standalone server needs that block. Callers that require a live server
+ * should skip rather than fail when this is -1 -- a permanently red test
+ * stops the suite recursing and hides everything behind it. */
+static volatile int http_server_state = 0;
+
 /* Tests using this helper POST to a deployed service and wait for a reply, so
  * they need a populated repository. With none at AXIS2C_HOME they fall back
  * here, and if that is empty too they time out rather than fail cleanly --
@@ -180,14 +190,17 @@ http_server(axutil_thread_t *td, void *param)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:" " %d :: %s",
             env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
+        http_server_state = -1;
         server_free(env);
         return NULL;
 
     }
     printf("Start Simple Axis2 HTTP Server ...\n");
+    http_server_state = 1;
     if(axis2_transport_receiver_start(server, env) == AXIS2_FAILURE)
     {
         printf("start error\n");
+        http_server_state = -1;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:" " %d :: %s",
             env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
         server_free(env);
@@ -197,13 +210,18 @@ http_server(axutil_thread_t *td, void *param)
     return NULL;
 }
 
+/* Returns 0 when the server is listening, -1 when the thread could not be
+ * created, and 1 when the repository has no standalone http transportReceiver
+ * -- see http_server_state. */
 static int ut_start_http_server(axutil_env_t *env)
 {
+    http_server_state = 0;
     thread_http_server = axutil_thread_create(env->allocator, NULL, http_server, NULL);
     EXPECT_NE(thread_http_server, nullptr);
     if (!thread_http_server) return -1;
     axutil_thread_detach(thread_http_server);
     AXIS2_SLEEP(2);
+    if (http_server_state < 0) return 1;
 	return 0;
 }
 

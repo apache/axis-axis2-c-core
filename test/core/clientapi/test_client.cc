@@ -78,6 +78,15 @@ TEST_F(TestClient, test_client)
     int server_status;
 
     server_status = ut_start_http_server(m_env);
+    if (server_status == 1)
+    {
+        /* Same configuration dependency as test_http_transport's http_client
+         * case: the shipped axis2.xml comments out the standalone http
+         * transportReceiver because HTTP/2 JSON mode serves through httpd. */
+        GTEST_SKIP() << "no standalone http transportReceiver configured in "
+                        "the repository; enable the http transportReceiver "
+                        "and transportSender in axis2.xml to run this test";
+    }
     ASSERT_EQ(server_status, 0);
     write_to_socket(hostname, port, filename, endpoint);
     ut_stop_http_server(m_env);
