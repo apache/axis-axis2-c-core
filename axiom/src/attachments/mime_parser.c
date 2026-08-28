@@ -24,6 +24,7 @@
 #include <axiom_mtom_caching_callback.h>
 #include <axutil_class_loader.h>
 #include <axutil_url.h>
+#include <axutil_uuid_gen.h>
 
 struct axiom_mime_parser
 {
@@ -45,6 +46,11 @@ struct axiom_mime_parser
 
     /* The attachment dir name, in the case of caching */
     axis2_char_t *attachment_dir;
+
+    /* Content-ID -> the path actually written for it. The name is generated
+     * per attachment rather than derived from the Content-ID, so this is what
+     * lets the retrieval side find the file again. */
+    axutil_hash_t *cached_files;
 
     /*A pointer to the caching callback */
     axiom_mtom_caching_callback_t *mtom_caching_callback;
@@ -240,6 +246,7 @@ axiom_mime_parser_create(
     mime_parser->buffer_size = 1;
     mime_parser->max_buffers = AXIOM_MIME_PARSER_MAX_BUFFERS;
     mime_parser->attachment_dir = NULL;
+    mime_parser->cached_files = NULL;
     mime_parser->mtom_caching_callback = NULL;
     mime_parser->callback_name = NULL;
     mime_parser->buf_array = NULL;
@@ -283,6 +290,27 @@ axiom_mime_parser_free(
             axutil_param_free(param, env);
             param = NULL;
         }
+    }
+
+    if(mime_parser->cached_files)
+    {
+        /* The values are the generated paths; the hash copies its keys but not
+         * its values, so the paths are freed here. The files themselves are
+         * left alone -- the data handlers still refer to them. */
+        axutil_hash_index_t *hi = NULL;
+        void *val = NULL;
+
+        for(hi = axutil_hash_first(mime_parser->cached_files, env); hi; hi = axutil_hash_next(env,
+            hi))
+        {
+            axutil_hash_this(hi, NULL, NULL, &val);
+            if(val)
+            {
+                AXIS2_FREE(env->allocator, val);
+            }
+        }
+        axutil_hash_free(mime_parser->cached_files, env);
+        mime_parser->cached_files = NULL;
     }
 
     if(mime_parser->buf_array)
@@ -1428,47 +1456,54 @@ axiom_mime_parser_search_for_attachment(
                 {
                     /* If the File is not opened yet we will open it*/
 
-                    axis2_char_t *encoded_mime_id = NULL;
+                    axis2_char_t *cache_name = NULL;
 
-                    /* Some times content-ids urls, hence we need to encode them 
-                     * becasue we can't create files with / */
-
-                    /* +1 so the buffer has room for the terminator the
-                     * encoder writes. */
-                    encoded_mime_id = AXIS2_MALLOC(env->allocator, (sizeof(axis2_char_t))
-                        * (strlen(mime_id) + 1));
-                    memset(encoded_mime_id, 0, strlen(mime_id) + 1);
-                    encoded_mime_id = axutil_url_encode(env, encoded_mime_id, mime_id, (int)strlen(
-                        mime_id));
-                    if(!encoded_mime_id)
+                    /* The file name is generated here, not derived from the
+                     * Content-ID.
+                     *
+                     * Deriving it let the sender name the file: two requests
+                     * carrying the same Content-ID opened the same path, so
+                     * one client's attachment bytes landed in another's data
+                     * handler, and a name chosen to match something already in
+                     * attachmentDir -- a symlink, say -- was opened as well. A
+                     * generated name is unique per attachment and unguessable,
+                     * so neither collision is available.
+                     *
+                     * The retrieval side can no longer rebuild the name from
+                     * the Content-ID, which is what cached_files is for. */
+                    cache_name = axutil_uuid_gen(env);
+                    if(!cache_name)
                     {
-                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Mime Id encoding failed");
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "Could not generate a name for the attachment cache file");
                         return NULL;
                     }
 
-                    file_name = axutil_stracat(env, mime_parser->attachment_dir, encoded_mime_id);
-                    AXIS2_FREE(env->allocator, encoded_mime_id);
-                    encoded_mime_id = NULL;
+                    file_name = axutil_stracat(env, mime_parser->attachment_dir, cache_name);
+                    AXIS2_FREE(env->allocator, cache_name);
+                    cache_name = NULL;
 
                     if(!file_name)
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Caching file name creation error");
                         return NULL;
                     }
-                    /* Truncate, do not append. The name is the sender's
-                     * Content-ID run through the URL encoder, so it is the
-                     * sender who decides which file in attachmentDir this
-                     * opens. In append mode a repeated Content-ID adds to
-                     * whatever is already there -- across requests, without
-                     * bound, and on top of any content that was in the file
-                     * beforehand. Each attachment is written once, in one pass
-                     * from here, so truncating loses nothing this parser needs.
-                     *
-                     * This does not make the name unpredictable, and the file
-                     * is still opened by a name the peer influences. Fixing
-                     * that means generating the name here and carrying it to
-                     * the retrieval site, which reconstructs the same string
-                     * from the Content-ID -- a larger change than this one. */
+
+                    if(!mime_parser->cached_files)
+                    {
+                        mime_parser->cached_files = axutil_hash_make(env);
+                        if(!mime_parser->cached_files)
+                        {
+                            AXIS2_FREE(env->allocator, file_name);
+                            return NULL;
+                        }
+                    }
+                    /* The hash copies the key; the path is this map's to free. */
+                    axutil_hash_set(mime_parser->cached_files, mime_id, AXIS2_HASH_KEY_STRING,
+                        file_name);
+
+                    /* Truncate rather than append: the name is fresh, so there
+                     * should be nothing there, and if there is it is not ours. */
                     search_info->handler = (void *)fopen(file_name, "wb+");
                     if(!(search_info->handler))
                     {
@@ -1703,7 +1738,10 @@ axiom_mime_parser_search_for_attachment(
                 status = AXIS2_FAILURE;
             }
 
-            AXIS2_FREE(env->allocator, file_name);
+            /* file_name is not freed here any more: it is the value stored in
+             * cached_files, which the retrieval side reads and
+             * axiom_mime_parser_free releases. Freeing it at this point left
+             * the map holding a dangling pointer. */
             file_name = NULL;
 
             if(status == AXIS2_FAILURE)
@@ -2034,29 +2072,24 @@ axiom_mime_parser_store_attachment(
             else if(mime_parser->attachment_dir && cached)
             {
                 axis2_char_t *attachment_location = NULL;
-                axis2_char_t *encoded_mime_id = NULL;
 
-                /* Some times content-ids urls, hence we need to encode them 
-                 * becasue we can't create files with / */
-
-                /* +1 so the buffer has room for the terminator the encoder
-                 * writes. */
-                encoded_mime_id = AXIS2_MALLOC(env->allocator, (sizeof(axis2_char_t)) * (strlen(
-                    mime_id) + 1));
-                memset(encoded_mime_id, 0, strlen(mime_id) + 1);
-                encoded_mime_id = axutil_url_encode(
-                    env, encoded_mime_id, mime_id, (int)strlen(mime_id));
-                if(!encoded_mime_id)
+                /* Look the path up rather than rebuilding it from the
+                 * Content-ID. The writer generates the name, so the Content-ID
+                 * no longer determines it -- see the note at the fopen in
+                 * axiom_mime_parser_search_for_attachment. The map owns the
+                 * string, so nothing is freed here. */
+                if(mime_parser->cached_files)
                 {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Mime Id encoding failed");
-                    return AXIS2_FAILURE;
+                    attachment_location = (axis2_char_t *)axutil_hash_get(
+                        mime_parser->cached_files, mime_id, AXIS2_HASH_KEY_STRING);
                 }
 
-                attachment_location = axutil_stracat(env, mime_parser->attachment_dir,
-                    encoded_mime_id);
-
-                AXIS2_FREE(env->allocator, encoded_mime_id);
-                encoded_mime_id = NULL;
+                if(!attachment_location)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No cache file recorded for this attachment");
+                    return AXIS2_FAILURE;
+                }
 
                 if(attachment_location)
                 {
@@ -2067,7 +2100,6 @@ axiom_mime_parser_store_attachment(
                         axiom_data_handler_set_cached(data_handler, env, AXIS2_TRUE);
 
                     }
-                    AXIS2_FREE(env->allocator, attachment_location);
                     attachment_location = NULL;
                 }
             }
