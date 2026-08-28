@@ -770,20 +770,26 @@ axis2_http_client_send(
                 return AXIS2_FAILURE;
             }
 
-            while(written < client->req_body_size)
+            /* One call, not a loop. axutil_http_chunked_stream_write writes the
+             * whole body it was given or fails; looping on a short return used
+             * to re-send the body from the start under a fresh chunk header,
+             * which corrupts the framing rather than completing the write.
+             * Take the return in an int and test it before widening -- the -1
+             * is only distinguishable from a huge length while it is signed. */
             {
-                /* Take the return in an int and test it before widening: the
-                 * -1 is only distinguishable from a huge length while it is
-                 * still signed. */
                 int chunk_written = axutil_http_chunked_stream_write(chunked_stream, env,
                     client->req_body, client->req_body_size);
 
-                if(chunk_written < 0)
+                if(chunk_written < 0 || (size_t)chunk_written != client->req_body_size)
                 {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Failed to write the request body to the chunked stream");
                     status = AXIS2_FAILURE;
-                    break;
                 }
-                written = (size_t)chunk_written;
+                else
+                {
+                    written = (size_t)chunk_written;
+                }
             }
 
             if(AXIS2_SUCCESS == status)

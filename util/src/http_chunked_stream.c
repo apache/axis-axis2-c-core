@@ -158,7 +158,33 @@ axutil_http_chunked_stream_write(
     }
     sprintf(tmp_buf, "%x%s", (unsigned int)count, AXIS2_HTTP_CRLF);
     axutil_stream_write(stream, env, tmp_buf, axutil_strlen(tmp_buf));
-    len = axutil_stream_write(stream, env, buffer, count);
+
+    /* The header above has already announced count bytes, so exactly count
+     * have to follow it or the framing is wrong for everything after this
+     * chunk. axutil_stream_write is under no obligation to take them all in
+     * one call -- a socket accepts what fits in its send buffer and reports
+     * the rest back -- so keep going until the announced body is complete.
+     *
+     * Returning a short count instead was worse than it looks: callers cannot
+     * recover from it. Two of them respond by calling again with the whole
+     * buffer, which emits a second chunk header in the middle of a chunk that
+     * was never finished, and repeats if the writes keep coming up short. */
+    {
+        size_t body_written = 0;
+
+        while(body_written < count)
+        {
+            len = axutil_stream_write(stream, env, (const axis2_char_t *)buffer + body_written,
+                count - body_written);
+            if(len <= 0)
+            {
+                return -1;
+            }
+            body_written += (size_t)len;
+        }
+        len = (int)body_written;
+    }
+
     axutil_stream_write(stream, env, AXIS2_HTTP_CRLF, 2);
     return len;
 }
