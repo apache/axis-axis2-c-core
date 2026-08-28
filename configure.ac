@@ -101,6 +101,14 @@ if test "$GCC" = "yes"; then
     dnl noticed only by a reader. -Werror is deliberately not used here -- a
     dnl warning that fails a downstream distro build helps nobody.
     CFLAGS="$CFLAGS -Wformat-security"
+    dnl -Wsign-compare is in -Wextra rather than -Wall for C, so it was off.
+    dnl It is what catches a signed length being compared against a size_t or
+    dnl an unsigned constant, which converts the -1 that axutil_strlen and
+    dnl friends return for failure into a large positive value and lets it pass
+    dnl a "is this long enough" test. Making axis2_ssize_t signed gives those
+    dnl functions a usable error channel; this is what stops the next
+    dnl comparison quietly closing it again. The tree is clean under it today.
+    CFLAGS="$CFLAGS -Wsign-compare"
     AC_MSG_NOTICE([Using -std=gnu99 for compatibility])
 fi
 

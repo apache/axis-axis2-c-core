@@ -164,7 +164,14 @@ remembering: an unsigned *other operand* re-hides the error return. Comparing a
 length against `sizeof(...)`, a `size_t`, or an unsigned constant converts the
 signed value to a large positive one, so `-1` reads as "long enough" and the
 guard passes. Compare against a plain signed constant, or test for the error
-value explicitly, and build with `-Wsign-compare` when touching this code.
+value explicitly.
+
+`-Wsign-compare` is in `CFLAGS` for exactly this, and the tree compiles clean
+under it. Note it is part of `-Wextra` rather than `-Wall` for C, so it is off
+by default and had to be asked for. It cannot see every case — a length
+assigned into a `size_t` variable before being compared converts silently, with
+nothing left for the compiler to warn about — so a length that can be `-1`
+should be tested while it is still signed.
 
 #### `AXIS2_ENV_CHECK` is a no-op
 

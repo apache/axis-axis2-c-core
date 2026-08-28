@@ -435,7 +435,7 @@ axis2_http_client_send(
     axutil_array_list_t *headers = NULL;
     char *str_header = NULL;
     char *str_request_line = NULL;
-    int written = 0;
+    size_t written = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_bool_t chunking_enabled = AXIS2_FALSE;
     axis2_char_t *host = NULL;
@@ -735,6 +735,11 @@ axis2_http_client_send(
         if(!chunking_enabled)
         {
             status = AXIS2_SUCCESS;
+            /* written is counted in the same type as req_body_size. It used to
+             * be int, so this comparison promoted it to size_t and a negative
+             * count would have read as an enormous one; the -1 check below is
+             * what kept that from mattering. Keep the types together so the
+             * guard is not the only thing standing between the two. */
             while(written < client->req_body_size)
             {
                 len = 0;
@@ -747,7 +752,7 @@ axis2_http_client_send(
                 }
                 else
                 {
-                    written += len;
+                    written += (size_t)len;
                 }
             }
         }
@@ -767,14 +772,18 @@ axis2_http_client_send(
 
             while(written < client->req_body_size)
             {
-                written = axutil_http_chunked_stream_write(chunked_stream, env, client->req_body,
-                    client->req_body_size);
+                /* Take the return in an int and test it before widening: the
+                 * -1 is only distinguishable from a huge length while it is
+                 * still signed. */
+                int chunk_written = axutil_http_chunked_stream_write(chunked_stream, env,
+                    client->req_body, client->req_body_size);
 
-                if(-1 == written)
+                if(chunk_written < 0)
                 {
                     status = AXIS2_FAILURE;
                     break;
                 }
+                written = (size_t)chunk_written;
             }
 
             if(AXIS2_SUCCESS == status)
