@@ -190,29 +190,19 @@ axis2_prepend_stream_skip(
     return total_skipped;
 }
 
-static void AXIS2_CALL
-axis2_prepend_stream_free(
-    axutil_stream_t *stream,
-    const axutil_env_t *env)
-{
-    axis2_prepend_stream_impl_t *impl = (axis2_prepend_stream_impl_t *)stream;
-
-    if (impl)
-    {
-        if (impl->prepend_data)
-        {
-            AXIS2_FREE(env->allocator, impl->prepend_data);
-            impl->prepend_data = NULL;
-        }
-        /* Free the underlying stream */
-        if (impl->underlying)
-        {
-            axutil_stream_free(impl->underlying, env);
-            impl->underlying = NULL;
-        }
-        AXIS2_FREE(env->allocator, impl);
-    }
-}
+/*
+ * There is deliberately no free function for this stream type.
+ *
+ * The stream is AXIS2_STREAM_MANAGED and stores its cleanup handles in the
+ * base fields -- buffer_head for the prepend buffer, fp for the underlying
+ * stream -- which is the convention axutil_stream_free's MANAGED case exists
+ * to serve, prepend streams being the case it names. That path frees the
+ * buffer, the underlying stream and the wrapper.
+ *
+ * A free function here would free the same three allocations through the
+ * extended fields that alias those handles, so wiring one in would double-free
+ * all of them. Leave the cleanup where the create function put it.
+ */
 
 /*
  * Create a prepend stream wrapper that serves prepend_data first,
