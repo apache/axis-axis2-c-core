@@ -96,6 +96,69 @@ axis2_rm_assertion_free(
 {
     if(rm_assertion)
     {
+        /* The builder reads these from axiom attributes, which the element
+         * owns; the setters copy them, so they are released here. */
+        if(rm_assertion->inactivity_timeout)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->inactivity_timeout);
+            rm_assertion->inactivity_timeout = NULL;
+        }
+        if(rm_assertion->retrans_interval)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->retrans_interval);
+            rm_assertion->retrans_interval = NULL;
+        }
+        if(rm_assertion->ack_interval)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->ack_interval);
+            rm_assertion->ack_interval = NULL;
+        }
+        if(rm_assertion->storage_mgr)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->storage_mgr);
+            rm_assertion->storage_mgr = NULL;
+        }
+        if(rm_assertion->message_types_to_drop)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->message_types_to_drop);
+            rm_assertion->message_types_to_drop = NULL;
+        }
+        if(rm_assertion->max_retrans_count)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->max_retrans_count);
+            rm_assertion->max_retrans_count = NULL;
+        }
+        if(rm_assertion->sender_sleep_time)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->sender_sleep_time);
+            rm_assertion->sender_sleep_time = NULL;
+        }
+        if(rm_assertion->invoker_sleep_time)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->invoker_sleep_time);
+            rm_assertion->invoker_sleep_time = NULL;
+        }
+        if(rm_assertion->polling_wait_time)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->polling_wait_time);
+            rm_assertion->polling_wait_time = NULL;
+        }
+        if(rm_assertion->terminate_delay)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->terminate_delay);
+            rm_assertion->terminate_delay = NULL;
+        }
+        if(rm_assertion->sandesha2_db)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->sandesha2_db);
+            rm_assertion->sandesha2_db = NULL;
+        }
+        if(rm_assertion->spec_version)
+        {
+            AXIS2_FREE(env->allocator, rm_assertion->spec_version);
+            rm_assertion->spec_version = NULL;
+        }
+
         AXIS2_FREE(env->allocator, rm_assertion);
         rm_assertion = NULL;
     }
@@ -235,7 +298,11 @@ axis2_rm_assertion_set_inactivity_timeout(
     const axutil_env_t * env,
     axis2_char_t* inactivity_timeout)
 {
-    rm_assertion->inactivity_timeout = inactivity_timeout;
+    if(rm_assertion->inactivity_timeout)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->inactivity_timeout);
+    }
+    rm_assertion->inactivity_timeout = axutil_strdup(env, inactivity_timeout);
 
     return AXIS2_SUCCESS;
 }
@@ -254,7 +321,11 @@ axis2_rm_assertion_set_retrans_interval(
     const axutil_env_t * env,
     axis2_char_t* retrans_interval)
 {
-    rm_assertion->retrans_interval = retrans_interval;
+    if(rm_assertion->retrans_interval)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->retrans_interval);
+    }
+    rm_assertion->retrans_interval = axutil_strdup(env, retrans_interval);
 
     return AXIS2_SUCCESS;
 }
@@ -273,7 +344,11 @@ axis2_rm_assertion_set_ack_interval(
     const axutil_env_t * env,
     axis2_char_t* ack_interval)
 {
-    rm_assertion->ack_interval = ack_interval;
+    if(rm_assertion->ack_interval)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->ack_interval);
+    }
+    rm_assertion->ack_interval = axutil_strdup(env, ack_interval);
 
     return AXIS2_SUCCESS;
 }
@@ -311,7 +386,11 @@ axis2_rm_assertion_set_storage_mgr(
     const axutil_env_t * env,
     axis2_char_t* storage_mgr)
 {
-    rm_assertion->storage_mgr = storage_mgr;
+    if(rm_assertion->storage_mgr)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->storage_mgr);
+    }
+    rm_assertion->storage_mgr = axutil_strdup(env, storage_mgr);
 
     return AXIS2_SUCCESS;
 }
@@ -330,7 +409,11 @@ axis2_rm_assertion_set_message_types_to_drop(
     const axutil_env_t * env,
     axis2_char_t* message_types_to_drop)
 {
-    rm_assertion->message_types_to_drop = message_types_to_drop;
+    if(rm_assertion->message_types_to_drop)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->message_types_to_drop);
+    }
+    rm_assertion->message_types_to_drop = axutil_strdup(env, message_types_to_drop);
 
     return AXIS2_SUCCESS;
 }
@@ -349,7 +432,11 @@ axis2_rm_assertion_set_max_retrans_count(
     const axutil_env_t * env,
     axis2_char_t* max_retrans_count)
 {
-    rm_assertion->max_retrans_count = max_retrans_count;
+    if(rm_assertion->max_retrans_count)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->max_retrans_count);
+    }
+    rm_assertion->max_retrans_count = axutil_strdup(env, max_retrans_count);
 
     return AXIS2_SUCCESS;
 }
@@ -368,7 +455,11 @@ axis2_rm_assertion_set_sender_sleep_time(
     const axutil_env_t * env,
     axis2_char_t* sender_sleep_time)
 {
-    rm_assertion->sender_sleep_time = sender_sleep_time;
+    if(rm_assertion->sender_sleep_time)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->sender_sleep_time);
+    }
+    rm_assertion->sender_sleep_time = axutil_strdup(env, sender_sleep_time);
 
     return AXIS2_SUCCESS;
 }
@@ -387,7 +478,11 @@ axis2_rm_assertion_set_invoker_sleep_time(
     const axutil_env_t * env,
     axis2_char_t* invoker_sleep_time)
 {
-    rm_assertion->invoker_sleep_time = invoker_sleep_time;
+    if(rm_assertion->invoker_sleep_time)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->invoker_sleep_time);
+    }
+    rm_assertion->invoker_sleep_time = axutil_strdup(env, invoker_sleep_time);
 
     return AXIS2_SUCCESS;
 }
@@ -406,7 +501,11 @@ axis2_rm_assertion_set_polling_wait_time(
     const axutil_env_t * env,
     axis2_char_t* polling_wait_time)
 {
-    rm_assertion->polling_wait_time = polling_wait_time;
+    if(rm_assertion->polling_wait_time)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->polling_wait_time);
+    }
+    rm_assertion->polling_wait_time = axutil_strdup(env, polling_wait_time);
 
     return AXIS2_SUCCESS;
 }
@@ -425,7 +524,11 @@ axis2_rm_assertion_set_terminate_delay(
     const axutil_env_t * env,
     axis2_char_t* terminate_delay)
 {
-    rm_assertion->terminate_delay = terminate_delay;
+    if(rm_assertion->terminate_delay)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->terminate_delay);
+    }
+    rm_assertion->terminate_delay = axutil_strdup(env, terminate_delay);
 
     return AXIS2_SUCCESS;
 }
@@ -444,7 +547,11 @@ axis2_rm_assertion_set_sandesha2_db(
     const axutil_env_t * env,
     axis2_char_t* sandesha2_db)
 {
-    rm_assertion->sandesha2_db = sandesha2_db;
+    if(rm_assertion->sandesha2_db)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->sandesha2_db);
+    }
+    rm_assertion->sandesha2_db = axutil_strdup(env, sandesha2_db);
 
     return AXIS2_SUCCESS;
 }
@@ -463,7 +570,11 @@ axis2_rm_assertion_set_spec_version(
     const axutil_env_t * env,
     axis2_char_t* spec_version)
 {
-    rm_assertion->spec_version = spec_version;
+    if(rm_assertion->spec_version)
+    {
+        AXIS2_FREE(env->allocator, rm_assertion->spec_version);
+    }
+    rm_assertion->spec_version = axutil_strdup(env, spec_version);
 
     return AXIS2_SUCCESS;
 }

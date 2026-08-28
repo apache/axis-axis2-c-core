@@ -87,6 +87,85 @@ rp_rampart_config_free(
             return;
         }
 
+        /* Every string here was copied in by its setter, because the builder
+         * takes them from axiom_element_get_text and those belong to the
+         * element. Release them with the struct. */
+        if(rampart_config->user)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->user);
+            rampart_config->user = NULL;
+        }
+        if(rampart_config->encryption_user)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->encryption_user);
+            rampart_config->encryption_user = NULL;
+        }
+        if(rampart_config->password_callback_class)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->password_callback_class);
+            rampart_config->password_callback_class = NULL;
+        }
+        if(rampart_config->authenticate_module)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->authenticate_module);
+            rampart_config->authenticate_module = NULL;
+        }
+        if(rampart_config->replay_detector)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->replay_detector);
+            rampart_config->replay_detector = NULL;
+        }
+        if(rampart_config->sct_provider)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->sct_provider);
+            rampart_config->sct_provider = NULL;
+        }
+        if(rampart_config->password_type)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->password_type);
+            rampart_config->password_type = NULL;
+        }
+        if(rampart_config->time_to_live)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->time_to_live);
+            rampart_config->time_to_live = NULL;
+        }
+        if(rampart_config->clock_skew_buffer)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->clock_skew_buffer);
+            rampart_config->clock_skew_buffer = NULL;
+        }
+        if(rampart_config->need_millisecond_precision)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->need_millisecond_precision);
+            rampart_config->need_millisecond_precision = NULL;
+        }
+        if(rampart_config->receiver_certificate_file)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->receiver_certificate_file);
+            rampart_config->receiver_certificate_file = NULL;
+        }
+        if(rampart_config->certificate_file)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->certificate_file);
+            rampart_config->certificate_file = NULL;
+        }
+        if(rampart_config->private_key_file)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->private_key_file);
+            rampart_config->private_key_file = NULL;
+        }
+        if(rampart_config->pkcs12_file)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->pkcs12_file);
+            rampart_config->pkcs12_file = NULL;
+        }
+        if(rampart_config->rd_val)
+        {
+            AXIS2_FREE(env->allocator, rampart_config->rd_val);
+            rampart_config->rd_val = NULL;
+        }
+
         AXIS2_FREE(env->allocator, rampart_config);
         rampart_config = NULL;
     }
@@ -114,7 +193,11 @@ rp_rampart_config_set_user(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, user, AXIS2_FAILURE);
 
-    rampart_config->user = user;
+    if(rampart_config->user)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->user);
+    }
+    rampart_config->user = axutil_strdup(env, user);
     return AXIS2_SUCCESS;
 }
 
@@ -137,7 +220,11 @@ rp_rampart_config_set_encryption_user(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encryption_user, AXIS2_FAILURE);
 
-    rampart_config->encryption_user = encryption_user;
+    if(rampart_config->encryption_user)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->encryption_user);
+    }
+    rampart_config->encryption_user = axutil_strdup(env, encryption_user);
     return AXIS2_SUCCESS;
 }
 
@@ -160,7 +247,11 @@ rp_rampart_config_set_password_callback_class(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, password_callback_class, AXIS2_FAILURE);
 
-    rampart_config->password_callback_class = password_callback_class;
+    if(rampart_config->password_callback_class)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->password_callback_class);
+    }
+    rampart_config->password_callback_class = axutil_strdup(env, password_callback_class);
     return AXIS2_SUCCESS;
 }
 
@@ -183,7 +274,11 @@ rp_rampart_config_set_authenticate_module(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, authenticate_module, AXIS2_FAILURE);
 
-    rampart_config->authenticate_module = authenticate_module;
+    if(rampart_config->authenticate_module)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->authenticate_module);
+    }
+    rampart_config->authenticate_module = axutil_strdup(env, authenticate_module);
     return AXIS2_SUCCESS;
 }
 
@@ -206,7 +301,11 @@ rp_rampart_config_set_replay_detector(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, replay_detector, AXIS2_FAILURE);
 
-    rampart_config->replay_detector = replay_detector;
+    if(rampart_config->replay_detector)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->replay_detector);
+    }
+    rampart_config->replay_detector = axutil_strdup(env, replay_detector);
     return AXIS2_SUCCESS;
 }
 
@@ -229,7 +328,11 @@ rp_rampart_config_set_sct_provider(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, sct_module, AXIS2_FAILURE);
 
-    rampart_config->sct_provider = sct_module;
+    if(rampart_config->sct_provider)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->sct_provider);
+    }
+    rampart_config->sct_provider = axutil_strdup(env, sct_module);
     return AXIS2_SUCCESS;
 }
 
@@ -252,7 +355,11 @@ rp_rampart_config_set_password_type(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, password_type, AXIS2_FAILURE);
 
-    rampart_config->password_type = password_type;
+    if(rampart_config->password_type)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->password_type);
+    }
+    rampart_config->password_type = axutil_strdup(env, password_type);
     return AXIS2_SUCCESS;
 }
 
@@ -275,7 +382,11 @@ rp_rampart_config_set_private_key_file(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, private_key_file, AXIS2_FAILURE);
 
-    rampart_config->private_key_file = private_key_file;
+    if(rampart_config->private_key_file)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->private_key_file);
+    }
+    rampart_config->private_key_file = axutil_strdup(env, private_key_file);
     return AXIS2_SUCCESS;
 }
 
@@ -298,7 +409,11 @@ rp_rampart_config_set_receiver_certificate_file(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, receiver_certificate_file, AXIS2_FAILURE);
 
-    rampart_config->receiver_certificate_file = receiver_certificate_file;
+    if(rampart_config->receiver_certificate_file)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->receiver_certificate_file);
+    }
+    rampart_config->receiver_certificate_file = axutil_strdup(env, receiver_certificate_file);
     return AXIS2_SUCCESS;
 }
 
@@ -321,7 +436,11 @@ rp_rampart_config_set_certificate_file(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, certificate_file, AXIS2_FAILURE);
 
-    rampart_config->certificate_file = certificate_file;
+    if(rampart_config->certificate_file)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->certificate_file);
+    }
+    rampart_config->certificate_file = axutil_strdup(env, certificate_file);
     return AXIS2_SUCCESS;
 }
 
@@ -344,7 +463,11 @@ rp_rampart_config_set_time_to_live(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, time_to_live, AXIS2_FAILURE);
 
-    rampart_config->time_to_live = time_to_live;
+    if(rampart_config->time_to_live)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->time_to_live);
+    }
+    rampart_config->time_to_live = axutil_strdup(env, time_to_live);
     return AXIS2_SUCCESS;
 }
 
@@ -362,7 +485,11 @@ rp_rampart_config_set_clock_skew_buffer(
     const axutil_env_t * env,
     axis2_char_t * clock_skew_buffer)
 {
-    rampart_config->clock_skew_buffer = clock_skew_buffer;
+    if(rampart_config->clock_skew_buffer)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->clock_skew_buffer);
+    }
+    rampart_config->clock_skew_buffer = axutil_strdup(env, clock_skew_buffer);
     return AXIS2_SUCCESS;
 }
 
@@ -380,7 +507,11 @@ rp_rampart_config_set_need_millisecond_precision(
     const axutil_env_t * env,
     axis2_char_t * need_millisecond_precision)
 {
-    rampart_config->need_millisecond_precision = need_millisecond_precision;
+    if(rampart_config->need_millisecond_precision)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->need_millisecond_precision);
+    }
+    rampart_config->need_millisecond_precision = axutil_strdup(env, need_millisecond_precision);
     return AXIS2_SUCCESS;
 }
 
@@ -402,7 +533,12 @@ rp_rampart_config_set_pkcs12_file(
     {
         if(pkcs12_file)
         {
-            rampart_config->pkcs12_file = pkcs12_file;
+            /* Copied and owned, as the other setters here are. */
+            if(rampart_config->pkcs12_file)
+            {
+                AXIS2_FREE(env->allocator, rampart_config->pkcs12_file);
+            }
+            rampart_config->pkcs12_file = axutil_strdup(env, pkcs12_file);
             return AXIS2_SUCCESS;
         }
 
@@ -431,7 +567,11 @@ rp_rampart_config_set_rd_val(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, rd_val, AXIS2_FAILURE);
 
-    rampart_config->rd_val = rd_val;
+    if(rampart_config->rd_val)
+    {
+        AXIS2_FREE(env->allocator, rampart_config->rd_val);
+    }
+    rampart_config->rd_val = axutil_strdup(env, rd_val);
     return AXIS2_SUCCESS;
 }
 

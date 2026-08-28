@@ -16,6 +16,7 @@
  */
 
 #include <rp_issued_token.h>
+#include <axiom_util.h>
 
 struct rp_issued_token
 {
@@ -65,6 +66,22 @@ rp_issued_token_free(
             return;
         }
 
+        if(issued_token->inclusion)
+        {
+            AXIS2_FREE(env->allocator, issued_token->inclusion);
+            issued_token->inclusion = NULL;
+        }
+        if(issued_token->issuer_epr)
+        {
+            axiom_node_free_tree(issued_token->issuer_epr, env);
+            issued_token->issuer_epr = NULL;
+        }
+        if(issued_token->requested_sec_token_template)
+        {
+            axiom_node_free_tree(issued_token->requested_sec_token_template, env);
+            issued_token->requested_sec_token_template = NULL;
+        }
+
         AXIS2_FREE(env->allocator, issued_token);
         issued_token = NULL;
     }
@@ -87,7 +104,13 @@ rp_issued_token_set_inclusion(
 {
     if(inclusion)
     {
-        issued_token->inclusion = inclusion;
+        /* Copied: the builder reads this from an axiom attribute, which the
+         * element owns and frees with the document. */
+        if(issued_token->inclusion)
+        {
+            AXIS2_FREE(env->allocator, issued_token->inclusion);
+        }
+        issued_token->inclusion = axutil_strdup(env, inclusion);
         return AXIS2_SUCCESS;
     }
 
@@ -110,7 +133,15 @@ rp_issued_token_set_issuer_epr(
 {
     if(issuer_epr)
     {
-        issued_token->issuer_epr = issuer_epr;
+        /* Cloned, not borrowed. The builder hands over a node from the
+         * services.xml tree, and that tree is freed when deployment finishes
+         * while this policy lives on in policy_include. Same treatment as
+         * neethi_assertion_set_node. */
+        if(issued_token->issuer_epr)
+        {
+            axiom_node_free_tree(issued_token->issuer_epr, env);
+        }
+        issued_token->issuer_epr = axiom_util_clone_node(env, issuer_epr);
         return AXIS2_SUCCESS;
     }
 
@@ -133,7 +164,13 @@ rp_issued_token_set_requested_sec_token_template(
 {
     if(req_sec_token_template)
     {
-        issued_token->requested_sec_token_template = req_sec_token_template;
+        /* Cloned for the same reason as issuer_epr above. */
+        if(issued_token->requested_sec_token_template)
+        {
+            axiom_node_free_tree(issued_token->requested_sec_token_template, env);
+        }
+        issued_token->requested_sec_token_template = axiom_util_clone_node(env,
+            req_sec_token_template);
         return AXIS2_SUCCESS;
     }
 

@@ -51,6 +51,11 @@ neethi_reference_free(
 {
     if(neethi_reference)
     {
+        if(neethi_reference->uri)
+        {
+            AXIS2_FREE(env->allocator, neethi_reference->uri);
+            neethi_reference->uri = NULL;
+        }
         AXIS2_FREE(env->allocator, neethi_reference);
         neethi_reference = NULL;
     }
@@ -73,7 +78,14 @@ neethi_reference_set_uri(
     const axutil_env_t *env,
     axis2_char_t *uri)
 {
-    neethi_reference->uri = uri;
+    /* Copy: the caller passes axiom_element_get_attribute_value, which the
+     * element owns and frees with the document. A reference resolved from a
+     * deploy-time policy is read long after that document is gone. */
+    if(neethi_reference->uri)
+    {
+        AXIS2_FREE(env->allocator, neethi_reference->uri);
+    }
+    neethi_reference->uri = axutil_strdup(env, uri);
     return AXIS2_SUCCESS;
 }
 

@@ -61,9 +61,12 @@ rp_algorithmsuite_create(
         return NULL;
     }
     algorithmsuite->algosuite_string = NULL;
-    algorithmsuite->symmetric_signature = RP_HMAC_SHA1;
-    algorithmsuite->asymmetric_signature = RP_RSA_SHA1;
-    algorithmsuite->computed_key = RP_P_SHA1;
+    /* Copied, not stored directly. These four strings are owned by the struct
+     * and released in rp_algorithmsuite_free; the defaults are string
+     * literals, so they have to be copied here for the free to be uniform. */
+    algorithmsuite->symmetric_signature = axutil_strdup(env, RP_HMAC_SHA1);
+    algorithmsuite->asymmetric_signature = axutil_strdup(env, RP_RSA_SHA1);
+    algorithmsuite->computed_key = axutil_strdup(env, RP_P_SHA1);
     algorithmsuite->max_symmetric_keylength = 256;
     algorithmsuite->min_asymmetric_keylength = 1024;
     algorithmsuite->max_asymmetric_keylength = 4096;
@@ -97,6 +100,27 @@ rp_algorithmsuite_free(
             return;
         }
 
+        if(algorithmsuite->algosuite_string)
+        {
+            AXIS2_FREE(env->allocator, algorithmsuite->algosuite_string);
+            algorithmsuite->algosuite_string = NULL;
+        }
+        if(algorithmsuite->symmetric_signature)
+        {
+            AXIS2_FREE(env->allocator, algorithmsuite->symmetric_signature);
+            algorithmsuite->symmetric_signature = NULL;
+        }
+        if(algorithmsuite->asymmetric_signature)
+        {
+            AXIS2_FREE(env->allocator, algorithmsuite->asymmetric_signature);
+            algorithmsuite->asymmetric_signature = NULL;
+        }
+        if(algorithmsuite->computed_key)
+        {
+            AXIS2_FREE(env->allocator, algorithmsuite->computed_key);
+            algorithmsuite->computed_key = NULL;
+        }
+
         AXIS2_FREE(env->allocator, algorithmsuite);
         algorithmsuite = NULL;
     }
@@ -125,7 +149,15 @@ rp_algorithmsuite_set_algosuite(
 {
     AXIS2_PARAM_CHECK(env->error, algosuite_string, AXIS2_FAILURE);
 
-    algorithmsuite->algosuite_string = algosuite_string;
+    /* Copy. The builder passes axiom_element_get_localname, which belongs to
+     * the element and dies with the document; this policy is built from the
+     * services.xml tree at deploy time and kept in the long-lived
+     * policy_include, which outlives that tree by design. */
+    if(algorithmsuite->algosuite_string)
+    {
+        AXIS2_FREE(env->allocator, algorithmsuite->algosuite_string);
+    }
+    algorithmsuite->algosuite_string = axutil_strdup(env, algosuite_string);
 
     if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256) == 0)
     {
@@ -371,7 +403,11 @@ rp_algorithmsuite_set_symmetric_signature(
 {
     AXIS2_PARAM_CHECK(env->error, symmetric_signature, AXIS2_FAILURE);
 
-    algorithmsuite->symmetric_signature = symmetric_signature;
+    if(algorithmsuite->symmetric_signature)
+    {
+        AXIS2_FREE(env->allocator, algorithmsuite->symmetric_signature);
+    }
+    algorithmsuite->symmetric_signature = axutil_strdup(env, symmetric_signature);
     return AXIS2_SUCCESS;
 }
 
@@ -391,7 +427,11 @@ rp_algorithmsuite_set_asymmetric_signature(
 {
     AXIS2_PARAM_CHECK(env->error, asymmetric_signature, AXIS2_FAILURE);
 
-    algorithmsuite->asymmetric_signature = asymmetric_signature;
+    if(algorithmsuite->asymmetric_signature)
+    {
+        AXIS2_FREE(env->allocator, algorithmsuite->asymmetric_signature);
+    }
+    algorithmsuite->asymmetric_signature = axutil_strdup(env, asymmetric_signature);
     return AXIS2_SUCCESS;
 }
 
@@ -411,7 +451,11 @@ rp_algorithmsuite_set_computed_key(
 {
     AXIS2_PARAM_CHECK(env->error, computed_key, AXIS2_FAILURE);
 
-    algorithmsuite->computed_key = computed_key;
+    if(algorithmsuite->computed_key)
+    {
+        AXIS2_FREE(env->allocator, algorithmsuite->computed_key);
+    }
+    algorithmsuite->computed_key = axutil_strdup(env, computed_key);
     return AXIS2_SUCCESS;
 }
 

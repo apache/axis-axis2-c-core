@@ -47,7 +47,11 @@ rp_token_create(
     token->claim = NULL;
     token->derive_key = DERIVEKEY_NONE;
     token->derive_key_version = DERIVEKEY_VERSION_SC13;
-    token->inclusion = RP_INCLUDE_ALWAYS_SP12;
+    /* Owned, like every other string in this struct. The default is a string
+     * literal, so it has to be copied here rather than stored directly --
+     * otherwise rp_token_free could not tell the default from a value the
+     * setter copied in, and would have to leak one or free the other. */
+    token->inclusion = axutil_strdup(env, RP_INCLUDE_ALWAYS_SP12);
     token->ref = 0;
 
     return token;
@@ -63,6 +67,17 @@ rp_token_free(
         if(--(token->ref) > 0)
         {
             return;
+        }
+
+        if(token->issuer)
+        {
+            AXIS2_FREE(env->allocator, token->issuer);
+            token->issuer = NULL;
+        }
+        if(token->inclusion)
+        {
+            AXIS2_FREE(env->allocator, token->inclusion);
+            token->inclusion = NULL;
         }
 
         AXIS2_FREE(env->allocator, token);
@@ -86,7 +101,16 @@ rp_token_set_issuer(
     const axutil_env_t * env,
     axis2_char_t * issuer)
 {
-    token->issuer = issuer;
+    /* Copy. The builders pass axiom_element_get_attribute_value results, which
+     * belong to the element and die with the document -- and this policy
+     * outlives that document: it is built from the services.xml tree at deploy
+     * time and kept in the long-lived policy_include, while the deployment
+     * description builder frees the whole tree once deployment finishes. */
+    if(token->issuer)
+    {
+        AXIS2_FREE(env->allocator, token->issuer);
+    }
+    token->issuer = axutil_strdup(env, issuer);
     return AXIS2_SUCCESS;
 }
 
@@ -114,7 +138,12 @@ rp_token_set_inclusion(
     const axutil_env_t *env,
     axis2_char_t *inclusion)
 {
-    token->inclusion = inclusion;
+    /* Same borrowed-from-the-document value as set_issuer above. */
+    if(token->inclusion)
+    {
+        AXIS2_FREE(env->allocator, token->inclusion);
+    }
+    token->inclusion = axutil_strdup(env, inclusion);
     return AXIS2_SUCCESS;
 }
 
