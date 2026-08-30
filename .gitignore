@@ -71,6 +71,16 @@ tools/codegen/native/wsdl2c-native
 **/test_*
 **/*_test
 **/*Test
+# ...which the patterns above do not manage on their own. They match a new
+# test's source as readily as its binary, so a file added as test_foo.cc is
+# ignored and quietly missing from the commit. Existing test sources only
+# survive because they were tracked before the patterns arrived. Keep sources
+# visible explicitly.
+!**/test_*.c
+!**/test_*.cc
+!**/test_*.h
+!**/*_test.c
+!**/*_test.cc
 test/Makefile
 test/Makefile.in
 # Specific test executables that are generated

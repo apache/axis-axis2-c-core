@@ -13,5 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 TESTS =
-SUBDIRS = om soap util xpath parser
+SUBDIRS = om soap util xpath parser attachments
 EXTRA_DIST = resources

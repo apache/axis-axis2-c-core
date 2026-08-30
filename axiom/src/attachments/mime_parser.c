@@ -2386,6 +2386,8 @@ axiom_mime_parser_set_attachment_dir(
     const axutil_env_t *env,
     axis2_char_t *attachment_dir)
 {
+    /* Borrows, unlike set_mime_boundary above: this is a configuration
+     * parameter value, and the parser never frees it. */
     mime_parser->attachment_dir = attachment_dir;
 }
 
@@ -2406,6 +2408,15 @@ axiom_mime_parser_set_mime_boundary(
     const axutil_env_t *env,
     axis2_char_t *mime_boundary)
 {
+    /* Takes ownership: axiom_mime_parser_free releases this pointer, so it has
+     * to be one AXIS2_FREE can take -- the transport passes the heap string
+     * from get_value_from_content_type and leaves the free to us, which is why
+     * its own free of it is commented out. Do not pass a literal or a borrowed
+     * buffer.
+     *
+     * Note this is the opposite of set_attachment_dir immediately below, which
+     * borrows: that one receives a parameter value the configuration owns and
+     * must outlive the parser. Two neighbouring setters, two contracts. */
     mime_parser->mime_boundary = mime_boundary;
 }
 

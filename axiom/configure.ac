@@ -335,6 +335,7 @@ AC_CONFIG_FILES([Makefile \
     gtest/Makefile \
     test/Makefile \
     test/om/Makefile \
+    test/attachments/Makefile \
     test/parser/Makefile \
     test/soap/Makefile \
     test/util/Makefile \
