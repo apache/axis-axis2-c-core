@@ -368,32 +368,67 @@ axiom_stax_builder_process_namespaces(
             }
 
             tmp_ns_prefix_str = axutil_string_create(env, "");
-            om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
+
+            /* Look before creating. axiom_element_declare_namespace returns
+             * SUCCESS without taking the namespace when this element already
+             * declares the same prefix and uri, so a document that declares one
+             * twice on the same element used to leave the second object owned
+             * by nobody. Its lookup predicate is exactly
+             * axiom_element_find_declared_namespace, so asking first covers the
+             * cases where ownership would not have been taken -- and it does so
+             * without freeing anything the caller below still holds. */
+            om_ns = axiom_element_find_declared_namespace(om_ele, env,
+                axutil_string_get_buffer(tmp_ns_uri_str, env), "");
+
             if(!om_ns)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create namespace");
-                return AXIS2_FAILURE;
-            }
+                om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
+                if(!om_ns)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create namespace");
+                    return AXIS2_FAILURE;
+                }
 
-            status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
-            if(!status)
-            {
-                axiom_namespace_free(om_ns, env);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when declaring namespace");
-                return AXIS2_FAILURE;
+                status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
+                if(!status)
+                {
+                    axiom_namespace_free(om_ns, env);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when declaring namespace");
+                    return AXIS2_FAILURE;
+                }
             }
         }
         else
         {
             axis2_char_t *prefix = NULL;
-            om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
+
+            /* Same reuse as the default-namespace branch above, for the same
+             * reason: a prefix declared twice on one element produced a second
+             * namespace object that neither the element nor the builder map
+             * owns -- axutil_hash_free does not free values, so
+             * declared_namespaces is a lookup cache, not an owner. */
+            om_ns = axiom_element_find_declared_namespace(om_ele, env,
+                axutil_string_get_buffer(tmp_ns_uri_str, env),
+                axutil_string_get_buffer(tmp_ns_prefix_str, env));
+
             if(!om_ns)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create namespace");
-                return AXIS2_FAILURE;
+                om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
+                if(!om_ns)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create namespace");
+                    return AXIS2_FAILURE;
+                }
+
+                status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
+                if(!status)
+                {
+                    axiom_namespace_free(om_ns, env);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when declaring namespace");
+                    return AXIS2_FAILURE;
+                }
             }
 
-            status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
             prefix = axiom_namespace_get_prefix(om_ns, env);
             axutil_hash_set(om_builder->declared_namespaces, prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
