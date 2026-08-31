@@ -14,7 +14,23 @@
 # limitations under the License.
 # HTTP/2 JSON: Only Apache server needed for production HTTP/2 JSON system
 # CGI transport removed (January 2026) - obsolete, use mod_axis2 instead
-SUBDIRS=@APACHE2BUILD@
+#
+# The standalone server builds outside HTTP/2 mode. It is HTTP/1.1 and links
+# http_receiver and http_sender, which the HTTP/2 JSON build does not produce,
+# so it is gated the same way the HTTP/1.1 tests are. It left SUBDIRS entirely
+# when HTTP/2 arrived, which stopped axis2_http_server being built in any
+# configuration -- including the HTTP/1.1 SOAP one the quickstart describes.
+if WITH_NGHTTP2
+SIMPLE_SERVER_DIR =
+else
+SIMPLE_SERVER_DIR = simple_axis2_server
+endif
+
+SUBDIRS=@APACHE2BUILD@ $(SIMPLE_SERVER_DIR)
+
+# Named unconditionally so make dist and make distclean recurse into it
+# whatever the tree was configured with; its Makefile is generated either way.
+DIST_SUBDIRS = apache2 simple_axis2_server
 
 # HTTP/2 JSON system only needs Apache integration (mod_axis2)
 # IIS/ISAPI integration removed (February 2026) - unmaintained since 2009
