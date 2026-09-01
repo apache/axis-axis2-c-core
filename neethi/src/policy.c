@@ -133,12 +133,8 @@ neethi_policy_clear_attributes(
         {
             axutil_hash_this(hi, &key, NULL, &val);
 
-            if(key)
-            {
-                AXIS2_FREE(env->allocator, (axis2_char_t *)key);
-                key = NULL;
-            }
-
+            /* Not the key -- axutil_hash_free below frees the copy it took
+             * when the entry was added with AXIS2_HASH_KEY_STRING. */
             if(val)
             {
                 AXIS2_FREE(env->allocator, (axis2_char_t *)val);

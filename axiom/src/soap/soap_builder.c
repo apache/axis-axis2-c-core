@@ -209,23 +209,12 @@ axiom_soap_builder_free(
 
     if(soap_builder->mime_body_parts)
     {
-        axutil_hash_index_t *hi = NULL;
-        void *val = NULL;
-        const void *key = NULL;
-        for(hi = axutil_hash_first(soap_builder->mime_body_parts, env); hi; hi = axutil_hash_next(
-            env, hi))
-        {
-            axutil_hash_this(hi, &key, NULL, &val);
-
-            if(key)
-            {
-                AXIS2_FREE(env->allocator, (char *)key);
-            }
-
-            val = NULL;
-            key = NULL;
-        }
-
+        /* The keys are not freed here. axutil_hash_free releases the ones it
+         * copied, which since AXIS2C-1632 is every string key -- a hash_set
+         * with AXIS2_HASH_KEY_STRING takes its own copy. Walking the entries to
+         * free them first, as this did, freed each key twice and aborted the
+         * process on any MTOM request that reached this teardown. The values
+         * are data handlers owned elsewhere and are deliberately left alone. */
         axutil_hash_free(soap_builder->mime_body_parts, env);
         soap_builder->mime_body_parts = NULL;
     }

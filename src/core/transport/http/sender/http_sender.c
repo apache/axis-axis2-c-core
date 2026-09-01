@@ -3437,9 +3437,10 @@ axis2_http_sender_connection_map_remove_entry(
         axutil_hash_this(hi, &key, NULL, &val);
         if(key && axutil_strcmp((const axis2_char_t *)key, server) == 0)
         {
-            /* Found the entry - remove it and free the strdup'd key */
+            /* Found the entry - remove it. Deleting an entry frees the key
+             * the hash copied when it was added, so there is nothing left to
+             * free here; doing so freed the same pointer twice. */
             axutil_hash_set(connection_map, key, AXIS2_HASH_KEY_STRING, NULL);
-            AXIS2_FREE(env->allocator, (void *)key);
             break;
         }
     }

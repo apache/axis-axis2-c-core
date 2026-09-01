@@ -106,10 +106,10 @@ axis2_callback_recv_free(
             env, hi))
         {
             axutil_hash_this(hi, &key, NULL, &val);
-            if(key)
-            {
-                AXIS2_FREE(env->allocator, (char *)key);
-            }
+            /* The key is not freed here: axutil_hash_free below releases the
+             * copy it made when the entry was added with
+             * AXIS2_HASH_KEY_STRING. Freeing it here as well was a double
+             * free. Only the value is ours to release. */
             if(val)
             {
                 axis2_callback_t *callback = (axis2_callback_t *) val;
