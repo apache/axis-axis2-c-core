@@ -203,6 +203,33 @@ run happily against code you did not build. Results then depend on what each
 machine happens to have installed, which is a good way to spend an afternoon on
 a "platform-specific" failure that is nothing of the kind.
 
+#### **Issue: `axis2.xml` edits disappear after `make install`**
+
+**Problem:** you enable a transport or set `attachmentDIR`, rebuild, and the
+server behaves as though you changed nothing — or refuses to start because the
+transport you enabled is commented out again.
+
+**Cause:** `$(prefix)/axis2.xml` is a symlink to `share/axis2c/axis2.xml`, and
+that file is reinstalled from `samples/server/axis2.xml` by *every*
+`make install`. Editing through the symlink edits the install's copy, and the
+next install overwrites it. Nothing warns you at the point of use; the
+behaviour just reverts.
+
+**Solution:** reapply the configuration after installing, not before — or keep
+a configured copy outside the prefix and point `AXIS2C_HOME` at that. When
+scripting a test run, put the edit *after* the last `make install` step, which
+is the ordering mistake that is easy to make and hard to see:
+
+```bash
+make && make install
+(cd samples && sh build.sh)     # installs again
+# only now is it safe to configure
+python3 configure_axis2_xml.py "$AXIS2C_HOME/axis2.xml"
+```
+
+Note `samples/build.sh` runs its own install, so an edit made between `make
+install` and the samples build is also lost.
+
 ---
 
 ## 🔍 **Test Verification Commands**

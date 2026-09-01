@@ -116,6 +116,11 @@ install-data-hook:
 	@rm -f $(DESTDIR)$(prefix)/axis2.xml 2>/dev/null || true
 	@cd $(DESTDIR)$(prefix) && $(LN_S) share/axis2c/axis2.xml axis2.xml 2>/dev/null || \
 		echo "Note: Could not create axis2.xml symlink (may already exist or different filesystem)"
+	@echo "Note: axis2.xml has just been REPLACED with the shipped default."
+	@echo "      $(DESTDIR)$(prefix)/axis2.xml is a symlink to share/axis2c/axis2.xml,"
+	@echo "      and that file is reinstalled by every 'make install' -- so any local"
+	@echo "      edits (enabled transports, attachmentDIR, ports) are gone. Reapply"
+	@echo "      them after installing, or keep the configuration outside the prefix."
 	@echo ""
 	@echo "========================================================================"
 	@echo "CRITICAL: Complete Apache Module & Library Deployment Required!"
