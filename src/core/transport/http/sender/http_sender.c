@@ -1748,6 +1748,18 @@ axis2_http_sender_process_response(
 #endif
     axutil_property_set_value(property, env, in_stream);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
+
+    /* The property owns the stream from here on -- it was just given a stream
+     * free function -- so the response must stop owning it. Both claimed it
+     * before: the response frees its stream when stream_owned is set, and the
+     * http client frees the response. Whichever went first left the other
+     * holding freed memory, and on the client that is not hypothetical -- the
+     * next request replaces the AXIS2_HTTP_CLIENT property, that free reaches
+     * this stream through the response, and replacing AXIS2_TRANSPORT_IN then
+     * frees it a second time. Passing NULL clears the response's claim;
+     * axutil_stream_free is a no-op on NULL, so its teardown stays valid. */
+    axis2_http_simple_response_set_body_stream(response, env, NULL);
+
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_sender_process_response");
     return AXIS2_SUCCESS;
 }
