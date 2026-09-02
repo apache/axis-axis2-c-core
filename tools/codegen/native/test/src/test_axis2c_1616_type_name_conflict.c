@@ -312,11 +312,22 @@ adb_test_result_t test_axis2c_1616_function_naming_conflicts(void) {
     for (int i = 0; i < pattern_count; i++) {
         char *function_name = adb_tracked_malloc(256);
         if (function_name) {
-            if (strstr(patterns[i].pattern, "%s_%s")) {
-                /* Pattern with two placeholders */
+            /* Count the conversions rather than looking for "%s_%s". The two
+             * placeholder patterns are adb_%s_get_%s and adb_%s_set_%s, and
+             * neither contains "%s_%s" -- there is a "get_"/"set_" in between.
+             * So both took the single-argument branch below and handed a
+             * two-conversion format one argument, leaving the second %s to
+             * read whatever happened to be in the register. */
+            int placeholders = 0;
+            const char *scan = patterns[i].pattern;
+            while ((scan = strstr(scan, "%s")) != NULL) {
+                placeholders++;
+                scan += 2;
+            }
+
+            if (placeholders == 2) {
                 snprintf(function_name, 256, patterns[i].pattern, conflicting_element, "value");
             } else {
-                /* Pattern with one placeholder */
                 snprintf(function_name, 256, patterns[i].pattern, conflicting_element);
             }
 
