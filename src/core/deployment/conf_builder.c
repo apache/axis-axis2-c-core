@@ -30,6 +30,37 @@ struct axis2_conf_builder
     struct axis2_desc_builder *desc_builder;
 };
 
+/**
+ * Free a transport's dll descriptor without unloading the library.
+ *
+ * A transport leaves function pointers behind it. The HTTP sender puts the
+ * http client into a message context property whose free function,
+ * axis2_http_client_free_void_arg, lives in libaxis2_http_sender; on the
+ * client that property goes into the map shared with axis2_options and is
+ * released by axis2_options_free. svc_client_free runs that *after*
+ * axis2_conf_ctx_free -- deliberately, see the AXIS2C-1635 note there -- so by
+ * then the library holding the free function has been unloaded and the call
+ * jumps into unmapped memory.
+ *
+ * Clearing the handle first means the descriptor is freed and the code stays
+ * mapped. That costs one address-space mapping per transport for the life of
+ * the process, of which there are one or two, and it removes a whole class of
+ * crash: any pointer into a transport that outlives the conf. Services and
+ * modules are untouched -- they are genuinely reloadable and are unloaded
+ * through their own paths.
+ */
+static void AXIS2_CALL
+axis2_conf_builder_transport_dll_desc_free(
+    void *dll_desc,
+    const axutil_env_t *env)
+{
+    if(dll_desc)
+    {
+        axutil_dll_desc_set_dl_handler((axutil_dll_desc_t *)dll_desc, env, NULL);
+        axutil_dll_desc_free((axutil_dll_desc_t *)dll_desc, env);
+    }
+}
+
 static axis2_status_t
 axis2_conf_builder_process_disp_order(
     axis2_conf_builder_t * conf_builder,
@@ -815,7 +846,10 @@ axis2_conf_builder_process_transport_senders(
 
                 axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
                 axutil_param_set_value(impl_info_param, env, dll_desc);
-                axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+                /* Not axutil_dll_desc_free_void_arg: see the note on this
+                 * function -- the sender's code must outlive the conf. */
+                axutil_param_set_value_free(impl_info_param, env,
+                    axis2_conf_builder_transport_dll_desc_free);
                 axutil_class_loader_init(env);
                 transport_sender = axutil_class_loader_create_dll(env, impl_info_param);
                 axis2_transport_out_desc_add_param(transport_out, env, impl_info_param);
@@ -1123,7 +1157,9 @@ axis2_conf_builder_process_transport_recvs(
                 axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
 
                 axutil_param_set_value(impl_info_param, env, dll_desc);
-                axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+                /* Same as the sender above. */
+                axutil_param_set_value_free(impl_info_param, env,
+                    axis2_conf_builder_transport_dll_desc_free);
                 axutil_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *)axutil_class_loader_create_dll(env,
                     impl_info_param);

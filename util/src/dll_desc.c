@@ -184,12 +184,18 @@ axutil_dll_desc_set_dl_handler(
     AXIS2_DLHANDLER dl_handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, dl_handler, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, dll_desc, AXIS2_FAILURE);
 
-    if(dll_desc->dl_handler)
-    {
-        AXIS2_FREE(env->allocator, dll_desc->dl_handler);
-    }
+    /* NULL is allowed, and is the point: it detaches the library from the
+     * descriptor so freeing the descriptor does not unload it. A caller that
+     * has handed function pointers out of a module needs that -- the pointers
+     * outlive the descriptor.
+     *
+     * The previous rejection of NULL made clearing impossible, and the branch
+     * it guarded freed the old handle with AXIS2_FREE. That handle comes from
+     * dlopen, not from the allocator, so it was never the allocator's to
+     * release; it never fired only because the sole caller sets a handle once,
+     * onto a descriptor created with none. */
     dll_desc->dl_handler = dl_handler;
     return AXIS2_SUCCESS;
 }
