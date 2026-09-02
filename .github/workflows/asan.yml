@@ -1,0 +1,120 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: AddressSanitizer
+
+# Runs the test suite against an AddressSanitizer build. The bugs this catches
+# -- use-after-free, double free, buffer overflow -- are the ones that survive
+# code review in a C codebase, because reading cannot see them and an ordinary
+# build does not report them. --enable-asan already exists; nothing ran it.
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    # Weekly, Monday 02:00 UTC. Sanitizer runs are slow; weekly keeps a
+    # regression from sitting undetected for a month without making every
+    # push wait on it.
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+
+jobs:
+  asan:
+    runs-on: ubuntu-latest
+    name: Test suite under AddressSanitizer
+    # Reads the repo and uploads an artifact on failure. Nothing else.
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install build dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          # googletest ships the sources under /usr/src/googletest, which is
+          # what --with-gtest wants -- the tests are built from source, not
+          # linked against a distro binary.
+          sudo apt-get install -y -qq \
+            build-essential autoconf automake libtool pkg-config \
+            libssl-dev libxml2-dev uuid-dev zlib1g-dev \
+            libjson-c-dev googletest
+
+      - name: Configure with AddressSanitizer
+        run: |
+          set -euo pipefail
+          ./autogen.sh
+          # --with-gtest is required or the gtest suites are not built at all
+          # and `make check` reports a green run of zero tests.
+          ./configure \
+            --prefix="$PWD/install" \
+            --enable-asan \
+            --enable-tests \
+            --with-gtest=/usr/src/googletest/googletest \
+            --enable-json=yes
+
+      - name: Build and install
+        run: |
+          set -euo pipefail
+          make -j"$(nproc)"
+          make install
+
+      - name: Build the samples
+        # The integration tests call a deployed service (echo), so the samples
+        # have to be built and deployed or those tests have nothing to talk to.
+        # Note this runs its own install.
+        run: |
+          set -euo pipefail
+          cd samples
+          AXIS2C_HOME="$GITHUB_WORKSPACE/install" sh build.sh
+
+      - name: Run the test suite
+        env:
+          # Point both at the tree under test. LD_LIBRARY_PATH is searched
+          # before a binary's RUNPATH, so any other Axis2/C on the path would
+          # be tested instead of what was just built -- silently, if it happens
+          # to work.
+          AXIS2C_HOME: ${{ github.workspace }}/install
+          LD_LIBRARY_PATH: ${{ github.workspace }}/install/lib
+          # Leak detection is off for now. The tree has known leaks unrelated
+          # to memory safety, and a job that is red on arrival gets ignored.
+          # Turn this on once they are cleared; the report is worth having.
+          ASAN_OPTIONS: detect_leaks=0
+        run: |
+          set -euo pipefail
+          make check
+
+      - name: Show failing test logs
+        if: failure()
+        run: |
+          # test-suite.log holds the summary; the per-test .log files hold the
+          # sanitizer reports, which are the part worth reading.
+          find . -name 'test-suite.log' -exec sh -c 'echo "=== $1 ==="; cat "$1"' _ {} \;
+          find . -path '*/test/*' -name '*.log' ! -name 'axis2.log' \
+            -exec sh -c 'echo "=== $1 ==="; tail -60 "$1"' _ {} \;
+
+      - name: Upload test logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: asan-test-logs
+          path: |
+            **/test-suite.log
+            **/*.log
+          retention-days: 14
+          if-no-files-found: ignore
