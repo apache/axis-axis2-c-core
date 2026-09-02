@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Only build tests if gtest is available from source
+if GTEST_AVAILABLE
 TESTS = link_list_test
 check_PROGRAMS = link_list_test
 noinst_PROGRAMS = link_list_test
@@ -19,11 +21,16 @@ link_list_test_SOURCES = link_list_test.cc
 
 link_list_test_LDADD   =   \
 				$(top_builddir)/src/libaxutil.la \
-				-lgtest -lgtest_main -lpthread
+			$(top_builddir)/$(GTEST)/libgtest.a \
+			$(top_builddir)/$(GTEST)/libgtest_main.a
 
 AM_CPPFLAGS = -I$(top_srcdir)/include \
 			-I ../../../axiom/include \
 			-I ../../../include \
 			-I $(GTEST_DIR)/include
-
-
+else
+# Skip tests when gtest is not available
+TESTS =
+check_PROGRAMS =
+noinst_PROGRAMS =
+endif
