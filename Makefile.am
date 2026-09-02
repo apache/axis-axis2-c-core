@@ -51,6 +51,37 @@ endif
 
 EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples $(GTEST_EXTRA_DIST)
 
+# "." is not in SUBDIRS, so automake runs check-am -- and this hook -- after it
+# has recursed into every subdirectory. That puts the banner below the last
+# "All tests passed!", which is the line it exists to contradict.
+if TESTS_WITHOUT_GTEST
+check-local:
+	@echo ""
+	@echo "========================================================================"
+	@echo "WARNING: nothing was tested. No gtest suite was built."
+	@echo "========================================================================"
+	@echo "--enable-tests was given but --with-gtest was not, so every gtest"
+	@echo "suite compiled out. Each 'Testsuite summary' above reports TOTAL: 0,"
+	@echo "and the 'All tests passed!' line passed over zero tests. The gtest"
+	@echo "suites are what exercise the library."
+	@echo ""
+	@echo "Reconfigure with the googletest SOURCE tree -- a distro binary"
+	@echo "package will not do -- and rebuild from clean, because objects do not"
+	@echo "record the flags they were built with:"
+	@echo ""
+	@echo '    ./configure --prefix=$$PWD/deploy --enable-tests --enable-json=yes --with-gtest=/usr/src/googletest/googletest'
+	@echo "    make clean && make && make install"
+	@echo '    (cd samples && AXIS2C_HOME=$$PWD/../deploy sh build.sh)'
+	@echo '    AXIS2C_HOME=$$PWD/deploy LD_LIBRARY_PATH=$$PWD/deploy/lib make check'
+	@echo ""
+	@echo "Expect 44 tests. Build the samples too: without them there is no echo"
+	@echo "service for the integration tests to call, and they will fail."
+	@echo "========================================================================"
+else
+check-local:
+	@:
+endif
+
 dist-hook:
 	rm -rf $(distdir)/gtest
 	rm -rf `find $(distdir)/ -type d -name .git`

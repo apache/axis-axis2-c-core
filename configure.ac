@@ -760,6 +760,20 @@ else
 fi
 
 AM_CONDITIONAL(GTEST_AVAILABLE, test x$gtest_available = xtrue)
+
+dnl --enable-tests without a usable gtest is the quiet failure worth catching.
+dnl Every test Makefile.am gates its TESTS on GTEST_AVAILABLE, so without gtest
+dnl all 38 suites compile out, automake prints "# TOTAL: 0" for each one and
+dnl "All tests passed!" at the end, and make check exits 0. A packager or a new
+dnl contributor building the ordinary way gets a green that means nothing.
+dnl Warn here, and again from check-local so it is the last thing on screen.
+tests_without_gtest=false
+if test -n "$TESTDIR" && test x$gtest_available != xtrue; then
+    tests_without_gtest=true
+    AC_MSG_WARN([--enable-tests was given without a usable gtest: no gtest suite will be built and "make check" will report a green run of zero tests. Pass --with-gtest=PATH pointing at the googletest *source* tree.])
+fi
+AM_CONDITIONAL(TESTS_WITHOUT_GTEST, test x$tests_without_gtest = xtrue)
+
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
 AC_SUBST(WRAPPER_DIR)
