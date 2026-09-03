@@ -31,11 +31,7 @@ Table of Contents
 	3.2 Deploying in Apache2 Web Server
 	3.3 HTTP/2 Support (Optional)
 
-4. Using Axis2/C with CGI
-
-	4.1  Deploying in Apache2
-
-5. FAQ
+4. FAQ
 
 Note: IIS/ISAPI integration (mod_axis2_IIS) was removed in 2026 after being
 unmaintained since 2009. Windows users should use WSL2 (see Section 2).
@@ -909,58 +905,7 @@ HTTP/2 is recommended for JSON based production deployments handling high traffi
 or large payloads where performance improvements are valuable. SOAP and XML
 are not supported in HTTP/2 due to high effort and few benefits.
 
-4. Using Axis2/C with CGI
-=========================
-
-	4.1  Deploying in Apache2
-	-------------------------
-
-	If you haven't already done so you need to configure and set up a cgi-bin/
-	directory that holds your CGI scripts, where we will put Axis2/C cgi
-	executable axis2.cgi.
-
-	(Note: most Apache web servers already have a cgi-bin dir set up, usually
-	/usr/lib/cgi-bin/.)
-
-	Add the following to your Apache2 configuration (httpd.conf) file:
-
-		ScriptAlias /cgi-bin/ /usr/local/apache/cgi-bin/
-
-	OR you can use:
-
-		<Directory /usr/local/apache/cgi-bin/>
-			Options +ExecCGI
-		</Directory>
-
-		AddHandler cgi-script .cgi
-
-	(It's recommended to restrict all CGI scripts to a single ScriptAlias
-	directory for security reasons.)
-
-	Now set up configuration parameters via environment variables for the CGI
-	deployment using the SetEnv directive. You need to have mod_env enabled.
-
-	Add the following to your apache2 configuration file (httpd.conf):
-
-		SetEnv AXIS2C_HOME /usr/local/axis2c/
-
-	If you have chosen another alias for your cgi-bin you can also set up an
-	AXIS2C_URL_PREFIX environment variable (not needed if using /cgi-bin/).
-
-	Example:
-		SetEnv AXIS2C_URL_PREFIX /private/scripts/axis2.cgi/
-
-	Copy the Axis2/C cgi executable "axis2.cgi" from ${AXIS2C_HOME}/bin to
-	your cgi-bin directory.
-
-	Your Axis2 endpoints will look like this when deployed under CGI:
-
-		http://domain-name.com/cgi-bin/axis2.cgi/services/<service name>
-
-	For example, the echo service endpoint would be:
-		http://domain-name.com/cgi-bin/axis2.cgi/services/echo
-
-5. FAQ
+4. FAQ
 ======
 
 1. Although I was able to get simple axis server up, unable to run samples.

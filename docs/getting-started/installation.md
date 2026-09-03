@@ -39,8 +39,6 @@ The `INSTALL` file covers:
    - Deploying in Apache2
    - HTTP/2 support
 
-4. **CGI Deployment**
-
 Note: IIS integration was removed in 2026 due to being unmaintained since 2009.
 
 ## Prerequisites

@@ -79,24 +79,7 @@ Different server environments require custom stream adapters:
 | Server | Stream Adapter | Description |
 |--------|---------------|-------------|
 | Apache httpd | `apache2_stream.c` | Wraps Apache bucket brigades |
-| CGI | `axis2_cgi_stream.c` | stdin/stdout for CGI |
 | Standalone | `simple_http_svr_conn.c` | Direct socket I/O |
-
-### Raw TCP Transport
-
-A non-HTTP TCP transport exists for direct SOAP-over-TCP:
-
-```c
-/* tcp_transport_sender.c */
-typedef struct axis2_tcp_transport_sender_impl
-{
-    axis2_transport_sender_t transport_sender;
-    int connection_timeout;
-    int so_timeout;
-} axis2_tcp_transport_sender_impl_t;
-```
-
-This sends raw SOAP XML without HTTP framing - useful for embedded systems or custom protocols.
 
 ### Stream Composition (Decorator Pattern)
 
