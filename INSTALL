@@ -27,7 +27,6 @@ Table of Contents
 
 	3.1 Building mod_axis2 from Source
 		3.1.1 On Linux
-		3.1.2 On Windows (Win32) - LEGACY/UNSUPPORTED
 	3.2 Deploying in Apache2 Web Server
 	3.3 HTTP/2 Support (Optional)
 
@@ -782,25 +781,6 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
 
    	This will install mod_axis2.so into your "<your_path_to_axis2c>/lib"
 
-	3.1.2 On Windows (Win32) - LEGACY/UNSUPPORTED
-	---------------------------------------------
-
-	WARNING: Windows Apache module has not been maintained since 2009.
-	See Section 2 for recommended WSL2 approach.
-
-	--- BEGIN LEGACY INSTRUCTIONS ---
-
-	Provide the apache2 location in configure.in file in APACHE_BIN_DIR
-
-	Example:
-		APACHE_BIN_DIR = E:\Apache22
-
-	After compiling the sources (as described in section 2) build the
-	mod_axis2.dll by issuing the command 'nmake axis2_apache_module'.
-	This will build mod_axis2.dll and copy it to %AXIS2C_HOME%\lib directory.
-
-	--- END LEGACY INSTRUCTIONS --- 
-	
 	3.2 Deploying in Apache2 Web Server
 	-----------------------------------
 

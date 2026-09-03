@@ -37,7 +37,7 @@ endif
 # September 2026: it is a plain byte relay with no TLS or HTTP/2 support,
 # so it cannot read the traffic this project now serves, and its own code
 # had not changed functionally since 2013.
-SUBDIRS = $(GTEST_SUBDIR) util $(GUTHTHILA_DIR) axiom neethi src include ides tools/md5 tools/codegen $(TESTDIR)
+SUBDIRS = $(GTEST_SUBDIR) util $(GUTHTHILA_DIR) axiom neethi src include tools/md5 tools/codegen $(TESTDIR)
 include_HEADERS=$(top_srcdir)/include/*.h
 # Install configuration files and documentation
 # For in-tree builds, skip installing files that are already in the correct location
@@ -53,7 +53,7 @@ else
 GTEST_EXTRA_DIST =
 endif
 
-EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples $(GTEST_EXTRA_DIST)
+EXTRA_DIST = CREDITS LICENSE axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples $(GTEST_EXTRA_DIST)
 
 # "." is not in SUBDIRS, so automake runs check-am -- and this hook -- after it
 # has recursed into every subdirectory. That puts the banner below the last
@@ -100,7 +100,6 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
 	rm -rf `find $(distdir)/ -type f -name config.status`
 	rm -rf $(distdir)/tools/md5/src/md5
-	find $(distdir) -name "makefile" | xargs sed -i "s/\/WX//g"
 	find $(distdir) -name "*.gcda" -delete
 	find $(distdir) -name "*.gcno" -delete
 	find $(distdir) -path "*/gtest/gtest-all.cc" -delete

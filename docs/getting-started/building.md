@@ -43,7 +43,10 @@ The `INSTALL` file documents all configure options. Common options include:
 
 ### Windows
 
-See the `INSTALL` file for Windows build instructions using Visual Studio.
+Windows is supported through WSL2; see Section 2 of the `INSTALL` file. The
+Visual Studio project files and the win32 nmake build were removed in
+September 2026 -- they targeted Visual Studio 6/2005/2008, which current
+Visual Studio cannot open, and had not been maintained since 2011.
 
 ### Android Cross-Compilation
 

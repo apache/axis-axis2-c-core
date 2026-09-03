@@ -848,7 +848,6 @@ AC_CONFIG_FILES([Makefile \
     tools/codegen/Makefile \
     tools/codegen/native/Makefile \
     tools/codegen/native/test/Makefile \
-    ides/Makefile \
     include/Makefile \
     axis2c.pc \
 	axis2c_build.sh
