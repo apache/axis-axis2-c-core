@@ -77,7 +77,16 @@ AC_MSG_RESULT([$android_build])
 
 if test "$GCC" = "yes"; then
     dnl Use gnu99 for json-c compatibility
-    CFLAGS="$CFLAGS -std=gnu99 -ggdb3 -Wall -Wno-implicit-function-declaration "
+    CFLAGS="$CFLAGS -std=gnu99 -ggdb3 -Wall -Wno-implicit-function-declaration "    dnl These are set here rather than inherited. This is a separate package
+    dnl configured through AC_CONFIG_SUBDIRS, and it does NOT pick up CFLAGS
+    dnl additions the root configure makes to its own shell variable -- checked
+    dnl against the generated Makefiles, which carried gnu99 and nothing else.
+    dnl Keep them in step with the root configure.ac; a flag added only there
+    dnl silently skips this package.
+    dnl -fsigned-char: axis2_char_t is plain char, signed on x86 and unsigned on
+    dnl ARM. See docs/HTTP2_ANDROID.md.
+    CFLAGS="$CFLAGS -Wformat-security -Wsign-compare -fsigned-char"
+    CXXFLAGS="$CXXFLAGS -fsigned-char"
 fi
 
 AC_MSG_CHECKING(whether to set -Werror)

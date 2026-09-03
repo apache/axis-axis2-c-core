@@ -109,6 +109,21 @@ if test "$GCC" = "yes"; then
     dnl functions a usable error channel; this is what stops the next
     dnl comparison quietly closing it again. The tree is clean under it today.
     CFLAGS="$CFLAGS -Wsign-compare"
+    dnl axis2_char_t is plain char, and plain char is signed on x86 but unsigned
+    dnl on ARM, PowerPC and s390. The code was written on x86 and assumes the
+    dnl signed reading: there are ctype calls that pass an axis2_char_t straight
+    dnl to isxdigit() and friends without the (unsigned char) cast those macros
+    dnl require, and a high-bit byte reaches them as a negative int on one
+    dnl architecture and as 128-255 on another. Pinning the signedness makes the
+    dnl arm64 Android build behave as the x86 build it is tested against, so a
+    dnl test run on one says something about the other. Remove this only
+    dnl together with an audit of every char that crosses a ctype call or a
+    dnl comparison against a negative.
+    CFLAGS="$CFLAGS -fsigned-char"
+    dnl The C++ side is gtest only and never cross-compiled, but a test built
+    dnl with unsigned char asserting against a library built with signed char
+    dnl is precisely the false result the flag above exists to prevent.
+    CXXFLAGS="$CXXFLAGS -fsigned-char"
     AC_MSG_NOTICE([Using -std=gnu99 for compatibility])
 fi
 

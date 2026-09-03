@@ -7,11 +7,14 @@ This document describes how Axis2/C supports Android deployment with HTTP/2 and 
 When working with Axis2/C Android support, remember:
 
 1. **All builds use `-std=gnu99`** - Required for json-c header compatibility
-2. **Android uses static linking** - No dlopen(), services use weak symbol registry
-3. **Service code lives in applications** - Axis2/C core only has weak symbol stubs
-4. **`--whole-archive` is required** - For weak/strong symbol resolution during linking
-5. **IPC uses fork()/execvp()** - NEVER use system() for security (command injection)
-6. **Java validates all input** - SecurityValidator class provides defense-in-depth
+2. **All builds use `-fsigned-char`** - `axis2_char_t` is plain `char`, which is
+   signed on x86 but unsigned on ARM. See "Char signedness" below; an app that
+   compiles its own service sources must pass this flag too.
+3. **Android uses static linking** - No dlopen(), services use weak symbol registry
+4. **Service code lives in applications** - Axis2/C core only has weak symbol stubs
+5. **`--whole-archive` is required** - For weak/strong symbol resolution during linking
+6. **IPC uses fork()/execvp()** - NEVER use system() for security (command injection)
+7. **Java validates all input** - SecurityValidator class provides defense-in-depth
 
 ## Build System
 
@@ -23,24 +26,74 @@ All Axis2/C builds use `-std=gnu99` (GNU C99 mode). This is required because:
 2. **Android NDK headers** require GNU extensions
 3. **POSIX functions** are hidden by strict ANSI mode
 
-**Implementation in all configure.ac files:**
+**Implementation in the root configure.ac:**
 
 ```m4
 if test "$GCC" = "yes"; then
     dnl Use gnu99 for json-c compatibility
-    CFLAGS="$CFLAGS -std=gnu99 -Wall -Wno-implicit-function-declaration -D_GNU_SOURCE"
+    CFLAGS="$CFLAGS -std=gnu99 -Wall -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+    CFLAGS="$CFLAGS -Wformat-security"
+    CFLAGS="$CFLAGS -Wsign-compare"
+    CFLAGS="$CFLAGS -fsigned-char"
+    CXXFLAGS="$CXXFLAGS -fsigned-char"
 fi
 ```
 
-The following configure.ac files all use this pattern:
-- `configure.ac` (root)
-- `util/configure.ac`
-- `axiom/configure.ac`
-- `neethi/configure.ac`
-- `guththila/configure.ac`
-- `samples/configure.ac`
-- `tools/md5/configure.ac`
-- `tools/tcpmon/configure.ac`
+All eight configure.ac files carry their own `-std=gnu99` block:
+
+- `configure.ac` (root), `util/`, `axiom/`, `neethi/`, `guththila/`,
+  `samples/`, `tools/md5/`, `tools/tcpmon/`
+
+**Each sub-package must set the hardening flags itself.** `util`, `axiom`,
+`neethi` and `guththila` are separate packages configured through
+`AC_CONFIG_SUBDIRS`, and they do **not** inherit `CFLAGS` additions the root
+configure makes to its own shell variable. A flag added only to the root
+configure.ac reaches `src/` and nothing else.
+
+This is easy to get wrong and hard to see, because a build with the flag missing
+succeeds and looks identical. Check the *generated Makefiles* rather than the
+build output:
+
+```bash
+for m in Makefile util/src/Makefile axiom/src/om/Makefile \
+         neethi/src/Makefile guththila/src/Makefile; do
+    printf "%-28s " "$m"
+    grep -m1 '^CFLAGS = ' "$m" | grep -q 'fsigned-char' && echo OK || echo MISSING
+done
+```
+
+Counting flagged compile lines in the make log is *not* a valid check: most
+compiles name their source relative to the current directory, so any
+per-directory grep silently samples a handful of lines and reports a clean
+result for a package that has none.
+
+When adding a compiler flag, add it to all five configure.ac files together.
+
+### Char signedness: why `-fsigned-char` is not optional
+
+`axis2_char_t` is `typedef char` — plain `char`, whose signedness is
+implementation-defined. It is **signed on x86-64 and unsigned on aarch64**.
+Axis2/C was written and is tested on x86, and it assumes the signed reading in
+places: there are `ctype` calls that pass an `axis2_char_t` straight to
+`isxdigit()` and friends without the `(unsigned char)` cast those macros
+require (for example `util/src/utils.c:543`). A byte with the high bit set
+reaches them as a negative int on one architecture and as 128-255 on the other.
+
+Without the flag the same source is a different program on the device than on
+the build machine, and any testing done on x86 stops transferring. With it, an
+x86 test run says something about arm64.
+
+Remove it only together with an audit of every `char` that crosses a `ctype`
+call or a comparison against a negative value.
+
+**Applications compiling their own service sources must pass it too.** The
+libraries are built with `-fsigned-char` via configure, but an app's own build
+script compiles its service `.c` files outside that, so without the flag the
+same `char` behaves differently on either side of the call:
+
+```bash
+$CC -fPIC -fsigned-char -D__ANDROID__ -c ... my_service.c -o my_service.o
+```
 
 ### Android Detection
 
@@ -97,6 +150,55 @@ export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
 ```
 
 This script sets up the toolchain, configures with all required flags, and builds. Edit the script to adjust paths for your NDK installation and dependency locations.
+
+Note it does not pass `--with-apache2`, so it does not produce `libmod_axis2.a`.
+A build intended for an app that embeds httpd needs that argument.
+
+### Cross-build hazards
+
+Three things that fail quietly. All three were observed, not theorised.
+
+**The dependency directory goes stale without saying so.** Apps link static
+archives from a prefix such as `$DEPS/lib`. Nothing there records which source
+revision produced them, and nothing warns when the tree is newer. A prefix
+populated months ago will link cleanly and produce a working APK that contains
+none of the fixes made since. After any refresh, **compare timestamps across
+every library**, not a sample — a partial refresh leaves a mixed-date directory
+that looks fine at a glance:
+
+```bash
+ls -la $DEPS/lib/libaxis2*.a $DEPS/lib/libaxutil.a | awk '{print $6, $7, $9}'
+```
+
+**Objects do not record the flags they were built with.** Cross-configuring a
+tree that already holds a native build does not force a rebuild of everything.
+Always `make distclean` before switching host, and confirm afterwards:
+
+```bash
+find . -name '*.o' | wc -l      # expect 0 before the cross build starts
+```
+
+**An install step that globs for archives will copy host-built ones.** A line
+like `find . -name "*.a" -path "*/.libs/*" -exec cp {} $DEPS/lib/ \;` cannot
+tell an arm64 archive from an x86-64 one, and `samples/` in particular survives
+`distclean` in some configurations. Filter by architecture rather than by path:
+
+```bash
+for f in $(find . -name '*.a' -path '*/.libs/*'); do
+    ar p "$f" | file - | grep -q "ARM aarch64" && cp "$f" "$DEPS/lib/"
+done
+```
+
+### 16 KB page alignment (Android 15+)
+
+Devices with 16 KB pages will not load a shared library aligned for 4 KB. NDK
+r28 emits 16 KB-aligned `LOAD` segments by default; older NDKs need
+`-Wl,-z,max-page-size=16384`. Verify rather than assume:
+
+```bash
+readelf -lW libyour_httpd.so | awk '/LOAD/{print $NF}' | sort -u
+# want 0x4000 (16384); 0x1000 (4096) will fail to load on such a device
+```
 
 ## Static Service Registry (Android)
 
