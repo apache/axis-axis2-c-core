@@ -6,7 +6,6 @@ samples
 guththila
 clients
 services
-tcpmon
 
 requires:
 1)libxml2-2.6.27.win32.zip

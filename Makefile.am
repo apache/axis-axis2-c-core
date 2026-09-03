@@ -32,7 +32,11 @@ GTEST_SUBDIR =
 endif
 
 # HTTP/2 uses pure JSON architecture while HTTP/1.1 maintains SOAP support via axiom
-# tcpmon removed (January 2026) - TCP transport obsolete, use HTTP/2 instead
+# TCP transport, CGI, libcurl and NTLM were removed in January 2026
+# (AXIS2C-1708, attack-surface reduction). tcpmon was removed in
+# September 2026: it is a plain byte relay with no TLS or HTTP/2 support,
+# so it cannot read the traffic this project now serves, and its own code
+# had not changed functionally since 2013.
 SUBDIRS = $(GTEST_SUBDIR) util $(GUTHTHILA_DIR) axiom neethi src include ides tools/md5 tools/codegen $(TESTDIR)
 include_HEADERS=$(top_srcdir)/include/*.h
 # Install configuration files and documentation

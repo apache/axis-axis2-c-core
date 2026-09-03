@@ -122,8 +122,7 @@ AXIS2_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\src\core\context \
 		/I$(AXIS2_SOURCE_DIR)\src\core\util \
 		/I$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2 \
-		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
-		/I$(AXIS2_SOURCE_DIR)\tools\tcpmon\include
+		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments
 		
 GUTHTHILA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\guththila\include
 
@@ -1595,26 +1594,8 @@ axis2_samples: axis2_mod_log all_services all_clients all_callback
 axis2_server_modules: axis2_apache_module axis2_IIS_module
 
 ################ tools ###################
-# tcpmon
-TCPMON_SRC = $(AXIS2_SOURCE_DIR)\tools\tcpmon\src
-TCPMON_INTDIR = $(AXIS2_INTDIR)\tools\tcpmon
-
-TCPMON_OBJS = $(TCPMON_INTDIR)\*.obj
-
-$(TCPMON_INTDIR) : 
-	@if not exist $(TCPMON_INTDIR) mkdir $(TCPMON_INTDIR)
-
-{$(TCPMON_SRC)}.c{$(TCPMON_INTDIR)}.obj ::
-	$(CC) $(CFLAGS) /I $(TCPMON_INTDIR)\include /Fo$(TCPMON_INTDIR)\ /c $<
-
-$(TCPMON_OBJS) : $(TCPMON_INTDIR)
-
-$(AXIS2_TOOLS)\tcpmon.exe : $(TCPMON_OBJS)
-	@if not exist $(AXIS2_TOOLS) mkdir $(AXIS2_TOOLS)
-	$(LD) $(LDFLAGS) $(TCPMON_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib /OUT:$(AXIS2_TOOLS)\tcpmon.exe
-	-@$(_VC_MANIFEST_EMBED_EXE)
-
-tcpmon: $(AXIS2_TOOLS)\tcpmon.exe
+# tcpmon removed September 2026: a plain byte relay with no TLS or
+# HTTP/2 support, unmaintained since 2013.
 
 #########################################
 #Copy axis2 xml
@@ -1635,9 +1616,9 @@ all: build
 
 install: all copy_extra copy_wsdl2c
 
-dist: install  axis2_apache_module axis2_IIS_module axis2_cgi tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
+dist: install  axis2_apache_module axis2_IIS_module axis2_cgi copy_samples copy_vc_projects clean_manifest mv_dist
 
-dist_with_ntlm: install axis2_clients_with_ntlm  axis2_apache_module axis2_IIS_module axis2_cgi tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
+dist_with_ntlm: install axis2_clients_with_ntlm  axis2_apache_module axis2_IIS_module axis2_cgi copy_samples copy_vc_projects clean_manifest mv_dist
 
 
 dist_as_lib : deploy axis2_core_without_server copy_axis2_xml copy_include clean_manifest mv_dist

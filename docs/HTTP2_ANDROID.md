@@ -39,15 +39,10 @@ if test "$GCC" = "yes"; then
 fi
 ```
 
-Eight configure.ac files carry their own `-std=gnu99` block, but only seven are
-live:
+Seven configure.ac files carry their own `-std=gnu99` block:
 
 - `configure.ac` (root), `util/`, `axiom/`, `neethi/`, `guththila/`,
   `samples/`, `tools/md5/`
-- `tools/tcpmon/` is **not built**. It was dropped from the root `Makefile.am`
-  in January 2026 ("TCP transport obsolete, use HTTP/2 instead"), but its 27
-  files were left in the tree, so its configure.ac is never run. Edits there
-  have no effect.
 
 `samples/` builds with `-Werror`, so warning flags must not be added to it
 casually — a warning in a sample would fail the build rather than inform

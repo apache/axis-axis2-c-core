@@ -58,7 +58,6 @@ conftest.err
 # Generated binaries
 src/core/transport/http/server/simple_axis2_server/axis2_http_server
 tools/md5/src/md5
-tools/tcpmon/src/tcpmon
 
 # Native codegen test outputs (generated code - should not be committed)
 tools/codegen/native/test/output/**
