@@ -1143,11 +1143,6 @@ ls -la /usr/include/apr*
 - ✅ `testws_service.c` - **COMPLETE** - XSS protection demonstration with OWASP ESAPI-style validation
 - ✅ `testws_json_handler.c` - **COMPLETE** - JSON dispatch for the service
 
-Note: `testws_service_handler.c` is present in the tree but is in no
-`Makefile.am` and is never compiled. It is a superseded SOAP skeleton from
-before these services went JSON-only. The equivalent file was removed from
-login-service in September 2026.
-
 ### Step 3: Test Your HTTPS/HTTP/2 Installation
 
 Now that both Apache httpd is configured (Step 1) and Axis2/C is built and installed (Step 2), let's test the complete installation.
