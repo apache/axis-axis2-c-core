@@ -897,7 +897,6 @@ dnl only under the conditional left make dist and make distclean recursing into
 dnl a directory with no Makefile: "No rule to make target 'distdir'".
 AC_CONFIG_FILES([
     src/core/transport/h2/Makefile
-    src/core/transport/h2/util/Makefile
     src/core/transport/h2/sender/Makefile
     src/core/transport/h2/server/Makefile
     src/core/transport/h2/server/apache2/Makefile

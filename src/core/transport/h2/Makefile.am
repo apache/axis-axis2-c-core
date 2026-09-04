@@ -15,7 +15,7 @@
 
 # HTTP/2 Pure JSON Architecture - Main HTTP/2 transport directory
 # Server component removed - Apache integration handled by existing mod_axis2.so
-SUBDIRS = util sender test
+SUBDIRS = sender test
 
 noinst_LTLIBRARIES = libaxis2_h2_transport.la
 libaxis2_h2_transport_la_SOURCES =
@@ -26,5 +26,4 @@ libaxis2_h2_transport_la_CPPFLAGS = -I$(top_srcdir)/include \
                                     $(NGHTTP2_CFLAGS) \
                                     $(JSON_C_CFLAGS)
 
-libaxis2_h2_transport_la_LIBADD = util/libaxis2_h2_util.la \
-                                  sender/libaxis2_h2_sender.la
+libaxis2_h2_transport_la_LIBADD = sender/libaxis2_h2_sender.la
