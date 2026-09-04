@@ -614,7 +614,12 @@ login_service_get_user_display_name(
     const axis2_char_t *email)
 {
     axis2_char_t *display_name = NULL;
-    axis2_char_t *at_pos = NULL;
+    /* const: email is const, and strchr into a const string yields a pointer
+     * into it. at_pos is only read -- for the NULL test and the length -- so
+     * dropping the qualifier here bought nothing and warns under
+     * -Wdiscarded-qualifiers, which samples/configure.ac makes fatal via
+     * -Werror. */
+    const axis2_char_t *at_pos = NULL;
 
     if (!env || !email)
         return NULL;

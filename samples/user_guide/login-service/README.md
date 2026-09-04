@@ -1,36 +1,100 @@
-# LoginService — Apache Axis2/C HTTP/2 Sample
+# LoginService — Apache Axis2/C HTTP/2 JSON sample
 
-An Apache Axis2/C sample service demonstrating HTTP/2 with JSON-based authentication.
+A partial port of the LoginService from the Axis2/Java guide
+"Apache Axis2 JSON and REST with Spring Boot 3"
+(`src/site/xdoc/docs/json-springboot-userguide.xml` in axis2-java-core). It
+shows how a service receives and answers a JSON request over HTTP/2 with no
+SOAP or XML anywhere in the path.
 
-## Overview
+## Status: incomplete, and not a security example
 
-LoginService provides user authentication over HTTP/2 using pure JSON (no SOAP/XML
-dependency). It demonstrates session management, JWT token issuance, and validation.
+Read this section before using anything here as a model.
 
-## Operations
+**One operation is implemented: `doLogin`.** The deployment descriptor
+(`services.xml`) declares three others — `authenticate`, `validateToken` and
+`logout` — and **none of them exist in the code**. They were described before
+they were written and never followed up. A request to any of the three reaches
+a service that cannot answer it. Conversely, `doLogin`, the operation that does
+work, is not declared in `services.xml` at all; the handler advertises it
+through its own operations list instead.
 
-- **authenticate** (POST /authenticate) — authenticate with JSON credentials, returns JWT
-- **validateToken** (POST /validateToken) — validate a JWT token, returns user info
-- **logout** (POST /logout) — invalidate a session token
+**The token this service issues is not a JWT in any security sense.** It is
+`base64(header) . base64(payload) . demo_signature`, where `demo_signature` is
+that literal string. Nothing is signed. The header nevertheless declares
+`"alg": "HS256"`, so the token *claims* an HMAC that was never computed — which
+is worse than an obviously fake token, because it looks checkable.
+
+`login_service_validate_jwt_token()` does not validate anything either. It
+counts full stops and returns true for any string of ten characters or more
+containing exactly two of them. No signature check, no expiry check, no issuer
+check. It is exported but never called.
+
+This matches the scope of the Java guide it was ported from, which says
+plainly that the login "will return a simple token not meant for anything
+beyond demos" and that JWT and JWE are **out of scope**. The intent there was
+to show *where* real token handling would go. Nothing here is a starting point
+for authentication; it is a starting point for JSON request handling.
+
+For deployments that terminate authentication at the transport — mutual TLS,
+for instance — none of this is needed at all.
+
+## What works
+
+`doLogin` takes a flat JSON object. `email` and `username` are both accepted
+for the address field:
+
+```json
+{"email": "admin@example.com", "password": "admin123"}
+```
+
+and answers with:
+
+```json
+{"status": "...", "message": "...", "token": "...",
+ "tokenType": "...", "expiresIn": 0, "responseTime": 0}
+```
+
+Three credential pairs are hardcoded in `src/login_service.c`:
+
+| email | password |
+|---|---|
+| `admin@example.com` | `admin123` |
+| `user@example.com`  | `user123`  |
+| `test@example.com`  | `test123`  |
+
+Note the request shape differs from the Java original, which nests arguments:
+`{"doLogin":[{"arg0":{"email":"...","credentials":"..."}}]}`. The C port takes
+the flat form above and names the second field `password`, not `credentials`.
 
 ## Building
 
-Requires `--enable-http2 --enable-json` at configure time:
+Requires `--enable-json` and `--enable-http2`:
 
 ```sh
-./configure --prefix=/usr/local/axis2c --enable-http2 --enable-json
-make
-make install
+./configure --prefix=/usr/local/axis2c --enable-json --enable-http2
+make && make install
 ```
 
-## Testing
+Only `src/login_service.c` and `src/login_json_handler.c` are compiled.
+`src/login_service_handler.c` is present in the tree but is in no `Makefile.am`
+and is never built: it is a superseded SOAP skeleton from before the service
+went JSON-only, and it defines a second copy of `login_service_invoke_json`.
+Editing it has no effect on anything. It is also absent from `EXTRA_DIST`, so
+it does not appear in release tarballs.
 
-```sh
-curl --http2-prior-knowledge \
-     -H "Content-Type: application/json" \
-     -d '{"username":"user","password":"pass"}' \
-     http://localhost:8080/services/LoginService/authenticate
-```
+`src/login_service.c` also exports `login_service_html_encode()`, which nothing
+calls.
+
+## If you want to finish the port
+
+In rough order of what would make the sample honest:
+
+1. Either implement `authenticate`, `validateToken` and `logout`, or remove
+   them from `services.xml` and this file.
+2. Declare `doLogin` in `services.xml` so the descriptor matches the code.
+3. Sign the token, or stop calling it a JWT and drop the `alg` header.
+4. Delete `src/login_service_handler.c`, or wire it back in if the SOAP path
+   is wanted again.
 
 ## License
 
