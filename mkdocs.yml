@@ -84,6 +84,7 @@ nav:
     - Security Guide: SECURITY.md
     - OSS-Fuzz Integration: OSS-FUZZ.md
   - Developer Guide:
+    - Pitfalls: PITFALLS.md
     - Architecture: guide/architecture.md
     - Coding Conventions: guide/coding-conventions.md
     - Code Generation: guide/codegen.md
