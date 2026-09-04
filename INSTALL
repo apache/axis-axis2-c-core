@@ -127,33 +127,22 @@ unmaintained since 2009. Windows users should use WSL2 (see Section 2).
           automake libtool make gcc g++ libssl-dev zlib1g-dev
 
     For testing and development (optional):
-        $ sudo apt install googletest libgtest-dev valgrind
+        $ sudo apt install googletest valgrind
 
-    Note: the test build needs Google Test in BOTH forms, and installing only
-    one of them fails in a way that does not say so.
+    Google Test is needed as SOURCE, passed with --with-gtest=PATH. The
+    googletest package installs it at /usr/src/googletest/googletest. The build
+    compiles $(GTEST_DIR)/src/gtest-all.cc itself into gtest/libgtest.a and
+    links the test suites against that archive by path.
 
-      - The Google Test SOURCE tree, passed as --with-gtest=PATH (the googletest
-        package installs it at /usr/src/googletest/googletest). The build
-        compiles $(GTEST_DIR)/src/gtest-all.cc itself into gtest/libgtest.a; it
-        does not use a pre-built library for this part. Section 4 explains why.
+    libgtest-dev is NOT required. Every test Makefile.am names
+    $(top_builddir)/$(GTEST)/libgtest.a directly rather than -lgtest, so no
+    library has to be findable on the linker path and no LDFLAGS workaround is
+    needed. Verified on Ubuntu 22.04 with no Google Test package installed at
+    all.
 
-      - A library named libgtest/libgtest_main on the linker path, which is what
-        libgtest-dev provides. The Makefile.am files under util/test link
-        -lgtest -lgtest_main directly rather than against the copy the build just
-        compiled, so without it those tests fail to link with
-        "cannot find -lgtest" even though --with-gtest was given and the rest of
-        the suite built.
-
-    On a machine where installing libgtest-dev is not an option, point the
-    linker at the copy this build produces instead:
-
-        $ ./configure --enable-tests --with-gtest=/path/to/googletest \
-              LDFLAGS="-L$PWD/gtest"
-
-    gtest/ builds before util/, and its libgtest.a and libgtest_main.a carry
-    exactly the names -lgtest and -lgtest_main look for, so this resolves
-    without a system package. Verified on Ubuntu 22.04 with no Google Test
-    installed at all.
+    Without --with-gtest the gtest suites are not built and "make check"
+    reports a green run of zero tests. configure warns when --enable-tests is
+    given without it, and "make check" prints a banner saying nothing ran.
 
     Note: Apache httpd web server is NOT required for unit tests or basic
     development. Axis2/C includes a built-in simple HTTP server for testing.
