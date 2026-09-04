@@ -110,7 +110,12 @@ axis2_h2_generate_big_data_json(
         total_value += 15000 + ((double)rand() / RAND_MAX) * 50000;
 
         /* Check if we're approaching target size */
-        if (strlen(json_str) > target_size_bytes - 2000)
+        /* strlen returns size_t; target_size_bytes is int. Without the cast the
+         * subtraction is done in int, goes negative for any target under the
+         * margin, and then converts to a huge size_t so the guard never fires
+         * and the generator runs past its buffer. Comparing signed also gives
+         * the right answer: a target smaller than the margin stops at once. */
+        if ((long)strlen(json_str) > (long)target_size_bytes - 2000)
         {
             break;
         }
@@ -211,7 +216,7 @@ axis2_h2_generate_streaming_json(
 
             /* Fill with streaming data */
             int data_size = chunk_size - 250;
-            for (j = 0; j < data_size && strlen(chunk_str) < chunk_size - 50; j++)
+            for (j = 0; j < data_size && (long)strlen(chunk_str) < (long)chunk_size - 50; j++)
             {
                 char c = 'A' + (j % 26);
                 strncat(chunk_str, &c, 1);
@@ -231,7 +236,7 @@ axis2_h2_generate_streaming_json(
             AXIS2_FREE(env->allocator, chunk_str);
         }
 
-        if (strlen(json_str) > target_size_bytes - 500)
+        if ((long)strlen(json_str) > (long)target_size_bytes - 500)
         {
             break;
         }
@@ -297,7 +302,7 @@ axis2_h2_generate_simple_large_json(
 
         strcat(json_str, obj_str);
 
-        if (strlen(json_str) > target_size_bytes - 200)
+        if ((long)strlen(json_str) > (long)target_size_bytes - 200)
         {
             break;
         }
