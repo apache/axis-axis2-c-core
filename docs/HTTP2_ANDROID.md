@@ -380,6 +380,70 @@ Services that want to work in both environments can export both:
 - `axis2_char_t* <serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
 - `axis2_char_t* <serviceclass>_process_json_only(env, json_str)` for simpler contexts
 
+### The two signatures share one symbol name
+
+Read that carefully: both forms are called `<serviceclass>_invoke_json`. They
+are the same symbol with different parameter lists, so **one binary cannot
+contain both**. An Android link has to leave out whichever object exports the
+four-argument form, and link an adapter exporting the two-argument form
+instead.
+
+That exclusion has a consequence that is easy to miss. `axis2_get_instance` and
+`axis2_remove_instance` usually live in the same object as the four-argument
+entry point, and `axutil_class_loader_create_dll()` needs `axis2_get_instance`.
+Excluding the object removes both. So on a static Android build:
+
+- the class-loader path **cannot** serve the service — there is nothing to
+  `dlopen`, and the create function is gone with the excluded object;
+- the static registry is therefore not an optimisation, it is **the only route
+  in**.
+
+A service missing from `android_static_service_lookup()` does not fail loudly.
+It logs at INFO and falls through to dynamic loading, which then fails for its
+own reasons:
+
+```
+[JSON RPC MSG RECV] Android: Trying static service registry for 'X'
+[ANDROID_STATIC] Service 'X' not in static registry
+[JSON RPC MSG RECV] Android: Service 'X' not in static registry, trying dynamic loading
+```
+
+Seeing the third line in `logcat` means the registration is missing, not that
+the deployment is wrong. A registered service shows this instead:
+
+```
+[ANDROID_STATIC] Found service 'X' in static registry
+```
+
+### Verifying registration in a built binary
+
+Registry entries are easy to lose: a service can be registered in the engine an
+application happens to link against, while the entry is absent from the source
+tree. A clean rebuild then silently drops it, and the failure surfaces much
+later as "the service stopped working".
+
+The check does not need the device. Android links with `-Wl,--export-dynamic`,
+so `.dynsym` survives stripping:
+
+```sh
+# Is the application's strong symbol present?  T = defined, W = only the weak stub
+nm -D libyour_httpd.so | grep '<serviceclass>_invoke_json'
+
+# Which names does the registry actually compare against?
+nm -D libyour_httpd.so | grep android_static_service_lookup     # note the address
+llvm-objdump -d --start-address=<addr> --stop-address=<addr+0xc0> libyour_httpd.so
+```
+
+Count the `strcmp` calls in that disassembly — one per registered service. To
+name them, resolve each `adrp`/`add` pair to a virtual address and read the
+string out of `.rodata` at that offset (`readelf -S` gives the section address
+and file offset; the file offset of the string is
+`sh_offset + (vaddr - sh_addr)`).
+
+A `W` on the service symbol means only the weak stub was linked: the
+application's implementation is missing from the link, and every request will
+get a NULL response.
+
 ## Linking for Android
 
 ### Direct Linking Required
@@ -462,9 +526,29 @@ json_service_invoke_func_t android_static_service_lookup(const char *svc)
 #endif
 ```
 
+**Both edits are required, and both belong in this repository.** A registry
+entry that exists only in a locally patched copy of the engine works until the
+next clean rebuild, then disappears without any build failing. If a service
+worked and then stopped after a dependency refresh, check the registry first.
+
 ### Step 2: Implement in Application
 
 Create adapter and implementation files in your application, then link with `--whole-archive`.
+
+The adapter must export the **two-argument** form, and the link must exclude any
+object that exports the four-argument `<serviceclass>_invoke_json` — they are the
+same symbol name (see "The two signatures share one symbol name" above). For a
+service ported from a server-side sample this usually means compiling the
+sample's handler object but keeping it out of the final archive:
+
+```sh
+# handler.o is deliberately absent: it exports the four-argument _invoke_json,
+# which collides with the adapter's two-argument one
+$AR rcs libmyservice.a service.o adapter.o helpers.o
+```
+
+Verify afterwards with `nm -D` that the service symbol is `T` and not `W`
+(see "Verifying registration in a built binary" above).
 
 ### Step 3: Create services.xml
 
