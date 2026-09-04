@@ -96,6 +96,30 @@ json_object* audio_search_service_invoke_json(
     return NULL;
 }
 
+/*
+ * FinancialBenchmarkService, the sample under
+ * samples/user_guide/financial-benchmark-service. Note the two-argument shape
+ * here is not the shape that sample exports on a server build: its handler
+ * exports the four-argument
+ * financial_benchmark_service_invoke_json(svc, env, json_str, msg_ctx), which
+ * the class-loader path calls after dlopen. A statically linked Android build
+ * cannot use that path -- axis2_get_instance lives in the same handler object,
+ * and a service compiled into the host image has nothing to dlopen -- so it
+ * links an adapter exporting this two-argument form instead and leaves the
+ * handler object out. Without the stub and the registry entry below, that
+ * adapter is never reached and the service simply does not dispatch.
+ */
+__attribute__((weak))
+json_object* financial_benchmark_service_invoke_json(
+    const axutil_env_t *env,
+    json_object *json_request)
+{
+    /* Weak default - returns NULL if no implementation linked */
+    (void)env;
+    (void)json_request;
+    return NULL;
+}
+
 /* Add more weak service declarations here as needed */
 
 /**
@@ -124,6 +148,9 @@ android_static_service_lookup(const char *service_name)
     }
     if (strcmp(service_name, "AudioSearchService") == 0) {
         return audio_search_service_invoke_json;
+    }
+    if (strcmp(service_name, "FinancialBenchmarkService") == 0) {
+        return financial_benchmark_service_invoke_json;
     }
 
     /* Add more services as needed */
