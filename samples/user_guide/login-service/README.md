@@ -75,12 +75,11 @@ Requires `--enable-json` and `--enable-http2`:
 make && make install
 ```
 
-Only `src/login_service.c` and `src/login_json_handler.c` are compiled.
-`src/login_service_handler.c` is present in the tree but is in no `Makefile.am`
-and is never built: it is a superseded SOAP skeleton from before the service
-went JSON-only, and it defines a second copy of `login_service_invoke_json`.
-Editing it has no effect on anything. It is also absent from `EXTRA_DIST`, so
-it does not appear in release tarballs.
+`src/login_service.c` and `src/login_json_handler.c` are the whole service.
+A third file, `src/login_service_handler.c`, used to sit beside them: a SOAP
+skeleton left over from before the service went JSON-only, in no `Makefile.am`
+and never compiled. It was removed in September 2026 — this sample is JSON
+only, and the SOAP path had no remaining purpose.
 
 `src/login_service.c` also exports `login_service_html_encode()`, which nothing
 calls.
@@ -93,8 +92,6 @@ In rough order of what would make the sample honest:
    them from `services.xml` and this file.
 2. Declare `doLogin` in `services.xml` so the descriptor matches the code.
 3. Sign the token, or stop calling it a JWT and drop the `alg` header.
-4. Delete `src/login_service_handler.c`, or wire it back in if the SOAP path
-   is wanted again.
 
 ## License
 

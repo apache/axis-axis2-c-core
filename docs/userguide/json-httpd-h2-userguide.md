@@ -1067,10 +1067,10 @@ echo "=== BigDataH2Service ==="
 [ -f "samples/user_guide/bigdata-h2-service/src/bigdata_h2_service.c" ] && [ -f "samples/user_guide/bigdata-h2-service/src/bigdata_h2_service_handler.c" ] && echo "✅ Required: bigdata_h2_service.c, bigdata_h2_service_handler.c" && echo "📁 Additional files: $(ls samples/user_guide/bigdata-h2-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (bigdata_h2_service.c, bigdata_h2_service_handler.c)"
 
 echo "=== LoginService ==="
-[ -f "samples/user_guide/login-service/src/login_service.c" ] && [ -f "samples/user_guide/login-service/src/login_service_handler.c" ] && echo "✅ Required: login_service.c, login_service_handler.c" && echo "📁 Additional files: $(ls samples/user_guide/login-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (login_service.c, login_service_handler.c)"
+[ -f "samples/user_guide/login-service/src/login_service.c" ] && [ -f "samples/user_guide/login-service/src/login_json_handler.c" ] && echo "✅ Required: login_service.c, login_json_handler.c" && echo "📁 Additional files: $(ls samples/user_guide/login-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (login_service.c, login_json_handler.c)"
 
 echo "=== TestwsService ==="
-[ -f "samples/user_guide/testws-service/src/testws_service.c" ] && [ -f "samples/user_guide/testws-service/src/testws_service_handler.c" ] && echo "✅ Required: testws_service.c, testws_service_handler.c" && echo "📁 Additional files: $(ls samples/user_guide/testws-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (testws_service.c, testws_service_handler.c)"
+[ -f "samples/user_guide/testws-service/src/testws_service.c" ] && [ -f "samples/user_guide/testws-service/src/testws_json_handler.c" ] && echo "✅ Required: testws_service.c, testws_json_handler.c" && echo "📁 Additional files: $(ls samples/user_guide/testws-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (testws_service.c, testws_json_handler.c)"
 
 echo "=== CameraControlService ==="
 [ -f "samples/user_guide/camera-control-service/src/camera_control_service.c" ] && echo "✅ Required: camera_control_service.c (stub implementation)" && echo "📁 Additional files: $(ls samples/user_guide/camera-control-service/src/*.c 2>/dev/null | wc -l) total .c files" || echo "❌ Missing required .c implementation files (camera_control_service.c)"
@@ -1138,10 +1138,15 @@ ls -la /usr/include/apr*
 **Current Implementation Status:**
 - ✅ `bigdata_h2_service_handler.c` - **COMPLETE** - Service framework integration
 - ✅ `bigdata_h2_service.c` - **COMPLETE** - Big data processing logic with HTTP/2 optimization
-- ✅ `login_service.c` - **COMPLETE** - Authentication service with JWT token generation
-- ✅ `login_service_handler.c` - **COMPLETE** - Service framework integration
+- ✅ `login_service.c` - **COMPLETE** - doLogin, with a demo token that is not signed
+- ✅ `login_json_handler.c` - **COMPLETE** - JSON dispatch for the service
 - ✅ `testws_service.c` - **COMPLETE** - XSS protection demonstration with OWASP ESAPI-style validation
-- ✅ `testws_service_handler.c` - **COMPLETE** - Service framework integration
+- ✅ `testws_json_handler.c` - **COMPLETE** - JSON dispatch for the service
+
+Note: `testws_service_handler.c` is present in the tree but is in no
+`Makefile.am` and is never compiled. It is a superseded SOAP skeleton from
+before these services went JSON-only. The equivalent file was removed from
+login-service in September 2026.
 
 ### Step 3: Test Your HTTPS/HTTP/2 Installation
 
