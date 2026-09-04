@@ -34,7 +34,26 @@ on:
 jobs:
   asan:
     runs-on: ubuntu-latest
-    name: Test suite under AddressSanitizer
+    name: ASan (${{ matrix.transport }})
+    # The two transport configurations build DISJOINT test sets, so one run
+    # cannot stand in for the other. --enable-http2 replaces the HTTP/1.1
+    # standalone-server and clientapi tests (test_client, test_clientapi,
+    # test_http_transport, test_axis2c_1355/1480/1532/1566,
+    # test_svc_client_handler_count) with the HTTP/2 ones
+    # (h2_json_integration_test, h2_performance_benchmark_test,
+    # test_http_service_provider_interface). Before this matrix only the
+    # HTTP/1.1 set ever ran, so the JSON-over-HTTP/2 path -- the one Android
+    # and the JSON services actually use -- had no CI coverage at all.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - transport: http1
+            configure_extra: ""
+            build_samples: true
+          - transport: http2
+            configure_extra: "--enable-http2"
+            build_samples: false
     # Reads the repo and uploads an artifact on failure. Nothing else.
     permissions:
       contents: read
@@ -53,7 +72,7 @@ jobs:
           sudo apt-get install -y -qq \
             build-essential autoconf automake libtool pkg-config \
             libssl-dev libxml2-dev uuid-dev zlib1g-dev \
-            libjson-c-dev googletest
+            libjson-c-dev googletest libnghttp2-dev
 
       - name: Configure with AddressSanitizer
         run: |
@@ -66,7 +85,8 @@ jobs:
             --enable-asan \
             --enable-tests \
             --with-gtest=/usr/src/googletest/googletest \
-            --enable-json=yes
+            --enable-json=yes \
+            ${{ matrix.configure_extra }}
 
       - name: Build and install
         run: |
@@ -75,9 +95,18 @@ jobs:
           make install
 
       - name: Build the samples
-        # The integration tests call a deployed service (echo), so the samples
-        # have to be built and deployed or those tests have nothing to talk to.
-        # Note this runs its own install.
+        # The HTTP/1.1 integration tests call a deployed service (echo), so the
+        # samples have to be built and deployed or those tests have nothing to
+        # talk to. Note this runs its own install.
+        #
+        # Skipped under --enable-http2. That configuration cannot build the
+        # SOAP client samples at all -- the client stubs are not compiled when
+        # HTTP/2 is on (it is JSON only), so axis2_stub_get_svc_client is
+        # undefined -- and the HTTP/2 test set does not need a deployed
+        # service: verified at 39/39 against an install with zero services in
+        # it. Building user_guide alone would work but couples this job to
+        # samples/login-service, which fails -Werror on newer GCC.
+        if: ${{ matrix.build_samples }}
         run: |
           set -euo pipefail
           cd samples
@@ -112,7 +141,9 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: asan-test-logs
+          # unique per matrix leg -- two jobs uploading the same artifact
+          # name collide and the second upload fails
+          name: asan-test-logs-${{ matrix.transport }}
           path: |
             **/test-suite.log
             **/*.log

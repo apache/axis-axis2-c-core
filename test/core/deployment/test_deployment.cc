@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <unistd.h>
 #include <gtest/gtest.h>
 
 #include <stdio.h>
@@ -175,6 +176,19 @@ TEST_F(TestDeployment, test_transport_receiver_load)
     dll_name =
         axutil_stracat(m_env, axis2c_home, "/lib/libaxis2_http_receiver.so");
     printf("transport receiver name:%s\n", dll_name);
+
+    /* --enable-http2 does not build the HTTP/1.1 receiver -- the transport
+     * dirs are gated on !WITH_NGHTTP2 -- so in that configuration there is no
+     * library here to load and this test has nothing to say. Skip rather than
+     * fail: a red job in a configuration the test does not cover teaches
+     * nobody anything. */
+    if (access(dll_name, F_OK) != 0)
+    {
+        AXIS2_FREE(m_env->allocator, dll_name);
+        axutil_dll_desc_free(dll_desc, m_env);
+        GTEST_SKIP() << "libaxis2_http_receiver.so not built "
+                        "(configuration used --enable-http2)";
+    }
     axutil_dll_desc_set_name(dll_desc, m_env, dll_name);
     axutil_dll_desc_set_type(dll_desc, m_env, AXIS2_TRANSPORT_RECV_DLL);
     impl_info_param = axutil_param_create(m_env, NULL, NULL);
@@ -217,6 +231,15 @@ TEST_F(TestDeployment, test_transport_sender_load)
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dll_name = axutil_stracat(m_env, axis2c_home, "/lib/libaxis2_http_sender.so");
     printf("transport sender name:%s\n", dll_name);
+
+    /* Same gate as the receiver above. */
+    if (access(dll_name, F_OK) != 0)
+    {
+        AXIS2_FREE(m_env->allocator, dll_name);
+        axutil_dll_desc_free(dll_desc, m_env);
+        GTEST_SKIP() << "libaxis2_http_sender.so not built "
+                        "(configuration used --enable-http2)";
+    }
     axutil_dll_desc_set_name(dll_desc, m_env, dll_name);
     axutil_dll_desc_set_type(dll_desc, m_env, AXIS2_TRANSPORT_SENDER_DLL);
     impl_info_param = axutil_param_create(m_env, NULL, NULL);
@@ -224,6 +247,9 @@ TEST_F(TestDeployment, test_transport_sender_load)
     axutil_param_set_value_free(impl_info_param, m_env, axutil_dll_desc_free_void_arg);
     axutil_class_loader_init(m_env);
     transport_send = (axis2_transport_sender_t *) axutil_class_loader_create_dll(m_env, impl_info_param);
+    /* This test printed "successful" without ever checking the result, so it
+     * passed even when the library was missing entirely. */
+    ASSERT_NE(transport_send, nullptr);
 
     /* TODO wrap this in something cleaner? */
     DELETE_FUNCT delete_funct = axutil_dll_desc_get_delete_funct(dll_desc, m_env);
