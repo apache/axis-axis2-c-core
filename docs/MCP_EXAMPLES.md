@@ -125,7 +125,8 @@ curl -k --http2 -s \
         0.04, 0.006, 0.002,
         0.006, 0.09, 0.009,
         0.002, 0.009, 0.01
-      ]
+      ],
+      "n_periods_per_year": 1
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
@@ -136,12 +137,23 @@ curl -k --http2 -s \
   "status": "SUCCESS",
   "portfolio_variance": 0.01894,
   "portfolio_volatility": 0.1376,
-  "annualized_volatility": 2.1847,
+  "annualized_volatility": 0.1376,
   "calc_time_us": 0,
   "matrix_operations": 9,
   "ops_per_second": 929368029.7
 }
 ```
+
+> **Time basis.** Every covariance matrix in this document is already
+> annualized, so each request passes `"n_periods_per_year": 1` and
+> `annualized_volatility` equals `portfolio_volatility`. The service computes
+> `annualized_volatility = portfolio_volatility * sqrt(n_periods_per_year)`,
+> which is what you want for a *per-period* matrix — daily with 252, weekly
+> with 52, monthly with 12. Leaving the 252 default on an already-annualized
+> matrix multiplies the reported figure by sqrt(252) ~ 15.9. The service
+> cannot detect the mismatch: a daily and an annualized covariance matrix are
+> both valid PSD matrices, and only the caller knows which was supplied.
+
 
 (`calc_time_us: 0` = sub-microsecond; `ops_per_second` is raw matrix
 multiply-accumulate throughput — the 929M figure comes from the 500-asset
@@ -513,7 +525,8 @@ curl -k --http2 -s \
         0.0272, 0.0408, 0.0437, 0.0638,  0.0015,
        -0.0035, 0.0058,-0.0086, 0.0015,  0.0303
       ],
-      "normalize_weights": true
+      "normalize_weights": true,
+      "n_periods_per_year": 1
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
@@ -523,7 +536,7 @@ curl -k --http2 -s \
     "status": "SUCCESS",
     "portfolio_variance": 0.0392,
     "portfolio_volatility": 0.198,
-    "annualized_volatility": 3.143,
+    "annualized_volatility": 0.198,
     "calc_time_us": 0,
     "memory_used_kb": 37448,
     "matrix_operations": 25
@@ -532,7 +545,7 @@ curl -k --http2 -s \
 
 **MCP stdio equivalent:**
 ```bash
-echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0313,0.0976,0.0591,0.0408,0.0058,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0272,0.0408,0.0437,0.0638,0.0015,-0.0035,0.0058,-0.0086,0.0015,0.0303],"normalize_weights":true}}}' \
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0313,0.0976,0.0591,0.0408,0.0058,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0272,0.0408,0.0437,0.0638,0.0015,-0.0035,0.0058,-0.0086,0.0015,0.0303],"normalize_weights":true,"n_periods_per_year":1}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
@@ -554,7 +567,8 @@ curl -k --http2 -s \
         0.0530, 0.0629, 0.0699, 0.0635, 0.0351,
         0.0366, 0.0434, 0.0483, 0.0351, 0.0303
       ],
-      "normalize_weights": true
+      "normalize_weights": true,
+      "n_periods_per_year": 1
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
@@ -564,7 +578,7 @@ curl -k --http2 -s \
     "status": "SUCCESS",
     "portfolio_variance": 0.0649,
     "portfolio_volatility": 0.2547,
-    "annualized_volatility": 4.043,
+    "annualized_volatility": 0.2547,
     "calc_time_us": 0,
     "memory_used_kb": 39560,
     "matrix_operations": 25
@@ -573,7 +587,7 @@ curl -k --http2 -s \
 
 **MCP stdio equivalent:**
 ```bash
-echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0656,0.0730,0.0530,0.0366,0.0656,0.0974,0.0866,0.0629,0.0434,0.0730,0.0866,0.1204,0.0699,0.0483,0.0530,0.0629,0.0699,0.0635,0.0351,0.0366,0.0434,0.0483,0.0351,0.0303],"normalize_weights":true}}}' \
+echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0656,0.0730,0.0530,0.0366,0.0656,0.0974,0.0866,0.0629,0.0434,0.0730,0.0866,0.1204,0.0699,0.0483,0.0530,0.0629,0.0699,0.0635,0.0351,0.0366,0.0434,0.0483,0.0351,0.0303],"normalize_weights":true,"n_periods_per_year":1}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
@@ -657,7 +671,8 @@ curl -k --http2 -s \
        -0.0035, 0.0058,-0.0086, 0.0015, 0.0303, 0.0115,
         0.0787, 0.0934, 0.1039, 0.0610, 0.0115, 0.1936
       ],
-      "normalize_weights": true
+      "normalize_weights": true,
+      "n_periods_per_year": 1
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
@@ -674,7 +689,7 @@ curl -k --http2 -s \
 
 **MCP stdio equivalent:**
 ```bash
-echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":6,"weights":[0.2425,0.2425,0.194,0.1455,0.1455,0.03],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0787,0.0313,0.0976,0.0591,0.0408,0.0058,0.0934,0.0457,0.0591,0.1207,0.0437,-0.0086,0.1039,0.0272,0.0408,0.0437,0.0638,0.0015,0.0610,-0.0035,0.0058,-0.0086,0.0015,0.0303,0.0115,0.0787,0.0934,0.1039,0.0610,0.0115,0.1936],"normalize_weights":true}}}' \
+echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":6,"weights":[0.2425,0.2425,0.194,0.1455,0.1455,0.03],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0787,0.0313,0.0976,0.0591,0.0408,0.0058,0.0934,0.0457,0.0591,0.1207,0.0437,-0.0086,0.1039,0.0272,0.0408,0.0437,0.0638,0.0015,0.0610,-0.0035,0.0058,-0.0086,0.0015,0.0303,0.0115,0.0787,0.0934,0.1039,0.0610,0.0115,0.1936],"normalize_weights":true,"n_periods_per_year":1}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
@@ -694,7 +709,8 @@ curl -k --http2 -s \
        -0.0035, 0.0058,-0.0086, 0.0015, 0.0303, 0.0066,
         0.0310, 0.0368, 0.0409, 0.0239, 0.0066, 0.1444
       ],
-      "normalize_weights": true
+      "normalize_weights": true,
+      "n_periods_per_year": 1
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
@@ -711,7 +727,7 @@ curl -k --http2 -s \
 
 **MCP stdio equivalent:**
 ```bash
-echo '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":6,"weights":[0.2425,0.2425,0.194,0.1455,0.1455,0.03],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0310,0.0313,0.0976,0.0591,0.0408,0.0058,0.0368,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0409,0.0272,0.0408,0.0437,0.0638,0.0015,0.0239,-0.0035,0.0058,-0.0086,0.0015,0.0303,0.0066,0.0310,0.0368,0.0409,0.0239,0.0066,0.1444],"normalize_weights":true}}}' \
+echo '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":6,"weights":[0.2425,0.2425,0.194,0.1455,0.1455,0.03],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0310,0.0313,0.0976,0.0591,0.0408,0.0058,0.0368,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0409,0.0272,0.0408,0.0437,0.0638,0.0015,0.0239,-0.0035,0.0058,-0.0086,0.0015,0.0303,0.0066,0.0310,0.0368,0.0409,0.0239,0.0066,0.1444],"normalize_weights":true,"n_periods_per_year":1}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
@@ -864,7 +880,8 @@ curl -k --http2 -s \
         0.0272, 0.0408, 0.0437, 0.0638,  0.0015,
        -0.0035, 0.0058,-0.0086, 0.0015,  0.0303
       ],
-      "normalize_weights": true
+      "normalize_weights": true,
+      "n_periods_per_year": 1
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/portfolioVariance
 ```
@@ -875,14 +892,14 @@ curl -k --http2 -s \
   "status": "SUCCESS",
   "portfolio_variance": 0.0392,
   "portfolio_volatility": 0.198,
-  "annualized_volatility": 3.14,
+  "annualized_volatility": 0.198,
   "weight_sum": 1.0
 }
 ```
 
 **MCP stdio equivalent:**
 ```bash
-echo '{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0313,0.0976,0.0591,0.0408,0.0058,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0272,0.0408,0.0437,0.0638,0.0015,-0.0035,0.0058,-0.0086,0.0015,0.0303],"normalize_weights":true}}}' \
+echo '{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"portfolioVariance","arguments":{"n_assets":5,"weights":[0.25,0.25,0.20,0.15,0.15],"covariance_matrix":[0.0691,0.0313,0.0457,0.0272,-0.0035,0.0313,0.0976,0.0591,0.0408,0.0058,0.0457,0.0591,0.1207,0.0437,-0.0086,0.0272,0.0408,0.0437,0.0638,0.0015,-0.0035,0.0058,-0.0086,0.0015,0.0303],"normalize_weights":true,"n_periods_per_year":1}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 

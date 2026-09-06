@@ -381,8 +381,9 @@ finbench_portfolio_variance_response_free(
  * emits an annualized_volatility field computed as
  *   portfolio_volatility * sqrt(n_periods_per_year)
  * which is correct for a PER-PERIOD input matrix. Callers who pass a
- * pre-annualized matrix (common in quant practice) should ignore that
- * field to avoid double-annualization.
+ * pre-annualized matrix (common in quant practice) should pass
+ * n_periods_per_year=1 so the field equals portfolio_volatility;
+ * leaving the 252 default double-annualizes it by sqrt(252) ~ 15.9.
  *
  * Weight normalization edge case:
  *   When normalize_weights=true, weights are rescaled in-place so they

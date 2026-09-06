@@ -100,8 +100,12 @@ extern "C"
  *   daily variance — in which case "annualized volatility" is computed
  *   by multiplying sqrt(σ²_p) by sqrt(n_periods_per_year). If the caller
  *   already provides an ANNUALIZED matrix (as quants often do), they
- *   should ignore the annualized_volatility field on the response; it
- *   will over-annualize by a factor of sqrt(n_periods_per_year).
+ *   should pass n_periods_per_year=1, which makes annualized_volatility
+ *   equal portfolio_volatility. Leaving the 252 default on an
+ *   already-annualized matrix over-annualizes the reported figure by
+ *   sqrt(252) ~ 15.9. The service cannot detect the mismatch: a daily
+ *   and an annualized covariance matrix are both valid PSD matrices,
+ *   and only the caller knows which was supplied.
  *
  * Numerical edge case — non-PSD input:
  *   A mathematically valid covariance matrix is positive-semi-definite

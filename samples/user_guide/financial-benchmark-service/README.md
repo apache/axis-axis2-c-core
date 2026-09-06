@@ -41,6 +41,7 @@ Calculates portfolio variance using covariance matrix multiplication.
     "n_assets": 500,
     "weights": [0.002, 0.002, ...],
     "covariance_matrix": [0.04, 0.006, ...],
+    "n_periods_per_year": 1,
     "request_id": "test-001"
 }
 ```
@@ -51,7 +52,7 @@ Calculates portfolio variance using covariance matrix multiplication.
     "status": "SUCCESS",
     "portfolio_variance": 0.0156,
     "portfolio_volatility": 0.125,
-    "annualized_volatility": 1.98,
+    "annualized_volatility": 0.125,
     "calc_time_us": 4523,
     "matrix_operations": 250000,
     "ops_per_second": 55273894,
