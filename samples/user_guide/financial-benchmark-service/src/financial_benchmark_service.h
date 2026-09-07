@@ -61,6 +61,9 @@ extern "C"
 /* Cap on total Monte Carlo work (n_simulations * n_periods): bounds worst-case
  * CPU so a large n_periods cannot hang a worker thread. */
 #define FINBENCH_MAX_WORK           1000000000L
+/* Independent cap on Monte Carlo time steps: bounds numerical growth so the
+ * simulated value cannot accumulate past DBL_MAX (100000 daily steps ~ 400y). */
+#define FINBENCH_MAX_PERIODS        100000
 
 /** Maximum number of percentile levels accepted in a monteCarlo request */
 #define FINBENCH_MAX_PERCENTILES    8

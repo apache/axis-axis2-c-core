@@ -237,11 +237,10 @@ finbench_portfolio_variance_request_create_from_json(
         json_object_put(json_obj);
         return NULL;
     }
-    /* Zero first: any cell a malformed matrix leaves unwritten must read as 0,
-     * not as stale heap contents (which would leak into the numeric result). */
-    memset(request->covariance_matrix, 0, matrix_size * sizeof(double));
 
-    /* Extract covariance_matrix - supports both flat and 2D array formats */
+    /* Extract covariance_matrix - supports both flat and 2D array formats.
+     * The shape validation below rejects any matrix that would leave a cell
+     * unwritten, so no separate zero-fill is needed. */
     if (json_object_object_get_ex(json_obj, "covariance_matrix", &array_obj) &&
         json_object_is_type(array_obj, json_type_array)) {
         int outer_len = json_object_array_length(array_obj);
@@ -969,6 +968,14 @@ finbench_run_monte_carlo(
             "n_periods must be >= 1 (at least one time step is required).");
         return response;
     }
+    if (request->n_periods > FINBENCH_MAX_PERIODS) {
+        char pbuf[128];
+        snprintf(pbuf, sizeof(pbuf),
+            "n_periods exceeds the maximum (%d).", FINBENCH_MAX_PERIODS);
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, pbuf);
+        return response;
+    }
     if ((int64_t)request->n_simulations * request->n_periods > FINBENCH_MAX_WORK) {
         response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
         response->error_message = axutil_strdup(env,
@@ -1102,10 +1109,17 @@ finbench_run_monte_carlo(
              * Extreme GBM shocks with high volatility can produce
              * exponents that overflow to Inf, corrupting all downstream
              * statistics. Cap to a safe maximum. */
+            /* Capping value alone is self-defeating: a later period would
+             * multiply the cap and overflow to +Inf, which propagates NaN into
+             * the whole response. Treat an extreme path as terminal instead. */
             if (exponent > 709.0) {
-                value = 1e308; /* Near DBL_MAX — treat as extreme outcome */
-            } else {
-                value *= exp(exponent);
+                value = 1e308;   /* extreme outcome */
+                break;
+            }
+            value *= exp(exponent);
+            if (!isfinite(value)) {
+                value = 1e308;
+                break;
             }
 
             /* Track drawdown */
