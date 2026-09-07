@@ -58,6 +58,9 @@ extern "C"
 #define FINBENCH_MAX_ASSETS         3000
 #define FINBENCH_MAX_SCENARIOS      10
 #define FINBENCH_MAX_SIMULATIONS    1000000
+/* Cap on total Monte Carlo work (n_simulations * n_periods): bounds worst-case
+ * CPU so a large n_periods cannot hang a worker thread. */
+#define FINBENCH_MAX_WORK           1000000000L
 
 /** Maximum number of percentile levels accepted in a monteCarlo request */
 #define FINBENCH_MAX_PERCENTILES    8

@@ -237,6 +237,9 @@ finbench_portfolio_variance_request_create_from_json(
         json_object_put(json_obj);
         return NULL;
     }
+    /* Zero first: any cell a malformed matrix leaves unwritten must read as 0,
+     * not as stale heap contents (which would leak into the numeric result). */
+    memset(request->covariance_matrix, 0, matrix_size * sizeof(double));
 
     /* Extract covariance_matrix - supports both flat and 2D array formats */
     if (json_object_object_get_ex(json_obj, "covariance_matrix", &array_obj) &&
@@ -251,25 +254,28 @@ finbench_portfolio_variance_request_create_from_json(
             AXIS2_LOG_INFO(env->log,
                 "FinBench: Parsing 2D covariance matrix format");
             int total_elements = 0;
+            /* Validate the exact shape, not just the element count: a ragged
+             * matrix (e.g. [[1,2,3,4],[]]) can total n*n while leaving interior
+             * cells unwritten. Require n_assets rows, each n_assets long. */
+            int shape_ok = (outer_len == request->n_assets);
             for (i = 0; i < request->n_assets && i < outer_len; i++) {
                 json_object *row = json_object_array_get_idx(array_obj, i);
                 if (row && json_object_is_type(row, json_type_array)) {
                     int row_len = json_object_array_length(row);
+                    if (row_len != request->n_assets) shape_ok = 0;
                     total_elements += row_len;
                     for (j = 0; j < request->n_assets && j < row_len; j++) {
                         json_object *cell = json_object_array_get_idx(row, j);
                         request->covariance_matrix[i * request->n_assets + j] =
                             json_object_get_double(cell);
                     }
+                } else {
+                    shape_ok = 0;   /* missing or non-array row */
                 }
             }
-            /* Account for any rows beyond n_assets (for mismatch detection) */
-            for (i = request->n_assets; i < outer_len; i++) {
-                json_object *row = json_object_array_get_idx(array_obj, i);
-                if (row && json_object_is_type(row, json_type_array))
-                    total_elements += json_object_array_length(row);
-            }
-            request->matrix_elements_provided = total_elements;
+            /* A wrong shape fails the n*n check below via a sentinel that can
+             * never equal n*n; a correct n×n matrix reports its true count. */
+            request->matrix_elements_provided = shape_ok ? total_elements : -1;
         } else {
             /* Flat array format: [row0_col0, row0_col1, ..., row1_col0, ...] */
             AXIS2_LOG_INFO(env->log,
@@ -961,6 +967,12 @@ finbench_run_monte_carlo(
         response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
         response->error_message = axutil_strdup(env,
             "n_periods must be >= 1 (at least one time step is required).");
+        return response;
+    }
+    if ((int64_t)request->n_simulations * request->n_periods > FINBENCH_MAX_WORK) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "n_simulations * n_periods exceeds the computation budget.");
         return response;
     }
     if (request->volatility < 0.0) {
