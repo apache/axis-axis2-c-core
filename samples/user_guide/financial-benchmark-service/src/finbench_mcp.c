@@ -68,7 +68,7 @@ static const char SCHEMA_PORTFOLIO_VARIANCE[] =
     "\"type\":\"object\","
     "\"properties\":{"
         "\"n_assets\":{\"type\":\"integer\","
-            "\"description\":\"Number of assets in the portfolio (max 2000)\"},"
+            "\"description\":\"Number of assets in the portfolio (max 3000)\"},"
         "\"weights\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
             "\"description\":\"Portfolio weights. Must sum to 1.0 unless normalize_weights=true\"},"
         "\"covariance_matrix\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
