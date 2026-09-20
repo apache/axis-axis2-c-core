@@ -607,7 +607,7 @@ repository's registry**. What it does touch, using `composeCovariance` on
 | `finbench_mcp.c` | The tool's `inputSchema` constant, a row in the tool table, and a branch in `tools/call` |
 | `services.xml` (upstream and in the app) | An `<operation>` element; on Android the `RESTLocation` is what maps the URL path to the operation |
 | `finbench_get_metadata_json()` | The operations list |
-| The application's adapter | If it routes by request shape rather than by `action`, one more rule. The Kanaha Calcs adapter adds `volatilities → composeCovariance` |
+| The application's adapter | Nothing, if it dispatches through `finbench_dispatch_json_obj()` as the Kanaha Calcs adapter does; the router is upstream. An adapter with its own shape rules needs one more |
 | `fuzz/fuzz_finbench.c` | An exercise block for the new parser and compute path |
 
 Two things are easy to get wrong:

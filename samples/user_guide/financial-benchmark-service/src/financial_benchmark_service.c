@@ -53,6 +53,25 @@
 /**
  * Get current time in microseconds
  */
+/**
+ * Copy up to out_len-1 bytes of an untrusted string for logging, replacing
+ * every control character (including CR and LF) with '?', so a request body
+ * cannot write line breaks or terminal escapes into the log.
+ */
+AXIS2_EXTERN void AXIS2_CALL
+finbench_log_excerpt(const char *src, char *out, size_t out_len)
+{
+    size_t i = 0;
+    if (!out || out_len == 0) return;
+    if (src) {
+        for (; i + 1 < out_len && src[i]; i++) {
+            unsigned char c = (unsigned char)src[i];
+            out[i] = (c < 0x20 || c == 0x7f) ? '?' : (char)c;
+        }
+    }
+    out[i] = '\0';
+}
+
 static long get_time_us(void)
 {
     struct timeval tv;
@@ -3250,26 +3269,43 @@ finbench_dispatch_json_obj(
         return response;
     }
 
-    /* DEBUG: Log received request */
+    /* Log a bounded, control-character-free excerpt of the request. The body
+     * is untrusted; a raw copy would let a caller write line breaks into the
+     * log and forge entries. */
     json_str = json_object_to_json_string(json_request);
-    AXIS2_LOG_INFO(env->log,
-        "FinancialBenchmarkService: Received JSON request: %s",
-        json_str ? json_str : "NULL");
-
-    /* Try to extract operation from 'action' field (Camera service pattern) */
-    if (json_object_object_get_ex(json_request, "action", &action_obj))
     {
-        action = json_object_get_string(action_obj);
-    }
-    /* Also try 'operation' field (alternative pattern) */
-    else if (json_object_object_get_ex(json_request, "operation", &action_obj))
-    {
-        action = json_object_get_string(action_obj);
+        char excerpt[FINBENCH_LOG_EXCERPT];
+        finbench_log_excerpt(json_str, excerpt, sizeof(excerpt));
+        AXIS2_LOG_INFO(env->log,
+            "FinancialBenchmarkService: Received JSON request: %s", excerpt);
     }
 
-    AXIS2_LOG_INFO(env->log,
-        "FinancialBenchmarkService: Processing action '%s'",
-        action ? action : "(none - using request structure)");
+    /* The operation may be named by "action" (the camera service pattern) or
+     * "operation" (what the engine adds on the Android path). A key that is
+     * present but not a string is a malformed request, not an absent name:
+     * refuse it rather than fall through to shape inference. */
+    if (json_object_object_get_ex(json_request, "action", &action_obj) ||
+        json_object_object_get_ex(json_request, "operation", &action_obj))
+    {
+        if (!json_object_is_type(action_obj, json_type_string))
+        {
+            response = json_object_new_object();
+            json_object_object_add(response, "status",
+                json_object_new_string(FINBENCH_STATUS_FAILED));
+            json_object_object_add(response, "error_message",
+                json_object_new_string("\"action\"/\"operation\" must be a string naming the operation"));
+            return response;
+        }
+        action = json_object_get_string(action_obj);
+    }
+
+    {
+        char excerpt[80];
+        finbench_log_excerpt(action ? action : "(none - using request structure)",
+                             excerpt, sizeof(excerpt));
+        AXIS2_LOG_INFO(env->log,
+            "FinancialBenchmarkService: Processing action '%s'", excerpt);
+    }
 
     /* Route based on action or detect request type from structure */
     if (action)
@@ -3325,17 +3361,28 @@ finbench_dispatch_json_obj(
          * Most specific markers first: a correlated monteCarlo request carries
          * "weights" and "covariance_matrix" exactly as a portfolioVariance
          * request does, so the simulation parameters must be tested before
-         * the weights rule or the book would be routed to the variance op. */
+         * the weights rule or the book would be routed to the variance op.
+         *
+         * Residual ambiguity, by design: a correlated monteCarlo request that
+         * relies on every default -- nothing but "weights" and
+         * "covariance_matrix" -- is indistinguishable from a portfolioVariance
+         * request and is routed to portfolioVariance. Name the operation to
+         * avoid it. Over HTTP the engine always does (see HTTP2_ANDROID.md);
+         * MCP dispatches by tool name; only a direct caller can hit this. */
         json_object *temp_obj;
 
         /* Any simulation parameter means Monte Carlo */
         if (json_object_object_get_ex(json_request, "n_simulations", &temp_obj) ||
             json_object_object_get_ex(json_request, "initial_value", &temp_obj) ||
             json_object_object_get_ex(json_request, "expected_return", &temp_obj) ||
+            json_object_object_get_ex(json_request, "expected_returns", &temp_obj) ||
             json_object_object_get_ex(json_request, "volatility", &temp_obj) ||
             json_object_object_get_ex(json_request, "random_seed", &temp_obj) ||
             json_object_object_get_ex(json_request, "model", &temp_obj) ||
-            json_object_object_get_ex(json_request, "n_periods", &temp_obj))
+            json_object_object_get_ex(json_request, "n_periods", &temp_obj) ||
+            json_object_object_get_ex(json_request, "percentiles", &temp_obj))
+        /* n_periods_per_year is deliberately not a marker: portfolioVariance
+         * takes it too, and it must keep routing to the variance operation. */
         {
             AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected monteCarlo request");

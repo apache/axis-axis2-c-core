@@ -1200,6 +1200,16 @@ finbench_scenario_json_only(
 /**
  * @brief Get service metadata as JSON
  */
+/** Bytes kept when a request body is quoted in the log. */
+#define FINBENCH_LOG_EXCERPT        200
+
+/**
+ * @brief Copy an untrusted string for logging with control characters
+ * (CR, LF, escapes) replaced by '?'. Always NUL-terminates when out_len > 0.
+ */
+AXIS2_EXTERN void AXIS2_CALL
+finbench_log_excerpt(const char *src, char *out, size_t out_len);
+
 /**
  * @brief Route a pre-parsed JSON request to the right operation.
  *
