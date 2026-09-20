@@ -639,6 +639,8 @@ typedef struct finbench_monte_carlo_request
      */
     double *covariance_matrix;
     int matrix_elements_provided;   /* flat count as parsed; -1 for a ragged 2D shape */
+    /** covariance_matrix was present but not a JSON array; the run is refused. */
+    axis2_bool_t covariance_matrix_malformed;
 
     /**
      * Per-asset annualized drifts (exactly n_assets). Optional: when absent,
@@ -1175,6 +1177,19 @@ finbench_scenario_json_only(
 /**
  * @brief Get service metadata as JSON
  */
+/**
+ * @brief Route a pre-parsed JSON request to the right operation.
+ *
+ * For embedders that hold a json_object and no message context, such as a
+ * statically linked Android adapter. Honours an "action" or "operation"
+ * field; without one, infers the operation from the request's field names.
+ * The caller owns both the request and the returned object.
+ */
+AXIS2_EXTERN json_object * AXIS2_CALL
+finbench_dispatch_json_obj(
+    const axutil_env_t *env,
+    json_object *json_request);
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 finbench_get_metadata_json(
     const axutil_env_t *env);

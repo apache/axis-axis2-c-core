@@ -852,7 +852,7 @@ finbench_compose_covariance_request_create_from_json(
     /* asset_ids (optional; only kept when the length matches) */
     if (json_object_object_get_ex(json_obj, "asset_ids", &array_obj) &&
         json_object_is_type(array_obj, json_type_array) &&
-        json_object_array_length(array_obj) == request->n_assets) {
+        (int)json_object_array_length(array_obj) == request->n_assets) {
         request->asset_ids = AXIS2_MALLOC(env->allocator,
             (size_t)request->n_assets * sizeof(char *));
         if (request->asset_ids) {
@@ -1498,6 +1498,11 @@ finbench_monte_carlo_request_create_from_json(
                 request->normalize_weights = json_object_get_boolean(value_obj)
                     ? AXIS2_TRUE : AXIS2_FALSE;
             }
+        } else if (json_object_object_get_ex(json_obj, "covariance_matrix", &cov_obj)) {
+            /* Present but not an array: the caller meant a correlated run and
+             * got the shape wrong. Refuse in the simulator rather than quietly
+             * running the scalar path with the default volatility. */
+            request->covariance_matrix_malformed = AXIS2_TRUE;
         }
     }
 
@@ -1606,6 +1611,138 @@ finbench_monte_carlo_response_free(
  * plus sort and reduce. Timings in response->simulations_per_second
  * are a useful hardware proxy for bare-metal scalar floating point.
  */
+/*
+ * Shared tail of both Monte Carlo paths — the scalar simulation and the
+ * correlated book. Takes the per-path accumulators, sorts final_values in
+ * place, and fills every response field that does not depend on which
+ * simulator ran: moments, median, VaR/CVaR at the fixed and caller-requested
+ * levels, drawdown, P(profit), timing and throughput. The caller sets
+ * simulation_mode (and the book-only fields) and still owns final_values.
+ * One copy on purpose: the two paths must never disagree on an estimator.
+ */
+static void
+finbench_monte_carlo_finish(
+    const axutil_env_t *env,
+    const finbench_monte_carlo_request_t *request,
+    finbench_monte_carlo_response_t *response,
+    double *final_values,
+    double sum_final,
+    int profit_count,
+    double max_drawdown,
+    long calc_time_us)
+{
+    int sim;
+
+    /* Calculate statistics — two-pass algorithm for variance.
+     * The one-pass formula (sum_sq/N - mean^2) suffers from catastrophic
+     * cancellation when std_dev << mean (common for low-vol strategies).
+     * Two-pass: compute mean first, then sum squared deviations. This is
+     * numerically stable and the extra pass over final_values[] is cheap
+     * relative to the simulation itself. */
+    double mean = sum_final / request->n_simulations;
+    double variance;
+    {
+        double sum_sq_diff = 0.0;
+        for (sim = 0; sim < request->n_simulations; sim++) {
+            double d = final_values[sim] - mean;
+            sum_sq_diff += d * d;
+        }
+        variance = sum_sq_diff / request->n_simulations;
+    }
+
+    /* Sort for percentiles */
+    qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
+
+    int n_sims = request->n_simulations;
+    /* Percentile indexing: ceil(p * N) - 1 selects the k-th order
+     * statistic such that exactly floor(p * N) observations are strictly
+     * below the VaR level. This matches the standard quantile definition
+     * and avoids the off-by-one that floor(p * N) introduces. */
+    int idx_5  = (int)ceil(0.05 * n_sims) - 1;
+    int idx_1  = (int)ceil(0.01 * n_sims) - 1;
+    if (idx_5 < 0) idx_5 = 0;
+    if (idx_1 < 0) idx_1 = 0;
+
+    /* Sample median of a sorted array: for odd N take the middle element,
+     * for even N average the two central elements. Using a single index
+     * (n_sims/2) is only an approximation for even N and can produce small
+     * reconciliation differences against NumPy/R, which both implement
+     * the average-of-two rule. */
+    double median = (n_sims % 2 == 0)
+        ? (final_values[n_sims / 2 - 1] + final_values[n_sims / 2]) / 2.0
+        : final_values[n_sims / 2];
+
+    /* CVaR_95 (Expected Shortfall at 95%): the arithmetic mean of the
+     * idx_5 worst final values after ascending sort. This is a common
+     * discrete-sample estimator for E[L | L >= VaR_95] — the average
+     * loss in the worst 5% of simulated outcomes.
+     *
+     * Estimator detail: this averages the floor(0.05 * n_sims) WORST
+     * observations (positions 0 through idx_5 - 1 inclusive). For large
+     * n_sims this matches the textbook definition to within one
+     * observation. Systems reconciling against an alternate estimator
+     * (e.g., one that averages L values that strictly exceed the VaR
+     * threshold rather than the bottom k outcomes) may see minutely
+     * different numbers, especially at small n_sims. */
+    double cvar_sum = 0.0;
+    {
+        int ci;
+        for (ci = 0; ci < idx_5; ci++) {
+            cvar_sum += final_values[ci];
+        }
+    }
+    double cvar_95 = (idx_5 > 0) ? (cvar_sum / idx_5) : final_values[0];
+
+    /* Compute caller-requested percentile VaR values */
+    response->n_percentiles = 0;
+    {
+        int pi;
+        int n_pct = (request->n_percentiles > FINBENCH_MAX_PERCENTILES)
+            ? FINBENCH_MAX_PERCENTILES : request->n_percentiles;
+        for (pi = 0; pi < n_pct; pi++) {
+            double p = request->percentiles[pi];
+            if (p <= 0.0 || p >= 1.0) continue;
+            int idx = (int)ceil(p * n_sims) - 1;
+            if (idx < 0) idx = 0;
+            if (idx >= n_sims) idx = n_sims - 1;
+            response->percentile_levels[response->n_percentiles] = p;
+            response->var_at_percentile[response->n_percentiles] =
+                request->initial_value - final_values[idx];
+            response->n_percentiles++;
+        }
+    }
+
+    /* Populate response */
+    response->model = axutil_strdup(env,
+        request->model == FINBENCH_MODEL_MERTON ? "merton" : "gbm");
+    response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
+    response->mean_final_value = mean;
+    response->median_final_value = median;
+    response->std_dev_final_value = sqrt(variance);
+    /* Sign convention: var_95, var_99, cvar_95 are returned as POSITIVE
+     * LOSS MAGNITUDES in base-currency units. var_95 = 252000 means
+     * "there is a 5% chance of losing $252,000 or more over the
+     * simulated horizon." A profitable tail outcome would make these
+     * figures NEGATIVE (a "loss" of -$1000 = a gain), which is normal
+     * and not a bug. */
+    response->var_95 = request->initial_value - final_values[idx_5];
+    response->var_99 = request->initial_value - final_values[idx_1];
+    response->cvar_95 = request->initial_value - cvar_95;
+    response->max_drawdown = max_drawdown;
+    response->prob_profit = (double)profit_count / request->n_simulations;
+    response->calc_time_us = calc_time_us;
+    response->memory_used_kb = finbench_get_memory_usage_kb();
+
+    if (response->calc_time_us > 0) {
+        response->simulations_per_second =
+            (double)request->n_simulations / (response->calc_time_us / 1000000.0);
+    }
+
+    if (request->request_id) {
+        response->request_id = axutil_strdup(env, request->request_id);
+    }
+}
+
 /**
  * Correlated multi-asset Monte Carlo — see "Correlated multi-asset book" in
  * the header for the model. Reached from finbench_run_monte_carlo() after
@@ -1865,115 +2002,9 @@ finbench_run_monte_carlo_correlated(
         for (i = 0; i < n; i++) response->weights[i] = request->weights[i];
     }
 
-    /* Calculate statistics — two-pass algorithm for variance.
-     * The one-pass formula (sum_sq/N - mean^2) suffers from catastrophic
-     * cancellation when std_dev << mean (common for low-vol strategies).
-     * Two-pass: compute mean first, then sum squared deviations. This is
-     * numerically stable and the extra pass over final_values[] is cheap
-     * relative to the simulation itself. */
-    double mean = sum_final / request->n_simulations;
-    double variance;
-    {
-        double sum_sq_diff = 0.0;
-        for (sim = 0; sim < request->n_simulations; sim++) {
-            double d = final_values[sim] - mean;
-            sum_sq_diff += d * d;
-        }
-        variance = sum_sq_diff / request->n_simulations;
-    }
-
-    /* Sort for percentiles */
-    qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
-
-    int n_sims = request->n_simulations;
-    /* Percentile indexing: ceil(p * N) - 1 selects the k-th order
-     * statistic such that exactly floor(p * N) observations are strictly
-     * below the VaR level. This matches the standard quantile definition
-     * and avoids the off-by-one that floor(p * N) introduces. */
-    int idx_5  = (int)ceil(0.05 * n_sims) - 1;
-    int idx_1  = (int)ceil(0.01 * n_sims) - 1;
-    if (idx_5 < 0) idx_5 = 0;
-    if (idx_1 < 0) idx_1 = 0;
-
-    /* Sample median of a sorted array: for odd N take the middle element,
-     * for even N average the two central elements. Using a single index
-     * (n_sims/2) is only an approximation for even N and can produce small
-     * reconciliation differences against NumPy/R, which both implement
-     * the average-of-two rule. */
-    double median = (n_sims % 2 == 0)
-        ? (final_values[n_sims / 2 - 1] + final_values[n_sims / 2]) / 2.0
-        : final_values[n_sims / 2];
-
-    /* CVaR_95 (Expected Shortfall at 95%): the arithmetic mean of the
-     * idx_5 worst final values after ascending sort. This is a common
-     * discrete-sample estimator for E[L | L >= VaR_95] — the average
-     * loss in the worst 5% of simulated outcomes.
-     *
-     * Estimator detail: this averages the floor(0.05 * n_sims) WORST
-     * observations (positions 0 through idx_5 - 1 inclusive). For large
-     * n_sims this matches the textbook definition to within one
-     * observation. Systems reconciling against an alternate estimator
-     * (e.g., one that averages L values that strictly exceed the VaR
-     * threshold rather than the bottom k outcomes) may see minutely
-     * different numbers, especially at small n_sims. */
-    double cvar_sum = 0.0;
-    {
-        int ci;
-        for (ci = 0; ci < idx_5; ci++) {
-            cvar_sum += final_values[ci];
-        }
-    }
-    double cvar_95 = (idx_5 > 0) ? (cvar_sum / idx_5) : final_values[0];
-
-    /* Compute caller-requested percentile VaR values */
-    response->n_percentiles = 0;
-    {
-        int pi;
-        int n_pct = (request->n_percentiles > FINBENCH_MAX_PERCENTILES)
-            ? FINBENCH_MAX_PERCENTILES : request->n_percentiles;
-        for (pi = 0; pi < n_pct; pi++) {
-            double p = request->percentiles[pi];
-            if (p <= 0.0 || p >= 1.0) continue;
-            int idx = (int)ceil(p * n_sims) - 1;
-            if (idx < 0) idx = 0;
-            if (idx >= n_sims) idx = n_sims - 1;
-            response->percentile_levels[response->n_percentiles] = p;
-            response->var_at_percentile[response->n_percentiles] =
-                request->initial_value - final_values[idx];
-            response->n_percentiles++;
-        }
-    }
-
-    /* Populate response */
-    response->model = axutil_strdup(env,
-        request->model == FINBENCH_MODEL_MERTON ? "merton" : "gbm");
-    response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
-    response->mean_final_value = mean;
-    response->median_final_value = median;
-    response->std_dev_final_value = sqrt(variance);
-    /* Sign convention: var_95, var_99, cvar_95 are returned as POSITIVE
-     * LOSS MAGNITUDES in base-currency units. var_95 = 252000 means
-     * "there is a 5% chance of losing $252,000 or more over the
-     * simulated horizon." A profitable tail outcome would make these
-     * figures NEGATIVE (a "loss" of -$1000 = a gain), which is normal
-     * and not a bug. */
-    response->var_95 = request->initial_value - final_values[idx_5];
-    response->var_99 = request->initial_value - final_values[idx_1];
-    response->cvar_95 = request->initial_value - cvar_95;
-    response->max_drawdown = max_drawdown;
-    response->prob_profit = (double)profit_count / request->n_simulations;
-    response->calc_time_us = end_time - start_time;
-    response->memory_used_kb = finbench_get_memory_usage_kb();
-
-    if (response->calc_time_us > 0) {
-        response->simulations_per_second =
-            (double)request->n_simulations / (response->calc_time_us / 1000000.0);
-    }
-
-    if (request->request_id) {
-        response->request_id = axutil_strdup(env, request->request_id);
-    }
-
+    finbench_monte_carlo_finish(env, request, response, final_values,
+                                sum_final, profit_count, max_drawdown,
+                                end_time - start_time);
 
     AXIS2_FREE(env->allocator, final_values);
 
@@ -1999,7 +2030,7 @@ finbench_run_monte_carlo(
     long start_time, end_time;
     int sim, period;
     double dt, drift, vol_sqrt_dt;
-    double sum_final = 0.0, sum_sq = 0.0;
+    double sum_final = 0.0;
     int profit_count = 0;
     double max_drawdown = 0.0;
 
@@ -2058,6 +2089,14 @@ finbench_run_monte_carlo(
         response->error_message = axutil_strdup(env,
             "volatility must be >= 0 (negative volatility is not a "
             "meaningful input).");
+        return response;
+    }
+
+    if (request->covariance_matrix_malformed) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "covariance_matrix must be a JSON array: n_assets*n_assets numbers "
+            "in row-major order, or n_assets rows of n_assets numbers.");
         return response;
     }
 
@@ -2213,7 +2252,6 @@ finbench_run_monte_carlo(
 
         final_values[sim] = value;
         sum_final += value;
-        sum_sq += value * value;
 
         if (value > request->initial_value) {
             profit_count++;
@@ -2228,115 +2266,10 @@ finbench_run_monte_carlo(
 
     } /* end of is_merton local scope */
 
-    /* Calculate statistics — two-pass algorithm for variance.
-     * The one-pass formula (sum_sq/N - mean^2) suffers from catastrophic
-     * cancellation when std_dev << mean (common for low-vol strategies).
-     * Two-pass: compute mean first, then sum squared deviations. This is
-     * numerically stable and the extra pass over final_values[] is cheap
-     * relative to the simulation itself. */
-    double mean = sum_final / request->n_simulations;
-    double variance;
-    {
-        double sum_sq_diff = 0.0;
-        for (sim = 0; sim < request->n_simulations; sim++) {
-            double d = final_values[sim] - mean;
-            sum_sq_diff += d * d;
-        }
-        variance = sum_sq_diff / request->n_simulations;
-    }
-
-    /* Sort for percentiles */
-    qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
-
-    int n_sims = request->n_simulations;
-    /* Percentile indexing: ceil(p * N) - 1 selects the k-th order
-     * statistic such that exactly floor(p * N) observations are strictly
-     * below the VaR level. This matches the standard quantile definition
-     * and avoids the off-by-one that floor(p * N) introduces. */
-    int idx_5  = (int)ceil(0.05 * n_sims) - 1;
-    int idx_1  = (int)ceil(0.01 * n_sims) - 1;
-    if (idx_5 < 0) idx_5 = 0;
-    if (idx_1 < 0) idx_1 = 0;
-
-    /* Sample median of a sorted array: for odd N take the middle element,
-     * for even N average the two central elements. Using a single index
-     * (n_sims/2) is only an approximation for even N and can produce small
-     * reconciliation differences against NumPy/R, which both implement
-     * the average-of-two rule. */
-    double median = (n_sims % 2 == 0)
-        ? (final_values[n_sims / 2 - 1] + final_values[n_sims / 2]) / 2.0
-        : final_values[n_sims / 2];
-
-    /* CVaR_95 (Expected Shortfall at 95%): the arithmetic mean of the
-     * idx_5 worst final values after ascending sort. This is a common
-     * discrete-sample estimator for E[L | L >= VaR_95] — the average
-     * loss in the worst 5% of simulated outcomes.
-     *
-     * Estimator detail: this averages the floor(0.05 * n_sims) WORST
-     * observations (positions 0 through idx_5 - 1 inclusive). For large
-     * n_sims this matches the textbook definition to within one
-     * observation. Systems reconciling against an alternate estimator
-     * (e.g., one that averages L values that strictly exceed the VaR
-     * threshold rather than the bottom k outcomes) may see minutely
-     * different numbers, especially at small n_sims. */
-    double cvar_sum = 0.0;
-    {
-        int ci;
-        for (ci = 0; ci < idx_5; ci++) {
-            cvar_sum += final_values[ci];
-        }
-    }
-    double cvar_95 = (idx_5 > 0) ? (cvar_sum / idx_5) : final_values[0];
-
-    /* Compute caller-requested percentile VaR values */
-    response->n_percentiles = 0;
-    {
-        int pi;
-        int n_pct = (request->n_percentiles > FINBENCH_MAX_PERCENTILES)
-            ? FINBENCH_MAX_PERCENTILES : request->n_percentiles;
-        for (pi = 0; pi < n_pct; pi++) {
-            double p = request->percentiles[pi];
-            if (p <= 0.0 || p >= 1.0) continue;
-            int idx = (int)ceil(p * n_sims) - 1;
-            if (idx < 0) idx = 0;
-            if (idx >= n_sims) idx = n_sims - 1;
-            response->percentile_levels[response->n_percentiles] = p;
-            response->var_at_percentile[response->n_percentiles] =
-                request->initial_value - final_values[idx];
-            response->n_percentiles++;
-        }
-    }
-
-    /* Populate response */
-    response->model = axutil_strdup(env,
-        request->model == FINBENCH_MODEL_MERTON ? "merton" : "gbm");
     response->simulation_mode = axutil_strdup(env, "single");
-    response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
-    response->mean_final_value = mean;
-    response->median_final_value = median;
-    response->std_dev_final_value = sqrt(variance);
-    /* Sign convention: var_95, var_99, cvar_95 are returned as POSITIVE
-     * LOSS MAGNITUDES in base-currency units. var_95 = 252000 means
-     * "there is a 5% chance of losing $252,000 or more over the
-     * simulated horizon." A profitable tail outcome would make these
-     * figures NEGATIVE (a "loss" of -$1000 = a gain), which is normal
-     * and not a bug. */
-    response->var_95 = request->initial_value - final_values[idx_5];
-    response->var_99 = request->initial_value - final_values[idx_1];
-    response->cvar_95 = request->initial_value - cvar_95;
-    response->max_drawdown = max_drawdown;
-    response->prob_profit = (double)profit_count / request->n_simulations;
-    response->calc_time_us = end_time - start_time;
-    response->memory_used_kb = finbench_get_memory_usage_kb();
-
-    if (response->calc_time_us > 0) {
-        response->simulations_per_second =
-            (double)request->n_simulations / (response->calc_time_us / 1000000.0);
-    }
-
-    if (request->request_id) {
-        response->request_id = axutil_strdup(env, request->request_id);
-    }
+    finbench_monte_carlo_finish(env, request, response, final_values,
+                                sum_final, profit_count, max_drawdown,
+                                end_time - start_time);
 
     AXIS2_FREE(env->allocator, final_values);
 
@@ -3263,10 +3196,13 @@ finbench_generate_test_portfolio_json(
 /**
  * @brief JSON object dispatcher — routes a pre-parsed request to the right op.
  *
- * Internal function; the public axis2_json_rpc_msg_recv entry point lives in
- * financial_benchmark_service_handler.c where msg_ctx is available.
+ * The server-side axis2_json_rpc_msg_recv entry point lives in
+ * financial_benchmark_service_handler.c, where msg_ctx is available. This
+ * one is for embedders that hold a json_object and no message context —
+ * the statically linked Android adapters — and honours the "action" or
+ * "operation" field before falling back to request shape.
  */
-static json_object *
+AXIS2_EXTERN json_object * AXIS2_CALL
 finbench_dispatch_json_obj(
     const axutil_env_t *env,
     json_object *json_request)
