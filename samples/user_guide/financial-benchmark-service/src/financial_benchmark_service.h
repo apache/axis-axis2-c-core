@@ -76,10 +76,21 @@ extern "C"
  * response amplification. 500 assets: ~4e7 Cholesky steps, ~10 MB reply. */
 #define FINBENCH_MAX_COV_ASSETS     500
 
-/** Maximum assets in a correlated (multi-asset) monteCarlo request. Each
- * time step costs O(n_assets²) for the Cholesky product, so the work cap
- * below is applied as n_simulations × n_periods × n_assets². */
+/** Maximum assets in a correlated (multi-asset) monteCarlo request. The work
+ * cap for a book is n_simulations × n_periods × n_assets ≤ FINBENCH_MAX_WORK:
+ * one asset-step (a normal draw and an exp()) is the unit, so the defaults
+ * (10,000 × 252) allow all 100 assets and 100,000 paths allow about 39. The
+ * O(n_assets²) Cholesky product is cheap next to the transcendentals and is
+ * bounded by this cap, adding at most a few multiples of wall time at n=100. */
 #define FINBENCH_MAX_MC_ASSETS      100
+
+/** Terminal value assigned to a path whose GBM step overflowed (see the
+ * numerical-edge-cases note). Chosen so that it survives everything the
+ * statistics do to it: squared it is 1e300, and a million of them summed
+ * (or a million squares summed) stay below DBL_MAX, so no +Inf or NaN can
+ * enter the mean, the variance or the sort. 1e308 was used before and did
+ * overflow when squared. */
+#define FINBENCH_EXTREME_VALUE      1e150
 
 /** Monte Carlo model selection constants */
 #define FINBENCH_MODEL_GBM          0   /* Geometric Brownian Motion (default) */
@@ -427,7 +438,8 @@ typedef struct finbench_compose_covariance_response
  *   consumes the PRNG in the same order, so a single-asset correlated run
  *   reproduces the scalar run bit-for-bit for the same seed (provided
  *   sqrt(Σ₁₁) == σ exactly, e.g. σ = 0.25).
- *   Work cap: n_simulations × n_periods × n_assets² ≤ FINBENCH_MAX_WORK.
+ *   Work cap: n_simulations × n_periods × n_assets ≤ FINBENCH_MAX_WORK
+ *   (asset-steps), plus n_assets ≤ FINBENCH_MAX_MC_ASSETS.
  *
  * VaR sign convention: var_95, var_99, and cvar_95 are returned as
  *   POSITIVE LOSS MAGNITUDES in base-currency units. So var_95 = 252000
@@ -459,8 +471,10 @@ typedef struct finbench_compose_covariance_response
  *   - exp() overflow: extreme volatility × long horizon can push the
  *     GBM exponent past ~709 (log DBL_MAX). A step whose exponent exceeds
  *     709, or whose product is no longer finite, ends the path: it is
- *     recorded as a terminal extreme outcome (1e308) and simulated no
- *     further, so +Inf never reaches the sort or the sums. Capping the
+ *     recorded as a terminal extreme outcome (FINBENCH_EXTREME_VALUE,
+ *     1e150) and simulated no further, so +Inf never reaches the sort or
+ *     the sums — the sentinel is sized so that squaring it and summing a
+ *     million of them both stay finite. Capping the
  *     exponent and continuing would only defer the overflow to the next
  *     step. NOTE: this diverges from Axis2/Java, which deliberately does
  *     NOT guard — Java prefers NaN propagation as an alarm. Both choices

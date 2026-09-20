@@ -1819,8 +1819,8 @@ finbench_run_monte_carlo_correlated(
                 "supply n_assets or a weights array alongside it.");
     }
     if (n > FINBENCH_MAX_MC_ASSETS) {
-        MC_FAIL("n_assets=%d exceeds the correlated-simulation maximum of %d "
-                "(each step costs O(n_assets^2)).", n, FINBENCH_MAX_MC_ASSETS);
+        MC_FAIL("n_assets=%d exceeds the correlated-simulation maximum of %d.",
+                n, FINBENCH_MAX_MC_ASSETS);
     }
     if (!request->weights || !request->covariance_matrix || !request->expected_returns) {
         MC_FAIL("Internal error: correlated request arrays missing.");
@@ -1843,9 +1843,12 @@ finbench_run_monte_carlo_correlated(
         MC_FAIL("expected_returns array length %d != n_assets %d.",
                 request->expected_returns_provided, n);
     }
-    if ((int64_t)request->n_simulations * request->n_periods * (int64_t)n * n > FINBENCH_MAX_WORK) {
-        MC_FAIL("n_simulations * n_periods * n_assets^2 exceeds the computation budget (%ld).",
-                (long)FINBENCH_MAX_WORK);
+    if ((int64_t)request->n_simulations * request->n_periods * (int64_t)n > FINBENCH_MAX_WORK) {
+        MC_FAIL("n_simulations * n_periods * n_assets = %lld exceeds the computation budget (%ld). "
+                "At n_simulations=%d and n_periods=%d the budget allows %d assets.",
+                (long long)request->n_simulations * request->n_periods * n, (long)FINBENCH_MAX_WORK,
+                request->n_simulations, request->n_periods,
+                (int)(FINBENCH_MAX_WORK / ((int64_t)request->n_simulations * request->n_periods)));
     }
     for (i = 0; i < n; i++) {
         double w = request->weights[i];
@@ -1993,7 +1996,7 @@ finbench_run_monte_carlo_correlated(
                 value += s_vals[i];
             }
             if (terminal) {
-                value = 1e308;
+                value = FINBENCH_EXTREME_VALUE;
                 break;
             }
 
@@ -2254,12 +2257,12 @@ finbench_run_monte_carlo(
              * multiply the cap and overflow to +Inf, which propagates NaN into
              * the whole response. Treat an extreme path as terminal instead. */
             if (exponent > 709.0) {
-                value = 1e308;   /* extreme outcome */
+                value = FINBENCH_EXTREME_VALUE;   /* extreme outcome */
                 break;
             }
             value *= exp(exponent);
             if (!isfinite(value)) {
-                value = 1e308;
+                value = FINBENCH_EXTREME_VALUE;
                 break;
             }
 

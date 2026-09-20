@@ -108,8 +108,9 @@ systemic jump (one Poisson draw and one log-jump per step for the whole book).
 The response adds `simulation_mode: "correlated"`, `n_assets`, the `weights`
 used and `portfolio_volatility` = √(w'Σw). A single asset with Σ = [σ²]
 reproduces the scalar run bit-for-bit for the same seed. Cost is
-n_simulations × n_periods × n_assets² against the same work budget; max 100
-assets.
+n_simulations × n_periods × n_assets asset-steps against the same work
+budget (10⁹), so the defaults allow all 100 assets and 100,000 paths allow
+about 39; max 100 assets.
 
 ```json
 {

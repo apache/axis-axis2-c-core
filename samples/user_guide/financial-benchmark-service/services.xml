@@ -208,7 +208,7 @@
 
              Run Monte Carlo simulation for Value at Risk (VaR) calculation.
              Compute-intensive: n_simulations × n_periods iterations, times
-             n_assets² for a correlated book (covariance_matrix + weights).
+             n_assets for a correlated book (covariance_matrix + weights).
 
              Key benchmark: 10,000 sims × 252 days = 2.52M iterations
              Target: <500ms on old Android phone
@@ -232,7 +232,14 @@
                     "expected_return": {"type": "number",  "description": "Annualised expected return (e.g. 0.08 for 8%)"},
                     "volatility":      {"type": "number",  "description": "Annualised volatility (e.g. 0.20 for 20%)"},
                     "random_seed":     {"type": "integer", "description": "Seed for reproducible results. When omitted, seeded from time() — results differ across calls."},
+                    "n_periods_per_year": {"type": "integer", "default": 252,
+                                        "description": "Trading periods per year; dt = 1/n_periods_per_year. Must match the basis of expected_return and volatility."},
+                    "percentiles":     {"type": "array",   "items": {"type": "number"}, "maxItems": 8,
+                                        "description": "Tail levels for VaR, e.g. [0.01, 0.05] for 99% and 95%. Default [0.01, 0.05]."},
                     "model":           {"type": "string",  "enum": ["gbm", "merton"], "default": "gbm"},
+                    "jump_intensity":  {"type": "number",  "default": 1.0,  "description": "Merton: jumps per year (lambda*dt must be at most 0.1)."},
+                    "jump_mean":       {"type": "number",  "default": -0.03, "description": "Merton: mean log-jump."},
+                    "jump_vol":        {"type": "number",  "default": 0.05, "description": "Merton: log-jump standard deviation."},
                     "covariance_matrix": {"type": "array", "items": {"type": "number"},
                                         "description": "Correlated book: n_assets×n_assets annualized covariance matrix (flat row-major or nested), as composeCovariance returns it. Switches the run to a buy-and-hold multi-asset book; volatility is then ignored. Must be positive definite."},
                     "weights":         {"type": "array",   "items": {"type": "number"},
