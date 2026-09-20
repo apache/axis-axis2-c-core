@@ -84,6 +84,34 @@ static const char SCHEMA_PORTFOLIO_VARIANCE[] =
     "\"required\":[\"n_assets\",\"weights\",\"covariance_matrix\"]"
     "}";
 
+static const char SCHEMA_COMPOSE_COVARIANCE[] =
+    "{"
+    "\"type\":\"object\","
+    "\"properties\":{"
+        "\"n_assets\":{\"type\":\"integer\","
+            "\"description\":\"Number of assets (max 3000). Inferred from volatilities if omitted\"},"
+        "\"volatilities\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
+            "\"description\":\"Per-asset volatilities, each > 0, as decimals (0.22 = 22%%). "
+                "The covariance matrix inherits their time basis: annualized vols give an "
+                "annualized matrix, to be passed to portfolioVariance with n_periods_per_year=1\"},"
+        "\"correlation\":{\"type\":\"number\",\"minimum\":-1,\"maximum\":1,"
+            "\"description\":\"Uniform off-diagonal correlation rho applied to every pair "
+                "(the 'all correlations go to 0.8' stress case). Use this OR correlation_matrix\"},"
+        "\"correlation_matrix\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
+            "\"description\":\"Full n_assets x n_assets correlation matrix, flattened row-major "
+                "(or nested rows). Must be symmetric with a unit diagonal and entries in [-1, 1]. "
+                "Use this OR correlation\"},"
+        "\"check_positive_definite\":{\"type\":\"boolean\","
+            "\"description\":\"Run a Cholesky decomposition and refuse a matrix that is not "
+                "positive definite. Default true. O(n^3); set false only for very large n\"},"
+        "\"asset_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},"
+            "\"description\":\"Optional labels, one per asset, echoed in the response\"},"
+        "\"request_id\":{\"type\":\"string\","
+            "\"description\":\"Optional identifier echoed in the response for request tracing\"}"
+    "},"
+    "\"required\":[\"volatilities\"]"
+    "}";
+
 static const char SCHEMA_MONTE_CARLO[] =
     "{"
     "\"type\":\"object\","
@@ -173,6 +201,17 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
         "matrix operation count, and microsecond timing. "
         "Target: 500 assets in ~5ms on resource-constrained hardware.",
         SCHEMA_PORTFOLIO_VARIANCE
+    },
+    {
+        "composeCovariance",
+        "Build a covariance matrix from per-asset volatilities and a correlation structure: "
+        "Sigma_ij = vol_i * vol_j * R_ij (Sigma = D*R*D). R is either a full correlation matrix "
+        "or one uniform rho for every pair. Runs a Cholesky decomposition and refuses the "
+        "result if it is not positive definite, naming the failing index. Output is the flat "
+        "row-major covariance_matrix that portfolioVariance accepts, plus the correlation "
+        "matrix used and the vols echoed. Use this instead of typing covariances: vols and "
+        "correlations are short, bounded and checkable; a raw matrix is not.",
+        SCHEMA_COMPOSE_COVARIANCE
     },
     {
         "monteCarlo",
@@ -373,6 +412,8 @@ static json_object *mcp_handle_tools_call(
 
     if (strcmp(tool_name, "portfolioVariance") == 0) {
         result_json = finbench_portfolio_variance_json_only(env, args_json);
+    } else if (strcmp(tool_name, "composeCovariance") == 0) {
+        result_json = finbench_compose_covariance_json_only(env, args_json);
     } else if (strcmp(tool_name, "monteCarlo") == 0) {
         result_json = finbench_monte_carlo_json_only(env, args_json);
     } else if (strcmp(tool_name, "scenarioAnalysis") == 0) {
@@ -380,7 +421,7 @@ static json_object *mcp_handle_tools_call(
     } else {
         AXIS2_FREE(env->allocator, args_json);
         *out_code = MCP_ERR_METHOD_NOT_FOUND;
-        *out_msg  = "Unknown tool name. Available: portfolioVariance, monteCarlo, scenarioAnalysis";
+        *out_msg  = "Unknown tool name. Available: portfolioVariance, composeCovariance, monteCarlo, scenarioAnalysis";
         return NULL;
     }
 

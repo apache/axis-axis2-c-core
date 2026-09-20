@@ -99,11 +99,67 @@ Runs Value at Risk (VaR) simulation using Geometric Brownian Motion.
 }
 ```
 
-### 3. Scenario Analysis (`/scenarioAnalysis`)
+### 3. Compose Covariance (`/composeCovariance`)
+
+Builds the covariance matrix that `portfolioVariance` consumes from per-asset
+volatilities and a correlation structure, and refuses to return one that is not
+positive definite.
+
+**Formula**: Σ_ij = vol_i × vol_j × R_ij  (Σ = D·R·D)
+
+`R` is either a full n×n correlation matrix or one uniform correlation `rho`
+applied to every pair. The result is checked with a Cholesky decomposition
+(O(n³/3)); a matrix that fails returns `FAILED` with the failing index and no
+numbers, so nothing non-PSD can reach `portfolioVariance` by this route.
+
+Why it exists: a hypothetical regime ("every vol at 22%, correlation 0.5") has
+no covariance matrix to hand, and vols and correlations are short, bounded and
+checkable where a raw 25-number matrix is not. The result inherits the vols'
+time basis: annualized vols in, annualized Σ out, to be passed to
+`portfolioVariance` with `n_periods_per_year: 1`.
+
+**Example Request** (uniform correlation, the stress case):
+```json
+{
+    "volatilities": [0.243, 0.244, 0.314, 0.219, 0.167],
+    "correlation": 0.8,
+    "asset_ids": ["MSFT", "AAPL", "AMZN", "JPM", "JNJ"]
+}
+```
+
+**Example Response**:
+```json
+{
+    "status": "SUCCESS",
+    "n_assets": 5,
+    "covariance_matrix": [0.059049, 0.047434, 0.061042, 0.042574, 0.032465, ...],
+    "correlation_matrix": [1.0, 0.8, 0.8, 0.8, 0.8, 0.8, 1.0, ...],
+    "volatilities": [0.243, 0.244, 0.314, 0.219, 0.167],
+    "positive_definite": true,
+    "positive_definite_checked": true,
+    "cholesky_failed_at": -1,
+    "min_pivot": 0.00689,
+    "calc_time_us": 3,
+    "asset_ids": ["MSFT", "AAPL", "AMZN", "JPM", "JNJ"]
+}
+```
+
+Feeding that `covariance_matrix` to `portfolioVariance` with weights
+`[0.25, 0.25, 0.20, 0.15, 0.15]` and `n_periods_per_year: 1` gives a portfolio
+volatility of 0.2228; the same five vols with the historical correlation matrix
+give 0.1567.
+
+**Refusals** name the field: a vol that is not > 0, a `rho` outside [−1, 1], an
+asymmetric or non-unit-diagonal `correlation_matrix`, both forms supplied at
+once, or a Cholesky failure (`"Not positive definite: Cholesky failed at index
+2. With 5 assets a uniform correlation must satisfy -0.25 < rho < 1; got -0.5."`).
+`check_positive_definite: false` skips the O(n³) check for very large n.
+
+### 4. Scenario Analysis (`/scenarioAnalysis`)
 
 Demonstrates O(1) hash table lookups vs O(n) linear search — a common optimization in enterprise portfolio systems migrating from array scans to hash-based asset lookups.
 
-### 4. Service Metadata (`/metadata`)
+### 5. Service Metadata (`/metadata`)
 
 Returns service capabilities, device info, and memory usage.
 

@@ -27,6 +27,7 @@
  *
  * Features:
  * - Portfolio variance calculation (O(n²) matrix operations)
+ * - Covariance composition Σ = D·R·D with a Cholesky positive-definite check
  * - Monte Carlo simulation (compute-intensive)
  * - Scenario analysis with hash table lookups
  * - Memory-efficient operation for 1-2GB devices
@@ -222,6 +223,146 @@ typedef struct finbench_portfolio_variance_response
     char *device_info;
 
 } finbench_portfolio_variance_response_t;
+
+/* ============================================================================
+ * Compose Covariance
+ *
+ * Builds a covariance matrix from per-asset volatilities and a correlation
+ * structure, and checks that the result is positive definite before anyone
+ * feeds it to portfolioVariance. This is the Σ = D·R·D decomposition:
+ *
+ *   Σ_ij = vol_i · vol_j · R_ij
+ *
+ * where D = diag(vol) and R is the correlation matrix. R is either supplied
+ * in full (n×n, flat row-major or 2D) or as a single uniform off-diagonal
+ * value ρ (R_ii = 1, R_ij = ρ for i≠j) — the "all correlations go to 0.8"
+ * stress case.
+ *
+ * Why this exists:
+ *   A caller who wants a hypothetical regime — "every vol at 22%, correlation
+ *   0.5" — has no covariance matrix to hand and should not type one. Vols and
+ *   correlations are short, human-readable, and bounded ([−1, 1] for ρ,
+ *   > 0 for vol), so they can be validated. A 5×5 covariance matrix is 25
+ *   unlabeled numbers that cannot. This operation is the validated front
+ *   door; portfolioVariance stays the raw one.
+ *
+ * Positive definiteness:
+ *   portfolioVariance documents that it does not check PSD and that a bad
+ *   matrix yields a clamped-to-zero variance with no error. This operation
+ *   closes that gap for matrices it produces: it runs a Cholesky
+ *   decomposition (Σ = L·Lᵀ) and reports FAILED with the failing pivot
+ *   index if any pivot is ≤ 0. Cholesky is O(n³/3), so on constrained
+ *   hardware a 3000-asset check costs seconds; check_positive_definite=false
+ *   skips it. For the uniform-ρ form the condition is closed-form:
+ *   Σ is positive definite iff −1/(n−1) < ρ < 1 (with all vols > 0), and the
+ *   Cholesky result agrees with that.
+ *
+ * Time basis:
+ *   Σ inherits the basis of the vols. Annualized vols in → annualized Σ out,
+ *   which is the usual case; pass that Σ to portfolioVariance with
+ *   n_periods_per_year=1. The service does not annualize or de-annualize.
+ * ============================================================================
+ */
+
+/** Tolerance for correlation-matrix symmetry and unit-diagonal checks. */
+#define FINBENCH_CORR_TOL           1e-6
+
+/**
+ * @brief Compose Covariance Request
+ */
+typedef struct finbench_compose_covariance_request
+{
+    /** Number of assets (must be in [1, FINBENCH_MAX_ASSETS]); inferred from volatilities if absent. */
+    int n_assets;
+
+    /** Per-asset volatilities (exactly n_assets, each finite and > 0). Basis is the caller's. */
+    double *volatilities;
+
+    /** Length of volatilities[] as parsed, for dimension validation. */
+    int volatilities_provided;
+
+    /**
+     * Uniform off-diagonal correlation ρ, used when correlation_matrix is
+     * absent. Must be in [−1, 1]. has_correlation records whether the field
+     * was present at all.
+     */
+    double correlation;
+    axis2_bool_t has_correlation;
+
+    /**
+     * Full correlation matrix, flattened row-major (element (i,j) at
+     * i*n_assets + j), or NULL when the uniform form is used. Accepts the
+     * same flat or 2D JSON shapes as portfolioVariance's covariance_matrix.
+     * Must be symmetric within FINBENCH_CORR_TOL, have a unit diagonal
+     * within FINBENCH_CORR_TOL, and every entry in [−1, 1].
+     */
+    double *correlation_matrix;
+
+    /** Flat element count of correlation_matrix as parsed; -1 for a ragged 2D shape. */
+    int matrix_elements_provided;
+
+    /** Run the Cholesky positive-definiteness check (default true). */
+    axis2_bool_t check_positive_definite;
+
+    /** Optional asset identifiers, echoed in the response (exactly n_assets if present). */
+    char **asset_ids;
+
+    /** Request identifier for tracing */
+    char *request_id;
+
+} finbench_compose_covariance_request_t;
+
+/**
+ * @brief Compose Covariance Response
+ */
+typedef struct finbench_compose_covariance_response
+{
+    /** Processing status */
+    char *status;
+
+    /** Number of assets */
+    int n_assets;
+
+    /** Σ, flattened row-major, n_assets² elements. NULL on FAILED. */
+    double *covariance_matrix;
+
+    /** R as used (uniform ρ expanded, or the caller's), flattened row-major. NULL on FAILED. */
+    double *correlation_matrix;
+
+    /** Volatilities as supplied. NULL on FAILED. */
+    double *volatilities;
+
+    /** Whether Cholesky succeeded. AXIS2_FALSE also when the check was skipped. */
+    axis2_bool_t positive_definite;
+
+    /** Whether the Cholesky check ran at all (check_positive_definite). */
+    axis2_bool_t positive_definite_checked;
+
+    /** Index of the first non-positive Cholesky pivot, or -1. */
+    int cholesky_failed_at;
+
+    /** Smallest Cholesky pivot L_ii² seen (a conditioning diagnostic); 0 if not checked. */
+    double min_pivot;
+
+    /** Processing time in microseconds */
+    long calc_time_us;
+
+    /** Peak memory used in KB */
+    int memory_used_kb;
+
+    /** Error message (if status == FAILED) */
+    char *error_message;
+
+    /** Asset identifiers echo (may be NULL) */
+    char **asset_ids;
+
+    /** Request ID echo */
+    char *request_id;
+
+    /** Device info for demo purposes */
+    char *device_info;
+
+} finbench_compose_covariance_response_t;
 
 /* ============================================================================
  * Monte Carlo Simulation
@@ -770,6 +911,66 @@ finbench_calculate_portfolio_variance(
  */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 finbench_portfolio_variance_json_only(
+    const axutil_env_t *env,
+    const axis2_char_t *json_request);
+
+/* ============================================================================
+ * Function Declarations - Compose Covariance
+ * ============================================================================
+ */
+
+/**
+ * @brief Create compose-covariance request from JSON
+ */
+AXIS2_EXTERN finbench_compose_covariance_request_t* AXIS2_CALL
+finbench_compose_covariance_request_create_from_json(
+    const axutil_env_t *env,
+    const axis2_char_t *json_string);
+
+/**
+ * @brief Free compose-covariance request
+ */
+AXIS2_EXTERN void AXIS2_CALL
+finbench_compose_covariance_request_free(
+    finbench_compose_covariance_request_t *request,
+    const axutil_env_t *env);
+
+/**
+ * @brief Create compose-covariance response
+ */
+AXIS2_EXTERN finbench_compose_covariance_response_t* AXIS2_CALL
+finbench_compose_covariance_response_create(
+    const axutil_env_t *env);
+
+/**
+ * @brief Convert compose-covariance response to JSON
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_compose_covariance_response_to_json(
+    const finbench_compose_covariance_response_t *response,
+    const axutil_env_t *env);
+
+/**
+ * @brief Free compose-covariance response
+ */
+AXIS2_EXTERN void AXIS2_CALL
+finbench_compose_covariance_response_free(
+    finbench_compose_covariance_response_t *response,
+    const axutil_env_t *env);
+
+/**
+ * @brief Compose Σ = D·R·D and check positive definiteness (main operation)
+ */
+AXIS2_EXTERN finbench_compose_covariance_response_t* AXIS2_CALL
+finbench_compose_covariance(
+    const axutil_env_t *env,
+    finbench_compose_covariance_request_t *request);
+
+/**
+ * @brief Process compose-covariance with pure JSON (HTTP/2 endpoint)
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_compose_covariance_json_only(
     const axutil_env_t *env,
     const axis2_char_t *json_request);
 

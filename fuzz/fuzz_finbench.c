@@ -26,6 +26,11 @@
  *   Tests: integer overflow in n_assets*n_assets, weight normalization
  *   div-by-zero, negative variance sqrt, array bounds
  *
+ * - composeCovariance: Sigma = D*R*D composition, correlation validation,
+ *   Cholesky positive-definite check
+ *   Tests: out-of-range and NaN correlations, asymmetric and ragged
+ *   matrices, non-positive pivots, uniform rho below -1/(n-1)
+ *
  * - monteCarlo: GBM simulation with exp() overflow guard
  *   Tests: extreme volatility → exp() overflow, zero volatility,
  *   negative expected return, 1-simulation edge case, percentile
@@ -119,6 +124,29 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
     }
 
     /*
+     * Exercise 1b: composeCovariance parsing + Sigma = D*R*D + Cholesky.
+     * This hits the correlation range/symmetry validation, the ragged-2D
+     * shape sentinel, and the pivot check (NaN and non-PD inputs).
+     */
+    {
+        finbench_compose_covariance_request_t *req =
+            finbench_compose_covariance_request_create_from_json(env, json_str);
+        if (req) {
+            finbench_compose_covariance_response_t *resp =
+                finbench_compose_covariance(env, req);
+            if (resp) {
+                axis2_char_t *json_out =
+                    finbench_compose_covariance_response_to_json(resp, env);
+                if (json_out) {
+                    AXIS2_FREE(env->allocator, json_out);
+                }
+                finbench_compose_covariance_response_free(resp, env);
+            }
+            finbench_compose_covariance_request_free(req, env);
+        }
+    }
+
+    /*
      * Exercise 2: Monte Carlo request parsing + GBM simulation.
      * This hits the exp() overflow guard, percentile clamping,
      * CVaR div-by-zero guard, and the xorshift128+ PRNG.
@@ -133,7 +161,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
             if (req->n_periods > 50) req->n_periods = 50;
 
             finbench_monte_carlo_response_t *resp =
-                finbench_calculate_monte_carlo(env, req);
+                finbench_run_monte_carlo(env, req);
             if (resp) {
                 axis2_char_t *json_out =
                     finbench_monte_carlo_response_to_json(resp, env);
@@ -152,20 +180,20 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
      * and the O(n) vs O(1) benchmark paths.
      */
     {
-        finbench_scenario_analysis_request_t *req =
-            finbench_scenario_analysis_request_create_from_json(env, json_str);
+        finbench_scenario_request_t *req =
+            finbench_scenario_request_create_from_json(env, json_str);
         if (req) {
-            finbench_scenario_analysis_response_t *resp =
-                finbench_calculate_scenario_analysis(env, req);
+            finbench_scenario_response_t *resp =
+                finbench_calculate_scenarios(env, req);
             if (resp) {
                 axis2_char_t *json_out =
-                    finbench_scenario_analysis_response_to_json(resp, env);
+                    finbench_scenario_response_to_json(resp, env);
                 if (json_out) {
                     AXIS2_FREE(env->allocator, json_out);
                 }
-                finbench_scenario_analysis_response_free(resp, env);
+                finbench_scenario_response_free(resp, env);
             }
-            finbench_scenario_analysis_request_free(req, env);
+            finbench_scenario_request_free(req, env);
         }
     }
 

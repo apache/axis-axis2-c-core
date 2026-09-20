@@ -41,6 +41,7 @@
 
             Operations:
             - portfolioVariance: O(n²) covariance matrix calculation
+            - composeCovariance: Σ = D·R·D from volatilities + correlations, Cholesky-checked
             - monteCarlo: Compute-intensive VaR simulation
             - scenarioAnalysis: Hash table vs linear lookup comparison
             - metadata: Service information and device stats
@@ -131,6 +132,73 @@
 
             <parameter name="httpMethod">POST</parameter>
             <parameter name="httpPath">/portfolioVariance</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- ================================================================
+             Operation: composeCovariance
+
+             Build a covariance matrix from per-asset volatilities and a
+             correlation structure (Σ = D·R·D), then check that it is
+             positive definite with a Cholesky decomposition before it can
+             reach portfolioVariance. The validated front door for
+             hypothetical regimes ("every vol 22%, correlation 0.5").
+             ================================================================ -->
+        <operation name="composeCovariance">
+            <parameter name="mcpDescription">Build a covariance matrix from per-asset volatilities and a correlation structure (Σ = D·R·D): either a full correlation matrix or one uniform correlation for every pair. Runs a Cholesky check and refuses a matrix that is not positive definite. Returns the flat row-major covariance_matrix that portfolioVariance accepts.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">true</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "required": ["volatilities"],
+                "properties": {
+                    "n_assets":                {"type": "integer", "minimum": 1, "maximum": 3000,
+                                                "description": "Number of assets. Inferred from volatilities if omitted."},
+                    "volatilities":            {"type": "array",   "items": {"type": "number"},
+                                                "description": "Per-asset volatilities, each > 0, as decimals (0.22 = 22%). The result inherits their time basis."},
+                    "correlation":             {"type": "number",  "minimum": -1, "maximum": 1,
+                                                "description": "Uniform off-diagonal correlation applied to every pair. Use this OR correlation_matrix."},
+                    "correlation_matrix":      {"type": "array",   "items": {"type": "number"},
+                                                "description": "Full n_assets×n_assets correlation matrix, row-major flat or nested rows. Symmetric, unit diagonal, entries in [-1, 1]. Use this OR correlation."},
+                    "check_positive_definite": {"type": "boolean", "default": true,
+                                                "description": "Cholesky check (O(n³)). Refuses a matrix that is not positive definite."},
+                    "asset_ids":               {"type": "array",   "items": {"type": "string"},
+                                                "description": "Optional labels, one per asset, echoed back."},
+                    "request_id":              {"type": "string",  "description": "Optional correlation ID echoed in the response"}
+                }
+            }</parameter>
+            <description>
+                Compose a covariance matrix: Σ_ij = vol_i × vol_j × R_ij.
+
+                Example JSON Request (uniform correlation):
+                {
+                    "volatilities": [0.243, 0.244, 0.314, 0.219, 0.167],
+                    "correlation": 0.8,
+                    "asset_ids": ["MSFT", "AAPL", "AMZN", "JPM", "JNJ"]
+                }
+
+                Example JSON Response:
+                {
+                    "status": "SUCCESS",
+                    "n_assets": 5,
+                    "covariance_matrix": [0.059049, 0.0474, ...],
+                    "correlation_matrix": [1, 0.8, ...],
+                    "volatilities": [0.243, ...],
+                    "positive_definite": true,
+                    "positive_definite_checked": true,
+                    "cholesky_failed_at": -1,
+                    "min_pivot": 0.00558,
+                    "calc_time_us": 3
+                }
+
+                A matrix that fails the Cholesky check returns status FAILED,
+                error_message naming the failing index, and no matrix.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/composeCovariance</parameter>
             <parameter name="contentType">application/json</parameter>
             <parameter name="responseType">application/json</parameter>
         </operation>
@@ -317,7 +385,7 @@
                 {
                     "service_name": "FinancialBenchmarkService",
                     "version": "1.0.0",
-                    "operations": ["portfolioVariance", "monteCarlo", ...],
+                    "operations": ["portfolioVariance", "composeCovariance", "monteCarlo", ...],
                     "max_assets": 2000,
                     "max_simulations": 1000000,
                     "memory_constraint_mb": 512,

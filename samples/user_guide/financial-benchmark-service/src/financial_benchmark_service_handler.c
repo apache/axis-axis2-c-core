@@ -463,6 +463,12 @@ route_operation(
         result = finbench_portfolio_variance_json_only(env, json_request);
     }
 
+    /* composeCovariance operation */
+    else if (axutil_strcmp(operation_name, "composeCovariance") == 0)
+    {
+        result = finbench_compose_covariance_json_only(env, json_request);
+    }
+
     /* monteCarlo operation */
     else if (axutil_strcmp(operation_name, "monteCarlo") == 0)
     {

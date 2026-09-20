@@ -554,6 +554,43 @@ Verify afterwards with `nm -D` that the service symbol is `T` and not `W`
 
 Deploy to `services/MyNewService/services.xml` in the Axis2 repository.
 
+## Adding an Operation to a Registered Service
+
+The registry is keyed by **service**, not by operation. One weak symbol and
+one `strcmp` in `android_static_service_lookup()` cover every operation the
+service will ever have, because the engine hands the whole JSON request to the
+service's single `_invoke_json` entry point and the service routes internally
+(by the `action` field, or by request shape when the URL path is unavailable).
+So a new operation on an already-registered service touches **nothing in this
+repository's registry**. What it does touch, using `composeCovariance` on
+`FinancialBenchmarkService` as the worked example:
+
+| Where | Change |
+|---|---|
+| `financial_benchmark_service.h` / `.c` | The request and response structs, the `*_json_only()` entry point, and a branch in the internal `finbench_dispatch_json_obj()` (action name and, for the Android path, a request-shape rule: `composeCovariance` is the only operation that carries `volatilities`) |
+| `financial_benchmark_service_handler.c` | A branch in `route_operation()` for the server-side URL-path dispatch |
+| `finbench_mcp.c` | The tool's `inputSchema` constant, a row in the tool table, and a branch in `tools/call` |
+| `services.xml` (upstream and in the app) | An `<operation>` element; on Android the `RESTLocation` is what maps the URL path to the operation |
+| `finbench_get_metadata_json()` | The operations list |
+| The application's adapter | If it routes by request shape rather than by `action`, one more rule. The Kanaha Calcs adapter adds `volatilities → composeCovariance` |
+| `fuzz/fuzz_finbench.c` | An exercise block for the new parser and compute path |
+
+Two things are easy to get wrong:
+
+- **The request-shape rule must be unambiguous.** The Android adapter cannot
+  see the URL, so it infers the operation from field names. A new operation
+  must own a field no other operation uses, or its requests will be routed to
+  the wrong one and answered with that operation's "missing field" error.
+- **Both link lines in the application build.** The httpd and the MCP binary
+  are linked separately; the operation lives in
+  `financial_benchmark_service.o`, which both already include, so no link
+  change was needed here. A new operation that adds a source file has to be
+  added to both.
+
+Verify without the device: after building, `nm -D libyour_httpd.so | grep
+<new>_json_only` should show a `T`, and `tools/list` from the rebuilt MCP
+binary should list the tool.
+
 ## mod_axis2 Configuration
 
 ### Android-Specific Initialization
@@ -775,6 +812,7 @@ are permissive (MIT + Apache 2.0), its patterns can flow upstream to Apache proj
 |---------|-------------|---------|------------|
 | CameraControlService | [Kanaha Camera](https://github.com/robertlazarski/kanaha) | GPL v3+ | fork/execvp Intent IPC (GPL boundary) |
 | AudioSearchService | [Kanaha Audio](https://github.com/robertlazarski/kanaha-audio) | Apache 2.0 | Direct function call (no GPL boundary) |
+| FinancialBenchmarkService | [Kanaha Calcs](https://github.com/robertlazarski/kanaha-calcs) (service source is the upstream sample under `samples/user_guide/financial-benchmark-service`) | Apache 2.0 | Direct function call; the app supplies only the two-argument adapter |
 
 ## Summary Table
 
@@ -795,7 +833,7 @@ Key files for Android support:
 
 **Axis2/C Core:**
 - `configure.ac` - Android detection, C flags
-- `src/core/receivers/axis2_json_rpc_msg_recv.c` - Static service registry (CameraControlService, AudioSearchService)
+- `src/core/receivers/axis2_json_rpc_msg_recv.c` - Static service registry (CameraControlService, AudioSearchService, FinancialBenchmarkService)
 - `src/core/transport/http/server/apache2/mod_axis2.c` - Android init, logging
 - `src/core/transport/http/server/apache2/apache2_worker.c` - Request processing
 
@@ -814,4 +852,4 @@ Key files for Android support:
 
 ---
 
-*Last updated: 2026-01-14*
+*Last updated: 2026-09-19*

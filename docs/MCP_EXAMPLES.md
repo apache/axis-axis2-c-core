@@ -198,6 +198,63 @@ memory (RSS under load).
 
 ---
 
+### Compose Covariance — Σ = D·R·D with a Cholesky Check
+
+`portfolioVariance` takes a covariance matrix and, by design, does not check
+that it is positive semi-definite. `composeCovariance` is the validated way to
+build one: per-asset volatilities plus either a full correlation matrix or one
+uniform correlation for every pair. It refuses anything that fails Cholesky.
+
+```bash
+# The "all correlations spike to 0.8" stress case from the demos above, built
+# from the five vols instead of typed as 25 covariances
+curl -sk --http2 -X POST -H 'Content-Type: application/json' \
+    -d '{"volatilities":[0.243,0.244,0.314,0.219,0.167],"correlation":0.8,
+         "asset_ids":["MSFT","AAPL","AMZN","JPM","JNJ"]}' \
+    https://10.10.10.10/services/FinancialBenchmarkService/composeCovariance
+```
+
+```json
+{
+  "status": "SUCCESS",
+  "n_assets": 5,
+  "covariance_matrix": [0.059049, 0.047434, 0.061042, 0.042574, 0.032465, 0.047434, 0.059536, ...],
+  "correlation_matrix": [1.0, 0.8, 0.8, 0.8, 0.8, 0.8, 1.0, ...],
+  "volatilities": [0.243, 0.244, 0.314, 0.219, 0.167],
+  "positive_definite": true,
+  "positive_definite_checked": true,
+  "cholesky_failed_at": -1,
+  "min_pivot": 0.006890,
+  "calc_time_us": 3,
+  "asset_ids": ["MSFT", "AAPL", "AMZN", "JPM", "JNJ"]
+}
+```
+
+Pass that `covariance_matrix` straight to `portfolioVariance` with
+`"n_periods_per_year": 1` (the vols were annualized, so Σ is): the weights
+`[0.25, 0.25, 0.20, 0.15, 0.15]` give volatility 0.2228, matching the stress
+result in Demo 1. The same vols with the historical correlation matrix give
+0.1567.
+
+A uniform correlation that cannot be positive definite is refused with the
+bound stated, not silently clamped:
+
+```bash
+echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"composeCovariance","arguments":{"volatilities":[0.243,0.244,0.314,0.219,0.167],"correlation":-0.5}}}' \
+    | financial-benchmark-mcp
+```
+
+```json
+{"status":"FAILED","n_assets":5,"positive_definite":false,"positive_definite_checked":true,
+ "cholesky_failed_at":2,"min_pivot":0.0,
+ "error_message":"Not positive definite: Cholesky failed at index 2. With 5 assets a uniform correlation must satisfy -0.25 < rho < 1; got -0.5."}
+```
+
+Every other refusal names its field the same way: a vol that is not > 0, a
+correlation outside [−1, 1], an asymmetric or non-unit-diagonal matrix, or
+both forms supplied at once. Vols and correlations are short, bounded and
+checkable; that is why this is the front door and the raw matrix is not.
+
 ### Monte Carlo Value at Risk — Geometric Brownian Motion
 
 Monte Carlo VaR is the standard approach for estimating portfolio loss at a
@@ -382,6 +439,7 @@ curl -k --http2 -s \
   "version": "1.0.0",
   "operations": [
     "portfolioVariance",
+    "composeCovariance",
     "monteCarlo",
     "scenarioAnalysis",
     "metadata"
