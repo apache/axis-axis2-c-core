@@ -134,10 +134,31 @@ static const char SCHEMA_MONTE_CARLO[] =
         "\"percentiles\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
             "\"description\":\"Percentile tail levels for VaR, e.g. [0.01, 0.05] for 99%% and 95%% VaR. "
                 "Max 8 values. Default: [0.01, 0.05]\"},"
+        "\"model\":{\"type\":\"string\",\"enum\":[\"gbm\",\"merton\"],"
+            "\"description\":\"gbm (default) or merton jump-diffusion\"},"
+        "\"jump_intensity\":{\"type\":\"number\",\"description\":\"Merton: jumps per year. Default 1.0\"},"
+        "\"jump_mean\":{\"type\":\"number\",\"description\":\"Merton: mean log-jump. Default -0.03\"},"
+        "\"jump_vol\":{\"type\":\"number\",\"description\":\"Merton: log-jump std dev. Default 0.05\"},"
+        "\"covariance_matrix\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
+            "\"description\":\"Correlated book: n_assets x n_assets annualized covariance matrix, flat row-major "
+                "(or nested rows), as composeCovariance returns it. Its presence switches the simulation to a "
+                "buy-and-hold multi-asset book driven by the matrix's Cholesky factor; volatility is then ignored. "
+                "Must be positive definite\"},"
+        "\"weights\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
+            "\"description\":\"Correlated book: n_assets weights, each >= 0 (long-only), summing to 1 unless "
+                "normalize_weights=true\"},"
+        "\"n_assets\":{\"type\":\"integer\","
+            "\"description\":\"Correlated book: asset count (max 100). Inferred from weights if omitted\"},"
+        "\"expected_returns\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
+            "\"description\":\"Correlated book: per-asset annualized drifts. Default: expected_return for every asset\"},"
+        "\"normalize_weights\":{\"type\":\"boolean\","
+            "\"description\":\"Correlated book: rescale weights to sum to 1. Default false\"},"
         "\"request_id\":{\"type\":\"string\"}"
     "},"
     "\"required\":[],"
-    "\"description\":\"All fields have defaults — an empty {} request body is valid\""
+    "\"description\":\"All fields have defaults — an empty {} request body is valid. "
+        "Supply covariance_matrix + weights for a correlated multi-asset book; the response then also carries "
+        "portfolio_volatility (sqrt(w'Sigma w)) and simulation_mode=correlated\""
     "}";
 
 static const char SCHEMA_SCENARIO_ANALYSIS[] =
@@ -219,6 +240,9 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
         "S(t+dt) = S(t) * exp((mu - sigma^2/2)*dt + sigma*sqrt(dt)*Z), where Z ~ N(0,1). "
         "Returns VaR at caller-specified percentiles, CVaR (Expected Shortfall at 95%%), "
         "max drawdown, probability of profit, and simulations-per-second throughput. "
+        "Two modes: a single asset (volatility) or, when covariance_matrix + weights are supplied, "
+        "a correlated buy-and-hold book whose per-step shocks are L*Z with L the Cholesky factor of "
+        "the matrix (build it with composeCovariance). model=merton adds a systemic jump process. "
         "Uses xorshift128+ PRNG + Box-Muller transform for high-throughput random number generation.",
         SCHEMA_MONTE_CARLO
     },

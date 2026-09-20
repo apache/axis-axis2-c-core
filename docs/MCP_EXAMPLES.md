@@ -255,6 +255,65 @@ correlation outside [−1, 1], an asymmetric or non-unit-diagonal matrix, or
 both forms supplied at once. Vols and correlations are short, bounded and
 checkable; that is why this is the front door and the raw matrix is not.
 
+### Correlated Book — composeCovariance into monteCarlo
+
+The point of building Σ on the device is to simulate the book on the device.
+`monteCarlo` accepts `covariance_matrix` + `weights` and runs a buy-and-hold
+multi-asset book: per-step shocks L·Z with L the Cholesky factor, each asset on
+its own GBM (or Merton with a systemic jump), risk measured on the book value.
+
+```bash
+# 1. Sigma from vols + a stressed uniform correlation (the demo's 0.8 case)
+SIGMA=$(curl -sk --http2 -H 'Content-Type: application/json' \
+    -d '{"volatilities":[0.2696,0.2891,0.3241,0.2737,0.1844],"correlation":0.8}' \
+    https://10.10.10.10/services/FinancialBenchmarkService/composeCovariance \
+    | jq -c .covariance_matrix)
+
+# 2. The book through 100,000 correlated paths, one trading year, seeded
+curl -sk --http2 -H 'Content-Type: application/json' \
+    -d "{\"n_simulations\":100000,\"n_periods\":252,\"initial_value\":1000000,
+         \"expected_return\":0.08,\"random_seed\":12345,
+         \"weights\":[0.2,0.2,0.2,0.2,0.2],\"covariance_matrix\":$SIGMA}" \
+    https://10.10.10.10/services/FinancialBenchmarkService/monteCarlo
+```
+
+```json
+{
+  "status": "SUCCESS",
+  "simulation_mode": "correlated",
+  "n_assets": 5,
+  "weights": [0.2, 0.2, 0.2, 0.2, 0.2],
+  "portfolio_volatility": 0.24596373830302715,
+  "mean_final_value": 1085413.1986099794,
+  "var_95": 297131.68467735243,
+  "var_99": 405054.90035586804,
+  "cvar_95": 362894.18615084223,
+  "max_drawdown": 0.6569841317841415,
+  "prob_profit": 0.58391,
+  "model": "gbm",
+  "calc_time_us": 3814000
+}
+```
+
+(Timing from an x86-64 `-O2` build: 3.8 s against 0.68 s for the scalar run
+of the same size, so five correlated assets cost about 5.6× one — five normals
+and five `exp()` per step instead of one of each.)
+
+`portfolio_volatility` is √(w'Σw), the same number `portfolioVariance` returns
+for these inputs, so the two operations cross-check each other. A scalar run
+at `volatility: 0.2460` with the same seed gives a slightly *higher* VaR
+(408,034 against 405,055 at 99 %): a sum of five lognormals has a thinner left
+tail than one lognormal at the book's volatility, which is what the correlated
+simulation exists to capture. With one asset and Σ = [σ²] the two paths are
+identical to the last bit on the same machine. Across machines (x86-64 versus
+arm64) a multi-asset book agrees to about ten significant digits, not to the
+last bit, because aarch64 fuses multiply-adds and its libm differs; the
+single-asset identity still holds on each machine separately.
+
+Add `"model": "merton"` for a book-wide jump process, and `expected_returns`
+for per-asset drifts. A matrix that is not positive definite is refused with
+the failing index; `composeCovariance` never produces one.
+
 ### Monte Carlo Value at Risk — Geometric Brownian Motion
 
 Monte Carlo VaR is the standard approach for estimating portfolio loss at a

@@ -207,7 +207,8 @@
              Operation: monteCarlo
 
              Run Monte Carlo simulation for Value at Risk (VaR) calculation.
-             Compute-intensive: n_simulations × n_periods iterations.
+             Compute-intensive: n_simulations × n_periods iterations, times
+             n_assets² for a correlated book (covariance_matrix + weights).
 
              Key benchmark: 10,000 sims × 252 days = 2.52M iterations
              Target: <500ms on old Android phone
@@ -231,11 +232,27 @@
                     "expected_return": {"type": "number",  "description": "Annualised expected return (e.g. 0.08 for 8%)"},
                     "volatility":      {"type": "number",  "description": "Annualised volatility (e.g. 0.20 for 20%)"},
                     "random_seed":     {"type": "integer", "description": "Seed for reproducible results. When omitted, seeded from time() — results differ across calls."},
+                    "model":           {"type": "string",  "enum": ["gbm", "merton"], "default": "gbm"},
+                    "covariance_matrix": {"type": "array", "items": {"type": "number"},
+                                        "description": "Correlated book: n_assets×n_assets annualized covariance matrix (flat row-major or nested), as composeCovariance returns it. Switches the run to a buy-and-hold multi-asset book; volatility is then ignored. Must be positive definite."},
+                    "weights":         {"type": "array",   "items": {"type": "number"},
+                                        "description": "Correlated book: n_assets weights ≥ 0 (long-only), summing to 1 unless normalize_weights."},
+                    "n_assets":        {"type": "integer", "maximum": 100, "description": "Correlated book: inferred from weights if omitted."},
+                    "expected_returns": {"type": "array",  "items": {"type": "number"},
+                                        "description": "Correlated book: per-asset drifts. Default: expected_return for every asset."},
+                    "normalize_weights": {"type": "boolean", "default": false},
                     "request_id":      {"type": "string",  "description": "Optional correlation ID"}
                 }
             }</parameter>
             <description>
                 Run Monte Carlo simulation for Value at Risk calculation.
+
+                Correlated book: when covariance_matrix and weights are present the
+                book is simulated buy-and-hold with per-step shocks L·Z, L the
+                Cholesky factor of the matrix. The response adds
+                simulation_mode="correlated", n_assets, the weights used, and
+                portfolio_volatility = sqrt(w'Σw). A single asset with Σ=[σ²]
+                reproduces the scalar run bit-for-bit for the same seed.
 
                 Simulates portfolio paths using Geometric Brownian Motion:
                 S(t+dt) = S(t) * exp((μ - σ²/2)*dt + σ*sqrt(dt)*Z)

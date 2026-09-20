@@ -99,6 +99,27 @@ Runs Value at Risk (VaR) simulation using Geometric Brownian Motion.
 }
 ```
 
+**Correlated book.** Supply `covariance_matrix` (n×n, annualized, as
+`composeCovariance` returns it) and `weights` (≥ 0, long-only) and the run
+becomes a buy-and-hold multi-asset book: per-step shocks are L·Z with L the
+Cholesky factor of Σ, each asset follows its own GBM, and VaR, CVaR, max
+drawdown and P(profit) are computed on the book value. `model: "merton"` adds a
+systemic jump (one Poisson draw and one log-jump per step for the whole book).
+The response adds `simulation_mode: "correlated"`, `n_assets`, the `weights`
+used and `portfolio_volatility` = √(w'Σw). A single asset with Σ = [σ²]
+reproduces the scalar run bit-for-bit for the same seed. Cost is
+n_simulations × n_periods × n_assets² against the same work budget; max 100
+assets.
+
+```json
+{
+    "n_simulations": 100000, "n_periods": 252, "initial_value": 1000000,
+    "expected_return": 0.08, "random_seed": 12345,
+    "weights": [0.2, 0.2, 0.2, 0.2, 0.2],
+    "covariance_matrix": [0.072684, 0.062353, ...]
+}
+```
+
 ### 3. Compose Covariance (`/composeCovariance`)
 
 Builds the covariance matrix that `portfolioVariance` consumes from per-asset
@@ -147,7 +168,8 @@ time basis: annualized vols in, annualized Σ out, to be passed to
 Feeding that `covariance_matrix` to `portfolioVariance` with weights
 `[0.25, 0.25, 0.20, 0.15, 0.15]` and `n_periods_per_year: 1` gives a portfolio
 volatility of 0.2228; the same five vols with the historical correlation matrix
-give 0.1567.
+give 0.1567. Feeding it to `monteCarlo` with `weights` runs the correlated
+book (see operation 2).
 
 **Refusals** name the field: a vol that is not > 0, a `rho` outside [−1, 1], an
 asymmetric or non-unit-diagonal `correlation_matrix`, both forms supplied at

@@ -1408,6 +1408,99 @@ finbench_monte_carlo_request_create_from_json(
         if (rid) request->request_id = axutil_strdup(env, rid);
     }
 
+    /* ---- Correlated multi-asset book: only when a covariance matrix is given ---- */
+    {
+        json_object *cov_obj = NULL;
+        if (json_object_object_get_ex(json_obj, "covariance_matrix", &cov_obj) &&
+            json_object_is_type(cov_obj, json_type_array)) {
+            json_object *array_obj = NULL;
+            int i, j;
+
+            if (json_object_object_get_ex(json_obj, "n_assets", &value_obj)) {
+                request->n_assets = json_object_get_int(value_obj);
+            } else if (json_object_object_get_ex(json_obj, "weights", &array_obj) &&
+                       json_object_is_type(array_obj, json_type_array)) {
+                request->n_assets = json_object_array_length(array_obj);
+            }
+            /* A covariance matrix with no usable n_assets still marks the request
+             * as correlated (n_assets stays 0 or out of range) so that the
+             * simulator reports it instead of silently running the scalar path. */
+            if (request->n_assets == 0) request->n_assets = -1;
+
+            if (request->n_assets >= 1 && request->n_assets <= FINBENCH_MAX_MC_ASSETS) {
+                int n = request->n_assets;
+                size_t matrix_size = (size_t)n * n;
+
+                request->weights = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+                request->covariance_matrix = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(double));
+                request->expected_returns = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+                if (!request->weights || !request->covariance_matrix || !request->expected_returns) {
+                    finbench_monte_carlo_request_free(request, env);
+                    json_object_put(json_obj);
+                    return NULL;
+                }
+                memset(request->weights, 0, (size_t)n * sizeof(double));
+                memset(request->covariance_matrix, 0, matrix_size * sizeof(double));
+                memset(request->expected_returns, 0, (size_t)n * sizeof(double));
+
+                if (json_object_object_get_ex(json_obj, "weights", &array_obj) &&
+                    json_object_is_type(array_obj, json_type_array)) {
+                    int len = json_object_array_length(array_obj);
+                    request->weights_provided = len;
+                    for (i = 0; i < n && i < len; i++) {
+                        request->weights[i] = json_object_get_double(
+                            json_object_array_get_idx(array_obj, i));
+                    }
+                }
+
+                {
+                    int outer_len = json_object_array_length(cov_obj);
+                    json_object *first_elem = json_object_array_get_idx(cov_obj, 0);
+                    if (first_elem && json_object_is_type(first_elem, json_type_array)) {
+                        int total_elements = 0;
+                        int shape_ok = (outer_len == n);
+                        for (i = 0; i < n && i < outer_len; i++) {
+                            json_object *row = json_object_array_get_idx(cov_obj, i);
+                            if (row && json_object_is_type(row, json_type_array)) {
+                                int row_len = json_object_array_length(row);
+                                if (row_len != n) shape_ok = 0;
+                                total_elements += row_len;
+                                for (j = 0; j < n && j < row_len; j++) {
+                                    request->covariance_matrix[i * n + j] =
+                                        json_object_get_double(json_object_array_get_idx(row, j));
+                                }
+                            } else {
+                                shape_ok = 0;
+                            }
+                        }
+                        request->matrix_elements_provided = shape_ok ? total_elements : -1;
+                    } else {
+                        request->matrix_elements_provided = outer_len;
+                        for (i = 0; i < (int)matrix_size && i < outer_len; i++) {
+                            request->covariance_matrix[i] =
+                                json_object_get_double(json_object_array_get_idx(cov_obj, i));
+                        }
+                    }
+                }
+
+                if (json_object_object_get_ex(json_obj, "expected_returns", &array_obj) &&
+                    json_object_is_type(array_obj, json_type_array)) {
+                    int len = json_object_array_length(array_obj);
+                    request->expected_returns_provided = len;
+                    for (i = 0; i < n && i < len; i++) {
+                        request->expected_returns[i] = json_object_get_double(
+                            json_object_array_get_idx(array_obj, i));
+                    }
+                }
+            }
+
+            if (json_object_object_get_ex(json_obj, "normalize_weights", &value_obj)) {
+                request->normalize_weights = json_object_get_boolean(value_obj)
+                    ? AXIS2_TRUE : AXIS2_FALSE;
+            }
+        }
+    }
+
     /* Validate limits */
     if (request->n_simulations > FINBENCH_MAX_SIMULATIONS) {
         request->n_simulations = FINBENCH_MAX_SIMULATIONS;
@@ -1424,6 +1517,9 @@ finbench_monte_carlo_request_free(
 {
     if (!request || !env) return;
     if (request->request_id) AXIS2_FREE(env->allocator, request->request_id);
+    if (request->weights) AXIS2_FREE(env->allocator, request->weights);
+    if (request->covariance_matrix) AXIS2_FREE(env->allocator, request->covariance_matrix);
+    if (request->expected_returns) AXIS2_FREE(env->allocator, request->expected_returns);
     AXIS2_FREE(env->allocator, request);
 }
 
@@ -1448,6 +1544,8 @@ finbench_monte_carlo_response_free(
     if (response->model) AXIS2_FREE(env->allocator, response->model);
     if (response->error_message) AXIS2_FREE(env->allocator, response->error_message);
     if (response->request_id) AXIS2_FREE(env->allocator, response->request_id);
+    if (response->simulation_mode) AXIS2_FREE(env->allocator, response->simulation_mode);
+    if (response->weights) AXIS2_FREE(env->allocator, response->weights);
     AXIS2_FREE(env->allocator, response);
 }
 
@@ -1508,6 +1606,388 @@ finbench_monte_carlo_response_free(
  * plus sort and reduce. Timings in response->simulations_per_second
  * are a useful hardware proxy for bare-metal scalar floating point.
  */
+/**
+ * Correlated multi-asset Monte Carlo — see "Correlated multi-asset book" in
+ * the header for the model. Reached from finbench_run_monte_carlo() after
+ * the scalar validations; owns the correlated-specific validation, the
+ * Cholesky factor and the simulation loop. The statistics section is the
+ * scalar path's code, verbatim, over the same final_values[].
+ */
+static finbench_monte_carlo_response_t *
+finbench_run_monte_carlo_correlated(
+    const axutil_env_t *env,
+    finbench_monte_carlo_request_t *request,
+    finbench_monte_carlo_response_t *response)
+{
+    xorshift128plus_state rng;
+    double *final_values = NULL;
+    double *lsd = NULL;       /* L * sqrt(dt), row-major lower triangle */
+    double *drift = NULL;     /* per-asset drift per step */
+    double *s_vals = NULL;    /* per-asset values along one path */
+    double *z = NULL;         /* per-step standard normals */
+    long start_time, end_time;
+    int sim, period, i, k, n;
+    size_t matrix_size;
+    double dt, sqrt_dt;
+    double sum_final = 0.0;
+    int profit_count = 0;
+    double max_drawdown = 0.0;
+    double weight_sum = 0.0;
+    double book_variance = 0.0;
+    double jump_lambda_dt_local = 0.0, jump_mean_local = 0.0, jump_vol_local = 0.0;
+    double jump_compensation = 0.0;
+    int is_merton = (request->model == FINBENCH_MODEL_MERTON);
+    char err_buf[320];
+
+#define MC_FAIL(...) do { \
+        snprintf(err_buf, sizeof(err_buf), __VA_ARGS__); \
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED); \
+        response->error_message = axutil_strdup(env, err_buf); \
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench monteCarlo (correlated): %s", err_buf); \
+        if (final_values) AXIS2_FREE(env->allocator, final_values); \
+        if (lsd) AXIS2_FREE(env->allocator, lsd); \
+        if (drift) AXIS2_FREE(env->allocator, drift); \
+        if (s_vals) AXIS2_FREE(env->allocator, s_vals); \
+        if (z) AXIS2_FREE(env->allocator, z); \
+        return response; \
+    } while (0)
+
+    n = request->n_assets;
+    if (n < 1) {
+        MC_FAIL("covariance_matrix was supplied but the asset count is unknown: "
+                "supply n_assets or a weights array alongside it.");
+    }
+    if (n > FINBENCH_MAX_MC_ASSETS) {
+        MC_FAIL("n_assets=%d exceeds the correlated-simulation maximum of %d "
+                "(each step costs O(n_assets^2)).", n, FINBENCH_MAX_MC_ASSETS);
+    }
+    if (!request->weights || !request->covariance_matrix || !request->expected_returns) {
+        MC_FAIL("Internal error: correlated request arrays missing.");
+    }
+    matrix_size = (size_t)n * n;
+
+    if (request->weights_provided == 0) {
+        MC_FAIL("Missing required field: \"weights\" (n_assets values >= 0) "
+                "when covariance_matrix is supplied.");
+    }
+    if (request->weights_provided != n) {
+        MC_FAIL("weights array length %d != n_assets %d.", request->weights_provided, n);
+    }
+    if (request->matrix_elements_provided != (int)matrix_size) {
+        MC_FAIL("covariance_matrix must have exactly n_assets*n_assets = %d elements "
+                "(flat row-major) or be an n_assets x n_assets 2D array; got %d.",
+                (int)matrix_size, request->matrix_elements_provided);
+    }
+    if (request->expected_returns_provided != 0 && request->expected_returns_provided != n) {
+        MC_FAIL("expected_returns array length %d != n_assets %d.",
+                request->expected_returns_provided, n);
+    }
+    if ((int64_t)request->n_simulations * request->n_periods * (int64_t)n * n > FINBENCH_MAX_WORK) {
+        MC_FAIL("n_simulations * n_periods * n_assets^2 exceeds the computation budget (%ld).",
+                (long)FINBENCH_MAX_WORK);
+    }
+    for (i = 0; i < n; i++) {
+        double w = request->weights[i];
+        if (!isfinite(w) || w < 0.0) {
+            MC_FAIL("weights[%d] = %g must be finite and >= 0 (long-only book; see the header).", i, w);
+        }
+        weight_sum += w;
+        if (request->expected_returns_provided == 0) {
+            request->expected_returns[i] = request->expected_return;
+        } else if (!isfinite(request->expected_returns[i])) {
+            MC_FAIL("expected_returns[%d] is not finite.", i);
+        }
+    }
+    if (weight_sum <= 0.0) {
+        MC_FAIL("weights must sum to a positive number; got %g.", weight_sum);
+    }
+    if (request->normalize_weights) {
+        for (i = 0; i < n; i++) request->weights[i] /= weight_sum;
+    } else if (fabs(weight_sum - 1.0) > 1e-4) {
+        MC_FAIL("weights sum to %.6f, not 1.0 (set normalize_weights=true to rescale).", weight_sum);
+    }
+    for (i = 0; i < n; i++) {
+        for (k = 0; k < n; k++) {
+            double c = request->covariance_matrix[i * n + k];
+            if (!isfinite(c)) {
+                MC_FAIL("covariance_matrix[%d][%d] is not finite.", i, k);
+            }
+            if (k < i && fabs(c - request->covariance_matrix[k * n + i]) >
+                    FINBENCH_CORR_TOL * (1.0 + fabs(c))) {
+                MC_FAIL("covariance_matrix is not symmetric at (%d,%d): %g vs %g.",
+                        i, k, c, request->covariance_matrix[k * n + i]);
+            }
+        }
+    }
+
+    /* Book volatility on the input basis: sqrt(w'Σw). Reported so the caller
+     * can cross-check against portfolioVariance and against a scalar run. */
+    for (i = 0; i < n; i++)
+        for (k = 0; k < n; k++)
+            book_variance += request->weights[i] * request->weights[k] *
+                             request->covariance_matrix[i * n + k];
+    if (book_variance < 0.0) book_variance = 0.0;
+
+    /* Cholesky: Σ = L·Lᵀ. No factor means Σ is not positive definite and the
+     * shocks cannot be generated; refuse with the index, as composeCovariance does. */
+    lsd = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(double));
+    if (!lsd) MC_FAIL("Memory allocation failed for the Cholesky factor.");
+    memset(lsd, 0, matrix_size * sizeof(double));
+    {
+        double min_pivot = 0.0;
+        int failed_at = cholesky_lower(request->covariance_matrix, lsd, n, &min_pivot);
+        if (failed_at >= 0) {
+            MC_FAIL("covariance_matrix is not positive definite: Cholesky failed at index %d. "
+                    "Build it with composeCovariance, which checks this.", failed_at);
+        }
+    }
+
+    final_values = AXIS2_MALLOC(env->allocator, (size_t)request->n_simulations * sizeof(double));
+    drift = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+    s_vals = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+    z = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+    if (!final_values || !drift || !s_vals || !z) MC_FAIL("Memory allocation failed");
+
+    if (request->random_seed != 0) {
+        rng.s[0] = request->random_seed;
+        rng.s[1] = request->random_seed ^ 0x5DEECE66DL;
+    } else {
+        rng.s[0] = (uint64_t)time(NULL);
+        rng.s[1] = rng.s[0] ^ 0xDEADBEEF;
+    }
+
+    {
+        int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
+        dt = 1.0 / (double)npy;
+        sqrt_dt = sqrt(dt);
+        if (is_merton) {
+            double jv = (request->jump_vol >= 0.0) ? request->jump_vol : 0.05;
+            double jm = request->jump_mean;
+            double ji = (request->jump_intensity >= 0.0) ? request->jump_intensity : 1.0;
+            double kk = exp(jm + 0.5 * jv * jv) - 1.0;
+            jump_compensation = ji * kk;
+            jump_lambda_dt_local = ji / (double)npy;
+            jump_mean_local = jm;
+            jump_vol_local = jv;
+            if (jump_lambda_dt_local > 0.1) {
+                MC_FAIL("jump_intensity too high for time step: lambda*dt > 0.1. "
+                        "Reduce jump_intensity or increase n_periods_per_year.");
+            }
+        }
+    }
+
+    /* Per-asset drift per step, and sqrt(dt) folded into L so each shock is one
+     * multiply-add per pair. For n = 1 the exponent is drift + (L11*sqrt(dt))*z,
+     * the scalar path's expression, which is what keeps the two paths identical. */
+    for (i = 0; i < n; i++) {
+        double var_i = request->covariance_matrix[i * n + i];
+        drift[i] = (request->expected_returns[i] - 0.5 * var_i - jump_compensation) * dt;
+        for (k = 0; k <= i; k++) lsd[i * n + k] *= sqrt_dt;
+    }
+
+    start_time = get_time_us();
+
+    for (sim = 0; sim < request->n_simulations; sim++) {
+        double value = request->initial_value;
+        double peak = value;
+        double sim_max_drawdown = 0.0;
+        int terminal = 0;
+
+        for (i = 0; i < n; i++) s_vals[i] = request->weights[i] * request->initial_value;
+
+        for (period = 0; period < request->n_periods; period++) {
+            double jump = 0.0;
+
+            for (k = 0; k < n; k++) z[k] = rand_normal(&rng);
+
+            /* Systemic jump: one Poisson trial per step, one log-jump for the
+             * whole book. Same draw order as the scalar path (Z, then U, then W). */
+            if (is_merton) {
+                double u = rand_uniform(&rng);
+                if (u < jump_lambda_dt_local) {
+                    double w = rand_normal(&rng);
+                    jump = jump_mean_local + jump_vol_local * w;
+                }
+            }
+
+            value = 0.0;
+            for (i = 0; i < n; i++) {
+                /* Accumulate onto the drift, first product first, so that with
+                 * one asset this is exactly the scalar path's
+                 * `drift + vol_sqrt_dt * z` — the same single expression, and
+                 * therefore the same rounding whether or not the compiler
+                 * contracts it into a fused multiply-add (clang does on
+                 * aarch64, not on baseline x86-64). Summing the products into a
+                 * separate accumulator and adding the drift afterwards gave a
+                 * one-ulp difference on arm64 and broke the identity. */
+                double exponent = drift[i];
+                for (k = 0; k <= i; k++) exponent += lsd[i * n + k] * z[k];
+                if (jump != 0.0) exponent += jump;
+                /* Same overflow policy as the scalar path: an extreme step ends
+                 * the path as a terminal extreme outcome rather than letting
+                 * +Inf propagate into the statistics. */
+                if (exponent > 709.0) { terminal = 1; break; }
+                s_vals[i] *= exp(exponent);
+                if (!isfinite(s_vals[i])) { terminal = 1; break; }
+                value += s_vals[i];
+            }
+            if (terminal) {
+                value = 1e308;
+                break;
+            }
+
+            if (value > peak) {
+                peak = value;
+            } else {
+                double drawdown = (peak - value) / peak;
+                if (drawdown > sim_max_drawdown) sim_max_drawdown = drawdown;
+            }
+        }
+
+        final_values[sim] = value;
+        sum_final += value;
+        if (value > request->initial_value) profit_count++;
+        if (sim_max_drawdown > max_drawdown) max_drawdown = sim_max_drawdown;
+    }
+
+    end_time = get_time_us();
+
+    AXIS2_FREE(env->allocator, lsd);    lsd = NULL;
+    AXIS2_FREE(env->allocator, drift);  drift = NULL;
+    AXIS2_FREE(env->allocator, s_vals); s_vals = NULL;
+    AXIS2_FREE(env->allocator, z);      z = NULL;
+
+    response->simulation_mode = axutil_strdup(env, "correlated");
+    response->n_assets = n;
+    response->portfolio_volatility = sqrt(book_variance);
+    response->weights = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+    if (response->weights) {
+        for (i = 0; i < n; i++) response->weights[i] = request->weights[i];
+    }
+
+    /* Calculate statistics — two-pass algorithm for variance.
+     * The one-pass formula (sum_sq/N - mean^2) suffers from catastrophic
+     * cancellation when std_dev << mean (common for low-vol strategies).
+     * Two-pass: compute mean first, then sum squared deviations. This is
+     * numerically stable and the extra pass over final_values[] is cheap
+     * relative to the simulation itself. */
+    double mean = sum_final / request->n_simulations;
+    double variance;
+    {
+        double sum_sq_diff = 0.0;
+        for (sim = 0; sim < request->n_simulations; sim++) {
+            double d = final_values[sim] - mean;
+            sum_sq_diff += d * d;
+        }
+        variance = sum_sq_diff / request->n_simulations;
+    }
+
+    /* Sort for percentiles */
+    qsort(final_values, request->n_simulations, sizeof(double), compare_doubles);
+
+    int n_sims = request->n_simulations;
+    /* Percentile indexing: ceil(p * N) - 1 selects the k-th order
+     * statistic such that exactly floor(p * N) observations are strictly
+     * below the VaR level. This matches the standard quantile definition
+     * and avoids the off-by-one that floor(p * N) introduces. */
+    int idx_5  = (int)ceil(0.05 * n_sims) - 1;
+    int idx_1  = (int)ceil(0.01 * n_sims) - 1;
+    if (idx_5 < 0) idx_5 = 0;
+    if (idx_1 < 0) idx_1 = 0;
+
+    /* Sample median of a sorted array: for odd N take the middle element,
+     * for even N average the two central elements. Using a single index
+     * (n_sims/2) is only an approximation for even N and can produce small
+     * reconciliation differences against NumPy/R, which both implement
+     * the average-of-two rule. */
+    double median = (n_sims % 2 == 0)
+        ? (final_values[n_sims / 2 - 1] + final_values[n_sims / 2]) / 2.0
+        : final_values[n_sims / 2];
+
+    /* CVaR_95 (Expected Shortfall at 95%): the arithmetic mean of the
+     * idx_5 worst final values after ascending sort. This is a common
+     * discrete-sample estimator for E[L | L >= VaR_95] — the average
+     * loss in the worst 5% of simulated outcomes.
+     *
+     * Estimator detail: this averages the floor(0.05 * n_sims) WORST
+     * observations (positions 0 through idx_5 - 1 inclusive). For large
+     * n_sims this matches the textbook definition to within one
+     * observation. Systems reconciling against an alternate estimator
+     * (e.g., one that averages L values that strictly exceed the VaR
+     * threshold rather than the bottom k outcomes) may see minutely
+     * different numbers, especially at small n_sims. */
+    double cvar_sum = 0.0;
+    {
+        int ci;
+        for (ci = 0; ci < idx_5; ci++) {
+            cvar_sum += final_values[ci];
+        }
+    }
+    double cvar_95 = (idx_5 > 0) ? (cvar_sum / idx_5) : final_values[0];
+
+    /* Compute caller-requested percentile VaR values */
+    response->n_percentiles = 0;
+    {
+        int pi;
+        int n_pct = (request->n_percentiles > FINBENCH_MAX_PERCENTILES)
+            ? FINBENCH_MAX_PERCENTILES : request->n_percentiles;
+        for (pi = 0; pi < n_pct; pi++) {
+            double p = request->percentiles[pi];
+            if (p <= 0.0 || p >= 1.0) continue;
+            int idx = (int)ceil(p * n_sims) - 1;
+            if (idx < 0) idx = 0;
+            if (idx >= n_sims) idx = n_sims - 1;
+            response->percentile_levels[response->n_percentiles] = p;
+            response->var_at_percentile[response->n_percentiles] =
+                request->initial_value - final_values[idx];
+            response->n_percentiles++;
+        }
+    }
+
+    /* Populate response */
+    response->model = axutil_strdup(env,
+        request->model == FINBENCH_MODEL_MERTON ? "merton" : "gbm");
+    response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
+    response->mean_final_value = mean;
+    response->median_final_value = median;
+    response->std_dev_final_value = sqrt(variance);
+    /* Sign convention: var_95, var_99, cvar_95 are returned as POSITIVE
+     * LOSS MAGNITUDES in base-currency units. var_95 = 252000 means
+     * "there is a 5% chance of losing $252,000 or more over the
+     * simulated horizon." A profitable tail outcome would make these
+     * figures NEGATIVE (a "loss" of -$1000 = a gain), which is normal
+     * and not a bug. */
+    response->var_95 = request->initial_value - final_values[idx_5];
+    response->var_99 = request->initial_value - final_values[idx_1];
+    response->cvar_95 = request->initial_value - cvar_95;
+    response->max_drawdown = max_drawdown;
+    response->prob_profit = (double)profit_count / request->n_simulations;
+    response->calc_time_us = end_time - start_time;
+    response->memory_used_kb = finbench_get_memory_usage_kb();
+
+    if (response->calc_time_us > 0) {
+        response->simulations_per_second =
+            (double)request->n_simulations / (response->calc_time_us / 1000000.0);
+    }
+
+    if (request->request_id) {
+        response->request_id = axutil_strdup(env, request->request_id);
+    }
+
+
+    AXIS2_FREE(env->allocator, final_values);
+
+    AXIS2_LOG_INFO(env->log,
+        "FinBench: correlated Monte Carlo completed %d sims x %d periods x %d assets in %ld us "
+        "(%.0f sims/sec, VaR95=%.2f, book vol=%.4f)",
+        request->n_simulations, request->n_periods, n,
+        response->calc_time_us, response->simulations_per_second,
+        response->var_95, response->portfolio_volatility);
+
+    return response;
+#undef MC_FAIL
+}
+
 AXIS2_EXTERN finbench_monte_carlo_response_t* AXIS2_CALL
 finbench_run_monte_carlo(
     const axutil_env_t *env,
@@ -1579,6 +2059,13 @@ finbench_run_monte_carlo(
             "volatility must be >= 0 (negative volatility is not a "
             "meaningful input).");
         return response;
+    }
+
+    /* Correlated multi-asset book: a covariance matrix was supplied. The
+     * correlated simulator owns its own validation and loop; the scalar path
+     * below is untouched so existing results stay bit-identical. */
+    if (request->n_assets != 0) {
+        return finbench_run_monte_carlo_correlated(env, request, response);
     }
 
     /* Allocate array for final values (needed for percentiles).
@@ -1823,6 +2310,7 @@ finbench_run_monte_carlo(
     /* Populate response */
     response->model = axutil_strdup(env,
         request->model == FINBENCH_MODEL_MERTON ? "merton" : "gbm");
+    response->simulation_mode = axutil_strdup(env, "single");
     response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
     response->mean_final_value = mean;
     response->median_final_value = median;
@@ -1915,6 +2403,23 @@ finbench_monte_carlo_response_to_json(
         json_object_object_add(json_resp, "model",
             json_object_new_string(response->model));
     }
+    if (response->simulation_mode) {
+        json_object_object_add(json_resp, "simulation_mode",
+            json_object_new_string(response->simulation_mode));
+    }
+    if (response->n_assets > 0) {
+        json_object_object_add(json_resp, "n_assets",
+            json_object_new_int(response->n_assets));
+        json_object_object_add(json_resp, "portfolio_volatility",
+            json_object_new_double(response->portfolio_volatility));
+        if (response->weights) {
+            json_object *warr = json_object_new_array();
+            int wi;
+            for (wi = 0; wi < response->n_assets; wi++)
+                json_object_array_add(warr, json_object_new_double(response->weights[wi]));
+            json_object_object_add(json_resp, "weights", warr);
+        }
+    }
 
     /* Emit caller-specified percentile VaR values as a structured array */
     if (response->n_percentiles > 0) {
@@ -1972,6 +2477,8 @@ finbench_monte_carlo_json_only(
             "n_periods_per_year (int, default 252), "
             "percentiles (float[], default [0.01, 0.05]), "
             "model (string, 'gbm' or 'merton', default 'gbm'), "
+            "correlated book: covariance_matrix (float[n*n] or float[n][n]) + weights (float[n] >= 0), "
+            "optional expected_returns (float[n]), normalize_weights (bool); "
             "jump_intensity (float, default 1.0, jumps/year), "
             "jump_mean (float, default -0.03), "
             "jump_vol (float, default 0.05).\"}");

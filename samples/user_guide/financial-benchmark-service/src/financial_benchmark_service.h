@@ -69,6 +69,11 @@ extern "C"
 /** Maximum number of percentile levels accepted in a monteCarlo request */
 #define FINBENCH_MAX_PERCENTILES    8
 
+/** Maximum assets in a correlated (multi-asset) monteCarlo request. Each
+ * time step costs O(n_assets²) for the Cholesky product, so the work cap
+ * below is applied as n_simulations × n_periods × n_assets². */
+#define FINBENCH_MAX_MC_ASSETS      100
+
 /** Monte Carlo model selection constants */
 #define FINBENCH_MODEL_GBM          0   /* Geometric Brownian Motion (default) */
 #define FINBENCH_MODEL_MERTON       1   /* Merton (1976) jump-diffusion */
@@ -398,6 +403,25 @@ typedef struct finbench_compose_covariance_response
  *   This correction is the single most common bug in home-grown GBM
  *   code and is implemented here verbatim.
  *
+ * Correlated multi-asset book (covariance_matrix + weights present):
+ *   The book is simulated buy-and-hold: each asset starts at w_i·S(0) and
+ *   follows its own GBM, with the n shocks per step drawn as ε = L·Z where
+ *   L·Lᵀ = Σ (Cholesky) and Z ~ N(0,1)ⁿ. Per asset and step:
+ *     S_i(t+dt) = S_i(t) · exp((μ_i − Σ_ii/2 − λk)·dt + √dt·(L·Z)_i) · J
+ *   and the book value is V(t) = Σ_i S_i(t); VaR, CVaR, drawdown and
+ *   P(profit) are computed on V exactly as in the single-asset case.
+ *   Buy-and-hold means weights drift with prices (no rebalancing), which is
+ *   the right model for a static book over a VaR horizon; a constantly
+ *   rebalanced book would be a different, slightly lower-variance process.
+ *   Under Merton the jump is systemic: one Poisson draw per step and one
+ *   log-jump magnitude applied to every asset, which is the crash case the
+ *   model exists for. Independent per-asset jumps are not offered.
+ *   With one asset and Σ = [σ²] this reduces to the scalar path above and
+ *   consumes the PRNG in the same order, so a single-asset correlated run
+ *   reproduces the scalar run bit-for-bit for the same seed (provided
+ *   sqrt(Σ₁₁) == σ exactly, e.g. σ = 0.25).
+ *   Work cap: n_simulations × n_periods × n_assets² ≤ FINBENCH_MAX_WORK.
+ *
  * VaR sign convention: var_95, var_99, and cvar_95 are returned as
  *   POSITIVE LOSS MAGNITUDES in base-currency units. So var_95 = 252000
  *   means "there is a 5% chance of losing $252k or more over the
@@ -588,6 +612,41 @@ typedef struct finbench_monte_carlo_request
     double jump_mean;
     double jump_vol;
 
+    /* ---- Correlated multi-asset book (present when covariance_matrix is given) ---- */
+
+    /**
+     * Number of assets in the book, 0 for the single-asset simulation.
+     * Inferred from the weights array when absent. Max FINBENCH_MAX_MC_ASSETS.
+     */
+    int n_assets;
+
+    /**
+     * Portfolio weights (exactly n_assets, each >= 0). Long-only: a buy-and-hold
+     * short position needs margin and financing assumptions this simulator
+     * does not model, so negative weights are refused rather than mis-simulated.
+     * Must sum to 1.0 within 1e-4 unless normalize_weights is set.
+     */
+    double *weights;
+    int weights_provided;
+    axis2_bool_t normalize_weights;
+
+    /**
+     * Covariance matrix Σ, flattened row-major (n_assets × n_assets), on the
+     * same annualized basis as `volatility` — the per-step covariance is Σ·dt
+     * with dt = 1/n_periods_per_year. composeCovariance produces exactly this
+     * from vols and correlations. Must be symmetric positive definite: the
+     * simulator takes its Cholesky factor L and refuses a matrix that has none.
+     */
+    double *covariance_matrix;
+    int matrix_elements_provided;   /* flat count as parsed; -1 for a ragged 2D shape */
+
+    /**
+     * Per-asset annualized drifts (exactly n_assets). Optional: when absent,
+     * every asset uses the scalar expected_return.
+     */
+    double *expected_returns;
+    int expected_returns_provided;
+
     /** Request identifier */
     char *request_id;
 
@@ -645,6 +704,20 @@ typedef struct finbench_monte_carlo_response
 
     /** Model used for this simulation: "gbm" or "merton" */
     char *model;
+
+    /** "single" (scalar vol) or "correlated" (Σ + weights through a Cholesky factor) */
+    char *simulation_mode;
+
+    /** Correlated mode only: number of assets, else 0 */
+    int n_assets;
+
+    /** Correlated mode only: the weights actually used (after normalization) */
+    double *weights;
+
+    /** Correlated mode only: sqrt(w'Σw) on the input basis — the book volatility
+     * a scalar run of the same book would need, and the number portfolioVariance
+     * returns for the same inputs. */
+    double portfolio_volatility;
 
     /** Error message (if any) */
     char *error_message;
