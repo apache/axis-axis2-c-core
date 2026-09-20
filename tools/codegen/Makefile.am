@@ -15,8 +15,15 @@
 # limitations under the License.
 
 # Build native codegen if enabled
+# The native code generator (wsdl2c-native and its test runner) is a host
+# tool: it links libxml2, which an Android dependency prefix does not carry,
+# and nothing on a phone runs a WSDL code generator. Building it on a
+# cross-build failed the whole tree at the very end, after every library had
+# already been produced. Skip the directory when configured for Android.
 if AXIS2_NATIVE_CODEGEN_ENABLED
+if !BUILD_FOR_ANDROID
 SUBDIRS = native
+endif
 endif
 
 # Extra files to distribute

@@ -159,6 +159,14 @@ This script sets up the toolchain, configures with all required flags, and build
 Note it does not pass `--with-apache2`, so it does not produce `libmod_axis2.a`.
 A build intended for an app that embeds httpd needs that argument.
 
+Two directories are skipped when `--host` names Android, through the
+`BUILD_FOR_ANDROID` automake conditional: `tools/codegen/native`, a host-only
+WSDL code generator that links libxml2, and the shared-module validation in
+the `mod_axis2` install hook, which has nothing to validate on a static-only
+build. Both used to fail the cross-build at its very end, after every library
+had been produced, which is easy to mistake for a successful build if the
+exit status is not checked.
+
 ### Cross-build hazards
 
 Three things that fail quietly. All three were observed, not theorised.

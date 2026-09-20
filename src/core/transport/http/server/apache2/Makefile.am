@@ -81,7 +81,14 @@ libmod_axis2_la_LDFLAGS = -module -avoid-version -no-undefined
 
 EXTRA_DIST=axis2_apache2_worker.h apache2_stream.h axis2_apache2_out_transport_info.h axis2_apache2_request_processor.h
 
-# Ensure Apache module (.so file) is properly installed with STRICT validation
+# Ensure Apache module (.so file) is properly installed with STRICT validation.
+#
+# Not on an Android cross-build: that build is static-only (--disable-shared),
+# so there is no mod_axis2.so to install or validate -- libmod_axis2.a is
+# installed by the ordinary rule and the application links it into its own
+# httpd. Running the shared-module validation there fails the install at its
+# last step, after every library has already been copied.
+if !BUILD_FOR_ANDROID
 install-exec-hook:
 	@echo "=== APACHE MODULE INSTALLATION WITH STALENESS VALIDATION ==="
 	@echo "Module will be installed to: $(DESTDIR)$(apachemoddir)"
@@ -167,6 +174,10 @@ install-exec-hook:
 	fi
 
 	@echo "=== INSTALLATION AND VALIDATION COMPLETED SUCCESSFULLY ==="
+else
+install-exec-hook:
+	@echo "=== Android static build: libmod_axis2.a installed; no shared module to validate ==="
+endif
 
 # Ensure proper cleanup of libtool artifacts
 CLEANFILES = *.o *.lo *.la
