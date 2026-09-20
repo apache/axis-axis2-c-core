@@ -168,6 +168,23 @@ android_static_service_lookup(const char *service_name)
  * @param json_response_out Output parameter for JSON response
  * @return AXIS2_TRUE if successful, AXIS2_FALSE otherwise
  */
+/* Copy an untrusted string for logging, replacing control characters
+ * (CR, LF, escapes) with '?', bounded to out_len-1 bytes. A request body or
+ * URL must not be able to write line breaks into the log. */
+static void
+android_log_excerpt(const char *src, char *out, size_t out_len)
+{
+    size_t i = 0;
+    if (!out || out_len == 0) return;
+    if (src) {
+        for (; i + 1 < out_len && src[i]; i++) {
+            unsigned char c = (unsigned char)src[i];
+            out[i] = (c < 0x20 || c == 0x7f) ? '?' : (char)c;
+        }
+    }
+    out[i] = '\0';
+}
+
 /* Non-static to ensure linker includes this function when linking from archives */
 axis2_bool_t
 try_android_static_service(const axutil_env_t *env,
@@ -232,18 +249,26 @@ try_android_static_service(const axutil_env_t *env,
             json_object_object_add(json_request, "operation",
                                    json_object_new_string(operation_name));
         } else if (!body_names_operation && strcmp(body_op, operation_name) != 0) {
-            char msg[320];
+            /* Both names are untrusted input (one from the body, one from the
+             * URL): sanitized before logging, and placed in the response
+             * through json-c so quotes cannot break or extend the JSON. */
+            char url_op[80], body_op_safe[80], msg[400];
+            json_object *fault;
+            android_log_excerpt(operation_name, url_op, sizeof(url_op));
+            android_log_excerpt(body_op, body_op_safe, sizeof(body_op_safe));
             snprintf(msg, sizeof(msg),
-                "{\"status\":\"FAILED\",\"error_message\":"
-                "\"operation mismatch: the URL names '%.64s' but the request body names '%.64s'. "
+                "operation mismatch: the URL names '%s' but the request body names '%s'. "
                 "Send the request to that operation's own path, or to the service root, "
-                "which dispatches on the body.\"}",
-                operation_name, body_op);
+                "which dispatches on the body.", url_op, body_op_safe);
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
                 "[ANDROID_STATIC] %s: refused body operation '%s' on URL operation '%s'",
-                service_name, body_op, operation_name);
+                service_name, body_op_safe, url_op);
             json_object_put(json_request);
-            *json_response_out = axutil_strdup(env, msg);
+            fault = json_object_new_object();
+            json_object_object_add(fault, "status", json_object_new_string("FAILED"));
+            json_object_object_add(fault, "error_message", json_object_new_string(msg));
+            *json_response_out = axutil_strdup(env, json_object_to_json_string(fault));
+            json_object_put(fault);
             return *json_response_out ? AXIS2_TRUE : AXIS2_FALSE;
         }
     }
@@ -760,14 +785,18 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
             "[JSON RPC MSG RECV] Android: Trying static service registry for '%s'",
             service_name ? service_name : "unknown");
 
-        /* A catch-all REST location ("/" or none) carries no operation, so the
-         * body is allowed to name one there; anywhere else the URL wins. */
+        /* Only an explicit catch-all REST location ("/") carries no operation,
+         * so only there is the body allowed to name one. Everywhere else the
+         * URL wins -- including an operation with no RESTLocation at all,
+         * which was resolved by its own name in the URL path and is therefore
+         * as specific as a location gets. Fail closed: a missing or unreadable
+         * parameter never widens what the body may do. */
         axis2_bool_t body_names_operation = AXIS2_FALSE;
         if (op) {
             axutil_param_t *loc_param = axis2_op_get_param(op, env, AXIS2_REST_HTTP_LOCATION);
             const axis2_char_t *loc = loc_param
                 ? (const axis2_char_t *)axutil_param_get_value(loc_param, env) : NULL;
-            if (!loc || !*loc || (loc[0] == '/' && loc[1] == '\0')) {
+            if (loc && loc[0] == '/' && loc[1] == '\0') {
                 body_names_operation = AXIS2_TRUE;
             }
         }

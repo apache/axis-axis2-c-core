@@ -406,8 +406,16 @@ this:
 |---|---|---|
 | any operation | nothing | `"operation"` added; the service routes by it |
 | any operation | the same operation | invoked |
-| a catch-all location (`RESTLocation` of `/`, or none) | a different operation | invoked — a catch-all carries no operation, so the body is the only source, by design |
-| a specific location (`/startRecording`, `/monteCarlo`, …) | a different operation | **refused** with `status: FAILED` and an `error_message` naming both |
+| a catch-all location (`RESTLocation` exactly `/`) | a different operation | invoked — a catch-all carries no operation, so the body is the only source, by design |
+| anything else: a specific location (`/startRecording`, `/monteCarlo`, …), or no `RESTLocation` at all | a different operation | **refused** with `status: FAILED` and an `error_message` naming both |
+
+The guard fails closed. An operation with no `RESTLocation` parameter was
+resolved by its own name in the URL path, which is as specific as a location
+gets, so a missing or unreadable parameter never widens what the body may do.
+(`httpPath`, which the upstream sample's services.xml also carries, is not read
+by the engine's dispatch at all; only `RESTLocation` is.) Both names in the
+refusal are untrusted input, from the body and from the URL: they are
+sanitized before logging and placed in the response through json-c.
 
 The Kanaha camera and audio services both declare a catch-all operation
 (`jsonrpc` at `/`) whose clients name the operation with `"action"`, and one
