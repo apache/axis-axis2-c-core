@@ -623,7 +623,7 @@ repository's registry**. What it does touch, using `composeCovariance` on
 |---|---|
 | `financial_benchmark_service.h` / `.c` | The request and response structs, the `*_json_only()` entry point, and a branch in the internal `finbench_dispatch_json_obj()` (action name and, for the Android path, a request-shape rule: `composeCovariance` is the only operation that carries `volatilities`, as `covarianceFromReturns` is the only one that carries `returns`) |
 | `financial_benchmark_service_handler.c` | A branch in `route_operation()` for the server-side URL-path dispatch |
-| `finbench_mcp.c` | The tool's `inputSchema` constant, a row in the tool table, and a branch in `tools/call` |
+| `finbench_mcp.c` | The tool's `inputSchema` constant, a row in the tool table, and a branch in `tools/call`. An operation that belongs to the application rather than to the sample goes through the weak `finbench_mcp_extra_tools()` / `finbench_mcp_extra_dispatch()` hook instead, so the sample stays unedited |
 | `services.xml` (upstream and in the app) | An `<operation>` element; on Android the `RESTLocation` is what maps the URL path to the operation |
 | `finbench_get_metadata_json()` | The operations list |
 | The application's adapter | Nothing, if it dispatches through `finbench_dispatch_json_obj()` as the Kanaha Calcs adapter does; the router is upstream. An adapter with its own shape rules needs one more |

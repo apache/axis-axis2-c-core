@@ -256,6 +256,44 @@ Demonstrates O(1) hash table lookups vs O(n) linear search — a common optimiza
 
 Returns service capabilities, device info, and memory usage.
 
+## MCP Tools From an Embedding Application
+
+The MCP stdio transport (`finbench_mcp.c`) exposes this service's operations
+as tools. An application that links the transport into a binary of its own can
+add tools without editing it, by defining two functions the transport declares
+weak:
+
+```c
+#include "finbench_mcp.h"
+
+static const finbench_mcp_tool_t my_tools[] = {
+    { "covarianceFromCsv", "Read a CSV this device holds ...", "{\"type\":\"object\", ...}" },
+    { NULL, NULL, NULL }
+};
+
+const finbench_mcp_tool_t *finbench_mcp_extra_tools(void) { return my_tools; }
+
+axis2_char_t *finbench_mcp_extra_dispatch(const axutil_env_t *env,
+                                          const axis2_char_t *tool_name,
+                                          const axis2_char_t *args_json)
+{
+    if (strcmp(tool_name, "covarianceFromCsv") != 0) return NULL;  /* not ours */
+    return my_csv_covariance(env, args_json);   /* env-allocated; caller frees */
+}
+```
+
+`tools/list` then reports both catalogs and `tools/call` tries the built-ins
+first, so an extra tool cannot shadow one of these operations. The defaults
+return NULL, so a plain build of this sample is unchanged. This is the same
+weak-symbol arrangement the Android static service registry uses, and it needs
+a toolchain that has weak symbols; elsewhere the defaults win and the extra
+catalog is simply absent.
+
+Why it exists: this sample has no data of its own. An application that does —
+a phone holding a CSV of closes, say — can keep the reading and the path
+validation on its side of the line, where the file and its threat model live,
+and still reach `covarianceFromReturns` through the same transport.
+
 ## Building
 
 ### Prerequisites

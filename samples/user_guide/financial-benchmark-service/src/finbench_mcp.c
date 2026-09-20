@@ -237,12 +237,6 @@ static const char SCHEMA_SCENARIO_ANALYSIS[] =
  * ============================================================================
  */
 
-typedef struct {
-    const char *name;
-    const char *description;
-    const char *input_schema_json;
-} finbench_mcp_tool_t;
-
 static const finbench_mcp_tool_t finbench_mcp_tools[] = {
     {
         "portfolioVariance",
@@ -299,6 +293,40 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
     },
     { NULL, NULL, NULL }  /* sentinel */
 };
+
+/* ============================================================================
+ * Embedder extension point
+ *
+ * An application that links this transport can add tools of its own by
+ * defining these two functions; the defaults below are weak and expose
+ * nothing, so the sample on its own lists only its own operations. The
+ * mechanism is the one the Android static service registry already uses: a
+ * weak default that a strong definition in the application replaces at link
+ * time. On a toolchain without weak symbols the defaults simply win.
+ * ============================================================================
+ */
+
+#if defined(__GNUC__) || defined(__clang__)
+#define FINBENCH_MCP_WEAK   __attribute__((weak))
+#else
+#define FINBENCH_MCP_WEAK
+#endif
+
+FINBENCH_MCP_WEAK AXIS2_EXTERN const finbench_mcp_tool_t* AXIS2_CALL
+finbench_mcp_extra_tools(void)
+{
+    return NULL;
+}
+
+FINBENCH_MCP_WEAK AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_mcp_extra_dispatch(
+    const axutil_env_t *env,
+    const axis2_char_t *tool_name,
+    const axis2_char_t *args_json)
+{
+    (void)env; (void)tool_name; (void)args_json;
+    return NULL;
+}
 
 /* Maximum request size — prevents DoS via unbounded memory allocation */
 #define MAX_MCP_REQUEST_BYTES   (16 * 1024 * 1024)  /* 16 MB per line */
@@ -391,22 +419,25 @@ static json_object *mcp_handle_initialize(void)
     return result;
 }
 
-static json_object *mcp_handle_tools_list(void)
+/* Append one NULL-terminated catalog to the tools array. */
+static void mcp_append_tools(
+    json_object                 *tools_array,
+    const finbench_mcp_tool_t   *catalog)
 {
-    json_object *tools_array = json_object_new_array();
+    if (!catalog) return;
 
     /* Iterate to NULL sentinel — no hardcoded count needed */
-    for (const finbench_mcp_tool_t *tool = finbench_mcp_tools;
-         tool->name != NULL; tool++) {
+    for (const finbench_mcp_tool_t *tool = catalog; tool->name != NULL; tool++) {
         json_object *tool_obj = json_object_new_object();
 
         json_object_object_add(tool_obj, "name",
             json_object_new_string(tool->name));
         json_object_object_add(tool_obj, "description",
-            json_object_new_string(tool->description));
+            json_object_new_string(tool->description ? tool->description : ""));
 
         /* Parse the inlined schema string into a json_object */
-        json_object *schema = json_tokener_parse(tool->input_schema_json);
+        json_object *schema = tool->input_schema_json
+            ? json_tokener_parse(tool->input_schema_json) : NULL;
         if (!schema) {
             /* Fallback: minimal valid schema (should never happen) */
             schema = json_object_new_object();
@@ -416,6 +447,14 @@ static json_object *mcp_handle_tools_list(void)
 
         json_object_array_add(tools_array, tool_obj);
     }
+}
+
+static json_object *mcp_handle_tools_list(void)
+{
+    json_object *tools_array = json_object_new_array();
+
+    mcp_append_tools(tools_array, finbench_mcp_tools);
+    mcp_append_tools(tools_array, finbench_mcp_extra_tools());
 
     json_object *result = json_object_new_object();
     json_object_object_add(result, "tools", tools_array);
@@ -487,10 +526,17 @@ static json_object *mcp_handle_tools_call(
     } else if (strcmp(tool_name, "scenarioAnalysis") == 0) {
         result_json = finbench_scenario_json_only(env, args_json);
     } else {
-        AXIS2_FREE(env->allocator, args_json);
-        *out_code = MCP_ERR_METHOD_NOT_FOUND;
-        *out_msg  = "Unknown tool name. Available: portfolioVariance, composeCovariance, covarianceFromReturns, monteCarlo, scenarioAnalysis";
-        return NULL;
+        /* Not one of ours: give the embedder's catalog a turn before failing. */
+        result_json = finbench_mcp_extra_dispatch(env, tool_name, args_json);
+        if (!result_json) {
+            AXIS2_FREE(env->allocator, args_json);
+            *out_code = MCP_ERR_METHOD_NOT_FOUND;
+            *out_msg  = "Unknown tool name. Built-in tools: portfolioVariance, "
+                        "composeCovariance, covarianceFromReturns, monteCarlo, "
+                        "scenarioAnalysis; an embedder may add more (tools/list "
+                        "is the catalog)";
+            return NULL;
+        }
     }
 
     AXIS2_FREE(env->allocator, args_json);
