@@ -39,6 +39,7 @@
 #include <axutil_dll_desc.h>
 #include <axutil_class_loader.h>
 #include <axis2_http_header.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>  /* For character type functions */
 #include <json-c/json.h>
@@ -172,6 +173,7 @@ axis2_bool_t
 try_android_static_service(const axutil_env_t *env,
                            const char *service_name,
                            const char *operation_name,
+                           axis2_bool_t body_names_operation,
                            const char *json_request_str,
                            axis2_char_t **json_response_out)
 {
@@ -202,20 +204,48 @@ try_android_static_service(const axutil_env_t *env,
     }
 
     /*
-     * Hand the service the operation the URL resolved to. The two-argument
-     * entry point has no msg_ctx, so without this a statically linked service
-     * can only guess the operation from the request's field names -- which
-     * breaks as soon as two operations share a field (a correlated monteCarlo
-     * request and a portfolioVariance request both carry "weights"). The
-     * server-side path gets the same name from the message context; this
-     * makes the Android path equivalent. A request that already names its
-     * operation ("action" or "operation") is left alone.
+     * Operation trust model. The URL is authoritative: the operation it
+     * resolved to is what any authorization in front of this server (an
+     * httpd <Location>, a module) has already judged. The request body may
+     * also name an operation ("action" or "operation"), and services such as
+     * the camera and audio ones dispatch on it. Reconciling the two:
+     *
+     *   - No name in the body: add "operation": "<url op>" so a statically
+     *     linked service, which has no msg_ctx, does not have to guess the
+     *     operation from field names (two operations can share a field).
+     *   - The body names the same operation: fine.
+     *   - The body names a different operation, and the URL is a catch-all
+     *     location ("/" or none): allowed -- the catch-all carries no
+     *     operation, so the body is the only source, by design.
+     *   - The body names a different operation, and the URL is a specific
+     *     location: refused. Honouring the body here would let a request to
+     *     an authorized URL execute an operation the URL did not authorize.
      */
-    if (operation_name && json_object_is_type(json_request, json_type_object) &&
-        !json_object_object_get_ex(json_request, "action", NULL) &&
-        !json_object_object_get_ex(json_request, "operation", NULL)) {
-        json_object_object_add(json_request, "operation",
-                               json_object_new_string(operation_name));
+    if (operation_name && json_object_is_type(json_request, json_type_object)) {
+        json_object *named = NULL;
+        const char *body_op = NULL;
+        if (json_object_object_get_ex(json_request, "action", &named) ||
+            json_object_object_get_ex(json_request, "operation", &named)) {
+            body_op = json_object_get_string(named);
+        }
+        if (!body_op) {
+            json_object_object_add(json_request, "operation",
+                                   json_object_new_string(operation_name));
+        } else if (!body_names_operation && strcmp(body_op, operation_name) != 0) {
+            char msg[320];
+            snprintf(msg, sizeof(msg),
+                "{\"status\":\"FAILED\",\"error_message\":"
+                "\"operation mismatch: the URL names '%.64s' but the request body names '%.64s'. "
+                "Send the request to that operation's own path, or to the service root, "
+                "which dispatches on the body.\"}",
+                operation_name, body_op);
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "[ANDROID_STATIC] %s: refused body operation '%s' on URL operation '%s'",
+                service_name, body_op, operation_name);
+            json_object_put(json_request);
+            *json_response_out = axutil_strdup(env, msg);
+            return *json_response_out ? AXIS2_TRUE : AXIS2_FALSE;
+        }
     }
 
     /* Invoke service */
@@ -730,8 +760,21 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
             "[JSON RPC MSG RECV] Android: Trying static service registry for '%s'",
             service_name ? service_name : "unknown");
 
+        /* A catch-all REST location ("/" or none) carries no operation, so the
+         * body is allowed to name one there; anywhere else the URL wins. */
+        axis2_bool_t body_names_operation = AXIS2_FALSE;
+        if (op) {
+            axutil_param_t *loc_param = axis2_op_get_param(op, env, AXIS2_REST_HTTP_LOCATION);
+            const axis2_char_t *loc = loc_param
+                ? (const axis2_char_t *)axutil_param_get_value(loc_param, env) : NULL;
+            if (!loc || !*loc || (loc[0] == '/' && loc[1] == '\0')) {
+                body_names_operation = AXIS2_TRUE;
+            }
+        }
+
         if (service_name && json_request &&
             try_android_static_service(env, service_name, operation_name,
+                                       body_names_operation,
                                        json_request, &json_response)) {
             AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Android: Static service '%s' invoked successfully",

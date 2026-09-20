@@ -381,13 +381,35 @@ Android services don't need these because:
 the two-argument entry point, `try_android_static_service()` adds
 `"operation": "<name>"` to the request object, where `<name>` is the operation
 the URL path resolved to — the same name the four-argument server path reads
-from the message context. A request that already carries `"action"` or
-`"operation"` is left untouched. Route by that field first and infer from the
+from the message context. Route by that field first and infer from the
 request's shape only as a fallback: two operations can share a field name (a
 correlated `monteCarlo` request and a `portfolioVariance` request both carry
 `"weights"`), and a shape rule that decided on `"weights"` alone sent the
 first to the second. Neither `CameraControlService` nor `AudioSearchService`
 reads `"operation"`, so the added field is inert for them.
+
+**Operation trust model (since 2026-09-20).** The URL is authoritative. Any
+authorization in front of the server — an httpd `<Location>` block, a
+module — has judged the URL, not the body, so a body that names a different
+operation must not be able to run it. The engine reconciles the two like
+this:
+
+| URL resolved to | Body names | Result |
+|---|---|---|
+| any operation | nothing | `"operation"` added; the service routes by it |
+| any operation | the same operation | invoked |
+| a catch-all location (`RESTLocation` of `/`, or none) | a different operation | invoked — a catch-all carries no operation, so the body is the only source, by design |
+| a specific location (`/startRecording`, `/monteCarlo`, …) | a different operation | **refused** with `status: FAILED` and an `error_message` naming both |
+
+The Kanaha camera and audio services both declare a catch-all operation
+(`jsonrpc` at `/`) whose clients name the operation with `"action"`, and one
+location per operation. Both keep working unchanged: the catch-all accepts
+body dispatch, and a per-operation URL with a matching `"action"` is the
+same-operation case. What changes is that `/startRecording` with
+`"action": "deleteFiles"` is now an error instead of a delete. This is what
+makes per-URL authorization in `httpd.conf` meaningful on the Android path;
+today the Kanaha configurations authorize the whole `/services` prefix
+behind mTLS, so nothing depended on the old behaviour.
 
 Services that want to work in both environments can export both:
 - `axis2_char_t* <serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
