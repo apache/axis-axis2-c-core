@@ -69,6 +69,13 @@ extern "C"
 /** Maximum number of percentile levels accepted in a monteCarlo request */
 #define FINBENCH_MAX_PERCENTILES    8
 
+/** Maximum assets in a composeCovariance request. Smaller than
+ * FINBENCH_MAX_ASSETS for two reasons: the positive-definite check is an
+ * O(n³/3) Cholesky, and the uniform-rho form lets a request of a few dozen
+ * bytes produce an n² response (two matrices), so the cap also bounds
+ * response amplification. 500 assets: ~4e7 Cholesky steps, ~10 MB reply. */
+#define FINBENCH_MAX_COV_ASSETS     500
+
 /** Maximum assets in a correlated (multi-asset) monteCarlo request. Each
  * time step costs O(n_assets²) for the Cholesky product, so the work cap
  * below is applied as n_simulations × n_periods × n_assets². */
@@ -277,7 +284,7 @@ typedef struct finbench_portfolio_variance_response
  */
 typedef struct finbench_compose_covariance_request
 {
-    /** Number of assets (must be in [1, FINBENCH_MAX_ASSETS]); inferred from volatilities if absent. */
+    /** Number of assets (must be in [1, FINBENCH_MAX_COV_ASSETS]); inferred from volatilities if absent. */
     int n_assets;
 
     /** Per-asset volatilities (exactly n_assets, each finite and > 0). Basis is the caller's. */
@@ -450,16 +457,18 @@ typedef struct finbench_compose_covariance_response
  *
  * Numerical edge cases:
  *   - exp() overflow: extreme volatility × long horizon can push the
- *     GBM exponent past ~709 (log DBL_MAX). The implementation caps the
- *     exponent and marks such paths as an extreme outcome rather than
- *     letting +Inf propagate through sort/sum into NaN. NOTE: this
- *     divergent from Axis2/Java, which deliberately does NOT cap —
- *     Java prefers NaN propagation as an alarm. Both choices are
- *     defensible for their respective ecosystems.
- *   - Variance cancellation: the streaming estimator (sumSq/N − mean²)
- *     can go slightly negative from floating-point cancellation on
- *     near-constant samples. The implementation clamps to 0.0 before
- *     the final sqrt so std_dev_final_value is never NaN.
+ *     GBM exponent past ~709 (log DBL_MAX). A step whose exponent exceeds
+ *     709, or whose product is no longer finite, ends the path: it is
+ *     recorded as a terminal extreme outcome (1e308) and simulated no
+ *     further, so +Inf never reaches the sort or the sums. Capping the
+ *     exponent and continuing would only defer the overflow to the next
+ *     step. NOTE: this diverges from Axis2/Java, which deliberately does
+ *     NOT guard — Java prefers NaN propagation as an alarm. Both choices
+ *     are defensible for their respective ecosystems.
+ *   - Variance: computed with a two-pass estimator (mean first, then the
+ *     sum of squared deviations), which cannot go negative, so no clamp
+ *     is needed before the final sqrt. The one-pass sumSq/N − mean² form
+ *     was replaced for exactly that cancellation problem.
  * ============================================================================
  */
 
@@ -503,9 +512,9 @@ typedef struct finbench_monte_carlo_request
      * ANNUALIZED volatility as a decimal. 0.20 means 20% annualized std
      * dev (NOT 20.0). Must be >= 0 (the service rejects negative values).
      * For extreme values (σ > 1.0 i.e. > 100%) combined with long horizons,
-     * the exp(...) term in the GBM inner loop can overflow to +Inf; the
-     * implementation caps the exponent defensively so one blown path
-     * does not corrupt the entire response. Default: 0.20.
+     * the exp(...) term in the GBM inner loop can overflow to +Inf; such a
+     * path is ended as a terminal extreme outcome so one blown path does
+     * not corrupt the entire response. Default: 0.20.
      */
     double volatility;
 

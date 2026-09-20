@@ -697,6 +697,28 @@ finbench_portfolio_variance_json_only(
  * ============================================================================
  */
 
+/* Release and NULL every output array of a compose response. Used on every
+ * failure path after allocation so a FAILED response never carries numbers,
+ * and never carries an allocated-but-unfilled buffer. */
+static void
+compose_drop_outputs(
+    const axutil_env_t *env,
+    finbench_compose_covariance_response_t *response)
+{
+    if (response->covariance_matrix) {
+        AXIS2_FREE(env->allocator, response->covariance_matrix);
+        response->covariance_matrix = NULL;
+    }
+    if (response->correlation_matrix) {
+        AXIS2_FREE(env->allocator, response->correlation_matrix);
+        response->correlation_matrix = NULL;
+    }
+    if (response->volatilities) {
+        AXIS2_FREE(env->allocator, response->volatilities);
+        response->volatilities = NULL;
+    }
+}
+
 /* Set a FAILED status with a formatted message; returns the response for
  * convenient "return fail(...)" use in the compose function. */
 static finbench_compose_covariance_response_t *
@@ -761,10 +783,10 @@ finbench_compose_covariance_request_create_from_json(
             request->n_assets);
     }
 
-    if (request->n_assets <= 0 || request->n_assets > FINBENCH_MAX_ASSETS) {
+    if (request->n_assets <= 0 || request->n_assets > FINBENCH_MAX_COV_ASSETS) {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "FinBench composeCovariance: Invalid n_assets: %d (max: %d)",
-            request->n_assets, FINBENCH_MAX_ASSETS);
+            request->n_assets, FINBENCH_MAX_COV_ASSETS);
         AXIS2_FREE(env->allocator, request);
         json_object_put(json_obj);
         return NULL;
@@ -1073,6 +1095,10 @@ finbench_compose_covariance(
     response->correlation_matrix = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(double));
     response->volatilities = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
     if (!response->covariance_matrix || !response->correlation_matrix || !response->volatilities) {
+        /* A partial success must not leave an unfilled matrix behind: the
+         * serializer emits every non-NULL array, and an unfilled one would
+         * put uninitialized heap into the response. */
+        compose_drop_outputs(env, response);
         return compose_fail(env, response, "Memory allocation failed for %d assets.", n);
     }
 
@@ -1103,6 +1129,7 @@ finbench_compose_covariance(
         double min_pivot = 0.0;
 
         if (!l) {
+            compose_drop_outputs(env, response);
             return compose_fail(env, response,
                 "Memory allocation failed for the Cholesky factor (%d assets).", n);
         }
@@ -1118,12 +1145,7 @@ finbench_compose_covariance(
         if (failed_at >= 0) {
             /* Do not hand back a matrix that portfolioVariance would silently
              * accept. The caller gets the reason and the index, not numbers. */
-            AXIS2_FREE(env->allocator, response->covariance_matrix);
-            AXIS2_FREE(env->allocator, response->correlation_matrix);
-            AXIS2_FREE(env->allocator, response->volatilities);
-            response->covariance_matrix = NULL;
-            response->correlation_matrix = NULL;
-            response->volatilities = NULL;
+            compose_drop_outputs(env, response);
             if (request->has_correlation) {
                 return compose_fail(env, response,
                     "Not positive definite: Cholesky failed at index %d. "
@@ -1265,6 +1287,7 @@ finbench_compose_covariance_json_only(
         return axutil_strdup(env,
             "{\"status\":\"FAILED\",\"error_message\":"
             "\"Failed to parse composeCovariance request. "
+            "n_assets must be in [1, 500] and match the volatilities length. "
             "Required fields: volatilities (float[] > 0) and one of "
             "correlation (float in [-1,1]) or correlation_matrix (float[n²] flat or float[n][n] 2D). "
             "Optional: n_assets (int), check_positive_definite (bool, default true), "
@@ -1592,12 +1615,13 @@ finbench_monte_carlo_response_free(
  *   verbatim.
  *
  * Numerical edge cases (see also the header block for full discussion):
- *   - The exp() exponent is capped at 709 to avoid +Inf on extreme
- *     σ × long horizons. This divergent from Axis2/Java, which does
- *     NOT cap exp() — Java prefers NaN propagation as an alarm.
- *   - The variance accumulator (sumSq/N − mean²) is clamped at 0.0
- *     before sqrt to prevent NaN from floating-point cancellation
- *     on near-constant samples.
+ *   - A step whose exponent exceeds 709 (log DBL_MAX), or whose product
+ *     is no longer finite, ends its path as a terminal extreme outcome
+ *     rather than being capped and continued. This diverges from
+ *     Axis2/Java, which does NOT guard exp() — Java prefers NaN
+ *     propagation as an alarm.
+ *   - Variance uses a two-pass estimator (mean, then squared deviations),
+ *     which cannot go negative, so no clamp precedes the sqrt.
  *
  * Reproducibility:
  *   xorshift128plus seeded from request->random_seed (or time(NULL)
@@ -3294,30 +3318,40 @@ finbench_dispatch_json_obj(
     }
     else
     {
-        /* No explicit action - detect operation from request structure */
+        /* No explicit action - detect operation from request structure.
+         * Most specific markers first: a correlated monteCarlo request carries
+         * "weights" and "covariance_matrix" exactly as a portfolioVariance
+         * request does, so the simulation parameters must be tested before
+         * the weights rule or the book would be routed to the variance op. */
         json_object *temp_obj;
 
-        /* If request has 'weights' and 'covariance_matrix', it's portfolio variance */
-        if (json_object_object_get_ex(json_request, "weights", &temp_obj) &&
-            json_object_object_get_ex(json_request, "covariance_matrix", &temp_obj))
+        /* Any simulation parameter means Monte Carlo */
+        if (json_object_object_get_ex(json_request, "n_simulations", &temp_obj) ||
+            json_object_object_get_ex(json_request, "initial_value", &temp_obj) ||
+            json_object_object_get_ex(json_request, "expected_return", &temp_obj) ||
+            json_object_object_get_ex(json_request, "volatility", &temp_obj) ||
+            json_object_object_get_ex(json_request, "random_seed", &temp_obj) ||
+            json_object_object_get_ex(json_request, "model", &temp_obj) ||
+            json_object_object_get_ex(json_request, "n_periods", &temp_obj))
+        {
+            AXIS2_LOG_INFO(env->log,
+                "FinancialBenchmarkService: Detected monteCarlo request");
+            result_str = finbench_monte_carlo_json_only(env, json_str);
+        }
+        /* 'weights' and 'covariance_matrix' without simulation parameters: portfolio variance */
+        else if (json_object_object_get_ex(json_request, "weights", &temp_obj) &&
+                 json_object_object_get_ex(json_request, "covariance_matrix", &temp_obj))
         {
             AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected portfolioVariance request");
             result_str = finbench_portfolio_variance_json_only(env, json_str);
         }
-        /* If request has 'volatilities', it's composeCovariance */
+        /* 'volatilities' is composeCovariance's alone */
         else if (json_object_object_get_ex(json_request, "volatilities", &temp_obj))
         {
             AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected composeCovariance request");
             result_str = finbench_compose_covariance_json_only(env, json_str);
-        }
-        /* If request has 'n_simulations', it's Monte Carlo */
-        else if (json_object_object_get_ex(json_request, "n_simulations", &temp_obj))
-        {
-            AXIS2_LOG_INFO(env->log,
-                "FinancialBenchmarkService: Detected monteCarlo request");
-            result_str = finbench_monte_carlo_json_only(env, json_str);
         }
         /* If request only has 'n_assets' without weights, generate test data */
         else if (json_object_object_get_ex(json_request, "n_assets", &temp_obj) &&

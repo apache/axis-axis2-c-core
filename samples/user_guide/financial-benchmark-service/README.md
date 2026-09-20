@@ -175,7 +175,10 @@ book (see operation 2).
 asymmetric or non-unit-diagonal `correlation_matrix`, both forms supplied at
 once, or a Cholesky failure (`"Not positive definite: Cholesky failed at index
 2. With 5 assets a uniform correlation must satisfy -0.25 < rho < 1; got -0.5."`).
-`check_positive_definite: false` skips the O(n³) check for very large n.
+`check_positive_definite: false` skips the Cholesky check. The operation is
+capped at 500 assets regardless: the check is O(n³), and because the uniform
+form builds two n×n matrices from a request of a few dozen bytes, the cap also
+bounds how large a reply a tiny request can produce.
 
 ### 4. Scenario Analysis (`/scenarioAnalysis`)
 

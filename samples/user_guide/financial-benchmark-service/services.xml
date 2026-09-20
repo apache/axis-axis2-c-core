@@ -153,8 +153,8 @@
                 "type": "object",
                 "required": ["volatilities"],
                 "properties": {
-                    "n_assets":                {"type": "integer", "minimum": 1, "maximum": 3000,
-                                                "description": "Number of assets. Inferred from volatilities if omitted."},
+                    "n_assets":                {"type": "integer", "minimum": 1, "maximum": 500,
+                                                "description": "Number of assets (max 500: the Cholesky check is O(n³) and the reply carries two n×n matrices). Inferred from volatilities if omitted."},
                     "volatilities":            {"type": "array",   "items": {"type": "number"},
                                                 "description": "Per-asset volatilities, each > 0, as decimals (0.22 = 22%). The result inherits their time basis."},
                     "correlation":             {"type": "number",  "minimum": -1, "maximum": 1,
