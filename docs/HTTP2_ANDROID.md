@@ -373,8 +373,21 @@ Server-side services need `svc` and `msg_ctx` to:
 
 Android services don't need these because:
 - The static registry already routes by service name
-- Operations are identified by the `"action"` field in the JSON body
+- Operations are identified by the `"action"` field in the JSON body, or by
+  the `"operation"` field the engine adds (see below)
 - There is no multi-service deployment — one app, one service
+
+**The engine names the operation for you (since 2026-09-19).** Before calling
+the two-argument entry point, `try_android_static_service()` adds
+`"operation": "<name>"` to the request object, where `<name>` is the operation
+the URL path resolved to — the same name the four-argument server path reads
+from the message context. A request that already carries `"action"` or
+`"operation"` is left untouched. Route by that field first and infer from the
+request's shape only as a fallback: two operations can share a field name (a
+correlated `monteCarlo` request and a `portfolioVariance` request both carry
+`"weights"`), and a shape rule that decided on `"weights"` alone sent the
+first to the second. Neither `CameraControlService` nor `AudioSearchService`
+reads `"operation"`, so the added field is inert for them.
 
 Services that want to work in both environments can export both:
 - `axis2_char_t* <serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
@@ -577,10 +590,14 @@ repository's registry**. What it does touch, using `composeCovariance` on
 
 Two things are easy to get wrong:
 
-- **The request-shape rule must be unambiguous.** The Android adapter cannot
-  see the URL, so it infers the operation from field names. A new operation
-  must own a field no other operation uses, or its requests will be routed to
-  the wrong one and answered with that operation's "missing field" error.
+- **Route by the `"operation"` field the engine adds, not by shape.** The
+  Android adapter cannot see the URL, but since 2026-09-19 the engine passes
+  the resolved operation name in the request (see "Why Two Signatures?"). An
+  adapter that still infers the operation from field names must test the most
+  specific markers first: a correlated `monteCarlo` request carries `weights`
+  exactly as `portfolioVariance` does, and the Kanaha Calcs adapter routed it
+  to the wrong operation until it was taught to look for the operation name
+  and, failing that, the simulation parameters before `weights`.
 - **Both link lines in the application build.** The httpd and the MCP binary
   are linked separately; the operation lives in
   `financial_benchmark_service.o`, which both already include, so no link

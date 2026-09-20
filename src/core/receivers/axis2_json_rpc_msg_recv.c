@@ -171,6 +171,7 @@ android_static_service_lookup(const char *service_name)
 axis2_bool_t
 try_android_static_service(const axutil_env_t *env,
                            const char *service_name,
+                           const char *operation_name,
                            const char *json_request_str,
                            axis2_char_t **json_response_out)
 {
@@ -200,9 +201,27 @@ try_android_static_service(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
+    /*
+     * Hand the service the operation the URL resolved to. The two-argument
+     * entry point has no msg_ctx, so without this a statically linked service
+     * can only guess the operation from the request's field names -- which
+     * breaks as soon as two operations share a field (a correlated monteCarlo
+     * request and a portfolioVariance request both carry "weights"). The
+     * server-side path gets the same name from the message context; this
+     * makes the Android path equivalent. A request that already names its
+     * operation ("action" or "operation") is left alone.
+     */
+    if (operation_name && json_object_is_type(json_request, json_type_object) &&
+        !json_object_object_get_ex(json_request, "action", NULL) &&
+        !json_object_object_get_ex(json_request, "operation", NULL)) {
+        json_object_object_add(json_request, "operation",
+                               json_object_new_string(operation_name));
+    }
+
     /* Invoke service */
     AXIS2_LOG_INFO(env->log,
-        "[ANDROID_STATIC] Invoking %s", service_name);
+        "[ANDROID_STATIC] Invoking %s (operation '%s')", service_name,
+        operation_name ? operation_name : "unknown");
 
     json_response_obj = service_invoke(env, json_request);
 
@@ -712,7 +731,8 @@ axis2_json_rpc_msg_recv_invoke_business_logic_sync(
             service_name ? service_name : "unknown");
 
         if (service_name && json_request &&
-            try_android_static_service(env, service_name, json_request, &json_response)) {
+            try_android_static_service(env, service_name, operation_name,
+                                       json_request, &json_response)) {
             AXIS2_LOG_INFO(env->log,
                 "[JSON RPC MSG RECV] Android: Static service '%s' invoked successfully",
                 service_name);
