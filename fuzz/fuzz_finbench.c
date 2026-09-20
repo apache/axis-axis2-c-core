@@ -31,6 +31,11 @@
  *   Tests: out-of-range and NaN correlations, asymmetric and ragged
  *   matrices, non-positive pivots, uniform rho below -1/(n-1)
  *
+ * - covarianceFromReturns: sample covariance of a return matrix
+ *   Tests: 2D and flat shape inference, nulls as missing values, ragged
+ *   rows, non-numeric elements, samples too small for Bessel's correction,
+ *   zero-variance assets, rank-deficient samples
+ *
  * - monteCarlo: GBM simulation with exp() overflow guard
  *   Tests: extreme volatility → exp() overflow, zero volatility,
  *   negative expected return, 1-simulation edge case, percentile
@@ -143,6 +148,35 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
                 finbench_compose_covariance_response_free(resp, env);
             }
             finbench_compose_covariance_request_free(req, env);
+        }
+    }
+
+    /*
+     * Exercise 1c: covarianceFromReturns parsing + sample covariance.
+     * This hits the 2D/flat shape inference, the null-as-missing path, the
+     * complete-case mask, the zero-variance and rank-deficiency refusals,
+     * and the same Cholesky pivot check from a different input shape.
+     */
+    {
+        finbench_covariance_from_returns_request_t *req =
+            finbench_covariance_from_returns_request_create_from_json(env, json_str);
+        if (req) {
+            /* Parsing is fuzzed for every input; the estimator itself runs
+             * only on small samples. It is O(n_assets^2 * n_obs), and the
+             * dimensions must not be trimmed here: they are what the shape
+             * validation checks against. */
+            finbench_covariance_from_returns_response_t *resp =
+                ((long)req->n_assets * req->n_obs <= 4096)
+                    ? finbench_covariance_from_returns(env, req) : NULL;
+            if (resp) {
+                axis2_char_t *json_out =
+                    finbench_covariance_from_returns_response_to_json(resp, env);
+                if (json_out) {
+                    AXIS2_FREE(env->allocator, json_out);
+                }
+                finbench_covariance_from_returns_response_free(resp, env);
+            }
+            finbench_covariance_from_returns_request_free(req, env);
         }
     }
 

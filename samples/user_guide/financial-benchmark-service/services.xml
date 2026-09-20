@@ -42,6 +42,7 @@
             Operations:
             - portfolioVariance: O(n²) covariance matrix calculation
             - composeCovariance: Σ = D·R·D from volatilities + correlations, Cholesky-checked
+            - covarianceFromReturns: sample Σ from a return history, complete-case
             - monteCarlo: Compute-intensive VaR simulation
             - scenarioAnalysis: Hash table vs linear lookup comparison
             - metadata: Service information and device stats
@@ -199,6 +200,77 @@
 
             <parameter name="httpMethod">POST</parameter>
             <parameter name="httpPath">/composeCovariance</parameter>
+            <parameter name="contentType">application/json</parameter>
+            <parameter name="responseType">application/json</parameter>
+        </operation>
+
+        <!-- ================================================================
+             Operation: covarianceFromReturns
+
+             Sample covariance from a return history: the textbook estimator
+             (Pearson, Bessel-corrected, annualised) that turns a CSV of
+             returns into the matrix portfolioVariance and monteCarlo take.
+             Missing observations are complete-case; the reply reports what
+             each pair would have had so thin data is visible.
+             ================================================================ -->
+        <operation name="covarianceFromReturns">
+            <parameter name="mcpDescription">Sample covariance matrix from a return history, annualised by n_periods_per_year (252 for daily). Returns the flat row-major covariance_matrix that portfolioVariance accepts, the implied correlations, per-asset volatilities and annualised means, and observations per pair. Missing data is complete-case; a Cholesky check refuses a rank-deficient sample.</parameter>
+            <parameter name="mcpReadOnly">true</parameter>
+            <parameter name="mcpIdempotent">true</parameter>
+            <parameter name="mcpInputSchema">{
+                "type": "object",
+                "required": ["returns"],
+                "properties": {
+                    "returns":                 {"type": "array",
+                                                "description": "Periodic returns: n_assets arrays of n_obs numbers, or one flat row-major array with n_assets and n_obs given. Log or simple returns, not prices. A null element means that observation is missing."},
+                    "n_assets":                {"type": "integer", "minimum": 1, "maximum": 50,
+                                                "description": "Number of assets (max 50: the request carries n_assets×n_obs numbers). Inferred from a nested returns array."},
+                    "n_obs":                   {"type": "integer", "minimum": 2, "maximum": 5000,
+                                                "description": "Observations per asset (max 5000, about twenty years of daily data). Inferred from the first row."},
+                    "n_periods_per_year":      {"type": "number",  "default": 252,
+                                                "description": "Annualisation factor: Σ is multiplied by it and the means with it. 252 daily, 12 monthly, 1 to keep the input's own basis."},
+                    "check_positive_definite": {"type": "boolean", "default": true,
+                                                "description": "Cholesky check. Refuses a rank-deficient sample (fewer complete observations than assets, or duplicated series)."},
+                    "asset_ids":               {"type": "array",   "items": {"type": "string"},
+                                                "description": "Optional labels, one per asset, echoed back."},
+                    "request_id":              {"type": "string",  "description": "Optional correlation ID echoed in the response"}
+                }
+            }</parameter>
+            <description>
+                Sample covariance: Σ_ij = Σ_t (r_it − m_i)(r_jt − m_j) / (M − 1) × n_periods_per_year,
+                over the M observations where every asset is present.
+
+                Example JSON Request:
+                {
+                    "returns": [[0.0021, -0.0043, ...], [0.0017, -0.0038, ...]],
+                    "n_periods_per_year": 252,
+                    "asset_ids": ["MSFT", "AAPL"]
+                }
+
+                Example JSON Response:
+                {
+                    "status": "SUCCESS",
+                    "n_assets": 2,
+                    "n_obs_provided": 2508,
+                    "n_obs_used": 2508,
+                    "n_periods_per_year": 252,
+                    "covariance_matrix": [0.072673, 0.041958, ...],
+                    "correlation_matrix": [1, 0.538, ...],
+                    "volatilities": [0.2696, 0.2891],
+                    "mean_returns": [0.2447, 0.2163],
+                    "observations_per_pair": [2508, 2508, ...],
+                    "positive_definite": true,
+                    "calc_time_us": 142
+                }
+
+                This is the textbook estimator: no shrinkage, no pairwise
+                completion. A history with real gaps deserves a library that
+                has both; observations_per_pair shows when that matters.
+            </description>
+            <messageReceiver class="axis2_json_rpc_msg_recv"/>
+
+            <parameter name="httpMethod">POST</parameter>
+            <parameter name="httpPath">/covarianceFromReturns</parameter>
             <parameter name="contentType">application/json</parameter>
             <parameter name="responseType">application/json</parameter>
         </operation>
@@ -409,7 +481,7 @@
                 {
                     "service_name": "FinancialBenchmarkService",
                     "version": "1.0.0",
-                    "operations": ["portfolioVariance", "composeCovariance", "monteCarlo", ...],
+                    "operations": ["portfolioVariance", "composeCovariance", "covarianceFromReturns", "monteCarlo", ...],
                     "max_assets": 2000,
                     "max_simulations": 1000000,
                     "memory_constraint_mb": 512,

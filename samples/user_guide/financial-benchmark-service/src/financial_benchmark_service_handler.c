@@ -469,6 +469,12 @@ route_operation(
         result = finbench_compose_covariance_json_only(env, json_request);
     }
 
+    /* covarianceFromReturns operation */
+    else if (axutil_strcmp(operation_name, "covarianceFromReturns") == 0)
+    {
+        result = finbench_covariance_from_returns_json_only(env, json_request);
+    }
+
     /* monteCarlo operation */
     else if (axutil_strcmp(operation_name, "monteCarlo") == 0)
     {

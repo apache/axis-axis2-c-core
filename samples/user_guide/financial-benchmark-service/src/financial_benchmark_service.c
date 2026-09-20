@@ -1323,6 +1323,697 @@ finbench_compose_covariance_json_only(
 }
 
 /* ============================================================================
+ * Covariance From Returns Implementation
+ * ============================================================================
+ */
+
+/* Drop every output array. Same reason as compose_drop_outputs: the
+ * serializer emits whatever is non-NULL, so a half-filled matrix must never
+ * survive a failure. */
+static void
+cfr_drop_outputs(
+    const axutil_env_t *env,
+    finbench_covariance_from_returns_response_t *response)
+{
+    if (response->covariance_matrix) {
+        AXIS2_FREE(env->allocator, response->covariance_matrix);
+        response->covariance_matrix = NULL;
+    }
+    if (response->correlation_matrix) {
+        AXIS2_FREE(env->allocator, response->correlation_matrix);
+        response->correlation_matrix = NULL;
+    }
+    if (response->volatilities) {
+        AXIS2_FREE(env->allocator, response->volatilities);
+        response->volatilities = NULL;
+    }
+    if (response->mean_returns) {
+        AXIS2_FREE(env->allocator, response->mean_returns);
+        response->mean_returns = NULL;
+    }
+    if (response->observations_per_pair) {
+        AXIS2_FREE(env->allocator, response->observations_per_pair);
+        response->observations_per_pair = NULL;
+    }
+}
+
+/* Set a FAILED status with a formatted message; returns the response for
+ * convenient "return cfr_fail(...)" use. */
+static finbench_covariance_from_returns_response_t *
+cfr_fail(
+    const axutil_env_t *env,
+    finbench_covariance_from_returns_response_t *response,
+    const char *fmt, ...)
+{
+    char buf[320];
+    va_list ap;
+
+    va_start(ap, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, ap);
+    va_end(ap);
+
+    if (response->status)
+        AXIS2_FREE(env->allocator, response->status);
+    response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+    response->error_message = axutil_strdup(env, buf);
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench covarianceFromReturns: %s", buf);
+    return response;
+}
+
+/* Store one returns element. A JSON null becomes NaN ("not observed"); a
+ * number is taken as is; anything else is recorded as the first bad element
+ * so the compute step can name it. Returns nothing: validation is deferred so
+ * that one malformed cell produces a sentence, not a NULL request. */
+static void
+cfr_store_element(
+    finbench_covariance_from_returns_request_t *request,
+    json_object *elem,
+    int row,
+    int col)
+{
+    double *slot = &request->returns[(size_t)row * request->n_obs + col];
+
+    if (!elem || json_object_is_type(elem, json_type_null)) {
+        *slot = NAN;
+        return;
+    }
+    if (json_object_is_type(elem, json_type_double) ||
+        json_object_is_type(elem, json_type_int)) {
+        *slot = json_object_get_double(elem);
+        return;
+    }
+    *slot = NAN;
+    if (request->bad_value_row < 0) {
+        request->bad_value_row = row;
+        request->bad_value_col = col;
+    }
+}
+
+AXIS2_EXTERN finbench_covariance_from_returns_request_t* AXIS2_CALL
+finbench_covariance_from_returns_request_create_from_json(
+    const axutil_env_t *env,
+    const axis2_char_t *json_string)
+{
+    finbench_covariance_from_returns_request_t *request = NULL;
+    json_object *json_obj = NULL;
+    json_object *value_obj = NULL;
+    json_object *array_obj = NULL;
+    json_object *first_elem = NULL;
+    int outer_len = 0;
+    int i, j;
+
+    if (!env || !json_string) {
+        return NULL;
+    }
+
+    json_obj = json_tokener_parse(json_string);
+    if (!json_obj) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench covarianceFromReturns: Failed to parse JSON request");
+        return NULL;
+    }
+
+    if (!json_object_object_get_ex(json_obj, "returns", &array_obj) ||
+        !json_object_is_type(array_obj, json_type_array)) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench covarianceFromReturns: \"returns\" must be an array");
+        json_object_put(json_obj);
+        return NULL;
+    }
+
+    request = AXIS2_MALLOC(env->allocator,
+        sizeof(finbench_covariance_from_returns_request_t));
+    if (!request) {
+        json_object_put(json_obj);
+        return NULL;
+    }
+    memset(request, 0, sizeof(finbench_covariance_from_returns_request_t));
+    request->check_positive_definite = AXIS2_TRUE;
+    request->n_periods_per_year = FINBENCH_DEFAULT_PERIODS_PER_YEAR;
+    request->ragged_at = -1;
+    request->bad_value_row = -1;
+    request->bad_value_col = -1;
+
+    /* Shape: a 2D array is n_assets rows of n_obs; a flat array needs both
+     * dimensions named, exactly as the covariance matrix inputs do. */
+    outer_len = json_object_array_length(array_obj);
+    first_elem = (outer_len > 0) ? json_object_array_get_idx(array_obj, 0) : NULL;
+    request->rows_provided = outer_len;
+
+    if (first_elem && json_object_is_type(first_elem, json_type_array)) {
+        request->n_assets = outer_len;
+        request->n_obs = json_object_array_length(first_elem);
+        request->obs_provided = request->n_obs;
+    } else {
+        request->flat_shape = AXIS2_TRUE;
+        if (json_object_object_get_ex(json_obj, "n_assets", &value_obj)) {
+            request->n_assets = json_object_get_int(value_obj);
+        }
+        if (json_object_object_get_ex(json_obj, "n_obs", &value_obj)) {
+            request->n_obs = json_object_get_int(value_obj);
+        }
+        request->obs_provided = outer_len;
+    }
+
+    if (request->n_assets <= 0 || request->n_assets > FINBENCH_MAX_RET_ASSETS ||
+        request->n_obs <= 0 || request->n_obs > FINBENCH_MAX_OBS) {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench covarianceFromReturns: Invalid dimensions n_assets=%d (max %d), "
+            "n_obs=%d (max %d)",
+            request->n_assets, FINBENCH_MAX_RET_ASSETS,
+            request->n_obs, FINBENCH_MAX_OBS);
+        AXIS2_FREE(env->allocator, request);
+        json_object_put(json_obj);
+        return NULL;
+    }
+
+    request->returns = AXIS2_MALLOC(env->allocator,
+        (size_t)request->n_assets * request->n_obs * sizeof(double));
+    if (!request->returns) {
+        AXIS2_FREE(env->allocator, request);
+        json_object_put(json_obj);
+        return NULL;
+    }
+    for (i = 0; i < request->n_assets * request->n_obs; i++) {
+        request->returns[i] = NAN;
+    }
+
+    if (request->flat_shape) {
+        for (i = 0; i < request->n_assets; i++) {
+            for (j = 0; j < request->n_obs; j++) {
+                int flat = i * request->n_obs + j;
+                if (flat >= outer_len) break;
+                cfr_store_element(request,
+                    json_object_array_get_idx(array_obj, flat), i, j);
+            }
+        }
+    } else {
+        for (i = 0; i < request->n_assets; i++) {
+            json_object *row = json_object_array_get_idx(array_obj, i);
+            int row_len;
+
+            if (!row || !json_object_is_type(row, json_type_array)) {
+                if (request->ragged_at < 0) request->ragged_at = i;
+                continue;
+            }
+            row_len = json_object_array_length(row);
+            if (row_len != request->n_obs && request->ragged_at < 0) {
+                request->ragged_at = i;
+            }
+            for (j = 0; j < request->n_obs && j < row_len; j++) {
+                cfr_store_element(request, json_object_array_get_idx(row, j), i, j);
+            }
+        }
+    }
+
+    if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj) &&
+        (json_object_is_type(value_obj, json_type_double) ||
+         json_object_is_type(value_obj, json_type_int))) {
+        request->n_periods_per_year = json_object_get_double(value_obj);
+    }
+
+    if (json_object_object_get_ex(json_obj, "check_positive_definite", &value_obj)) {
+        request->check_positive_definite = json_object_get_boolean(value_obj)
+            ? AXIS2_TRUE : AXIS2_FALSE;
+    }
+
+    /* asset_ids (optional; only kept when the length matches) */
+    if (json_object_object_get_ex(json_obj, "asset_ids", &array_obj) &&
+        json_object_is_type(array_obj, json_type_array) &&
+        (int)json_object_array_length(array_obj) == request->n_assets) {
+        request->asset_ids = AXIS2_MALLOC(env->allocator,
+            (size_t)request->n_assets * sizeof(char *));
+        if (request->asset_ids) {
+            memset(request->asset_ids, 0, (size_t)request->n_assets * sizeof(char *));
+            for (i = 0; i < request->n_assets; i++) {
+                json_object *elem = json_object_array_get_idx(array_obj, i);
+                const char *id = elem ? json_object_get_string(elem) : NULL;
+                request->asset_ids[i] = id ? axutil_strdup(env, id) : NULL;
+            }
+        }
+    }
+
+    if (json_object_object_get_ex(json_obj, "request_id", &value_obj)) {
+        const char *rid = json_object_get_string(value_obj);
+        if (rid) {
+            request->request_id = axutil_strdup(env, rid);
+        }
+    }
+
+    json_object_put(json_obj);
+    return request;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+finbench_covariance_from_returns_request_free(
+    finbench_covariance_from_returns_request_t *request,
+    const axutil_env_t *env)
+{
+    if (!request || !env) return;
+
+    if (request->returns)
+        AXIS2_FREE(env->allocator, request->returns);
+    if (request->request_id)
+        AXIS2_FREE(env->allocator, request->request_id);
+    if (request->asset_ids) {
+        int i;
+        for (i = 0; i < request->n_assets; i++) {
+            if (request->asset_ids[i])
+                AXIS2_FREE(env->allocator, request->asset_ids[i]);
+        }
+        AXIS2_FREE(env->allocator, request->asset_ids);
+    }
+
+    AXIS2_FREE(env->allocator, request);
+}
+
+AXIS2_EXTERN finbench_covariance_from_returns_response_t* AXIS2_CALL
+finbench_covariance_from_returns_response_create(const axutil_env_t *env)
+{
+    finbench_covariance_from_returns_response_t *response;
+
+    response = AXIS2_MALLOC(env->allocator,
+        sizeof(finbench_covariance_from_returns_response_t));
+    if (response) {
+        memset(response, 0, sizeof(finbench_covariance_from_returns_response_t));
+        response->cholesky_failed_at = -1;
+    }
+    return response;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+finbench_covariance_from_returns_response_free(
+    finbench_covariance_from_returns_response_t *response,
+    const axutil_env_t *env)
+{
+    if (!response || !env) return;
+
+    if (response->status)
+        AXIS2_FREE(env->allocator, response->status);
+    if (response->covariance_matrix)
+        AXIS2_FREE(env->allocator, response->covariance_matrix);
+    if (response->correlation_matrix)
+        AXIS2_FREE(env->allocator, response->correlation_matrix);
+    if (response->volatilities)
+        AXIS2_FREE(env->allocator, response->volatilities);
+    if (response->mean_returns)
+        AXIS2_FREE(env->allocator, response->mean_returns);
+    if (response->observations_per_pair)
+        AXIS2_FREE(env->allocator, response->observations_per_pair);
+    if (response->error_message)
+        AXIS2_FREE(env->allocator, response->error_message);
+    if (response->request_id)
+        AXIS2_FREE(env->allocator, response->request_id);
+    if (response->device_info)
+        AXIS2_FREE(env->allocator, response->device_info);
+    if (response->asset_ids) {
+        int i;
+        for (i = 0; i < response->n_assets; i++) {
+            if (response->asset_ids[i])
+                AXIS2_FREE(env->allocator, response->asset_ids[i]);
+        }
+        AXIS2_FREE(env->allocator, response->asset_ids);
+    }
+
+    AXIS2_FREE(env->allocator, response);
+}
+
+AXIS2_EXTERN finbench_covariance_from_returns_response_t* AXIS2_CALL
+finbench_covariance_from_returns(
+    const axutil_env_t *env,
+    finbench_covariance_from_returns_request_t *request)
+{
+    finbench_covariance_from_returns_response_t *response = NULL;
+    axis2_char_t *complete = NULL;
+    long start_time, end_time;
+    double factor;
+    int i, j, t, n, obs, used = 0;
+    size_t matrix_size;
+
+    response = finbench_covariance_from_returns_response_create(env);
+    if (!response) return NULL;
+
+    if (!request || !request->returns) {
+        return cfr_fail(env, response, "Invalid request parameters");
+    }
+
+    n = request->n_assets;
+    obs = request->n_obs;
+    factor = request->n_periods_per_year;
+    matrix_size = (size_t)n * n;
+    response->n_assets = n;
+    response->n_obs_provided = obs;
+    response->n_periods_per_year = factor;
+
+    /* --- Shape and range validation. Every refusal names the field. --- */
+
+    if (request->flat_shape && request->obs_provided != n * obs) {
+        return cfr_fail(env, response,
+            "returns must have exactly n_assets*n_obs = %d elements when flat; got %d.",
+            n * obs, request->obs_provided);
+    }
+    if (!request->flat_shape && request->ragged_at >= 0) {
+        return cfr_fail(env, response,
+            "returns[%d] is not an array of %d observations; every asset needs the "
+            "same observation count (complete-case handling uses nulls for gaps).",
+            request->ragged_at, obs);
+    }
+    if (request->bad_value_row >= 0) {
+        return cfr_fail(env, response,
+            "returns[%d][%d] is neither a number nor null.",
+            request->bad_value_row, request->bad_value_col);
+    }
+    if (!isfinite(factor) || factor <= 0.0) {
+        return cfr_fail(env, response,
+            "n_periods_per_year = %g must be finite and > 0 (252 for daily, 1 to keep "
+            "the input's own basis).", factor);
+    }
+
+    /* --- Complete-case mask: one sample for every pair --- */
+    complete = AXIS2_MALLOC(env->allocator, (size_t)obs * sizeof(axis2_char_t));
+    if (!complete) {
+        return cfr_fail(env, response, "Memory allocation failed for %d observations.", obs);
+    }
+    for (t = 0; t < obs; t++) {
+        complete[t] = 1;
+        for (i = 0; i < n; i++) {
+            double v = request->returns[(size_t)i * obs + t];
+            if (isnan(v)) {
+                complete[t] = 0;
+                break;
+            }
+            if (!isfinite(v)) {
+                AXIS2_FREE(env->allocator, complete);
+                return cfr_fail(env, response,
+                    "returns[%d][%d] = %g is not finite.", i, t, v);
+            }
+        }
+        if (complete[t]) used++;
+    }
+
+    if (used < 2) {
+        int u = used;
+        AXIS2_FREE(env->allocator, complete);
+        return cfr_fail(env, response,
+            "Only %d of %d observations have every asset present; the sample "
+            "covariance needs at least 2 (Bessel's correction divides by n-1).",
+            u, obs);
+    }
+    response->n_obs_used = used;
+
+    /* --- Allocate outputs --- */
+    response->covariance_matrix = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(double));
+    response->correlation_matrix = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(double));
+    response->volatilities = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+    response->mean_returns = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(double));
+    response->observations_per_pair = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(int));
+    if (!response->covariance_matrix || !response->correlation_matrix ||
+        !response->volatilities || !response->mean_returns ||
+        !response->observations_per_pair) {
+        AXIS2_FREE(env->allocator, complete);
+        cfr_drop_outputs(env, response);
+        return cfr_fail(env, response,
+            "Memory allocation failed for %d assets.", n);
+    }
+
+    start_time = get_time_us();
+
+    /* --- Means over the complete cases --- */
+    for (i = 0; i < n; i++) {
+        double sum = 0.0;
+        for (t = 0; t < obs; t++) {
+            if (complete[t]) sum += request->returns[(size_t)i * obs + t];
+        }
+        response->mean_returns[i] = sum / used;
+    }
+
+    /* --- Sigma, Bessel-corrected and annualised --- */
+    for (i = 0; i < n; i++) {
+        for (j = 0; j <= i; j++) {
+            double acc = 0.0;
+            double cov;
+            for (t = 0; t < obs; t++) {
+                if (!complete[t]) continue;
+                acc += (request->returns[(size_t)i * obs + t] - response->mean_returns[i]) *
+                       (request->returns[(size_t)j * obs + t] - response->mean_returns[j]);
+            }
+            cov = (acc / (used - 1)) * factor;
+            response->covariance_matrix[i * n + j] = cov;
+            response->covariance_matrix[j * n + i] = cov;
+        }
+    }
+
+    /* --- Observations per pair: what a pairwise estimator would have had --- */
+    for (i = 0; i < n; i++) {
+        for (j = 0; j <= i; j++) {
+            int both = 0;
+            for (t = 0; t < obs; t++) {
+                if (!isnan(request->returns[(size_t)i * obs + t]) &&
+                    !isnan(request->returns[(size_t)j * obs + t])) {
+                    both++;
+                }
+            }
+            response->observations_per_pair[i * n + j] = both;
+            response->observations_per_pair[j * n + i] = both;
+        }
+    }
+
+    AXIS2_FREE(env->allocator, complete);
+
+    /* --- Volatilities and the implied correlation --- */
+    for (i = 0; i < n; i++) {
+        double var = response->covariance_matrix[i * n + i];
+        if (!(var > 0.0)) {
+            int idx = i;
+            cfr_drop_outputs(env, response);
+            return cfr_fail(env, response,
+                "Asset %d has zero variance over the %d complete observations: it is "
+                "constant, so no correlation with it is defined.", idx, used);
+        }
+        response->volatilities[i] = sqrt(var);
+        response->mean_returns[i] *= factor;
+    }
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            double r;
+            if (i == j) {
+                /* An asset's correlation with itself is 1 by definition. The
+                 * division would give 1 minus an ulp or so, which is noise in
+                 * a field whose value is known. */
+                response->correlation_matrix[i * n + j] = 1.0;
+                continue;
+            }
+            r = response->covariance_matrix[i * n + j] /
+                (response->volatilities[i] * response->volatilities[j]);
+            /* Rounding can put a perfect correlation a few ulps outside the
+             * range; the estimate itself is unchanged, only its presentation. */
+            if (r > 1.0) r = 1.0;
+            if (r < -1.0) r = -1.0;
+            response->correlation_matrix[i * n + j] = r;
+        }
+    }
+
+    /* --- Cholesky. A complete-case sample covariance is positive
+     * semi-definite by construction, so a failure here means the sample is
+     * rank-deficient: fewer complete observations than assets, or a duplicated
+     * series. Report it the way composeCovariance does and return no numbers. */
+    if (request->check_positive_definite) {
+        double *l = AXIS2_MALLOC(env->allocator, matrix_size * sizeof(double));
+        int failed_at;
+        double min_pivot = 0.0;
+
+        if (!l) {
+            cfr_drop_outputs(env, response);
+            return cfr_fail(env, response,
+                "Memory allocation failed for the Cholesky factor (%d assets).", n);
+        }
+        memset(l, 0, matrix_size * sizeof(double));
+        failed_at = cholesky_lower(response->covariance_matrix, l, n, &min_pivot);
+        AXIS2_FREE(env->allocator, l);
+
+        response->positive_definite_checked = AXIS2_TRUE;
+        response->min_pivot = min_pivot;
+        response->cholesky_failed_at = failed_at;
+        response->positive_definite = (failed_at < 0) ? AXIS2_TRUE : AXIS2_FALSE;
+
+        if (failed_at >= 0) {
+            int idx = failed_at;
+            cfr_drop_outputs(env, response);
+            return cfr_fail(env, response,
+                "Not positive definite: Cholesky failed at index %d. A complete-case "
+                "sample covariance is positive semi-definite, so this is a rank-deficient "
+                "sample: %d complete observations for %d assets (%d or more are needed), "
+                "or two series that move together exactly.",
+                idx, used, n, n + 1);
+        }
+    }
+
+    end_time = get_time_us();
+
+    response->status = axutil_strdup(env, FINBENCH_STATUS_SUCCESS);
+    response->calc_time_us = end_time - start_time;
+    response->memory_used_kb = finbench_get_memory_usage_kb();
+
+    if (request->asset_ids) {
+        response->asset_ids = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(char *));
+        if (response->asset_ids) {
+            for (i = 0; i < n; i++) {
+                response->asset_ids[i] = request->asset_ids[i]
+                    ? axutil_strdup(env, request->asset_ids[i]) : NULL;
+            }
+        }
+    }
+    if (request->request_id) {
+        response->request_id = axutil_strdup(env, request->request_id);
+    }
+    response->device_info = finbench_get_device_info(env);
+
+    AXIS2_LOG_INFO(env->log,
+        "FinBench: covarianceFromReturns for %d assets over %d of %d observations "
+        "in %ld us (positive_definite=%s)",
+        n, used, obs, response->calc_time_us,
+        response->positive_definite_checked
+            ? (response->positive_definite ? "true" : "false") : "unchecked");
+
+    return response;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_covariance_from_returns_response_to_json(
+    const finbench_covariance_from_returns_response_t *response,
+    const axutil_env_t *env)
+{
+    json_object *json_resp;
+    const char *json_str;
+    axis2_char_t *result;
+    int i;
+    size_t matrix_size;
+
+    if (!response || !env) return NULL;
+
+    matrix_size = (size_t)response->n_assets * response->n_assets;
+    json_resp = json_object_new_object();
+
+    json_object_object_add(json_resp, "status",
+        json_object_new_string(response->status ? response->status : "UNKNOWN"));
+
+    json_object_object_add(json_resp, "n_assets",
+        json_object_new_int(response->n_assets));
+    json_object_object_add(json_resp, "n_obs_provided",
+        json_object_new_int(response->n_obs_provided));
+    json_object_object_add(json_resp, "n_obs_used",
+        json_object_new_int(response->n_obs_used));
+    json_object_object_add(json_resp, "n_periods_per_year",
+        json_object_new_double(response->n_periods_per_year));
+
+    if (response->covariance_matrix) {
+        json_object *arr = json_object_new_array();
+        for (i = 0; i < (int)matrix_size; i++)
+            json_object_array_add(arr, json_object_new_double(response->covariance_matrix[i]));
+        json_object_object_add(json_resp, "covariance_matrix", arr);
+    }
+    if (response->correlation_matrix) {
+        json_object *arr = json_object_new_array();
+        for (i = 0; i < (int)matrix_size; i++)
+            json_object_array_add(arr, json_object_new_double(response->correlation_matrix[i]));
+        json_object_object_add(json_resp, "correlation_matrix", arr);
+    }
+    if (response->volatilities) {
+        json_object *arr = json_object_new_array();
+        for (i = 0; i < response->n_assets; i++)
+            json_object_array_add(arr, json_object_new_double(response->volatilities[i]));
+        json_object_object_add(json_resp, "volatilities", arr);
+    }
+    if (response->mean_returns) {
+        json_object *arr = json_object_new_array();
+        for (i = 0; i < response->n_assets; i++)
+            json_object_array_add(arr, json_object_new_double(response->mean_returns[i]));
+        json_object_object_add(json_resp, "mean_returns", arr);
+    }
+    if (response->observations_per_pair) {
+        json_object *arr = json_object_new_array();
+        for (i = 0; i < (int)matrix_size; i++)
+            json_object_array_add(arr, json_object_new_int(response->observations_per_pair[i]));
+        json_object_object_add(json_resp, "observations_per_pair", arr);
+    }
+
+    json_object_object_add(json_resp, "positive_definite",
+        json_object_new_boolean(response->positive_definite));
+    json_object_object_add(json_resp, "positive_definite_checked",
+        json_object_new_boolean(response->positive_definite_checked));
+    json_object_object_add(json_resp, "cholesky_failed_at",
+        json_object_new_int(response->cholesky_failed_at));
+    json_object_object_add(json_resp, "min_pivot",
+        json_object_new_double(response->min_pivot));
+
+    json_object_object_add(json_resp, "calc_time_us",
+        json_object_new_int64(response->calc_time_us));
+    json_object_object_add(json_resp, "memory_used_kb",
+        json_object_new_int(response->memory_used_kb));
+
+    if (response->asset_ids) {
+        json_object *arr = json_object_new_array();
+        for (i = 0; i < response->n_assets; i++)
+            json_object_array_add(arr, response->asset_ids[i]
+                ? json_object_new_string(response->asset_ids[i]) : NULL);
+        json_object_object_add(json_resp, "asset_ids", arr);
+    }
+    if (response->request_id) {
+        json_object_object_add(json_resp, "request_id",
+            json_object_new_string(response->request_id));
+    }
+    if (response->device_info) {
+        json_object_object_add(json_resp, "device_info",
+            json_object_new_string(response->device_info));
+    }
+    if (response->error_message) {
+        json_object_object_add(json_resp, "error_message",
+            json_object_new_string(response->error_message));
+    }
+
+    json_str = json_object_to_json_string_ext(json_resp, JSON_C_TO_STRING_PLAIN);
+    result = axutil_strdup(env, json_str);
+    json_object_put(json_resp);
+
+    return result;
+}
+
+/**
+ * HTTP/2 JSON endpoint for covariance from returns
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_covariance_from_returns_json_only(
+    const axutil_env_t *env,
+    const axis2_char_t *json_request)
+{
+    finbench_covariance_from_returns_request_t *request;
+    finbench_covariance_from_returns_response_t *response;
+    axis2_char_t *json_response;
+
+    request = finbench_covariance_from_returns_request_create_from_json(env, json_request);
+    if (!request) {
+        return axutil_strdup(env,
+            "{\"status\":\"FAILED\",\"error_message\":"
+            "\"Failed to parse covarianceFromReturns request. "
+            "Required field: returns, either n_assets arrays of n_obs numbers or one "
+            "flat row-major array with n_assets and n_obs given. "
+            "n_assets must be in [1, 50] and n_obs in [2, 5000]; a null element means "
+            "the observation is missing. "
+            "Optional: n_periods_per_year (float > 0, default 252), "
+            "check_positive_definite (bool, default true), asset_ids (string[]), "
+            "request_id (string).\"}");
+    }
+
+    response = finbench_covariance_from_returns(env, request);
+    json_response = finbench_covariance_from_returns_response_to_json(response, env);
+
+    finbench_covariance_from_returns_request_free(request, env);
+    finbench_covariance_from_returns_response_free(response, env);
+
+    return json_response;
+}
+
+/* ============================================================================
  * Monte Carlo Simulation Implementation
  * ============================================================================
  */
@@ -3128,6 +3819,7 @@ finbench_get_metadata_json(const axutil_env_t *env)
     ops_array = json_object_new_array();
     json_object_array_add(ops_array, json_object_new_string("portfolioVariance"));
     json_object_array_add(ops_array, json_object_new_string("composeCovariance"));
+    json_object_array_add(ops_array, json_object_new_string("covarianceFromReturns"));
     json_object_array_add(ops_array, json_object_new_string("monteCarlo"));
     json_object_array_add(ops_array, json_object_new_string("scenarioAnalysis"));
     json_object_array_add(ops_array, json_object_new_string("metadata"));
@@ -3320,6 +4012,11 @@ finbench_dispatch_json_obj(
         {
             result_str = finbench_compose_covariance_json_only(env, json_str);
         }
+        else if (strcmp(action, "covarianceFromReturns") == 0 ||
+                 strcmp(action, "covariance_from_returns") == 0)
+        {
+            result_str = finbench_covariance_from_returns_json_only(env, json_str);
+        }
         else if (strcmp(action, "monteCarlo") == 0 ||
                  strcmp(action, "monte_carlo") == 0)
         {
@@ -3371,16 +4068,25 @@ finbench_dispatch_json_obj(
          * MCP dispatches by tool name; only a direct caller can hit this. */
         json_object *temp_obj;
 
+        /* "returns" is covarianceFromReturns' alone: it is the only operation
+         * that takes a sample, and monteCarlo's nearest key is the distinct
+         * "expected_returns". Tested first because it is unambiguous. */
+        if (json_object_object_get_ex(json_request, "returns", &temp_obj))
+        {
+            AXIS2_LOG_INFO(env->log,
+                "FinancialBenchmarkService: Detected covarianceFromReturns request");
+            result_str = finbench_covariance_from_returns_json_only(env, json_str);
+        }
         /* Any simulation parameter means Monte Carlo */
-        if (json_object_object_get_ex(json_request, "n_simulations", &temp_obj) ||
-            json_object_object_get_ex(json_request, "initial_value", &temp_obj) ||
-            json_object_object_get_ex(json_request, "expected_return", &temp_obj) ||
-            json_object_object_get_ex(json_request, "expected_returns", &temp_obj) ||
-            json_object_object_get_ex(json_request, "volatility", &temp_obj) ||
-            json_object_object_get_ex(json_request, "random_seed", &temp_obj) ||
-            json_object_object_get_ex(json_request, "model", &temp_obj) ||
-            json_object_object_get_ex(json_request, "n_periods", &temp_obj) ||
-            json_object_object_get_ex(json_request, "percentiles", &temp_obj))
+        else if (json_object_object_get_ex(json_request, "n_simulations", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "initial_value", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "expected_return", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "expected_returns", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "volatility", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "random_seed", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "model", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "n_periods", &temp_obj) ||
+                 json_object_object_get_ex(json_request, "percentiles", &temp_obj))
         /* n_periods_per_year is deliberately not a marker: portfolioVariance
          * takes it too, and it must keep routing to the variance operation. */
         {

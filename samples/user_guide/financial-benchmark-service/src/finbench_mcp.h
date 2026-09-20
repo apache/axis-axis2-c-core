@@ -22,8 +22,9 @@
  * @file finbench_mcp.h
  * @brief MCP stdio transport for the Financial Benchmark Service (C1)
  *
- * Implements JSON-RPC 2.0 over stdin/stdout for the four financial benchmark
- * operations: portfolioVariance, composeCovariance, monteCarlo, scenarioAnalysis.
+ * Implements JSON-RPC 2.0 over stdin/stdout for the five financial benchmark
+ * operations: portfolioVariance, composeCovariance, covarianceFromReturns,
+ * monteCarlo, scenarioAnalysis.
  *
  * This is a thin wrapper around the existing finbench_*_json_only() functions.
  * The same JSON request/response schemas are reused — MCP adds only the
@@ -51,6 +52,7 @@
  * Tools exposed:
  *   - portfolioVariance  (O(n^2) covariance matrix multiplication)
  *   - composeCovariance  (Sigma = D*R*D from vols + correlations, Cholesky-checked)
+ *   - covarianceFromReturns (sample Sigma from a return history, complete-case)
  *   - monteCarlo         (GBM Value-at-Risk simulation)
  *   - scenarioAnalysis   (expected return + HashMap vs ArrayList benchmark)
  */

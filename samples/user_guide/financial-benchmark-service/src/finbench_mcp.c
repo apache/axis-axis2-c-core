@@ -113,6 +113,35 @@ static const char SCHEMA_COMPOSE_COVARIANCE[] =
     "\"required\":[\"volatilities\"]"
     "}";
 
+static const char SCHEMA_COVARIANCE_FROM_RETURNS[] =
+    "{"
+    "\"type\":\"object\","
+    "\"properties\":{"
+        "\"returns\":{\"type\":\"array\","
+            "\"description\":\"Periodic returns, one array of n_obs numbers per asset "
+                "(or one flat row-major array with n_assets and n_obs given). Log or simple "
+                "returns, not prices and not percentages. A null element means that "
+                "observation is missing. Max 50 assets x 5000 observations\"},"
+        "\"n_assets\":{\"type\":\"integer\","
+            "\"description\":\"Number of assets (max 50). Inferred from a nested returns array\"},"
+        "\"n_obs\":{\"type\":\"integer\","
+            "\"description\":\"Observations per asset (max 5000). Inferred from the first row\"},"
+        "\"n_periods_per_year\":{\"type\":\"number\","
+            "\"description\":\"Annualization factor: the covariance is multiplied by it and the "
+                "means with it. 252 for daily returns (the default), 12 for monthly, 1 to keep "
+                "the input's own basis. The result is what portfolioVariance wants with "
+                "n_periods_per_year=1\"},"
+        "\"check_positive_definite\":{\"type\":\"boolean\","
+            "\"description\":\"Run a Cholesky decomposition and refuse a rank-deficient sample. "
+                "Default true\"},"
+        "\"asset_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},"
+            "\"description\":\"Optional labels, one per asset, echoed in the response\"},"
+        "\"request_id\":{\"type\":\"string\","
+            "\"description\":\"Optional identifier echoed in the response for request tracing\"}"
+    "},"
+    "\"required\":[\"returns\"]"
+    "}";
+
 static const char SCHEMA_MONTE_CARLO[] =
     "{"
     "\"type\":\"object\","
@@ -234,6 +263,18 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
         "matrix used and the vols echoed. Use this instead of typing covariances: vols and "
         "correlations are short, bounded and checkable; a raw matrix is not.",
         SCHEMA_COMPOSE_COVARIANCE
+    },
+    {
+        "covarianceFromReturns",
+        "Sample covariance matrix from a return history: Sigma_ij = sum_t (r_it - mean_i)(r_jt - mean_j) "
+        "/ (m - 1), annualized by n_periods_per_year. Returns the flat row-major covariance_matrix that "
+        "portfolioVariance and monteCarlo accept, the implied correlation matrix, per-asset volatilities "
+        "and annualized mean returns, and observations_per_pair. Missing data is complete-case: an "
+        "observation where any asset is null is dropped for every asset, so one common sample backs every "
+        "entry; observations_per_pair shows what each pair would have had otherwise. Runs the same Cholesky "
+        "check as composeCovariance. This is the textbook estimator, with no shrinkage and no pairwise "
+        "completion: for a history with real gaps, prefer a library that has both.",
+        SCHEMA_COVARIANCE_FROM_RETURNS
     },
     {
         "monteCarlo",
@@ -439,6 +480,8 @@ static json_object *mcp_handle_tools_call(
         result_json = finbench_portfolio_variance_json_only(env, args_json);
     } else if (strcmp(tool_name, "composeCovariance") == 0) {
         result_json = finbench_compose_covariance_json_only(env, args_json);
+    } else if (strcmp(tool_name, "covarianceFromReturns") == 0) {
+        result_json = finbench_covariance_from_returns_json_only(env, args_json);
     } else if (strcmp(tool_name, "monteCarlo") == 0) {
         result_json = finbench_monte_carlo_json_only(env, args_json);
     } else if (strcmp(tool_name, "scenarioAnalysis") == 0) {
@@ -446,7 +489,7 @@ static json_object *mcp_handle_tools_call(
     } else {
         AXIS2_FREE(env->allocator, args_json);
         *out_code = MCP_ERR_METHOD_NOT_FOUND;
-        *out_msg  = "Unknown tool name. Available: portfolioVariance, composeCovariance, monteCarlo, scenarioAnalysis";
+        *out_msg  = "Unknown tool name. Available: portfolioVariance, composeCovariance, covarianceFromReturns, monteCarlo, scenarioAnalysis";
         return NULL;
     }
 

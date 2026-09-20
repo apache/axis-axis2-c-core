@@ -76,6 +76,22 @@ extern "C"
  * response amplification. 500 assets: ~4e7 Cholesky steps, ~10 MB reply. */
 #define FINBENCH_MAX_COV_ASSETS     500
 
+/** Maximum assets in a covarianceFromReturns request. Much smaller than
+ * FINBENCH_MAX_COV_ASSETS: the input is O(n_assets x n_obs) numbers rather
+ * than a handful, so 50 names x 5000 observations is already 250,000 doubles
+ * (~4 MB of JSON), and the estimator itself is O(n_assets^2 x n_obs). A book
+ * wider than this belongs in a file the service reads, not in a request. */
+#define FINBENCH_MAX_RET_ASSETS     50
+
+/** Maximum observations per asset in a covarianceFromReturns request.
+ * 5,000 daily returns is about twenty years. */
+#define FINBENCH_MAX_OBS            5000
+
+/** Default periodisation for covarianceFromReturns: US equity trading days.
+ * Daily variance scales linearly with the horizon under i.i.d. returns, so
+ * the annual covariance is the per-period covariance times this factor. */
+#define FINBENCH_DEFAULT_PERIODS_PER_YEAR   252.0
+
 /** Maximum assets in a correlated (multi-asset) monteCarlo request. The work
  * cap for a book is n_simulations × n_periods × n_assets ≤ FINBENCH_MAX_WORK:
  * one asset-step (a normal draw and an exp()) is the unit, so the defaults
@@ -386,6 +402,142 @@ typedef struct finbench_compose_covariance_response
     char *device_info;
 
 } finbench_compose_covariance_response_t;
+
+/**
+ * @brief Covariance From Returns Request
+ *
+ * Sample covariance of a return matrix: the estimator the JavaScript in the
+ * demo app runs on its CSV, moved into C so the same numbers can be produced
+ * without a browser. Pearson (1896); Bessel's (n-1) correction.
+ *
+ * Missing data is complete-case: an observation where any asset is missing is
+ * dropped for every asset, so the matrix comes from one common sample and is
+ * positive semi-definite by construction. observations_per_pair in the
+ * response reports what a pairwise-complete estimator would have had to work
+ * with, so a caller can see when dropping was expensive. A production
+ * estimator would add pairwise completion and shrinkage; this one does not.
+ */
+typedef struct finbench_covariance_from_returns_request
+{
+    /** Number of assets (rows); inferred from a 2D returns array. */
+    int n_assets;
+
+    /** Number of observations per asset (columns); inferred from the first row. */
+    int n_obs;
+
+    /**
+     * Returns, row-major: asset i observation t at i*n_obs + t. A JSON null
+     * is stored as NaN and means "not observed"; every other element must be
+     * a number. Periodic returns (log or simple, the caller's choice), not
+     * prices and not percentages.
+     */
+    double *returns;
+
+    /** Outer array length as parsed, for dimension validation. */
+    int rows_provided;
+
+    /** Row length used (first row, or the flat element count). */
+    int obs_provided;
+
+    /** First row whose length differs from the first row's, else -1. */
+    int ragged_at;
+
+    /** Position of the first element that is neither a number nor null, else -1. */
+    int bad_value_row;
+    int bad_value_col;
+
+    /** AXIS2_TRUE when returns arrived flat (n_assets*n_obs) rather than 2D. */
+    axis2_bool_t flat_shape;
+
+    /**
+     * Periods per year used to annualise: the covariance is multiplied by it
+     * and the mean returns with it. Must be finite and > 0. Pass 1 to leave
+     * the result in the input's own basis. Default
+     * FINBENCH_DEFAULT_PERIODS_PER_YEAR.
+     */
+    double n_periods_per_year;
+
+    /** Run the Cholesky positive-definiteness check (default true). */
+    axis2_bool_t check_positive_definite;
+
+    /** Optional asset identifiers, echoed in the response (exactly n_assets if present). */
+    char **asset_ids;
+
+    /** Request identifier for tracing */
+    char *request_id;
+
+} finbench_covariance_from_returns_request_t;
+
+/**
+ * @brief Covariance From Returns Response
+ */
+typedef struct finbench_covariance_from_returns_response
+{
+    /** Processing status */
+    char *status;
+
+    /** Number of assets */
+    int n_assets;
+
+    /** Observations supplied per asset */
+    int n_obs_provided;
+
+    /** Complete observations the estimator actually used */
+    int n_obs_used;
+
+    /** Annualisation factor as applied */
+    double n_periods_per_year;
+
+    /** Sigma, flattened row-major, n_assets^2 elements. NULL on FAILED. */
+    double *covariance_matrix;
+
+    /** Correlation matrix implied by Sigma, flattened row-major. NULL on FAILED. */
+    double *correlation_matrix;
+
+    /** Per-asset volatilities, sqrt of the diagonal. NULL on FAILED. */
+    double *volatilities;
+
+    /** Per-asset mean return, annualised with the same factor. NULL on FAILED. */
+    double *mean_returns;
+
+    /**
+     * Observations where both assets of the pair are present, flattened
+     * row-major. Equal to n_obs_used everywhere when nothing is missing; a
+     * pair above it lost data to another asset's gaps. NULL on FAILED.
+     */
+    int *observations_per_pair;
+
+    /** Whether Cholesky succeeded. AXIS2_FALSE also when the check was skipped. */
+    axis2_bool_t positive_definite;
+
+    /** Whether the Cholesky check ran at all (check_positive_definite). */
+    axis2_bool_t positive_definite_checked;
+
+    /** Index of the first non-positive Cholesky pivot, or -1. */
+    int cholesky_failed_at;
+
+    /** Smallest Cholesky pivot L_ii^2 seen (a conditioning diagnostic); 0 if not checked. */
+    double min_pivot;
+
+    /** Processing time in microseconds */
+    long calc_time_us;
+
+    /** Peak memory used in KB */
+    int memory_used_kb;
+
+    /** Error message (if status == FAILED) */
+    char *error_message;
+
+    /** Asset identifiers echo (may be NULL) */
+    char **asset_ids;
+
+    /** Request ID echo */
+    char *request_id;
+
+    /** Device info for demo purposes */
+    char *device_info;
+
+} finbench_covariance_from_returns_response_t;
 
 /* ============================================================================
  * Monte Carlo Simulation
@@ -1069,6 +1221,65 @@ finbench_compose_covariance(
  */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 finbench_compose_covariance_json_only(
+    const axutil_env_t *env,
+    const axis2_char_t *json_request);
+
+/* ============================================================================
+ * Function Declarations - Covariance From Returns
+ * ============================================================================
+ */
+
+/**
+ * @brief Create covariance-from-returns request from JSON
+ */
+AXIS2_EXTERN finbench_covariance_from_returns_request_t* AXIS2_CALL
+finbench_covariance_from_returns_request_create_from_json(
+    const axutil_env_t *env,
+    const axis2_char_t *json_string);
+
+/**
+ * @brief Free covariance-from-returns request
+ */
+AXIS2_EXTERN void AXIS2_CALL
+finbench_covariance_from_returns_request_free(
+    finbench_covariance_from_returns_request_t *request,
+    const axutil_env_t *env);
+
+/**
+ * @brief Create covariance-from-returns response
+ */
+AXIS2_EXTERN finbench_covariance_from_returns_response_t* AXIS2_CALL
+finbench_covariance_from_returns_response_create(const axutil_env_t *env);
+
+/**
+ * @brief Convert covariance-from-returns response to JSON
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_covariance_from_returns_response_to_json(
+    const finbench_covariance_from_returns_response_t *response,
+    const axutil_env_t *env);
+
+/**
+ * @brief Free covariance-from-returns response
+ */
+AXIS2_EXTERN void AXIS2_CALL
+finbench_covariance_from_returns_response_free(
+    finbench_covariance_from_returns_response_t *response,
+    const axutil_env_t *env);
+
+/**
+ * @brief Sample covariance of a return matrix (main operation)
+ */
+AXIS2_EXTERN finbench_covariance_from_returns_response_t* AXIS2_CALL
+finbench_covariance_from_returns(
+    const axutil_env_t *env,
+    finbench_covariance_from_returns_request_t *request);
+
+/**
+ * @brief Process covariance-from-returns with pure JSON (HTTP/2 endpoint)
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+finbench_covariance_from_returns_json_only(
     const axutil_env_t *env,
     const axis2_char_t *json_request);
 

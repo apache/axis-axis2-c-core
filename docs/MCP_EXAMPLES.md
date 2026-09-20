@@ -255,6 +255,64 @@ correlation outside [−1, 1], an asymmetric or non-unit-diagonal matrix, or
 both forms supplied at once. Vols and correlations are short, bounded and
 checkable; that is why this is the front door and the raw matrix is not.
 
+### Covariance From Returns — the Matrix From Data, Not Assumptions
+
+`composeCovariance` builds Σ from a view. `covarianceFromReturns` builds it
+from a history: the sample covariance of the returns themselves, annualized,
+in the same flat row-major shape the other operations take.
+
+```bash
+# Three assets, ten daily returns each. Two move together; the third hedges.
+curl -sk --http2 -X POST -H 'Content-Type: application/json' \
+    -d '{"returns":[[0.0104,-0.0071,0.0043,0.0128,-0.0195,0.0061,0.0037,-0.0044,0.0090,-0.0012],
+                    [0.0088,-0.0053,0.0021,0.0141,-0.0168,0.0032,0.0055,-0.0071,0.0102,0.0004],
+                    [-0.0021,0.0034,-0.0008,-0.0046,0.0072,0.0011,-0.0025,0.0040,-0.0033,0.0018]],
+         "n_periods_per_year":252,
+         "asset_ids":["TECH1","TECH2","DEFENSIVE"]}' \
+    https://10.10.10.10/services/FinancialBenchmarkService/covarianceFromReturns
+```
+
+```json
+{
+  "status": "SUCCESS",
+  "n_assets": 3,
+  "n_obs_provided": 10,
+  "n_obs_used": 10,
+  "n_periods_per_year": 252.0,
+  "covariance_matrix": [0.023911, 0.022047, -0.008585, 0.022047, 0.021372, -0.008454, -0.008585, -0.008454, 0.003512],
+  "correlation_matrix": [1.0, 0.9753, -0.9369, 0.9753, 1.0, -0.9757, -0.9369, -0.9757, 1.0],
+  "volatilities": [0.1546, 0.1462, 0.0593],
+  "mean_returns": [0.3553, 0.3805, 0.1058],
+  "observations_per_pair": [10, 10, 10, 10, 10, 10, 10, 10, 10],
+  "positive_definite": true,
+  "cholesky_failed_at": -1,
+  "min_pivot": 0.00015285,
+  "calc_time_us": 129
+}
+```
+
+That matrix into `portfolioVariance` with weights `[0.4, 0.4, 0.2]` and
+`"n_periods_per_year": 1` gives variance 0.011715, volatility 0.1082 — the
+hedge earning its place. Ten observations is a toy sample, and the annualized
+`mean_returns` show it: 35% and 38% are ten days multiplied by 252, not a
+forecast.
+
+Gaps are complete-case. Null out two observations of the third asset and the
+estimator drops those dates for every asset, reporting both counts:
+
+```json
+{"n_obs_used": 8,
+ "observations_per_pair": [10, 10, 8,  10, 10, 8,  8, 8, 8],
+ "covariance_matrix": [0.010575, ...]}
+```
+
+The first pair still had ten observations of its own — `observations_per_pair`
+is how a caller sees what completeness cost. A history where those numbers
+diverge badly wants pairwise completion and shrinkage, which this operation
+does not do and does not pretend to: it is the textbook estimator, checked with
+the same Cholesky as `composeCovariance` and refused when the sample is
+rank-deficient.
+
 ### Correlated Book — composeCovariance into monteCarlo
 
 The point of building Σ on the device is to simulate the book on the device.
@@ -499,6 +557,7 @@ curl -k --http2 -s \
   "operations": [
     "portfolioVariance",
     "composeCovariance",
+    "covarianceFromReturns",
     "monteCarlo",
     "scenarioAnalysis",
     "metadata"
@@ -967,6 +1026,9 @@ import math, json
 
 # 254 daily log returns computed from 255 closing prices (April 2025 - April 2026)
 # Annualized covariance: cov(r_i, r_j) * 252
+#
+# Since this session was recorded the service does this step itself:
+# covarianceFromReturns takes the return matrix and returns the same Sigma.
 
 # Real annualized volatilities (from market data, as of 2026-04-07):
 #   MSFT: 26.3%   AAPL: 31.2%   AMZN: 34.7%   JPM: 25.2%   JNJ: 17.4%

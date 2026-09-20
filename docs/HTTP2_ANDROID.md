@@ -393,8 +393,11 @@ from the message context. Route by that field first and infer from the
 request's shape only as a fallback: two operations can share a field name (a
 correlated `monteCarlo` request and a `portfolioVariance` request both carry
 `"weights"`), and a shape rule that decided on `"weights"` alone sent the
-first to the second. Neither `CameraControlService` nor `AudioSearchService`
-reads `"operation"`, so the added field is inert for them.
+first to the second. `CameraControlService` and `AudioSearchService` name
+their operations with `"action"` and took only that key until 2026-09-20, so
+every HTTP call to them failed once the engine started naming the operation
+itself; both now accept either key. A service that reads neither is unaffected
+by the added field.
 
 **Operation trust model (since 2026-09-20).** The URL is authoritative. Any
 authorization in front of the server — an httpd `<Location>` block, a
@@ -618,7 +621,7 @@ repository's registry**. What it does touch, using `composeCovariance` on
 
 | Where | Change |
 |---|---|
-| `financial_benchmark_service.h` / `.c` | The request and response structs, the `*_json_only()` entry point, and a branch in the internal `finbench_dispatch_json_obj()` (action name and, for the Android path, a request-shape rule: `composeCovariance` is the only operation that carries `volatilities`) |
+| `financial_benchmark_service.h` / `.c` | The request and response structs, the `*_json_only()` entry point, and a branch in the internal `finbench_dispatch_json_obj()` (action name and, for the Android path, a request-shape rule: `composeCovariance` is the only operation that carries `volatilities`, as `covarianceFromReturns` is the only one that carries `returns`) |
 | `financial_benchmark_service_handler.c` | A branch in `route_operation()` for the server-side URL-path dispatch |
 | `finbench_mcp.c` | The tool's `inputSchema` constant, a row in the tool table, and a branch in `tools/call` |
 | `services.xml` (upstream and in the app) | An `<operation>` element; on Android the `RESTLocation` is what maps the URL path to the operation |

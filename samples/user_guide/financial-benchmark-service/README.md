@@ -181,11 +181,78 @@ capped at 500 assets regardless: the check is O(n³), and because the uniform
 form builds two n×n matrices from a request of a few dozen bytes, the cap also
 bounds how large a reply a tiny request can produce.
 
-### 4. Scenario Analysis (`/scenarioAnalysis`)
+### 4. Covariance From Returns (`/covarianceFromReturns`)
+
+Builds the same matrix from data instead of assumptions: the sample covariance
+of a return history, annualised, ready for `portfolioVariance` and for the
+correlated `monteCarlo`.
+
+**Formula**: Σ_ij = Σ_t (r_it − m_i)(r_jt − m_j) / (M − 1) × `n_periods_per_year`,
+over the M observations where every asset is present (Pearson 1896; Bessel's
+correction).
+
+Missing data is complete-case: an observation where any asset is `null` is
+dropped for every asset, so one common sample backs every entry and the result
+is positive semi-definite by construction. `observations_per_pair` reports what
+each pair would have had on its own, which is how a caller sees that dropping
+was expensive. The same Cholesky check as `composeCovariance` runs on the
+result and refuses a rank-deficient sample — fewer complete observations than
+assets, or two series that move together exactly.
+
+**Example Request** (two assets, daily returns):
+```json
+{
+    "returns": [[0.0021, -0.0043, 0.0117, null, 0.0005],
+                [0.0017, -0.0038, 0.0090, 0.0012, 0.0002]],
+    "n_periods_per_year": 252,
+    "asset_ids": ["A", "B"]
+}
+```
+
+**Example Response**:
+```json
+{
+    "status": "SUCCESS",
+    "n_assets": 2,
+    "n_obs_provided": 5,
+    "n_obs_used": 4,
+    "n_periods_per_year": 252.0,
+    "covariance_matrix": [0.01134336, 0.00903504, 0.00903504, 0.00720447],
+    "correlation_matrix": [1.0, 0.9994434, 0.9994434, 1.0],
+    "volatilities": [0.1065052, 0.0848791],
+    "mean_returns": [0.63, 0.4473],
+    "observations_per_pair": [4, 4, 4, 5],
+    "positive_definite": true,
+    "cholesky_failed_at": -1,
+    "calc_time_us": 14
+}
+```
+
+The `mean_returns` above are annualised from five toy observations, which is
+why they read as 63% and 45%: the factor multiplies whatever sample it is
+given, and a five-day sample is not a year.
+
+Pass `n_periods_per_year: 1` to keep the input's own basis; pass 12 for
+monthly data. The annualised matrix goes to `portfolioVariance` with
+`n_periods_per_year: 1`, since it is already annual.
+
+**Refusals** name the field: a ragged `returns` row, an element that is neither
+a number nor `null`, a non-finite value, fewer than two complete observations,
+an asset with zero variance, or a Cholesky failure. Caps are 50 assets and
+5,000 observations per asset: unlike the other operations the request itself is
+O(n_assets × n_obs) numbers, and a wider book belongs in a file the service
+reads rather than in a request body.
+
+**What this is not.** It is the textbook estimator, with no shrinkage and no
+pairwise completion. For a history with real gaps, or for a covariance that
+feeds an optimiser, a library that has both earns its keep; this operation is
+here so that a device holding the returns can produce the matrix without one.
+
+### 5. Scenario Analysis (`/scenarioAnalysis`)
 
 Demonstrates O(1) hash table lookups vs O(n) linear search — a common optimization in enterprise portfolio systems migrating from array scans to hash-based asset lookups.
 
-### 5. Service Metadata (`/metadata`)
+### 6. Service Metadata (`/metadata`)
 
 Returns service capabilities, device info, and memory usage.
 
