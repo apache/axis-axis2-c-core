@@ -323,12 +323,19 @@ finbench_portfolio_variance_request_create_from_json(
         request->normalize_weights = AXIS2_FALSE;
     }
 
-    /* n_periods_per_year — default 252 (equity trading days) */
+    /* n_periods_per_year — default 1: the matrix is taken as already
+     * annualized, which is what composeCovariance, covarianceFromReturns and
+     * every documented example produce. A caller holding a per-period matrix
+     * (daily, weekly, monthly) passes 252, 52 or 12 explicitly. The default
+     * was 252 until 2026-09; on an annualized matrix that reported an
+     * annualized_volatility sqrt(252) ~ 15.9x too large, and the service has
+     * no way to detect the mismatch, so the default now matches the basis its
+     * own producers emit. */
     if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj)) {
         int npy = json_object_get_int(value_obj);
-        request->n_periods_per_year = (npy > 0) ? npy : 252;
+        request->n_periods_per_year = (npy > 0) ? npy : 1;
     } else {
-        request->n_periods_per_year = 252;
+        request->n_periods_per_year = 1;
     }
 
     json_object_put(json_obj);
@@ -401,14 +408,15 @@ finbench_portfolio_variance_response_free(
  * Formula: σ²_p = Σ_i Σ_j w_i * w_j * σ_ij
  *
  * The output basis matches the input basis — if the caller passes a
- * daily covariance matrix, σ²_p is a daily variance, and the caller
- * can annualize by sqrt(252) externally. The service additionally
- * emits an annualized_volatility field computed as
+ * daily covariance matrix, σ²_p is a daily variance. The service
+ * additionally emits an annualized_volatility field computed as
  *   portfolio_volatility * sqrt(n_periods_per_year)
- * which is correct for a PER-PERIOD input matrix. Callers who pass a
- * pre-annualized matrix (common in quant practice) should pass
- * n_periods_per_year=1 so the field equals portfolio_volatility;
- * leaving the 252 default double-annualizes it by sqrt(252) ~ 15.9.
+ * with n_periods_per_year defaulting to 1, i.e. the matrix is taken as
+ * already annualized — the basis composeCovariance and
+ * covarianceFromReturns emit. A caller with a PER-PERIOD matrix passes
+ * 252 (daily), 52 (weekly) or 12 (monthly) explicitly. The response
+ * echoes n_periods_per_year and a covariance_basis of "annualized" or
+ * "per_period" so the basis applied is always visible to the caller.
  *
  * Weight normalization edge case:
  *   When normalize_weights=true, weights are rescaled in-place so they
@@ -584,6 +592,7 @@ finbench_calculate_portfolio_variance(
     response->portfolio_variance = variance;
     response->portfolio_volatility = volatility;
     response->annualized_volatility = volatility * sqrt((double)npy);
+    response->n_periods_per_year = npy;
     response->calc_time_us = end_time - start_time;
     response->memory_used_kb = finbench_get_memory_usage_kb();
     response->matrix_operations = ops;
@@ -630,6 +639,17 @@ finbench_portfolio_variance_response_to_json(
 
     json_object_object_add(json_resp, "annualized_volatility",
         json_object_new_double(response->annualized_volatility));
+
+    /* Make the basis that was applied visible: a caller who sees
+     * covariance_basis "per_period" on a matrix they know is annual has
+     * their answer without reading the docs. Only meaningful on success. */
+    if (response->n_periods_per_year > 0) {
+        json_object_object_add(json_resp, "n_periods_per_year",
+            json_object_new_int(response->n_periods_per_year));
+        json_object_object_add(json_resp, "covariance_basis",
+            json_object_new_string(response->n_periods_per_year == 1
+                                   ? "annualized" : "per_period"));
+    }
 
     json_object_object_add(json_resp, "calc_time_us",
         json_object_new_int64(response->calc_time_us));
@@ -696,8 +716,8 @@ finbench_portfolio_variance_json_only(
             "\"Failed to parse portfolioVariance request. "
             "Required fields: n_assets (int), weights (float[]), "
             "covariance_matrix (float[n²] flat or float[n][n] 2D). "
-            "Optional: normalize_weights (bool), n_periods_per_year (int, default 252), "
-            "request_id (string).\"}");
+            "Optional: normalize_weights (bool), n_periods_per_year (int, default 1 = "
+            "matrix already annualized; 252 for a daily matrix), request_id (string).\"}");
     }
 
     response = finbench_calculate_portfolio_variance(env, request);
@@ -1228,6 +1248,12 @@ finbench_compose_covariance_response_to_json(
 
     json_object_object_add(json_resp, "n_assets",
         json_object_new_int(response->n_assets));
+
+    /* Σ = D·R·D inherits the vols' basis; annualized vols are the documented
+     * input, so the matrix is annualized. Stamped so a consumer can check the
+     * basis instead of assuming it. portfolioVariance defaults to this basis. */
+    json_object_object_add(json_resp, "covariance_basis",
+        json_object_new_string("annualized"));
 
     if (response->covariance_matrix) {
         json_object *arr = json_object_new_array();
@@ -1905,6 +1931,11 @@ finbench_covariance_from_returns_response_to_json(
         json_object_new_int(response->n_obs_used));
     json_object_object_add(json_resp, "n_periods_per_year",
         json_object_new_double(response->n_periods_per_year));
+    /* The sample covariance was multiplied by n_periods_per_year, so the
+     * matrix is on an annual basis whatever the input frequency was. Stamped
+     * for consumers; portfolioVariance defaults to this basis. */
+    json_object_object_add(json_resp, "covariance_basis",
+        json_object_new_string("annualized"));
 
     if (response->covariance_matrix) {
         json_object *arr = json_object_new_array();

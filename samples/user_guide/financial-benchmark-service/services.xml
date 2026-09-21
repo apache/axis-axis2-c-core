@@ -81,7 +81,7 @@
              Target: <10ms on old Android phone
              ================================================================ -->
         <operation name="portfolioVariance">
-            <parameter name="mcpDescription">Calculate portfolio variance using an O(n²) covariance matrix. Returns portfolio volatility and annualised volatility. Benchmark: 500 assets in &lt;10ms on constrained hardware.</parameter>
+            <parameter name="mcpDescription">Calculate portfolio variance using an O(n²) covariance matrix. The matrix is taken as annualised by default (n_periods_per_year 1), which is what composeCovariance and covarianceFromReturns return; pass 252 only for a daily matrix. Returns portfolio volatility, annualised volatility and the basis applied. Benchmark: 500 assets in &lt;10ms on constrained hardware.</parameter>
             <parameter name="mcpReadOnly">true</parameter>
             <parameter name="mcpIdempotent">true</parameter>
             <parameter name="mcpInputSchema">{
@@ -96,6 +96,8 @@
                                           "description": "Exactly n_assets×n_assets values, row-major order (element [i*n+j] is cov(i,j))"},
                     "normalize_weights": {"type": "boolean",  "default": false,
                                           "description": "Scale weights to sum=1 before calculation. Default: false — caller must supply weights that already sum to 1."},
+                    "n_periods_per_year": {"type": "integer", "default": 1,
+                                          "description": "Periods per year of the INPUT matrix. Default 1 = already annualised (any matrix from composeCovariance or covarianceFromReturns). Only for a per-period matrix: 252 daily, 52 weekly, 12 monthly."},
                     "request_id":        {"type": "string",   "description": "Optional correlation ID echoed in the response"}
                 }
             }</parameter>
@@ -120,7 +122,9 @@
                     "status": "SUCCESS",
                     "portfolio_variance": 0.0156,
                     "portfolio_volatility": 0.125,
-                    "annualized_volatility": 1.98,
+                    "annualized_volatility": 0.125,
+                    "n_periods_per_year": 1,
+                    "covariance_basis": "annualized",
                     "calc_time_us": 4523,
                     "memory_used_kb": 28456,
                     "matrix_operations": 250000,

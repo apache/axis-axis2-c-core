@@ -137,8 +137,9 @@ numbers, so nothing non-PSD can reach `portfolioVariance` by this route.
 Why it exists: a hypothetical regime ("every vol at 22%, correlation 0.5") has
 no covariance matrix to hand, and vols and correlations are short, bounded and
 checkable where a raw 25-number matrix is not. The result inherits the vols'
-time basis: annualized vols in, annualized Σ out, to be passed to
-`portfolioVariance` with `n_periods_per_year: 1`.
+time basis: annualized vols in, annualized Σ out (stamped
+`covariance_basis: "annualized"`), which is the basis `portfolioVariance`
+assumes by default.
 
 **Example Request** (uniform correlation, the stress case):
 ```json
@@ -167,7 +168,7 @@ time basis: annualized vols in, annualized Σ out, to be passed to
 ```
 
 Feeding that `covariance_matrix` to `portfolioVariance` with weights
-`[0.25, 0.25, 0.20, 0.15, 0.15]` and `n_periods_per_year: 1` gives a portfolio
+`[0.25, 0.25, 0.20, 0.15, 0.15]` gives a portfolio
 volatility of 0.2228; the same five vols with the historical correlation matrix
 give 0.1567. Feeding it to `monteCarlo` with `weights` runs the correlated
 book (see operation 2).
@@ -233,8 +234,11 @@ why they read as 63% and 45%: the factor multiplies whatever sample it is
 given, and a five-day sample is not a year.
 
 Pass `n_periods_per_year: 1` to keep the input's own basis; pass 12 for
-monthly data. The annualised matrix goes to `portfolioVariance` with
-`n_periods_per_year: 1`, since it is already annual.
+monthly data. The annualised matrix goes to `portfolioVariance` as it is:
+that operation takes its matrix as annualised by default (its own
+`n_periods_per_year` defaults to 1, and is only for callers holding a
+per-period matrix), and it echoes `covariance_basis` so the basis applied is
+visible in the response.
 
 **Refusals** name the field: a ragged `returns` row, an element that is neither
 a number nor `null`, a non-finite value, fewer than two complete observations,

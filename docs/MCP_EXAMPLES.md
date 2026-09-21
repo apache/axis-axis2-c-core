@@ -145,12 +145,16 @@ curl -k --http2 -s \
 ```
 
 > **Time basis.** Every covariance matrix in this document is already
-> annualized, so each request passes `"n_periods_per_year": 1` and
-> `annualized_volatility` equals `portfolio_volatility`. The service computes
+> annualized, which is also `portfolioVariance`'s default assumption
+> (`n_periods_per_year` defaults to 1), so `annualized_volatility` equals
+> `portfolio_volatility` and the requests below that still pass
+> `"n_periods_per_year": 1` are merely explicit. The service computes
 > `annualized_volatility = portfolio_volatility * sqrt(n_periods_per_year)`,
-> which is what you want for a *per-period* matrix — daily with 252, weekly
-> with 52, monthly with 12. Leaving the 252 default on an already-annualized
-> matrix multiplies the reported figure by sqrt(252) ~ 15.9. The service
+> so a *per-period* matrix needs the value stated — daily 252, weekly 52,
+> monthly 12 — and the response echoes `covariance_basis` ("annualized" or
+> "per_period") so what was applied is visible. Before 2026-09 the default was
+> 252, which on an annualized matrix multiplied the figure by sqrt(252) ~ 15.9
+> with nothing to flag it. The service
 > cannot detect the mismatch: a daily and an annualized covariance matrix are
 > both valid PSD matrices, and only the caller knows which was supplied.
 

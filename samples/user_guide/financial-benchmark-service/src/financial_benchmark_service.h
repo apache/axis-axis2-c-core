@@ -142,14 +142,17 @@ extern "C"
  *
  * Time basis (important — frequency consistency):
  *   σ²_p is computed in whatever time basis the input covariance matrix
- *   uses. If the caller provides a DAILY covariance matrix, σ²_p is a
- *   daily variance — in which case "annualized volatility" is computed
- *   by multiplying sqrt(σ²_p) by sqrt(n_periods_per_year). If the caller
- *   already provides an ANNUALIZED matrix (as quants often do), they
- *   should pass n_periods_per_year=1, which makes annualized_volatility
- *   equal portfolio_volatility. Leaving the 252 default on an
- *   already-annualized matrix over-annualizes the reported figure by
- *   sqrt(252) ~ 15.9. The service cannot detect the mismatch: a daily
+ *   uses. The matrix is taken as ANNUALIZED by default
+ *   (n_periods_per_year = 1), which is the basis composeCovariance and
+ *   covarianceFromReturns emit and every documented example uses; then
+ *   annualized_volatility equals portfolio_volatility. A caller with a
+ *   PER-PERIOD matrix (daily, weekly, monthly) passes n_periods_per_year
+ *   = 252, 52 or 12, and annualized_volatility is sqrt(σ²_p) times
+ *   sqrt(n_periods_per_year). The response echoes n_periods_per_year and
+ *   covariance_basis ("annualized" | "per_period") so the basis applied is
+ *   visible. (Until 2026-09 the default was 252, which on an annualized
+ *   matrix over-reported by sqrt(252) ~ 15.9 with nothing to flag it.)
+ *   The service cannot detect the mismatch itself: a daily
  *   and an annualized covariance matrix are both valid PSD matrices,
  *   and only the caller knows which was supplied.
  *
@@ -181,9 +184,10 @@ typedef struct finbench_portfolio_variance_request
 
     /**
      * Covariance matrix, flattened row-major: element (i,j) is at index
-     * i * n_assets + j. The matrix MUST be on a per-period basis — e.g.,
-     * daily returns covariance when n_periods_per_year = 252, or annual
-     * returns covariance when n_periods_per_year = 1.
+     * i * n_assets + j. Its time basis must match n_periods_per_year: an
+     * annualized matrix (the default, n_periods_per_year = 1; what
+     * composeCovariance and covarianceFromReturns return), or a per-period
+     * matrix with n_periods_per_year = 252 (daily), 52 (weekly), 12 (monthly).
      * A real covariance matrix is symmetric and positive-semi-definite;
      * the implementation does not enforce symmetry, so cov[i][j] != cov[j][i]
      * silently produces a different w'Σw than a symmetrized version.
@@ -209,9 +213,10 @@ typedef struct finbench_portfolio_variance_request
     axis2_bool_t normalize_weights;
 
     /**
-     * Trading periods per year used for annualizing volatility.
-     * Default: 252 (equity trading days). Use 260 for some fixed-income conventions,
-     * 365 for crypto, or 12 for monthly data.
+     * Periods per year of the INPUT matrix, used to annualize volatility.
+     * Default: 1 — the matrix is already annualized (the basis the service's
+     * own producers emit). Pass 252 for a daily matrix (260 for some
+     * fixed-income conventions, 365 for crypto), 52 weekly, 12 monthly.
      */
     int n_periods_per_year;
 
@@ -233,6 +238,10 @@ typedef struct finbench_portfolio_variance_response
 
     /** Annualized volatility (σ × sqrt(n_periods_per_year)) */
     double annualized_volatility;
+
+    /** The n_periods_per_year that was applied (echoed; 1 = matrix taken as
+     * annualized). 0 on a failed response. Serialized with covariance_basis. */
+    int n_periods_per_year;
 
     /** Actual sum of weights as provided (before any normalization) */
     double weight_sum;

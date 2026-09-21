@@ -72,12 +72,16 @@ static const char SCHEMA_PORTFOLIO_VARIANCE[] =
         "\"weights\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
             "\"description\":\"Portfolio weights. Must sum to 1.0 unless normalize_weights=true\"},"
         "\"covariance_matrix\":{\"type\":\"array\",\"items\":{\"type\":\"number\"},"
-            "\"description\":\"Flattened n_assets x n_assets covariance matrix (row-major order)\"},"
+            "\"description\":\"Flattened n_assets x n_assets covariance matrix (row-major order). "
+                "Taken as ANNUALIZED unless n_periods_per_year says otherwise - which is what "
+                "composeCovariance, covarianceFromReturns and covarianceFromCsv return, so pass "
+                "their covariance_matrix straight through\"},"
         "\"normalize_weights\":{\"type\":\"boolean\","
             "\"description\":\"Rescale weights to sum to 1.0 before computing variance. Default: false\"},"
-        "\"n_periods_per_year\":{\"type\":\"integer\","
-            "\"description\":\"Trading periods per year for annualizing volatility. "
-                "Default 252 (equity). Use 260 (some fixed-income), 365 (crypto), 12 (monthly)\"},"
+        "\"n_periods_per_year\":{\"type\":\"integer\",\"default\":1,"
+            "\"description\":\"Periods per year of the INPUT matrix. Default 1 = the matrix is already "
+                "annualized (leave it for any matrix produced by this service). Only for a per-period "
+                "matrix: 252 daily, 52 weekly, 12 monthly. The response echoes covariance_basis\"},"
         "\"request_id\":{\"type\":\"string\","
             "\"description\":\"Optional identifier echoed in the response for request tracing\"}"
     "},"
@@ -242,8 +246,9 @@ static const finbench_mcp_tool_t finbench_mcp_tools[] = {
         "portfolioVariance",
         "Calculate portfolio variance using O(n^2) covariance matrix multiplication: "
         "sigma_p^2 = sum_i sum_j w_i * w_j * sigma_ij. "
-        "Returns variance, volatility, annualized volatility (sigma * sqrt(n_periods_per_year)), "
-        "matrix operation count, and microsecond timing. "
+        "Returns variance, volatility, annualized volatility (sigma * sqrt(n_periods_per_year); the "
+        "matrix is taken as annualized by default, so this equals volatility unless you pass a "
+        "per-period matrix), the basis applied, matrix operation count, and microsecond timing. "
         "Target: 500 assets in ~5ms on resource-constrained hardware.",
         SCHEMA_PORTFOLIO_VARIANCE
     },
