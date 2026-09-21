@@ -87,6 +87,24 @@ $CC $CFLAGS $AXIS2_INCLUDES -I/usr/include/json-c \
     $LIB_FUZZING_ENGINE \
     $AXIS2_LIBS $JSONC_STATIC $SYS_LIBS_CORE ${LDFLAGS}
 
+# Compile the financial-benchmark service fuzzer (application-level: the
+# request->compute->response path of portfolioVariance, composeCovariance,
+# covarianceFromReturns and monteCarlo). The service source is compiled into
+# the fuzzer rather than linked from the sample's library so the target does
+# not depend on the samples being built. -fsigned-char matches the project's
+# configure flags (axis2_char_t is plain char; see docs/HTTP2_ANDROID.md).
+FINBENCH_SRC=samples/user_guide/financial-benchmark-service/src
+$CC $CFLAGS $AXIS2_INCLUDES -I/usr/include/json-c \
+    -I$WORK/install/include/axis2-2.0.0 \
+    -I$FINBENCH_SRC \
+    -std=gnu99 -fsigned-char \
+    -fsanitize=address \
+    fuzz/fuzz_finbench.c \
+    $FINBENCH_SRC/financial_benchmark_service.c \
+    -o $OUT/fuzz_finbench \
+    $LIB_FUZZING_ENGINE \
+    $AXIS2_LIBS $JSONC_STATIC $SYS_LIBS_CORE ${LDFLAGS}
+
 # Copy seed corpora
 for corpus_dir in xml json http url; do
     if [ -d "fuzz/corpus/${corpus_dir}" ]; then
@@ -102,4 +120,15 @@ fi
 # JSON reader fuzzer can reuse JSON corpus (same input format)
 if [ -f "$OUT/fuzz_json_parser_seed_corpus.zip" ]; then
     cp $OUT/fuzz_json_parser_seed_corpus.zip $OUT/fuzz_json_reader_seed_corpus.zip
+fi
+
+# Financial-benchmark fuzzer: its own corpus (one valid or deliberately
+# invalid request per operation, so every refusal branch is reached from the
+# start) and a dictionary of the JSON keys, which libFuzzer would otherwise
+# have to discover byte by byte.
+if [ -d "fuzz/corpus/finbench" ]; then
+    zip -j $OUT/fuzz_finbench_seed_corpus.zip fuzz/corpus/finbench/* 2>/dev/null || true
+fi
+if [ -f "fuzz/finbench.dict" ]; then
+    cp fuzz/finbench.dict $OUT/fuzz_finbench.dict
 fi

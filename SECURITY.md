@@ -231,8 +231,7 @@ Axis2/C has an active OSS-Fuzz integration with 5 fuzz targets:
 | `fuzz_http_header` | HTTP header parsing |
 | `fuzz_url_parser` | URL parsing and SSRF detection |
 
-Additionally, `fuzz_finbench` tests the FinancialBenchmarkService at
-the application level with integer overflow and boundary value inputs.
+| `fuzz_finbench` | FinancialBenchmarkService sample: `portfolioVariance`, `composeCovariance`, `covarianceFromReturns`, `monteCarlo` request → compute → response, with its own seed corpus and key dictionary |
 
 Local fuzzing validated with 8M+ iterations and zero ASAN errors.
 See [docs/OSS-FUZZ.md](docs/OSS-FUZZ.md) for details.

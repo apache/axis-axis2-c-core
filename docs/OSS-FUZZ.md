@@ -29,7 +29,7 @@ Traditional testing checks expected inputs. Fuzzing finds bugs with *unexpected*
 
 ### Overview
 
-The `fuzz/` directory contains 5 libFuzzer-compatible targets:
+The `fuzz/` directory contains 6 libFuzzer-compatible targets:
 
 | Target | Component | Protocol Path | Attack Vectors |
 |--------|-----------|---------------|----------------|
@@ -38,6 +38,13 @@ The `fuzz/` directory contains 5 libFuzzer-compatible targets:
 | `fuzz_json_reader.c` | axis2_json_reader | HTTP/1.1 JSON | JSON→AXIOM conversion bugs |
 | `fuzz_http_header.c` | HTTP header parsing | HTTP transport | Header injection, overflows |
 | `fuzz_url_parser.c` | URL parsing (axutil_url) | Client URLs | SSRF, malformed URL handling |
+| `fuzz_finbench.c` | FinancialBenchmarkService sample (`portfolioVariance`, `composeCovariance`, `covarianceFromReturns`, `monteCarlo`) | JSON request → compute → JSON response | Integer overflow in `n × n` allocations, NaN/Inf reaching indexing, ragged or oversized arrays, Cholesky on non-PD input, exp() overflow in the simulation |
+
+`fuzz_finbench` ships its own seed corpus (`fuzz/corpus/finbench/`, one valid
+or deliberately invalid request per operation so every refusal branch is
+reached from the start) and a dictionary of the request keys
+(`fuzz/finbench.dict`); the build script packages both. It runs slower than the
+parser targets because each input executes a full compute path.
 
 ### JSON Fuzzer Architecture
 
@@ -421,7 +428,7 @@ Ensure `autoreconf -i` runs before `./configure` in the build script.
 
 ### Validated Test Results
 
-All 5 fuzz targets have been validated with libFuzzer + AddressSanitizer:
+All 6 fuzz targets have been validated with libFuzzer + AddressSanitizer:
 
 | Target | Runs | Exec/sec | Result |
 |--------|------|----------|--------|
@@ -430,6 +437,7 @@ All 5 fuzz targets have been validated with libFuzzer + AddressSanitizer:
 | fuzz_xml_parser | 4M+ | ~120K | No crashes |
 | fuzz_http_header | 4M+ | ~125K | No crashes |
 | fuzz_url_parser | 4M+ | ~115K | No crashes |
+| fuzz_finbench | 615K (90 s, seeded, with dictionary) | ~6.7K | No crashes; 729 edges, 1,081 corpus units added |
 
 ### Comparison with Axis2/Java
 
