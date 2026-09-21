@@ -188,9 +188,13 @@ typedef struct finbench_portfolio_variance_request
      * annualized matrix (the default, n_periods_per_year = 1; what
      * composeCovariance and covarianceFromReturns return), or a per-period
      * matrix with n_periods_per_year = 252 (daily), 52 (weekly), 12 (monthly).
-     * A real covariance matrix is symmetric and positive-semi-definite;
-     * the implementation does not enforce symmetry, so cov[i][j] != cov[j][i]
-     * silently produces a different w'Σw than a symmetrized version.
+     * A real covariance matrix is symmetric and positive-semi-definite.
+     * Symmetry is enforced (within FINBENCH_CORR_TOL, as monteCarlo and
+     * composeCovariance enforce it) and an asymmetric matrix is refused
+     * naming the index. Positive semi-definiteness is not checked in full
+     * (that is what composeCovariance and covarianceFromReturns do when
+     * they build a matrix), but a w'Σw that comes out negative beyond
+     * rounding scale is refused rather than clamped to a zero volatility.
      */
     double *covariance_matrix;
 

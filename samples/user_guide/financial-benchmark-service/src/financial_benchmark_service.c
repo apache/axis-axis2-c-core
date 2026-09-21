@@ -557,6 +557,35 @@ finbench_calculate_portfolio_variance(
         }
     }
 
+    /* Symmetry, same rule and tolerance as monteCarlo and composeCovariance.
+     * w'Σw over an asymmetric matrix silently uses the mean of each
+     * off-diagonal pair, so the caller gets a number that agrees with no
+     * symmetrized version of what they sent. Refuse with the index. */
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < i; j++) {
+            double a = request->covariance_matrix[i * n + j];
+            double b = request->covariance_matrix[j * n + i];
+            if (!isfinite(a) || !isfinite(b)) {
+                char err_buf[160];
+                snprintf(err_buf, sizeof(err_buf),
+                    "covariance_matrix[%d][%d] or [%d][%d] is not finite.", i, j, j, i);
+                response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+                response->error_message = axutil_strdup(env, err_buf);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s", err_buf);
+                return response;
+            }
+            if (fabs(a - b) > FINBENCH_CORR_TOL * (1.0 + fabs(a))) {
+                char err_buf[200];
+                snprintf(err_buf, sizeof(err_buf),
+                    "covariance_matrix is not symmetric at (%d,%d): %g vs %g.", i, j, a, b);
+                response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+                response->error_message = axutil_strdup(env, err_buf);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s", err_buf);
+                return response;
+            }
+        }
+    }
+
     start_time = get_time_us();
 
     /*
@@ -565,26 +594,54 @@ finbench_calculate_portfolio_variance(
      *
      * This is common for correlation calculations.
      * On a 500-asset portfolio, this is 250,000 operations.
+     *
+     * `magnitude` accumulates the absolute terms so a negative result can be
+     * judged against the size of what was summed: cancellation noise is a
+     * negative of order 1e-16 × magnitude; a matrix that is not positive
+     * semi-definite for these weights is a negative of order magnitude.
      */
+    double magnitude = 0.0;
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
-            variance += request->weights[i] *
-                        request->weights[j] *
-                        request->covariance_matrix[i * n + j];
+            double term = request->weights[i] *
+                          request->weights[j] *
+                          request->covariance_matrix[i * n + j];
+            variance += term;
+            magnitude += fabs(term);
             ops++;
         }
     }
 
     end_time = get_time_us();
 
-    int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 252;
+    /* The parser defaults this to 1 (annualized matrix); a direct C caller
+     * that left the struct zeroed gets the same default, never the old 252. */
+    int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 1;
 
     /*
-     * Clamp variance to zero before sqrt. Floating-point cancellation in the
-     * O(n²) sum can yield a tiny negative result (e.g., -1e-17) for a
-     * numerically near-zero portfolio variance, producing NaN from sqrt().
+     * A negative w'Σw means the matrix is not positive semi-definite for
+     * these weights — it is not a covariance matrix. Only a rounding-scale
+     * negative (cancellation in the sum) is clamped to zero; anything larger
+     * is refused, because a silently clamped zero volatility is a confidently
+     * wrong answer nothing downstream can detect. composeCovariance and
+     * covarianceFromReturns Cholesky-check what they produce; a matrix
+     * assembled by hand gets no such check anywhere else.
      */
-    if (variance < 0.0) variance = 0.0;
+    if (variance < 0.0) {
+        if (variance < -1e-9 * magnitude) {
+            char err_buf[240];
+            snprintf(err_buf, sizeof(err_buf),
+                "w'Sigma*w = %g is negative: covariance_matrix is not positive "
+                "semi-definite for these weights, so it is not a covariance matrix. "
+                "Build it with composeCovariance or covarianceFromReturns, which check.",
+                variance);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s", err_buf);
+            return response;
+        }
+        variance = 0.0;
+    }
     double volatility = sqrt(variance);
 
     /* Populate response */
