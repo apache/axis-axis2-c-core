@@ -560,15 +560,22 @@ finbench_calculate_portfolio_variance(
     /* Symmetry, same rule and tolerance as monteCarlo and composeCovariance.
      * w'Σw over an asymmetric matrix silently uses the mean of each
      * off-diagonal pair, so the caller gets a number that agrees with no
-     * symmetrized version of what they sent. Refuse with the index. */
+     * symmetrized version of what they sent. Refuse with the index.
+     * j <= i so the diagonal is finiteness-checked too: a NaN or -Inf
+     * there would otherwise slip past the PSD guard below (comparisons
+     * against NaN, and -Inf < -Inf, are all false). */
     for (i = 0; i < n; i++) {
-        for (j = 0; j < i; j++) {
+        for (j = 0; j <= i; j++) {
             double a = request->covariance_matrix[i * n + j];
             double b = request->covariance_matrix[j * n + i];
             if (!isfinite(a) || !isfinite(b)) {
                 char err_buf[160];
-                snprintf(err_buf, sizeof(err_buf),
-                    "covariance_matrix[%d][%d] or [%d][%d] is not finite.", i, j, j, i);
+                if (i == j)
+                    snprintf(err_buf, sizeof(err_buf),
+                        "covariance_matrix[%d][%d] is not finite.", i, i);
+                else
+                    snprintf(err_buf, sizeof(err_buf),
+                        "covariance_matrix[%d][%d] or [%d][%d] is not finite.", i, j, j, i);
                 response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
                 response->error_message = axutil_strdup(env, err_buf);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s", err_buf);
@@ -617,6 +624,19 @@ finbench_calculate_portfolio_variance(
     /* The parser defaults this to 1 (annualized matrix); a direct C caller
      * that left the struct zeroed gets the same default, never the old 252. */
     int npy = (request->n_periods_per_year > 0) ? request->n_periods_per_year : 1;
+
+    /* Entries are finite by now, but a NaN weight or entries large enough
+     * to overflow the sum still give a non-finite result; refuse it rather
+     * than let it past the sign test below. */
+    if (!isfinite(variance)) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env,
+            "w'Sigma*w is not finite: check weights and covariance_matrix "
+            "for non-finite or overflowing values.");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "FinBench portfolioVariance: w'Sigma*w is not finite");
+        return response;
+    }
 
     /*
      * A negative w'Σw means the matrix is not positive semi-definite for
