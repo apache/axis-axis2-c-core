@@ -224,6 +224,15 @@ typedef struct finbench_portfolio_variance_request
      */
     int n_periods_per_year;
 
+    /**
+     * Set by the parser when the request says covariance_basis "annualized"
+     * but also carries n_periods_per_year other than 1 — the shape of a
+     * covarianceFromReturns response passed straight back in, whose
+     * n_periods_per_year is the factor already applied. Refused rather than
+     * guessed: honouring either field silently could be the wrong one.
+     */
+    axis2_bool_t basis_conflict;
+
 } finbench_portfolio_variance_request_t;
 
 /**

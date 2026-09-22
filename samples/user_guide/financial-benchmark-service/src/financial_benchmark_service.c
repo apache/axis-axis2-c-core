@@ -338,6 +338,17 @@ finbench_portfolio_variance_request_create_from_json(
         request->n_periods_per_year = 1;
     }
 
+    /* covarianceFromReturns echoes the factor it already applied as
+     * n_periods_per_year beside covariance_basis "annualized". Taking that
+     * echo as this matrix's basis would annualize it twice, so the pair is
+     * flagged and refused in the calculation. */
+    if (request->n_periods_per_year != 1 &&
+        json_object_object_get_ex(json_obj, "covariance_basis", &value_obj) &&
+        json_object_is_type(value_obj, json_type_string) &&
+        strcmp(json_object_get_string(value_obj), "annualized") == 0) {
+        request->basis_conflict = AXIS2_TRUE;
+    }
+
     json_object_put(json_obj);
     return request;
 }
@@ -457,6 +468,19 @@ finbench_calculate_portfolio_variance(
     }
 
     n = request->n_assets;
+
+    if (request->basis_conflict) {
+        char err_buf[256];
+        snprintf(err_buf, sizeof(err_buf),
+            "covariance_basis is \"annualized\" but n_periods_per_year is %d. "
+            "An annualized matrix takes n_periods_per_year 1 (or omit it); "
+            "a per-period matrix must not be labelled annualized.",
+            request->n_periods_per_year);
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, err_buf);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s", err_buf);
+        return response;
+    }
 
     /* -----------------------------------------------------------------------
      * Dimension validation — the kind of check a Python quant will probe
