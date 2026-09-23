@@ -28,6 +28,8 @@
  *   AXIS2_H2_TEST_NAME        name the server certificate carries, if not HOST
  *   AXIS2_H2_TEST_PATH        operation path (default: the financial benchmark
  *                             sample's portfolioVariance)
+ *   AXIS2_H2_TEST_IDLE_SECS   also check a post after this long idle, longer
+ *                             than the server's keep-alive timeout (httpd: 5 s)
  */
 
 #include <axis2_h2_json_client.h>
@@ -38,6 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 static int failures = 0;
 
@@ -165,6 +168,25 @@ live_checks(const axutil_env_t *env)
             if (i == 0)
                 printf("        %.*s\n", (int)(len < 200 ? len : 200), resp);
             CHECK(strlen(resp) == len, "body is NUL-terminated at its length");
+            AXIS2_FREE(env->allocator, resp);
+            resp = NULL;
+        }
+    }
+
+    /* A server that closed the connection while we were idle is noticed
+     * before the next request is sent, and a new connection is opened. */
+    if (getenv("AXIS2_H2_TEST_IDLE_SECS"))
+    {
+        int secs = atoi(getenv("AXIS2_H2_TEST_IDLE_SECS"));
+        axis2_status_t s;
+        printf("        idle %d s...\n", secs);
+        sleep((unsigned)secs);
+        s = axis2_h2_json_client_post(c, env, path, PV_BODY, strlen(PV_BODY), &resp, &len, &status);
+        CHECK(s == AXIS2_SUCCESS && status == 200, "a post after the server closed an idle connection");
+        if (s != AXIS2_SUCCESS)
+            printf("        error: %s\n", axis2_h2_json_client_get_error(c));
+        if (resp)
+        {
             AXIS2_FREE(env->allocator, resp);
             resp = NULL;
         }

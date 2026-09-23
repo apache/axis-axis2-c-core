@@ -655,6 +655,58 @@ h2c_connect(axis2_h2_json_client_t *c, const axutil_env_t *env)
     return AXIS2_SUCCESS;
 }
 
+/* Before a new request on a reused connection: did the server end it while
+ * we were idle? Servers routinely close idle HTTP/2 connections (httpd's
+ * keep-alive timeout is 5 s by default) with GOAWAY and a FIN; finding that
+ * out by failing the next request would fail every first call after a
+ * pause. Nothing of the new request has been sent yet, so opening a fresh
+ * connection here is not a retry. Returns 1 when the connection is unusable. */
+static int
+h2c_peer_gone(axis2_h2_json_client_t *c, const axutil_env_t *env)
+{
+    struct pollfd p;
+    char buf[H2C_IO_CHUNK];
+    ssize_t n;
+
+    p.fd = c->fd;
+    p.events = POLLIN;
+    p.revents = 0;
+    if (poll(&p, 1, 0) <= 0)
+        return 0;                       /* nothing waiting: still open */
+    do
+        n = recv(c->fd, buf, 1, MSG_PEEK);
+    while (n < 0 && errno == EINTR);
+    if (n == 0)
+        return 1;                       /* FIN */
+    if (n < 0)
+        return !(errno == EAGAIN || errno == EWOULDBLOCK);
+
+    /* Bytes are waiting -- GOAWAY, PING, a TLS close_notify. Take them in
+     * and let nghttp2 decide. */
+    if (h2c_fill(c, env, 0) != AXIS2_SUCCESS)
+        return 1;
+    for (;;)
+    {
+        int r = SSL_read(c->ssl, buf, (int)sizeof(buf));
+        if (r > 0)
+        {
+#ifdef H2C_NGHTTP2_V2
+            if (nghttp2_session_mem_recv2(c->session, (const uint8_t *)buf, (size_t)r) < 0)
+#else
+            if (nghttp2_session_mem_recv(c->session, (const uint8_t *)buf, (size_t)r) < 0)
+#endif
+                return 1;
+            continue;
+        }
+        if (SSL_get_error(c->ssl, r) != SSL_ERROR_WANT_READ)
+            return 1;                   /* close_notify or a TLS error */
+        break;
+    }
+    if (h2c_pump_send(c, env) != AXIS2_SUCCESS)
+        return 1;
+    return !nghttp2_session_want_read(c->session) && !nghttp2_session_want_write(c->session);
+}
+
 /* ------------------------------------------------------------------------ */
 /* public API                                                                */
 /* ------------------------------------------------------------------------ */
@@ -797,11 +849,17 @@ axis2_h2_json_client_post(
         return AXIS2_FAILURE;
     }
 
-    /* A session the server has finished with (GOAWAY) cannot carry a new
-     * stream; open a fresh one. */
-    if (c->session && !nghttp2_session_want_read(c->session) &&
-        !nghttp2_session_want_write(c->session))
+    /* A session the server has finished with cannot carry a new stream;
+     * open a fresh one. The error text of a closed idle connection is not
+     * this call's failure, so it is cleared. */
+    if (c->session && h2c_peer_gone(c, env))
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                        "[h2_json_client] %s:%d closed the idle connection; reconnecting",
+                        c->host, c->port);
         h2c_disconnect(c, env, 0);
+        c->error[0] = '\0';
+    }
     if (!c->session && h2c_connect(c, env) != AXIS2_SUCCESS)
     {
         h2c_disconnect(c, env, 0);
