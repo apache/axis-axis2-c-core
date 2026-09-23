@@ -169,6 +169,37 @@ finbench_get_device_info(const axutil_env_t *env)
     return axutil_strdup(env, buffer);
 }
 
+/* n_periods_per_year, read the same way by every operation. Absent: *out is
+ * `def`. Present: it must be a JSON number, finite and > 0, and a whole
+ * number when `whole_only` (portfolioVariance and monteCarlo hold it as an
+ * int). Anything else returns 0 with *out = def, and the caller refuses the
+ * request -- json_object_get_int would otherwise parse "12" out of a string
+ * and truncate 252.25 to 252, both silently. */
+static int
+finbench_read_periods_per_year(json_object *json_obj, double def,
+                               int whole_only, double *out)
+{
+    json_object *v = NULL;
+    double p;
+
+    *out = def;
+    if (!json_object_object_get_ex(json_obj, "n_periods_per_year", &v))
+        return 1;
+    if (!json_object_is_type(v, json_type_int) &&
+        !json_object_is_type(v, json_type_double))
+        return 0;
+    p = json_object_get_double(v);
+    if (!isfinite(p) || p <= 0.0)
+        return 0;
+    if (whole_only && (p != floor(p) || p > 1e7))
+        return 0;
+    *out = p;
+    return 1;
+}
+
+#define FINBENCH_PERIODS_INVALID_MSG \
+    "n_periods_per_year must be a number > 0%s; omit it for the default."
+
 /* ============================================================================
  * Portfolio Variance Implementation
  *
@@ -331,11 +362,11 @@ finbench_portfolio_variance_request_create_from_json(
      * annualized_volatility sqrt(252) ~ 15.9x too large, and the service has
      * no way to detect the mismatch, so the default now matches the basis its
      * own producers emit. */
-    if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj)) {
-        int npy = json_object_get_int(value_obj);
-        request->n_periods_per_year = (npy > 0) ? npy : 1;
-    } else {
-        request->n_periods_per_year = 1;
+    {
+        double npy;
+        if (!finbench_read_periods_per_year(json_obj, 1.0, 1, &npy))
+            request->n_periods_per_year_invalid = AXIS2_TRUE;
+        request->n_periods_per_year = (int)npy;
     }
 
     /* covarianceFromReturns echoes the factor it already applied as
@@ -468,6 +499,16 @@ finbench_calculate_portfolio_variance(
     }
 
     n = request->n_assets;
+
+    if (request->n_periods_per_year_invalid) {
+        char err_buf[160];
+        snprintf(err_buf, sizeof(err_buf), FINBENCH_PERIODS_INVALID_MSG,
+                 ", a whole number of periods");
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, err_buf);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s", err_buf);
+        return response;
+    }
 
     if (request->basis_conflict) {
         char err_buf[256];
@@ -1653,11 +1694,9 @@ finbench_covariance_from_returns_request_create_from_json(
         }
     }
 
-    if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj) &&
-        (json_object_is_type(value_obj, json_type_double) ||
-         json_object_is_type(value_obj, json_type_int))) {
-        request->n_periods_per_year = json_object_get_double(value_obj);
-    }
+    if (!finbench_read_periods_per_year(json_obj, FINBENCH_DEFAULT_PERIODS_PER_YEAR,
+                                        0, &request->n_periods_per_year))
+        request->n_periods_per_year_invalid = AXIS2_TRUE;
 
     if (json_object_object_get_ex(json_obj, "check_positive_definite", &value_obj)) {
         request->check_positive_definite = json_object_get_boolean(value_obj)
@@ -1809,6 +1848,9 @@ finbench_covariance_from_returns(
         return cfr_fail(env, response,
             "returns[%d][%d] is neither a number nor null.",
             request->bad_value_row, request->bad_value_col);
+    }
+    if (request->n_periods_per_year_invalid) {
+        return cfr_fail(env, response, FINBENCH_PERIODS_INVALID_MSG, "");
     }
     if (!isfinite(factor) || factor <= 0.0) {
         return cfr_fail(env, response,
@@ -2207,11 +2249,11 @@ finbench_monte_carlo_request_create_from_json(
     }
 
     /* n_periods_per_year — controls GBM time step dt = 1/n_periods_per_year */
-    if (json_object_object_get_ex(json_obj, "n_periods_per_year", &value_obj)) {
-        int npy = json_object_get_int(value_obj);
-        request->n_periods_per_year = (npy > 0) ? npy : 252;
-    } else {
-        request->n_periods_per_year = 252;
+    {
+        double npy;
+        if (!finbench_read_periods_per_year(json_obj, 252.0, 1, &npy))
+            request->n_periods_per_year_invalid = AXIS2_TRUE;
+        request->n_periods_per_year = (int)npy;
     }
 
     /* percentiles — array of tail levels in (0,1); default {0.01, 0.05} */
@@ -2909,6 +2951,15 @@ finbench_run_monte_carlo(
     if (!request) {
         response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
         response->error_message = axutil_strdup(env, "Invalid request");
+        return response;
+    }
+
+    if (request->n_periods_per_year_invalid) {
+        char err_buf[160];
+        snprintf(err_buf, sizeof(err_buf), FINBENCH_PERIODS_INVALID_MSG,
+                 ", a whole number of steps per year");
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, err_buf);
         return response;
     }
 

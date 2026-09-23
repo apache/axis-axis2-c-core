@@ -233,6 +233,9 @@ typedef struct finbench_portfolio_variance_request
      */
     axis2_bool_t basis_conflict;
 
+    /** n_periods_per_year was present but not a positive whole number; refused. */
+    axis2_bool_t n_periods_per_year_invalid;
+
 } finbench_portfolio_variance_request_t;
 
 /**
@@ -478,6 +481,8 @@ typedef struct finbench_covariance_from_returns_request
      * FINBENCH_DEFAULT_PERIODS_PER_YEAR.
      */
     double n_periods_per_year;
+    /** n_periods_per_year was present but not a positive number; refused. */
+    axis2_bool_t n_periods_per_year_invalid;
 
     /** Run the Cholesky positive-definiteness check (default true). */
     axis2_bool_t check_positive_definite;
@@ -729,6 +734,8 @@ typedef struct finbench_monte_carlo_request
      * annual steps rather than one year of daily steps.
      */
     int n_periods_per_year;
+    /** n_periods_per_year was present but not a positive whole number; refused. */
+    axis2_bool_t n_periods_per_year_invalid;
 
     /**
      * Percentile levels for VaR reporting, values strictly in (0, 1). The
