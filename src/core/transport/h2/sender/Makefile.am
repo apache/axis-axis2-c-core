@@ -26,3 +26,18 @@ libaxis2_h2_sender_la_CPPFLAGS = -I$(top_srcdir)/include \
                                  -I$(top_srcdir)/src/core/transport/http/util \
                                  $(NGHTTP2_CFLAGS) \
                                  $(JSON_CFLAGS)
+
+# JSON over HTTP/2 client (axis2_h2_json_client.h). Installed on its own and
+# kept free of the engine and axiom: it needs only axutil, nghttp2 and OpenSSL,
+# so an embedded caller links exactly that.
+lib_LTLIBRARIES = libaxis2_h2_client.la
+libaxis2_h2_client_la_SOURCES = axis2_h2_json_client.c
+libaxis2_h2_client_la_CPPFLAGS = -I$(top_srcdir)/include \
+                                 -I$(top_srcdir)/util/include \
+                                 $(NGHTTP2_CFLAGS) \
+                                 $(OPENSSL_CFLAGS) \
+                                 @OPENSSLINC@
+libaxis2_h2_client_la_LIBADD = $(top_builddir)/util/src/libaxutil.la \
+                               $(NGHTTP2_LIBS) \
+                               $(OPENSSL_LIBS)
+libaxis2_h2_client_la_LDFLAGS = -version-info $(VERSION_NO)

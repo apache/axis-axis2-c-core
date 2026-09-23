@@ -19,9 +19,9 @@
 # These tests focus exclusively on HTTP/2 JSON processing without SOAP dependencies
 
 if WITH_NGHTTP2
-check_PROGRAMS = h2_json_integration_test h2_performance_benchmark_test
-noinst_PROGRAMS = h2_json_integration_test h2_performance_benchmark_test
-TESTS = h2_json_integration_test h2_performance_benchmark_test
+check_PROGRAMS = h2_json_integration_test h2_performance_benchmark_test h2_json_client_test
+noinst_PROGRAMS = h2_json_integration_test h2_performance_benchmark_test h2_json_client_test
+TESTS = h2_json_integration_test h2_performance_benchmark_test h2_json_client_test
 
 # ASAN preload for libtool-wrapped test execution
 if ENABLE_ASAN
@@ -65,6 +65,16 @@ h2_performance_benchmark_test_CPPFLAGS = \
     -I$(top_srcdir)/util/include \
     $(JSON_CFLAGS) \
     -DAXIS2_H2_PERFORMANCE_TESTS
+
+# HTTP/2 JSON client. Offline checks always run; live checks need a server
+# named by AXIS2_H2_TEST_HOST/_PORT/_CA (see the file header).
+h2_json_client_test_SOURCES = h2_json_client_test.c
+h2_json_client_test_LDADD = \
+    $(top_builddir)/src/core/transport/h2/sender/libaxis2_h2_client.la \
+    $(top_builddir)/util/src/libaxutil.la
+h2_json_client_test_CPPFLAGS = \
+    -I$(top_srcdir)/include \
+    -I$(top_srcdir)/util/include
 
 # Test data files
 EXTRA_DIST = large_json_payload_generator.h
