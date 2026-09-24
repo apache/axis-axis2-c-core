@@ -23,6 +23,18 @@
  * The memory BIOs keep every byte of socket I/O in this file, so each wait is
  * a poll() with a deadline, a write to a closed peer cannot raise SIGPIPE
  * (send() with MSG_NOSIGNAL), and nothing ever blocks without a timeout.
+ *
+ * Bytes move in two directions, and every function below is one step:
+ *
+ *   out: nghttp2_session_mem_send -> SSL_write -> wbio -> h2c_flush -> send()
+ *        (h2c_pump_send drives the whole chain)
+ *   in:  recv() -> h2c_fill -> rbio -> SSL_read -> nghttp2_session_mem_recv
+ *        -> the h2c_on_* callbacks (h2c_pump_recv drives the whole chain)
+ *
+ * OpenSSL never touches the socket: it reads ciphertext from rbio and writes
+ * ciphertext to wbio, and this file moves it between the BIOs and the fd.
+ * nghttp2 likewise never touches TLS: it hands out and takes in plaintext
+ * frames. One request is in flight at a time; its state lives in the struct.
  */
 
 #include <axis2_h2_json_client.h>
@@ -45,6 +57,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -90,19 +103,20 @@ struct axis2_h2_json_client
     BIO *wbio;                  /* TLS -> network; owned by ssl */
     nghttp2_session *session;
 
-    /* the request in flight */
+    /* the request in flight -- written by the nghttp2 callbacks, read by
+     * axis2_h2_json_client_post once the stream closes */
     const axutil_env_t *env;
     int32_t stream_id;
-    int stream_closed;
-    uint32_t stream_error;
-    int http_status;
-    const axis2_char_t *req_body;
+    int stream_closed;          /* set by h2c_on_stream_close */
+    uint32_t stream_error;      /* RST_STREAM code; NGHTTP2_NO_ERROR if clean */
+    int http_status;            /* from :status; 0 until the headers arrive */
+    const axis2_char_t *req_body;   /* caller's buffer, not copied */
     size_t req_len;
-    size_t req_off;
-    axis2_char_t *resp;
+    size_t req_off;             /* how much of req_body nghttp2 has taken */
+    axis2_char_t *resp;         /* grows in h2c_on_data; handed to the caller */
     size_t resp_len;
     size_t resp_cap;
-    int resp_too_large;
+    int resp_too_large;         /* max_response hit; the stream was cancelled */
 
     axis2_char_t error[256];
 };
@@ -135,12 +149,14 @@ h2c_ssl_reason(char *buf, size_t len)
     return buf;
 }
 
-static long
+/* 64-bit so the arithmetic cannot overflow where long is 32 bits: a 32-bit
+ * long of milliseconds wraps after 24.8 days of uptime. */
+static int64_t
 h2c_now_ms(void)
 {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (long)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+    return (int64_t)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
 }
 
 /* poll() one descriptor, retrying on EINTR against the same deadline.
@@ -148,11 +164,11 @@ h2c_now_ms(void)
 static int
 h2c_wait(int fd, short events, int timeout_ms)
 {
-    long deadline = h2c_now_ms() + timeout_ms;
+    int64_t deadline = h2c_now_ms() + timeout_ms;
     for (;;)
     {
         struct pollfd p;
-        long left = deadline - h2c_now_ms();
+        int64_t left = deadline - h2c_now_ms();
         int r;
         if (left < 0)
             left = 0;
@@ -173,9 +189,15 @@ h2c_wait(int fd, short events, int timeout_ms)
 /* socket I/O under the memory BIOs                                          */
 /* ------------------------------------------------------------------------ */
 
+/* deadline for h2c_send_all / h2c_flush: none, so each wait for the socket
+ * to drain gets io_timeout_ms. The handshake passes its connect deadline
+ * instead, so a server that stalls its receive window cannot stretch
+ * connect_timeout_ms to io_timeout_ms. */
+#define H2C_NO_DEADLINE ((int64_t)-1)
+
 static axis2_status_t
 h2c_send_all(axis2_h2_json_client_t *c, const axutil_env_t *env,
-             const char *buf, size_t len)
+             const char *buf, size_t len, int64_t deadline)
 {
     while (len > 0)
     {
@@ -190,7 +212,9 @@ h2c_send_all(axis2_h2_json_client_t *c, const axutil_env_t *env,
             continue;
         if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
         {
-            int w = h2c_wait(c->fd, POLLOUT, c->io_timeout_ms);
+            int64_t left = deadline == H2C_NO_DEADLINE ? c->io_timeout_ms
+                                                       : deadline - h2c_now_ms();
+            int w = left > 0 ? h2c_wait(c->fd, POLLOUT, (int)left) : 0;
             if (w > 0)
                 continue;
             h2c_fail(c, env, w == 0 ? "timed out sending to the server"
@@ -203,21 +227,26 @@ h2c_send_all(axis2_h2_json_client_t *c, const axutil_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-/* Send whatever TLS has produced. */
+/* Send whatever TLS has produced -- the ciphertext waiting in wbio. Called
+ * after anything that can make OpenSSL write: a handshake step, SSL_write,
+ * SSL_shutdown, and SSL_read (which can owe the peer a reply). */
 static axis2_status_t
-h2c_flush(axis2_h2_json_client_t *c, const axutil_env_t *env)
+h2c_flush(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t deadline)
 {
     char buf[H2C_IO_CHUNK];
     int n;
     while ((n = BIO_read(c->wbio, buf, (int)sizeof(buf))) > 0)
     {
-        if (h2c_send_all(c, env, buf, (size_t)n) != AXIS2_SUCCESS)
+        if (h2c_send_all(c, env, buf, (size_t)n, deadline) != AXIS2_SUCCESS)
             return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
 }
 
-/* Wait up to timeout_ms for bytes from the server and hand them to TLS. */
+/* Wait up to timeout_ms for bytes from the server and hand them to TLS.
+ * One recv() per call: the caller asks OpenSSL for plaintext afterwards and
+ * calls again only if OpenSSL wants more. timeout_ms 0 is a non-blocking
+ * check (see h2c_peer_gone). */
 static axis2_status_t
 h2c_fill(axis2_h2_json_client_t *c, const axutil_env_t *env, int timeout_ms)
 {
@@ -261,6 +290,12 @@ h2c_fill(axis2_h2_json_client_t *c, const axutil_env_t *env, int timeout_ms)
 /* nghttp2 callbacks                                                         */
 /* ------------------------------------------------------------------------ */
 
+/* nghttp2 calls the h2c_on_* callbacks from inside nghttp2_session_mem_recv,
+ * i.e. from h2c_pump_recv. They only record into the struct; frames for any
+ * stream other than the request in flight are ignored. */
+
+/* Keep :status. A valid status is exactly three digits (RFC 9110 15);
+ * anything else leaves http_status 0, which the post reports. */
 static int
 h2c_on_header(nghttp2_session *session, const nghttp2_frame *frame,
               const uint8_t *name, size_t namelen,
@@ -286,9 +321,14 @@ h2c_on_data(nghttp2_session *session, uint8_t flags, int32_t stream_id,
     (void)flags;
     if (stream_id != c->stream_id || c->resp_too_large)
         return 0;
+    /* Written as a subtraction so it cannot overflow; resp_len never exceeds
+     * max_response, so the right-hand side cannot underflow. */
     if (len > c->max_response - c->resp_len)
     {
-        /* Stop the server rather than keep buffering; the post reports it. */
+        /* Stop the server rather than keep buffering; the post reports it.
+         * Returning 0 rather than an error keeps the session parseable until
+         * the stream closes, so the failure is reported as "too large" and
+         * not as a protocol error. */
         c->resp_too_large = 1;
         nghttp2_submit_rst_stream(session, NGHTTP2_FLAG_NONE, stream_id, NGHTTP2_CANCEL);
         return 0;
@@ -297,8 +337,11 @@ h2c_on_data(nghttp2_session *session, uint8_t flags, int32_t stream_id,
     {
         size_t cap = c->resp_cap ? c->resp_cap : 4096;
         axis2_char_t *grown;
-        while (cap < c->resp_len + len + 1)
-            cap *= 2;
+        /* need cannot wrap: resp_len + len <= max_response < SIZE_MAX (see
+         * create). Doubling stops short of overflow and takes need instead. */
+        size_t need = c->resp_len + len + 1;
+        while (cap < need)
+            cap = cap > SIZE_MAX / 2 ? need : cap * 2;
         grown = AXIS2_REALLOC(c->env->allocator, c->resp, cap);
         if (!grown)
             return NGHTTP2_ERR_CALLBACK_FAILURE;
@@ -324,6 +367,8 @@ h2c_on_stream_close(nghttp2_session *session, int32_t stream_id,
     return 0;
 }
 
+/* nghttp2 pulls the request body through this as flow control allows,
+ * `length` bytes at most per call; EOF is flagged with the last chunk. */
 #ifdef H2C_NGHTTP2_V2
 static nghttp2_ssize
 h2c_read_body(nghttp2_session *session, int32_t stream_id, uint8_t *buf,
@@ -380,11 +425,16 @@ h2c_pump_send(axis2_h2_json_client_t *c, const axutil_env_t *env)
             return AXIS2_FAILURE;
         }
     }
-    return h2c_flush(c, env);
+    return h2c_flush(c, env, H2C_NO_DEADLINE);
 }
 
 /* Read what the server has sent -- waiting up to io_timeout for the first
- * byte -- and feed it to nghttp2. Returns once TLS has nothing more to give. */
+ * byte -- and feed it to nghttp2. Returns once TLS has nothing more to give.
+ *
+ * SSL_read returning WANT_READ means "no complete record buffered". Before
+ * anything has been decoded that means wait on the socket; after something
+ * has, return so the caller can act on it (send WINDOW_UPDATEs, see whether
+ * the stream closed) instead of blocking for more. */
 static axis2_status_t
 h2c_pump_recv(axis2_h2_json_client_t *c, const axutil_env_t *env)
 {
@@ -415,7 +465,7 @@ h2c_pump_recv(axis2_h2_json_client_t *c, const axutil_env_t *env)
                 if (got_any)
                     return AXIS2_SUCCESS;
                 /* TLS may owe the server something first (a key update). */
-                if (h2c_flush(c, env) != AXIS2_SUCCESS ||
+                if (h2c_flush(c, env, H2C_NO_DEADLINE) != AXIS2_SUCCESS ||
                     h2c_fill(c, env, c->io_timeout_ms) != AXIS2_SUCCESS)
                     return AXIS2_FAILURE;
                 break;
@@ -441,12 +491,15 @@ h2c_disconnect(axis2_h2_json_client_t *c, const axutil_env_t *env, int graceful)
 {
     if (graceful && c->session && c->ssl)
     {
-        /* Best effort: GOAWAY and close_notify, without waiting for replies. */
+        /* Best effort: GOAWAY and close_notify, without waiting for replies.
+         * Only on free(); after a failure the connection is dropped outright.
+         * c->error is saved and restored so a failure here cannot overwrite
+         * the error the caller is about to read. */
         axis2_char_t saved[sizeof(c->error)];
         memcpy(saved, c->error, sizeof(saved));
         nghttp2_session_terminate_session(c->session, NGHTTP2_NO_ERROR);
         if (h2c_pump_send(c, env) == AXIS2_SUCCESS && SSL_shutdown(c->ssl) >= 0)
-            h2c_flush(c, env);
+            h2c_flush(c, env, H2C_NO_DEADLINE);
         memcpy(c->error, saved, sizeof(saved));
         ERR_clear_error();
     }
@@ -469,8 +522,12 @@ h2c_disconnect(axis2_h2_json_client_t *c, const axutil_env_t *env, int graceful)
     }
 }
 
+/* Try each address getaddrinfo returns (IPv6 and IPv4, in its order) until
+ * one connects. The socket is non-blocking from the start so the connect
+ * itself honours the deadline; it stays non-blocking for the connection's
+ * life, which is what lets every later wait go through h2c_wait. */
 static axis2_status_t
-h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, long deadline)
+h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t deadline)
 {
     struct addrinfo hints, *res = NULL, *ai;
     char port[16];
@@ -492,7 +549,7 @@ h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, long deadlin
         int fd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
         int one = 1, err = 0;
         socklen_t errlen = sizeof(err);
-        long left;
+        int64_t left;
         if (fd < 0)
         {
             last_errno = errno;
@@ -535,7 +592,7 @@ h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, long deadlin
 static axis2_status_t
 h2c_connect(axis2_h2_json_client_t *c, const axutil_env_t *env)
 {
-    long deadline = h2c_now_ms() + c->connect_timeout_ms;
+    int64_t deadline = h2c_now_ms() + c->connect_timeout_ms;
     const unsigned char *alpn = NULL;
     unsigned int alpn_len = 0;
     nghttp2_session_callbacks *cbs = NULL;
@@ -585,11 +642,15 @@ h2c_connect(axis2_h2_json_client_t *c, const axutil_env_t *env)
         }
     }
 
+    /* Handshake: each SSL_do_handshake step may leave records in wbio (sent
+     * now) and then want the server's reply (waited for against the same
+     * deadline as the TCP connect). Certificate and name verification
+     * happen inside the handshake, so a failure here names the reason. */
     for (;;)
     {
-        long left;
+        int64_t left;
         rv = SSL_do_handshake(c->ssl);
-        if (h2c_flush(c, env) != AXIS2_SUCCESS)
+        if (h2c_flush(c, env, deadline) != AXIS2_SUCCESS)
             return AXIS2_FAILURE;
         if (rv == 1)
             break;
@@ -637,6 +698,10 @@ h2c_connect(axis2_h2_json_client_t *c, const axutil_env_t *env)
         return AXIS2_FAILURE;
     }
 
+    /* No server push (nothing here could use it). Larger receive windows
+     * than the 64 KiB default so a big response is not throttled to one
+     * window per round trip; max_response still bounds what is kept. The
+     * SETTINGS frame is only queued here -- the first post sends it. */
     settings[0].settings_id = NGHTTP2_SETTINGS_ENABLE_PUSH;
     settings[0].value = 0;
     settings[1].settings_id = NGHTTP2_SETTINGS_INITIAL_WINDOW_SIZE;
@@ -757,13 +822,18 @@ axis2_h2_json_client_create(
     c->connect_timeout_ms = o->connect_timeout_ms > 0 ? o->connect_timeout_ms : H2C_DEFAULT_CONNECT_MS;
     c->io_timeout_ms = o->io_timeout_ms > 0 ? o->io_timeout_ms : H2C_DEFAULT_IO_MS;
     c->max_response = o->max_response_bytes > 0 ? o->max_response_bytes : H2C_DEFAULT_MAX_RESPONSE;
+    if (c->max_response == SIZE_MAX)
+        c->max_response = SIZE_MAX - 1;     /* room for the terminating NUL */
     c->host = axutil_strdup(env, o->host);
     c->verify_name = axutil_strdup(env, (o->verify_name && o->verify_name[0]) ? o->verify_name : o->host);
     if (!c->host || !c->verify_name)
         goto fail;
     c->verify_name_is_ip = h2c_is_ip_literal(c->verify_name);
 
-    /* :authority -- bracketed when an IPv6 literal. */
+    /* :authority -- bracketed when an IPv6 literal. The name the certificate
+     * is checked against is also the one the request names, so a virtual
+     * host behind a load balancer's address routes correctly. +16 covers
+     * "[", "]", ":", five port digits and the NUL. */
     alen = strlen(c->verify_name) + 16;
     c->authority = AXIS2_MALLOC(env->allocator, alen);
     if (!c->authority)
@@ -912,6 +982,10 @@ axis2_h2_json_client_post(
     }
     c->stream_id = sid;
 
+    /* Alternate: send what nghttp2 has queued (headers, body as the window
+     * opens, WINDOW_UPDATEs, SETTINGS ACKs), then wait for the server,
+     * until the callbacks mark the stream closed. If the session wants
+     * neither to read nor write, the server has GOAWAYed us mid-request. */
     while (!c->stream_closed)
     {
         if (h2c_pump_send(c, env) != AXIS2_SUCCESS)
@@ -957,6 +1031,8 @@ axis2_h2_json_client_post(
             goto fail;
         }
     }
+    /* The terminator is not counted in resp_len; h2c_on_data always leaves
+     * room for it. Ownership of the buffer passes to the caller. */
     c->resp[c->resp_len] = '\0';
     *response_out = c->resp;
     if (response_len_out)
