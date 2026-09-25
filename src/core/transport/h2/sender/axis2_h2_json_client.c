@@ -470,6 +470,12 @@ h2c_pump_recv(axis2_h2_json_client_t *c, const axutil_env_t *env)
                     return AXIS2_FAILURE;
                 break;
             case SSL_ERROR_ZERO_RETURN:
+                /* close_notify can arrive in the same read as the end of the
+                 * response. Let the caller see what was decoded first; if
+                 * the stream is still open, the next call gets here again
+                 * with got_any 0 and fails (OpenSSL repeats ZERO_RETURN). */
+                if (got_any)
+                    return AXIS2_SUCCESS;
                 h2c_fail(c, env, "the server closed the TLS session");
                 return AXIS2_FAILURE;
             default:
@@ -948,7 +954,7 @@ axis2_h2_json_client_post(
     c->resp_cap = 0;
     c->resp_too_large = 0;
 
-    snprintf(clen, sizeof(clen), "%lu", (unsigned long)json_len);
+    snprintf(clen, sizeof(clen), "%llu", (unsigned long long)json_len);
 #define H2C_NV(i, n, v) do { \
         hdrs[i].name = (uint8_t *)(n); hdrs[i].namelen = strlen(n); \
         hdrs[i].value = (uint8_t *)(v); hdrs[i].valuelen = strlen(v); \
@@ -1000,9 +1006,15 @@ axis2_h2_json_client_post(
         if (h2c_pump_recv(c, env) != AXIS2_SUCCESS)
             goto fail;
     }
-    /* Acknowledge what arrived with the response (settings, window updates). */
+    /* Acknowledge what arrived with the response (settings, window updates).
+     * Best effort: the response is complete, and a server that closed the
+     * connection right after sending it makes this send fail. Drop the
+     * connection then, but do not discard the response. */
     if (h2c_pump_send(c, env) != AXIS2_SUCCESS)
-        goto fail;
+    {
+        h2c_disconnect(c, env, 0);
+        c->error[0] = '\0';
+    }
 
     if (c->resp_too_large)
     {
