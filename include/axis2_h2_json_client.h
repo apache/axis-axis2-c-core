@@ -52,6 +52,16 @@ extern "C"
 
     /**
      * Connection and TLS settings. Strings are copied at create time.
+     *
+     * Zero-initialise the struct and set what you need: every field left 0
+     * or NULL takes its documented default.
+     *
+     * New fields are only ever added at the end. That keeps every existing
+     * field at the offset it has always had, so a field is never read as a
+     * different one after the struct grows. It does not let a program built
+     * against an older copy of this header run against a newer library: the
+     * library reads the whole struct, and the older program passes a shorter
+     * one. Rebuild against the header you link with.
      */
     typedef struct axis2_h2_json_client_options
     {
@@ -85,17 +95,20 @@ extern "C"
         int io_timeout_ms;
 
         /**
+         * Largest response body accepted. 0 means 16 MB, the size of the
+         * server's JSON transport buffer; a larger response is abandoned.
+         */
+        size_t max_response_bytes;
+
+        /* Fields added after the struct was first published go below, in
+         * the order they were added. See the note on the struct. */
+
+        /**
          * Longest a post may take from sending the request to receiving the
          * whole response, however steadily the server makes progress.
          * Connecting is bounded separately. 0 means 120000 ms.
          */
         int request_timeout_ms;
-
-        /**
-         * Largest response body accepted. 0 means 16 MB, the size of the
-         * server's JSON transport buffer; a larger response is abandoned.
-         */
-        size_t max_response_bytes;
     } axis2_h2_json_client_options_t;
 
     /**
