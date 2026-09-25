@@ -571,6 +571,11 @@ h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t dead
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     snprintf(port, sizeof(port), "%d", c->port);
+    /* getaddrinfo blocks, bounded only by the system resolver's own timeout,
+     * so the deadline does not cover it -- as the header says. Bounding it
+     * would need a resolver thread or an async resolver (c-ares); an IP
+     * literal skips the lookup, and that is the documented way to a hard
+     * bound. */
     rc = getaddrinfo(c->host, port, &hints, &res);
     if (rc != 0)
     {

@@ -88,7 +88,13 @@ extern "C"
         /** PEM private key for cert_file. Required when cert_file is set. */
         const axis2_char_t *key_file;
 
-        /** TCP connect and TLS handshake limit. 0 means 5000 ms. */
+        /**
+         * TCP connect and TLS handshake limit. 0 means 5000 ms. It starts
+         * after host is resolved: a DNS lookup blocks for as long as the
+         * system resolver allows (resolv.conf timeout and attempts). For a
+         * hard bound, pass an IP literal as host and the certificate's name
+         * as verify_name.
+         */
         int connect_timeout_ms;
 
         /** Longest wait for the server to make progress. 0 means 30000 ms. */
