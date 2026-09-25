@@ -556,12 +556,15 @@ h2c_disconnect(axis2_h2_json_client_t *c, const axutil_env_t *env, int graceful)
     }
 }
 
-/* Try each address getaddrinfo returns (IPv6 and IPv4, in its order) until
- * one connects. The socket is non-blocking from the start so the connect
- * itself honours the deadline; it stays non-blocking for the connection's
- * life, which is what lets every later wait go through h2c_wait. */
+/* Resolve host, then start the connect_timeout_ms clock: *deadline is set
+ * here, after the lookup, and h2c_connect uses the same deadline for the TLS
+ * handshake. Then try each address getaddrinfo returned (IPv6 and IPv4, in
+ * its order) until one connects. The socket is non-blocking from the start
+ * so the connect itself honours the deadline; it stays non-blocking for the
+ * connection's life, which is what lets every later wait go through
+ * h2c_wait. */
 static axis2_status_t
-h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t deadline)
+h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t *deadline)
 {
     struct addrinfo hints, *res = NULL, *ai;
     char port[16];
@@ -572,16 +575,18 @@ h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t dead
     hints.ai_socktype = SOCK_STREAM;
     snprintf(port, sizeof(port), "%d", c->port);
     /* getaddrinfo blocks, bounded only by the system resolver's own timeout,
-     * so the deadline does not cover it -- as the header says. Bounding it
-     * would need a resolver thread or an async resolver (c-ares); an IP
-     * literal skips the lookup, and that is the documented way to a hard
-     * bound. */
+     * so the connect deadline starts after it, as the header says. Starting
+     * it before would let a slow lookup use up the connect time and fail
+     * the connect instantly. Bounding the lookup itself would need a
+     * resolver thread or an async resolver (c-ares); an IP literal skips
+     * it, and that is the documented way to a hard bound. */
     rc = getaddrinfo(c->host, port, &hints, &res);
     if (rc != 0)
     {
         h2c_fail(c, env, "cannot resolve %s: %s", c->host, gai_strerror(rc));
         return AXIS2_FAILURE;
     }
+    *deadline = h2c_now_ms() + c->connect_timeout_ms;
 
     for (ai = res; ai; ai = ai->ai_next)
     {
@@ -604,7 +609,7 @@ h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t dead
             err = errno;
         else
         {
-            left = deadline - h2c_now_ms();
+            left = *deadline - h2c_now_ms();
             rc = h2c_wait(fd, POLLOUT, left > 0 ? (int)left : 0);
             if (rc == 0)
                 err = ETIMEDOUT;
@@ -631,7 +636,7 @@ h2c_tcp_connect(axis2_h2_json_client_t *c, const axutil_env_t *env, int64_t dead
 static axis2_status_t
 h2c_connect(axis2_h2_json_client_t *c, const axutil_env_t *env)
 {
-    int64_t deadline = h2c_now_ms() + c->connect_timeout_ms;
+    int64_t deadline;           /* set by h2c_tcp_connect, after DNS */
     const unsigned char *alpn = NULL;
     unsigned int alpn_len = 0;
     nghttp2_session_callbacks *cbs = NULL;
@@ -639,7 +644,7 @@ h2c_connect(axis2_h2_json_client_t *c, const axutil_env_t *env)
     char why[160];
     int rv;
 
-    if (h2c_tcp_connect(c, env, deadline) != AXIS2_SUCCESS)
+    if (h2c_tcp_connect(c, env, &deadline) != AXIS2_SUCCESS)
         return AXIS2_FAILURE;
 
     c->ssl = SSL_new(c->ctx);
