@@ -78,10 +78,12 @@
 
 #define H2C_DEFAULT_CONNECT_MS   5000
 #define H2C_DEFAULT_IO_MS        30000
+#define H2C_DEFAULT_REQUEST_MS   120000
 #define H2C_DEFAULT_MAX_RESPONSE ((size_t)16 * 1024 * 1024)
 #define H2C_IO_CHUNK             16384
 #define H2C_STREAM_WINDOW        (1 << 20)   /* per-stream receive window */
 #define H2C_CONNECTION_WINDOW    (1 << 24)   /* connection receive window */
+#define H2C_NO_DEADLINE          ((int64_t)-1)
 
 struct axis2_h2_json_client
 {
@@ -93,6 +95,7 @@ struct axis2_h2_json_client
     axis2_char_t *authority;
     int connect_timeout_ms;
     int io_timeout_ms;
+    int request_timeout_ms;
     size_t max_response;
     SSL_CTX *ctx;
 
@@ -106,6 +109,8 @@ struct axis2_h2_json_client
     /* the request in flight -- written by the nghttp2 callbacks, read by
      * axis2_h2_json_client_post once the stream closes */
     const axutil_env_t *env;
+    int64_t request_deadline;   /* end of request_timeout_ms; H2C_NO_DEADLINE
+                                 * outside a post */
     int32_t stream_id;
     int stream_closed;          /* set by h2c_on_stream_close */
     uint32_t stream_error;      /* RST_STREAM code; NGHTTP2_NO_ERROR if clean */
@@ -185,16 +190,28 @@ h2c_wait(int fd, short events, int timeout_ms)
     }
 }
 
+/* How long the next wait for the server may last. io_timeout_ms alone
+ * bounds each wait, not the post: a server trickling a byte per wait could
+ * hold a post for io_timeout_ms times the response size. So within a post
+ * every wait is also cut short at request_deadline. <= 0: it has passed. */
+static int
+h2c_io_wait_ms(const axis2_h2_json_client_t *c)
+{
+    int64_t left;
+    if (c->request_deadline == H2C_NO_DEADLINE)
+        return c->io_timeout_ms;
+    left = c->request_deadline - h2c_now_ms();
+    return left < c->io_timeout_ms ? (int)left : c->io_timeout_ms;
+}
+
 /* ------------------------------------------------------------------------ */
 /* socket I/O under the memory BIOs                                          */
 /* ------------------------------------------------------------------------ */
 
-/* deadline for h2c_send_all / h2c_flush: none, so each wait for the socket
- * to drain gets io_timeout_ms. The handshake passes its connect deadline
- * instead, so a server that stalls its receive window cannot stretch
- * connect_timeout_ms to io_timeout_ms. */
-#define H2C_NO_DEADLINE ((int64_t)-1)
-
+/* deadline for h2c_send_all / h2c_flush: H2C_NO_DEADLINE means each wait
+ * for the socket to drain gets h2c_io_wait_ms. The handshake passes its
+ * connect deadline instead, so a server that stalls its receive window
+ * cannot stretch connect_timeout_ms to io_timeout_ms. */
 static axis2_status_t
 h2c_send_all(axis2_h2_json_client_t *c, const axutil_env_t *env,
              const char *buf, size_t len, int64_t deadline)
@@ -212,7 +229,7 @@ h2c_send_all(axis2_h2_json_client_t *c, const axutil_env_t *env,
             continue;
         if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
         {
-            int64_t left = deadline == H2C_NO_DEADLINE ? c->io_timeout_ms
+            int64_t left = deadline == H2C_NO_DEADLINE ? h2c_io_wait_ms(c)
                                                        : deadline - h2c_now_ms();
             int w = left > 0 ? h2c_wait(c->fd, POLLOUT, (int)left) : 0;
             if (w > 0)
@@ -464,11 +481,22 @@ h2c_pump_recv(axis2_h2_json_client_t *c, const axutil_env_t *env)
             case SSL_ERROR_WANT_READ:
                 if (got_any)
                     return AXIS2_SUCCESS;
+            {
+                int wait_ms;
                 /* TLS may owe the server something first (a key update). */
-                if (h2c_flush(c, env, H2C_NO_DEADLINE) != AXIS2_SUCCESS ||
-                    h2c_fill(c, env, c->io_timeout_ms) != AXIS2_SUCCESS)
+                if (h2c_flush(c, env, H2C_NO_DEADLINE) != AXIS2_SUCCESS)
+                    return AXIS2_FAILURE;
+                wait_ms = h2c_io_wait_ms(c);
+                if (wait_ms <= 0)
+                {
+                    h2c_fail(c, env, "no complete response within %d ms",
+                             c->request_timeout_ms);
+                    return AXIS2_FAILURE;
+                }
+                if (h2c_fill(c, env, wait_ms) != AXIS2_SUCCESS)
                     return AXIS2_FAILURE;
                 break;
+            }
             case SSL_ERROR_ZERO_RETURN:
                 /* close_notify can arrive in the same read as the end of the
                  * response. Let the caller see what was decoded first; if
@@ -827,6 +855,9 @@ axis2_h2_json_client_create(
     c->port = o->port;
     c->connect_timeout_ms = o->connect_timeout_ms > 0 ? o->connect_timeout_ms : H2C_DEFAULT_CONNECT_MS;
     c->io_timeout_ms = o->io_timeout_ms > 0 ? o->io_timeout_ms : H2C_DEFAULT_IO_MS;
+    c->request_timeout_ms = o->request_timeout_ms > 0 ? o->request_timeout_ms
+                                                      : H2C_DEFAULT_REQUEST_MS;
+    c->request_deadline = H2C_NO_DEADLINE;      /* 0 would read as expired */
     c->max_response = o->max_response_bytes > 0 ? o->max_response_bytes : H2C_DEFAULT_MAX_RESPONSE;
     if (c->max_response == SIZE_MAX)
         c->max_response = SIZE_MAX - 1;     /* room for the terminating NUL */
@@ -942,7 +973,10 @@ axis2_h2_json_client_post(
         return AXIS2_FAILURE;
     }
 
+    /* Connecting is bounded by connect_timeout_ms above; the clock for the
+     * request itself starts here. */
     c->env = env;
+    c->request_deadline = h2c_now_ms() + c->request_timeout_ms;
     c->stream_closed = 0;
     c->stream_error = 0;
     c->http_status = 0;
@@ -991,7 +1025,16 @@ axis2_h2_json_client_post(
     /* Alternate: send what nghttp2 has queued (headers, body as the window
      * opens, WINDOW_UPDATEs, SETTINGS ACKs), then wait for the server,
      * until the callbacks mark the stream closed. If the session wants
-     * neither to read nor write, the server has GOAWAYed us mid-request. */
+     * neither to read nor write, the server has GOAWAYed us mid-request.
+     *
+     * Sending before receiving cannot deadlock against a conforming server.
+     * nghttp2 releases DATA only within the flow-control window the server
+     * granted, and the server keeps reading the connection to process
+     * frames. A server that answers early (a 413 before the body is all
+     * sent) sends its response and RST_STREAM(NO_ERROR) (RFC 9113 8.1);
+     * the next h2c_pump_recv takes both, and nghttp2 sends no more body. A
+     * server that stops reading altogether blocks a send only until
+     * request_deadline. */
     while (!c->stream_closed)
     {
         if (h2c_pump_send(c, env) != AXIS2_SUCCESS)
@@ -1053,6 +1096,7 @@ axis2_h2_json_client_post(
         *http_status_out = c->http_status;
     c->resp = NULL;
     c->req_body = NULL;
+    c->request_deadline = H2C_NO_DEADLINE;
     return AXIS2_SUCCESS;
 
 fail:
@@ -1060,6 +1104,7 @@ fail:
         AXIS2_FREE(env->allocator, c->resp);
     c->resp = NULL;
     c->req_body = NULL;
+    c->request_deadline = H2C_NO_DEADLINE;
     h2c_disconnect(c, env, 0);
     return AXIS2_FAILURE;
 }

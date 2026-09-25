@@ -85,6 +85,13 @@ extern "C"
         int io_timeout_ms;
 
         /**
+         * Longest a post may take from sending the request to receiving the
+         * whole response, however steadily the server makes progress.
+         * Connecting is bounded separately. 0 means 120000 ms.
+         */
+        int request_timeout_ms;
+
+        /**
          * Largest response body accepted. 0 means 16 MB, the size of the
          * server's JSON transport buffer; a larger response is abandoned.
          */

@@ -57,7 +57,7 @@ next. A client is not thread-safe; use one per thread.
 | TLS 1.2 or later, no compression, no renegotiation | RFC 9113 §9.2. |
 | The server certificate is always verified, including its name | There is no option to skip it. |
 | `verify_name` is separate from `host` | Connecting by IP to a server whose certificate names it by DNS name — the equivalent of `curl --resolve`. An IP-literal `verify_name` is matched against IP SANs and never sent as SNI. |
-| Every wait has a deadline | Connect + handshake share `connect_timeout_ms` (default 5 s); each wait for the server is bounded by `io_timeout_ms` (default 30 s). |
+| Every wait has a deadline | Connect + handshake share `connect_timeout_ms` (default 5 s); each wait for the server is bounded by `io_timeout_ms` (default 30 s), and the whole request and response by `request_timeout_ms` (default 120 s), so a server trickling bytes cannot hold a post. |
 | A response over `max_response_bytes` is abandoned, not truncated | Default 16 MB, the server's JSON transport buffer. The stream is reset. |
 | Nothing is retried | A POST may not be safe to repeat. After a failure the connection is dropped and the next post opens a new one. |
 | A connection the server closed while idle is replaced before the next request | Servers close idle HTTP/2 connections (httpd's keep-alive timeout is 5 s by default). The client checks, without waiting, for a GOAWAY or FIN before it sends; nothing has been sent, so a new connection is not a retry. |
