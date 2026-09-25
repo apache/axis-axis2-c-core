@@ -1033,8 +1033,8 @@ axis2_h2_json_client_post(
      * frames. A server that answers early (a 413 before the body is all
      * sent) sends its response and RST_STREAM(NO_ERROR) (RFC 9113 8.1);
      * the next h2c_pump_recv takes both, and nghttp2 sends no more body. A
-     * server that stops reading altogether blocks a send only until
-     * request_deadline. */
+     * server that stops reading altogether fails the send after
+     * io_timeout_ms, or sooner if request_deadline comes first. */
     while (!c->stream_closed)
     {
         if (h2c_pump_send(c, env) != AXIS2_SUCCESS)
