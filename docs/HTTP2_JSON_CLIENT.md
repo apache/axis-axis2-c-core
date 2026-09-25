@@ -49,6 +49,12 @@ axis2_h2_json_client_free(c, env);
 One client holds one connection, opened on the first post and reused by the
 next. A client is not thread-safe; use one per thread.
 
+An operation that works for a long time before it answers -- one that
+starts a file transfer and replies when it finishes, say -- sends nothing on
+the stream meanwhile, so it needs both `io_timeout_ms` and
+`request_timeout_ms` raised to its longest expected run. Set them on a client
+kept for that operation; other clients keep the short defaults.
+
 ## Rules it enforces
 
 | Rule | Why |
