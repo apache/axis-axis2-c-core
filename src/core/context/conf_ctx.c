@@ -46,6 +46,15 @@ struct axis2_conf_ctx
 
     /* Mutex to synchronize the read/write operations */
     axutil_thread_mutex_t *mutex;
+
+    /* The env this context was created with, which lives as long as it does.
+     * Contexts registered here are created with it, never with the env of the
+     * request that happens to need them first: under mod_axis2 a request's env
+     * and allocator live in that request's pool, and the hash tables inside a
+     * context keep the env they were made with (axutil_hash_make), so a
+     * request env would be dereferenced after its pool is gone -- at the
+     * latest by axis2_conf_ctx_free when the child exits. */
+    const axutil_env_t *env;
 };
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
@@ -69,6 +78,7 @@ axis2_conf_ctx_create(
     conf_ctx->op_ctx_map = NULL;
     conf_ctx->svc_ctx_map = NULL;
     conf_ctx->svc_grp_ctx_map = NULL;
+    conf_ctx->env = env;
     conf_ctx->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
     if(!conf_ctx->mutex)
     {
@@ -529,9 +539,12 @@ axis2_conf_ctx_fill_ctxs(
 
     if(!svc_grp_ctx)
     {
+        /* Long-lived: registered below and kept until this conf_ctx is freed,
+         * so built with conf_ctx->env (see the struct). */
+        const axutil_env_t *ctx_env = conf_ctx->env ? conf_ctx->env : env;
         axis2_svc_grp_t *svc_grp = NULL;
         svc_grp = axis2_svc_get_parent(svc, env);
-        svc_grp_ctx = axis2_svc_grp_get_svc_grp_ctx(svc_grp, env, conf_ctx);
+        svc_grp_ctx = axis2_svc_grp_get_svc_grp_ctx(svc_grp, ctx_env, conf_ctx);
         svc_ctx = axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
         if(!svc_ctx)
         {
@@ -542,7 +555,7 @@ axis2_conf_ctx_fill_ctxs(
             return NULL;
         }
 
-        axis2_svc_grp_ctx_set_id(svc_grp_ctx, env, svc_grp_ctx_id);
+        axis2_svc_grp_ctx_set_id(svc_grp_ctx, ctx_env, svc_grp_ctx_id);
         axis2_conf_ctx_register_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id, svc_grp_ctx);
     }
 
