@@ -212,10 +212,24 @@ Two traps found this way:
 
 ## 7. A child that crashes in teardown
 
-At the time of writing, an Apache child can crash in Axis2's own teardown
-(`axis2_shutdown`, run from pool cleanup) as it exits. That is tracked
-separately. It stops LeakSanitizer from running, because the process dies on a
-signal instead of exiting. To take a leak report past it, make
+A crash in teardown stops LeakSanitizer from running: the process dies on a
+signal instead of exiting. Until commit 6fcae89de every Apache child did this.
+`axis2_conf_ctx_fill_ctxs` built the service group context it registers with
+the first request's env, which lives in that request's pool, and the context's
+hash tables kept it, so `axutil_hash_free` read a destroyed env from
+`axis2_shutdown`. The symptom in the httpd error log is
+`child pid … exit signal Segmentation fault (11)` at every stop, graceful
+reload or idle-worker reap, while requests themselves succeed.
+
+To find a bug of that shape, poison instead of destroying: in a diagnostic
+build only, replace the handler's `apr_pool_destroy(local_pool)` with
+`ASAN_POISON_MEMORY_REGION(thread_env, sizeof(*thread_env))` (and the same for
+the allocator). Pools are no longer reused, and any later use of a request's
+env, by a later request or by teardown, is reported with its stack. APR pools
+are often mmap-backed, which plain ASan cannot see into; the poisoning makes
+the use visible.
+
+To take a leak report past a teardown crash that is not yet fixed, make
 `axis2_shutdown` return immediately in the running process, then detach and
 stop as usual:
 
