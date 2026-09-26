@@ -540,12 +540,40 @@ axis2_conf_ctx_fill_ctxs(
     if(!svc_grp_ctx)
     {
         /* Long-lived: registered below and kept until this conf_ctx is freed,
-         * so built with conf_ctx->env (see the struct). */
+         * so built with conf_ctx->env (see the struct).
+         *
+         * Look again, create and register under one hold of the mutex: two
+         * first requests for the same group would otherwise both create one,
+         * and the loser would be overwritten in the map and never freed. The
+         * locking accessors are not used here because the mutex is not
+         * recursive; creating a context takes no conf_ctx lock. */
         const axutil_env_t *ctx_env = conf_ctx->env ? conf_ctx->env : env;
         axis2_svc_grp_t *svc_grp = NULL;
         svc_grp = axis2_svc_get_parent(svc, env);
-        svc_grp_ctx = axis2_svc_grp_get_svc_grp_ctx(svc_grp, ctx_env, conf_ctx);
-        svc_ctx = axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
+
+        axutil_thread_mutex_lock(conf_ctx->mutex);
+        if(conf_ctx->svc_grp_ctx_map)
+        {
+            svc_grp_ctx = (axis2_svc_grp_ctx_t *)axutil_hash_get(conf_ctx->svc_grp_ctx_map,
+                svc_grp_ctx_id, AXIS2_HASH_KEY_STRING);
+        }
+        if(!svc_grp_ctx)
+        {
+            svc_grp_ctx = axis2_svc_grp_get_svc_grp_ctx(svc_grp, ctx_env, conf_ctx);
+            /* Registered only if it holds this service, as before. */
+            if(svc_grp_ctx && axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id))
+            {
+                axis2_svc_grp_ctx_set_id(svc_grp_ctx, ctx_env, svc_grp_ctx_id);
+                if(conf_ctx->svc_grp_ctx_map)
+                {
+                    axutil_hash_set(conf_ctx->svc_grp_ctx_map, svc_grp_ctx_id,
+                        AXIS2_HASH_KEY_STRING, svc_grp_ctx);
+                }
+            }
+        }
+        axutil_thread_mutex_unlock(conf_ctx->mutex);
+
+        svc_ctx = svc_grp_ctx ? axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id) : NULL;
         if(!svc_ctx)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP, AXIS2_FAILURE);
@@ -554,9 +582,6 @@ axis2_conf_ctx_fill_ctxs(
 
             return NULL;
         }
-
-        axis2_svc_grp_ctx_set_id(svc_grp_ctx, ctx_env, svc_grp_ctx_id);
-        axis2_conf_ctx_register_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id, svc_grp_ctx);
     }
 
     /* When you come here operation context MUST have already been assigned
