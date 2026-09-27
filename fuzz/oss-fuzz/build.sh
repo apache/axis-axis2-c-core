@@ -32,8 +32,16 @@ autoreconf -i
     CFLAGS="$CFLAGS" \
     LDFLAGS="$LDFLAGS"
 
-make -j$(nproc)
-make install
+# The standalone HTTP/1.1 server (simple_axis2_server) is left out. It links
+# the HTTP receiver, sender and message receivers into one binary, and each of
+# those is also a loadable plugin exporting the same axis2_get_instance /
+# axis2_remove_instance entry points, so with --disable-shared the link fails
+# on duplicate symbols -- and under bash -e that ends the whole build before
+# any fuzz target exists. No fuzz target uses the server. The variable is the
+# one src/core/transport/http/server/Makefile.am selects it with; a
+# command-line setting reaches every sub-make.
+make -j$(nproc) SIMPLE_SERVER_DIR=
+make install SIMPLE_SERVER_DIR=
 
 # Build fuzz targets
 AXIS2_INCLUDES="-I$WORK/install/include/axis2-2.0.0 -I$WORK/install/include/axis2-2.0.0/platforms"
