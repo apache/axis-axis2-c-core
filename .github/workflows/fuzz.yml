@@ -1,0 +1,146 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: Fuzzing
+
+# Builds the libFuzzer targets in fuzz/ with fuzz/oss-fuzz/build.sh -- the same
+# script OSS-Fuzz runs, with the environment OSS-Fuzz would give it -- and runs
+# each one for a fixed time under AddressSanitizer. Until the project is
+# accepted by OSS-Fuzz nothing else runs these targets, and a build script that
+# is never run breaks unnoticed: this one did, when a static build stopped
+# linking.
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    # Weekly, Tuesday 02:00 UTC -- a day after the ASan run, so the two long
+    # jobs do not share a morning. The scheduled run fuzzes for longer.
+    - cron: '0 2 * * 2'
+  workflow_dispatch:
+    inputs:
+      seconds:
+        description: 'Seconds to run each fuzz target'
+        type: choice
+        options: [ '60', '300', '900' ]
+        default: '300'
+
+jobs:
+  fuzz:
+    # Pinned rather than ubuntu-latest: the libFuzzer runtime is installed by
+    # clang version (libclang-rt-18-dev), and a runner image change would
+    # otherwise break the install step rather than the code.
+    runs-on: ubuntu-24.04
+    name: libFuzzer (ASan)
+    timeout-minutes: 45
+    # Reads the repo and uploads an artifact on failure. Nothing else.
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Install build dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          # The first line mirrors fuzz/oss-fuzz/Dockerfile. clang and its
+          # runtime stand in for the OSS-Fuzz base image; zip packages the
+          # seed corpora.
+          sudo apt-get install -y -qq \
+            autoconf automake libtool pkg-config libxml2-dev libssl-dev libjson-c-dev zlib1g-dev \
+            uuid-dev clang-18 libclang-rt-18-dev zip
+
+      - name: Build the fuzz targets
+        env:
+          CC: clang-18
+          CXX: clang++-18
+          # OSS-Fuzz's AddressSanitizer flags, and its libFuzzer engine.
+          CFLAGS: -O1 -fno-omit-frame-pointer -gline-tables-only -fsanitize=address -fsanitize-address-use-after-scope -fsanitize=fuzzer-no-link
+          CXXFLAGS: -O1 -fno-omit-frame-pointer -gline-tables-only -fsanitize=address -fsanitize-address-use-after-scope -fsanitize=fuzzer-no-link
+          LIB_FUZZING_ENGINE: -fsanitize=fuzzer
+        run: |
+          set -euo pipefail
+          # build.sh expects the source at $SRC/axis2c and writes to $WORK and
+          # $OUT, as in the OSS-Fuzz image. bash -eu is how OSS-Fuzz runs it.
+          export SRC="$RUNNER_TEMP/src" WORK="$RUNNER_TEMP/work" OUT="$RUNNER_TEMP/out"
+          mkdir -p "$SRC" "$WORK" "$OUT"
+          ln -s "$GITHUB_WORKSPACE" "$SRC/axis2c"
+          bash -eu fuzz/oss-fuzz/build.sh
+          ls -l "$OUT"
+
+      - name: Run each target
+        env:
+          # A dispatch picks from a fixed list; otherwise the weekly run gets
+          # ten minutes a target and a push or pull request one minute.
+          FUZZ_SECONDS: ${{ inputs.seconds || (github.event_name == 'schedule' && '600' || '60') }}
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/out"
+          RUNS="$RUNNER_TEMP/fuzz"
+          targets="fuzz_finbench fuzz_json_parser fuzz_json_reader fuzz_xml_parser fuzz_http_header fuzz_url_parser"
+          for t in $targets; do
+            test -x "$OUT/$t" || { echo "::error::$t was not built"; exit 1; }
+            mkdir -p "$RUNS/$t/corpus" "$RUNS/$t/artifacts"
+            if [ -f "$OUT/${t}_seed_corpus.zip" ]; then
+              unzip -oq "$OUT/${t}_seed_corpus.zip" -d "$RUNS/$t/corpus"
+            fi
+            flags=()
+            asan="${ASAN_OPTIONS:-}"
+            if [ -f "$OUT/$t.dict" ]; then flags+=("-dict=$OUT/$t.dict"); fi
+            # Leak detection is off for the XML parser only. AXIOM builds
+            # namespace objects no element owns on some malformed documents,
+            # and a target that is red on every run gets ignored; turn it on
+            # once those are cleared. Crashes and memory errors still fail it.
+            # Both switches are needed: libFuzzer's covers the per-input check,
+            # ASAN_OPTIONS the one AddressSanitizer runs at exit.
+            if [ "$t" = fuzz_xml_parser ]; then
+              flags+=("-detect_leaks=0"); asan="detect_leaks=0"
+            fi
+            # The targets run side by side; each writes its own log.
+            ( cd "$RUNS/$t" && set +e
+              ASAN_OPTIONS="$asan" "$OUT/$t" "${flags[@]}" -max_total_time="$FUZZ_SECONDS" -timeout=25 \
+                -rss_limit_mb=2560 -print_final_stats=1 \
+                -artifact_prefix="$RUNS/$t/artifacts/" corpus > log.txt 2>&1
+              echo $? > rc ) &
+          done
+          wait
+          failed=0
+          for t in $targets; do
+            rc=$(cat "$RUNS/$t/rc")
+            echo "$t: exit $rc"
+            grep -E 'DONE|SUMMARY' "$RUNS/$t/log.txt" || true
+            if [ "$rc" != 0 ]; then
+              failed=1
+              echo "::error::$t failed (exit $rc); the input is in the fuzz-findings artifact"
+              tail -80 "$RUNS/$t/log.txt"
+            fi
+          done
+          exit "$failed"
+
+      - name: Upload findings
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fuzz-findings
+          # Crashing inputs and each target's log. The corpora are left out:
+          # they are regenerated every run and would dwarf the findings.
+          path: |
+            ${{ runner.temp }}/fuzz/*/artifacts/
+            ${{ runner.temp }}/fuzz/*/log.txt
+          retention-days: 14
+          if-no-files-found: ignore

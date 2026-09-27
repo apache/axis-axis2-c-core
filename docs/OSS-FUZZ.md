@@ -162,6 +162,20 @@ clang -fsanitize=address,fuzzer \
 ./fuzz_url_parser fuzz/corpus/url/ -max_total_time=300
 ```
 
+## Continuous Integration
+
+Until OSS-Fuzz accepts the project, `.github/workflows/fuzz.yml` is what runs
+these targets. It builds them with `fuzz/oss-fuzz/build.sh` under `bash -eu`, as
+OSS-Fuzz does, then runs each one under AddressSanitizer: one minute a target on
+every push and pull request to master, ten minutes in the weekly run, and a
+chosen time from the Actions tab. A crash, a memory error or a leak fails the
+job, and the input that caused it is uploaded as the `fuzz-findings` artifact.
+
+Leak detection is off for `fuzz_xml_parser` alone: AXIOM still builds
+namespace objects that no element owns on some malformed documents. Crashes and
+memory errors in the XML parser still fail the job. Turn leak detection back on
+for it once those are cleared.
+
 ## Understanding Fuzzer Output
 
 ### Successful Run
