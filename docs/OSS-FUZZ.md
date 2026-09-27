@@ -176,6 +176,31 @@ namespace objects that no element owns on some malformed documents. Crashes and
 memory errors in the XML parser still fail the job. Turn leak detection back on
 for it once those are cleared.
 
+## TODO
+
+- **AXIOM namespace ownership.** `fuzz_xml_parser` runs with leak detection
+  off because the stax builder still creates namespace objects that no element
+  owns on some malformed documents, and attributes hold namespaces without a
+  reference. Fixing that is a change to AXIOM's ownership model, not a leak
+  patch. It is deferred on purpose: the JSON path exists to keep SOAP and AXIOM
+  out of request handling (see
+  [HTTP2_SERVICE_PROVIDER_INTERFACE_PATTERN.md](HTTP2_SERVICE_PROVIDER_INTERFACE_PATTERN.md),
+  "SOAP Baggage Elimination"). On an HTTP/2 JSON deployment an XML body is
+  refused by the JSON processor before any parser sees it (verified: `text/xml`
+  and `application/soap+xml` POSTs return 400 "Invalid JSON format"), and AXIOM
+  reads only `axis2.xml` and `services.xml` at startup -- local files, not
+  network input. A SOAP deployment parses request bodies with it and should
+  weigh this higher. When it is done, turn leak detection back on in
+  `.github/workflows/fuzz.yml`.
+- **Instrument json-c.** `fuzz_json_parser` links the distribution's
+  `libjson-c.a`, which is built without coverage instrumentation, so libFuzzer
+  sees almost none of json-c (about a dozen edges, all in the harness). Build
+  json-c from source with `$CFLAGS` in `build.sh` to fuzz it properly.
+  `fuzz_finbench` is not affected: the service code it exercises is compiled
+  into the target.
+- **OSS-Fuzz integration.** The project PR to google/oss-fuzz is open; until it
+  is accepted, the CI workflow above is the only thing that runs these targets.
+
 ## Understanding Fuzzer Output
 
 ### Successful Run
