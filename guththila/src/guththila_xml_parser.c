@@ -1038,15 +1038,19 @@ guththila_next(
 
 #ifdef GUTHTHILA_VALIDATION_PARSER	
                     elem = (guththila_element_t *)guththila_stack_pop(&m->elem, env);
-                    if(!elem || (!elem->prefix && m->prefix) || (elem->prefix && !m->prefix))
+                    if(!elem)
                         return -1;
-                    if(guththila_tok_tok_cmp(m->name, elem->name, env))
+                    /* A mismatched end tag is an error, but the frame just
+                     * popped is still owned by the parser: push it back so
+                     * guththila_un_init frees it with the rest of the stack.
+                     * Returning with it popped leaked the frame and its
+                     * tokens on every malformed end tag. */
+                    if((!elem->prefix && m->prefix) || (elem->prefix && !m->prefix)
+                        || guththila_tok_tok_cmp(m->name, elem->name, env)
+                        || (elem->prefix && m->prefix
+                            && guththila_tok_tok_cmp(m->prefix, elem->prefix, env)))
                     {
-                        return -1;
-                    }
-                    if(elem->prefix && m->prefix && guththila_tok_tok_cmp(m->prefix, elem->prefix,
-                        env))
-                    {
+                        guththila_stack_push(&m->elem, elem, env);
                         return -1;
                     }
                     /* Releasing the namespace related resources */
