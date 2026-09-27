@@ -1667,6 +1667,7 @@ module (both GSON and Moshi variants, tested on WildFly 32).
 - [TestwsService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/testws-service/) - XSS protection demonstration
 - [CameraControlService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/camera-control-service/) - Generic camera control with SFTP file transfer and user-implementable stub functions
 - [FinancialBenchmarkService Source Code](https://github.com/apache/axis-axis2-c-core/tree/master/samples/user_guide/financial-benchmark-service/) - Financial computation benchmarks (O(n²) matrix operations, Monte Carlo VaR)
+  - [composeCovariance](https://github.com/apache/axis-axis2-c-core/blob/master/samples/user_guide/financial-benchmark-service/README.md#3-compose-covariance-composecovariance) - builds a covariance matrix for a hypothetical regime from volatilities and a correlation structure (Σ = D·R·D), refusing one that is not positive definite; the full contract is in the doc comment in [financial_benchmark_service.h](https://github.com/apache/axis-axis2-c-core/blob/master/samples/user_guide/financial-benchmark-service/src/financial_benchmark_service.h)
 
 ### Security Resources
 - [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
