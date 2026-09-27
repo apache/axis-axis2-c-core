@@ -2,6 +2,24 @@
 
 **Status: a proposal for future consideration. Nothing here is implemented.**
 
+## BLUF
+
+- Threads would make the Monte Carlo 3–6× faster, but **done the simple way,
+  the same request would stop giving the same answer**.
+- Why, in plain terms: a simulation is a long list of dice rolls, read in
+  order from one random-number stream. With one thread, path 1 always gets
+  the first rolls, path 2 the next, and so on, so the same seed gives the
+  same answer every time. With several threads sharing that stream, whichever
+  thread happens to ask first gets the next roll, and that race comes out
+  differently on every run. The paths get different rolls, so the answer
+  moves a little each time, and it also changes with the number of cores.
+- It can be made repeatable again (§4): give every block of paths its own
+  dice, seeded from the request's seed and the block's number, so a path gets
+  the same rolls whichever thread runs it. But those are *different* dice
+  from today's, so every Monte Carlo number already published would change.
+- So it waits, and if it is built, it goes in as a separate `"parallel"`
+  engine beside today's code, which stays the reference.
+
 The `monteCarlo` operation of the financial benchmark sample
 (`samples/user_guide/financial-benchmark-service`) runs every simulation on one
 thread. This note records what that costs on a typical x86-64 server VM and on
