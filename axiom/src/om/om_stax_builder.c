@@ -322,6 +322,19 @@ axiom_stax_builder_create_om_text(
     return node;
 }
 
+/* Whether this element already declares a namespace under the prefix ("" for
+ * the default namespace), whatever its URI. */
+static axis2_bool_t
+axiom_stax_builder_prefix_declared(
+    axiom_element_t * om_ele,
+    const axutil_env_t * env,
+    const axis2_char_t * prefix)
+{
+    axutil_hash_t *declared = axiom_element_get_namespaces(om_ele, env);
+    return declared && prefix
+        && axutil_hash_get(declared, prefix, AXIS2_HASH_KEY_STRING) != NULL;
+}
+
 static axis2_status_t
 axiom_stax_builder_process_namespaces(
     axiom_stax_builder_t * om_builder,
@@ -380,6 +393,26 @@ axiom_stax_builder_process_namespaces(
             om_ns = axiom_element_find_declared_namespace(om_ele, env,
                 axutil_string_get_buffer(tmp_ns_uri_str, env), "");
 
+            if(!om_ns && axiom_stax_builder_prefix_declared(om_ele, env,
+                axutil_string_get_buffer(tmp_ns_prefix_str, env)))
+            {
+                /* The same prefix declared twice on one element, with a
+                 * different URI: two xmlns attributes with one name, so the
+                 * document is not well-formed. Declaring the second made the
+                 * element's map drop the first without releasing it, a leak on
+                 * every such document. Keep the first and skip this one; the
+                 * caller does not act on a failure here, so returning would
+                 * only leave the element without its own namespace. */
+                axutil_string_free(tmp_ns_uri_str, env);
+                axutil_string_free(tmp_ns_prefix_str, env);
+#ifdef AXIS2_LIBXML2_ENABLED
+                axiom_xml_reader_xml_free(om_builder->parser, env, tmp_ns_uri);
+                axiom_xml_reader_xml_free(om_builder->parser, env, tmp_ns_prefix);
+#endif
+                AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                    "Namespace prefix declared twice on one element; keeping the first");
+                continue;
+            }
             if(!om_ns)
             {
                 om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
@@ -411,6 +444,26 @@ axiom_stax_builder_process_namespaces(
                 axutil_string_get_buffer(tmp_ns_uri_str, env),
                 axutil_string_get_buffer(tmp_ns_prefix_str, env));
 
+            if(!om_ns && axiom_stax_builder_prefix_declared(om_ele, env,
+                axutil_string_get_buffer(tmp_ns_prefix_str, env)))
+            {
+                /* The same prefix declared twice on one element, with a
+                 * different URI: two xmlns attributes with one name, so the
+                 * document is not well-formed. Declaring the second made the
+                 * element's map drop the first without releasing it, a leak on
+                 * every such document. Keep the first and skip this one; the
+                 * caller does not act on a failure here, so returning would
+                 * only leave the element without its own namespace. */
+                axutil_string_free(tmp_ns_uri_str, env);
+                axutil_string_free(tmp_ns_prefix_str, env);
+#ifdef AXIS2_LIBXML2_ENABLED
+                axiom_xml_reader_xml_free(om_builder->parser, env, tmp_ns_uri);
+                axiom_xml_reader_xml_free(om_builder->parser, env, tmp_ns_prefix);
+#endif
+                AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                    "Namespace prefix declared twice on one element; keeping the first");
+                continue;
+            }
             if(!om_ns)
             {
                 om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
@@ -456,6 +509,10 @@ axiom_stax_builder_process_namespaces(
             AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when setting namespace");
+            /* The prefix was fetched above and is ours to free on this path
+             * too; returning without it leaked it on every element whose
+             * prefix was never declared. */
+            axiom_xml_reader_xml_free(om_builder->parser, env, tmp_prefix);
             return AXIS2_FAILURE;
         }
 

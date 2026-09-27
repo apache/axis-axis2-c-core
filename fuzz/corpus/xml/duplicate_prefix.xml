@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<ns1:root xmlns:ns1="http://example.org/ns1" xmlns:ns1="http://example.org/ns2">
+  <ns1:child>content</ns1:child>
+</ns1:root>
