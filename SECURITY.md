@@ -240,7 +240,7 @@ See [docs/OSS-FUZZ.md](docs/OSS-FUZZ.md) for details.
 
 | Dependency | Minimum Version | Key CVEs Tracked |
 |-----------|----------------|------------------|
-| OpenSSL | 3.0.21+ (prefer 3.5.9+ LTS) | June and September 2026 batches; 3.0 LTS is EOL |
+| OpenSSL | 3.5.9+ (3.5 LTS) | June and September 2026 batches; 1.1.1 and 3.0 are EOL |
 | libxml2 | 2.15.4+ | CVE-2026-86140, CVE-2026-11979, CVE-2024-25062 |
 | json-c | 0.18+ | CVE-2020-12762 (integer overflow) |
 | nghttp2 | 1.61.0+ | CVE-2024-28182, CVE-2023-44487 (HTTP/2 rapid reset) |
