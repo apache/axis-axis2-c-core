@@ -628,8 +628,8 @@ message contents. **This flag must never be used in production builds.**
 
 | Dependency | Minimum Version | Critical CVEs Addressed |
 |------------|-----------------|------------------------|
-| OpenSSL | 3.0.21+ (prefer 3.5.7+ LTS) | June 2026 batch (CVE-2026-34180/34182/45445/45447/7383/9076, fixed 3.0.21 / 3.5.7), CVE-2022-0778 (BN_mod_sqrt DoS), CVE-2021-3449/3450. **1.1.1 reached EOL 2023-09-11 and receives no public fixes; 3.0 LTS reaches EOL 2026-09-07, so new deployments should target 3.5 LTS.** |
-| libxml2 | 2.15.3+ | CVE-2026-11979 (xmlcatalog CLI stack overflow, fixed 2.15.3), CVE-2024-25062 (use-after-free, fixed 2.11.7/2.12.5/2.13.4), CVE-2020-24977, CVE-2019-20388 |
+| OpenSSL | 3.0.21+ (prefer 3.5.9+ LTS) | September 2026 batch (CVE-2026-54873/72897/84784, fixed 3.5.9 / 3.6.5 / 4.0.3 — 3.0 not affected; CVE-2026-84783, 4.0 only, fixed 4.0.3), June 2026 batch (CVE-2026-34180/34182/45445/45447/7383/9076, fixed 3.0.21 / 3.5.7), CVE-2022-0778 (BN_mod_sqrt DoS), CVE-2021-3449/3450. **1.1.1 reached EOL 2023-09-11 and 3.0 LTS reached EOL 2026-09-07; neither receives public fixes, so deployments should move to 3.5 LTS.** |
+| libxml2 | 2.15.4+ | CVE-2026-86140 (`xmlSnprintfElements` stack overflow in DTD validation, fixed 2.15.4 — Axis2/C does not enable DTD validation), CVE-2026-11979 (xmlcatalog CLI stack overflow, fixed 2.15.3), CVE-2024-25062 (use-after-free, fixed 2.11.7/2.12.5/2.13.4), CVE-2020-24977, CVE-2019-20388 |
 | json-c | 0.18+ | CVE-2020-12762 (integer overflow); 0.19 is current (2026-06-27) |
 | nghttp2 | 1.61.0+ | CVE-2024-28182 (unbounded CONTINUATION-frame DoS, fixed 1.61.0), CVE-2023-44487 (rapid reset) |
 | Apache httpd | 2.4.68+ | CVE-2026-23918 (HTTP/2 double-free, possible RCE — 2.4.67), CVE-2026-48913 + CVE-2026-49975 (mod_http2 — 2.4.68), CVE-2024-40725, CVE-2024-40898 |

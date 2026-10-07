@@ -240,11 +240,13 @@ See [docs/OSS-FUZZ.md](docs/OSS-FUZZ.md) for details.
 
 | Dependency | Minimum Version | Key CVEs Tracked |
 |-----------|----------------|------------------|
-| OpenSSL | 1.1.1k+ | CVE-2021-3449, CVE-2021-3450 |
-| libxml2 | 2.9.10+ | CVE-2020-24977, CVE-2019-20388 |
-| json-c | 0.15+ | CVE-2020-12762 (integer overflow) |
-| nghttp2 | 1.50.0+ | CVE-2023-44487 (HTTP/2 rapid reset) |
-| Apache httpd | 2.4.62+ | CVE-2024-40725, CVE-2024-40898 |
+| OpenSSL | 3.0.21+ (prefer 3.5.9+ LTS) | June and September 2026 batches; 3.0 LTS is EOL |
+| libxml2 | 2.15.4+ | CVE-2026-86140, CVE-2026-11979, CVE-2024-25062 |
+| json-c | 0.18+ | CVE-2020-12762 (integer overflow) |
+| nghttp2 | 1.61.0+ | CVE-2024-28182, CVE-2023-44487 (HTTP/2 rapid reset) |
+| Apache httpd | 2.4.68+ | CVE-2026-23918, CVE-2026-48913, CVE-2026-49975 |
+
+Full table with fixed-in versions: [docs/SECURITY.md](docs/SECURITY.md#minimum-secure-versions).
 
 Monthly CVE checks run via GitHub Actions (`.github/workflows/cve-check.yml`).
 
