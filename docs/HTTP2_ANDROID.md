@@ -518,6 +518,53 @@ get a NULL response.
 
 ## Linking for Android
 
+### Registering mod_axis2 in a static httpd
+
+A static httpd cannot `LoadModule`. Its modules are the ones listed in
+`modules.c`, which httpd's `configure` writes from `--enable-mods-static`.
+`configure` knows only httpd's own modules, so `mod_axis2`, which comes from
+this build's `libmod_axis2.a`, has to be added by hand after `configure` and
+before `modules.o` is compiled. Add `axis2_module` in four places:
+
+```c
+extern module axis2_module;                 /* with the other externs */
+
+module *ap_prelinked_modules[] = {
+  ...
+  &axis2_module,                            /* before the NULL */
+  NULL
+};
+
+ap_module_symbol_t ap_prelinked_module_symbols[] = {
+  ...
+  {"axis2_module", &axis2_module},          /* before {NULL, NULL} */
+  {NULL, NULL}
+};
+
+module *ap_preloaded_modules[] = {
+  ...
+  &axis2_module,                            /* before the NULL */
+  NULL
+};
+```
+
+Then compile `modules.o` from httpd's tree and pass it to the final link,
+with `libmod_axis2.a` (see below).
+
+**A missing registration fails silently.** httpd starts and serves TLS, but
+an `<IfModule axis2_module>` block is skipped, so the `Axis2RepoPath` it holds
+is never set. `SetHandler axis2_module` then names a handler nobody provides,
+and every request under `/services` gets httpd's 404 without reaching
+Axis2/C. Check the built binary before suspecting the engine:
+
+```bash
+grep -c axis2_module modules.c                  # expect 4
+nm -D libyour_httpd.so | grep ' axis2_module$'  # expect D; nothing means not linked
+```
+
+`modules.c` is regenerated each time `configure` runs, so keep the edit as a
+patch applied by the build script, not as a hand edit to the tree.
+
 ### Direct Linking Required
 
 Libtool strips `--whole-archive` flags, so direct linking is necessary:
@@ -642,7 +689,7 @@ repository's registry**. What it does touch, using `composeCovariance` on
 | `financial_benchmark_service.h` / `.c` | The request and response structs, the `*_json_only()` entry point, and a branch in the internal `finbench_dispatch_json_obj()` (action name and, for the Android path, a request-shape rule: `composeCovariance` is the only operation that carries `volatilities`, as `covarianceFromReturns` is the only one that carries `returns`) |
 | `financial_benchmark_service_handler.c` | A branch in `route_operation()` for the server-side URL-path dispatch |
 | `finbench_mcp.c` | The tool's `inputSchema` constant, a row in the tool table, and a branch in `tools/call`. An operation that belongs to the application rather than to the sample goes through the weak `finbench_mcp_extra_tools()` / `finbench_mcp_extra_dispatch()` hook instead, so the sample stays unedited |
-| `services.xml` (upstream and in the app) | An `<operation>` element; on Android the `RESTLocation` is what maps the URL path to the operation |
+| `services.xml` (upstream and in the app) | An `<operation>` element. The URL path reaches it by the operation's name; set `RESTLocation` to `/` plus that name (see "A JSON request is dispatched by operation name") |
 | `finbench_get_metadata_json()` | The operations list |
 | The application's adapter | Nothing, if it dispatches through `finbench_dispatch_json_obj()` as the Kanaha Calcs adapter does; the router is upstream. An adapter with its own shape rules needs one more |
 | `fuzz/fuzz_finbench.c` | An exercise block for the new parser and compute path |
