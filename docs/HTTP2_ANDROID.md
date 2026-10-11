@@ -415,8 +415,7 @@ this:
 The guard fails closed. An operation with no `RESTLocation` parameter was
 resolved by its own name in the URL path, which is as specific as a location
 gets, so a missing or unreadable parameter never widens what the body may do.
-(`httpPath`, which the upstream sample's services.xml also carries, is not read
-by the engine's dispatch at all; only `RESTLocation` is.) Both names in the
+Both names in the
 refusal are untrusted input, from the body and from the URL: they are
 sanitized before logging and placed in the response through json-c.
 
@@ -429,6 +428,25 @@ same-operation case. What changes is that `/startRecording` with
 makes per-URL authorization in `httpd.conf` meaningful on the Android path;
 today the Kanaha configurations authorize the whole `/services` prefix
 behind mTLS, so nothing depended on the old behaviour.
+
+**A JSON request is dispatched by operation name, not by `RESTLocation`.**
+The JSON branch of `axis2_http_transport_utils_process_http_post_request()`
+never sets `doing_rest`, so the REST dispatcher, the only code that matches a
+URL against `RESTLocation` templates, returns before looking. The request URI
+dispatcher resolves the operation from the path segment after the service
+name instead: `/services/AudioSearchService/searchKeywords` reaches the
+operation *named* `searchKeywords`, whatever its `RESTLocation` says. The
+consequences:
+
+- A catch-all is reached at its operation name — `/services/<svc>/jsonrpc` —
+  not at the bare service URL. A POST to `/services/<svc>` names no operation
+  and is answered "Operation Not Found".
+- `RESTLocation` is read only by the trust guard above, to recognise a
+  catch-all. Keep each operation's location equal to `/` plus its name (or
+  `/` for the catch-all); a location that differs is never routed to.
+- `{param}` templates in a location do not apply to JSON requests.
+- `httpPath`, which the upstream sample's services.xml also carries, is not
+  read by any of this.
 
 Services that want to work in both environments can export both:
 - `axis2_char_t* <serviceclass>_invoke_json(svc, env, json_str, msg_ctx)` for server-side
