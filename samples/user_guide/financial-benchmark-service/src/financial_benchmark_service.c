@@ -4205,6 +4205,11 @@ finbench_dispatch_json_obj(
         {
             result_str = finbench_monte_carlo_json_only(env, json_str);
         }
+        else if (strcmp(action, "scenarioAnalysis") == 0 ||
+                 strcmp(action, "scenario_analysis") == 0)
+        {
+            result_str = finbench_scenario_json_only(env, json_str);
+        }
         else if (strcmp(action, "metadata") == 0 ||
                  strcmp(action, "get_metadata") == 0)
         {
@@ -4291,6 +4296,13 @@ finbench_dispatch_json_obj(
             AXIS2_LOG_INFO(env->log,
                 "FinancialBenchmarkService: Detected composeCovariance request");
             result_str = finbench_compose_covariance_json_only(env, json_str);
+        }
+        /* 'assets' is scenarioAnalysis' alone */
+        else if (json_object_object_get_ex(json_request, "assets", &temp_obj))
+        {
+            AXIS2_LOG_INFO(env->log,
+                "FinancialBenchmarkService: Detected scenarioAnalysis request");
+            result_str = finbench_scenario_json_only(env, json_str);
         }
         /* If request only has 'n_assets' without weights, generate test data */
         else if (json_object_object_get_ex(json_request, "n_assets", &temp_obj) &&
