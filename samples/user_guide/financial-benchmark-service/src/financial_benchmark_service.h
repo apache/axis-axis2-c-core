@@ -964,16 +964,16 @@ typedef struct finbench_monte_carlo_response
  * upside_downside_ratio semantics:
  *   - finite positive value : common case; > 1 means more expected
  *                              upside than downside
- *   - Double.INFINITY        : downside ≈ 0, upside > 0 — the portfolio
+ *   - INFINITY in the struct : downside ≈ 0, upside > 0 — the portfolio
  *                              has no modeled downside in these
  *                              scenarios
- *   - Double.NaN             : both sides ≈ 0 — the ratio is genuinely
+ *   - NAN in the struct      : both sides ≈ 0 — the ratio is genuinely
  *                              undefined (not "no upside")
  *
- *   Note on JSON: json-c serializes Infinity and NaN as "Infinity" /
- *   "NaN" string tokens, which are valid JavaScript Number literals but
- *   NOT strict JSON per RFC 8259. Strict JSON parsers must configure
- *   their parser or map these to null before parsing.
+ *   In the JSON response both non-finite cases are null, so the reply
+ *   stays strict JSON (RFC 8259). upside_potential and downside_risk
+ *   tell them apart: upside > 0 with zero downside is the all-upside
+ *   case.
  *
  * Benchmark shape: asset_id lookups are performed n_assets × 10 times,
  * once via linear scan and once via axutil_hash, so the linear-vs-hash

@@ -3845,9 +3845,8 @@ finbench_calculate_scenarios(
      *                               the ratio is genuinely undefined)
      * The 1e-9 threshold avoids treating floating-point residue from the
      * probability-weighted sums as a real non-zero side.
-     * Note on JSON: json-c serializes these as "Infinity" / "NaN", which
-     * are valid JavaScript Number literals but NOT strict JSON per RFC
-     * 8259 — strict parsers must handle the tokens or map them to null. */
+     * The JSON response carries both non-finite cases as null; see
+     * finbench_scenario_response_to_json(). */
     if (total_downside > 1e-9) {
         response->upside_downside_ratio = total_upside / total_downside;
     } else if (total_upside > 1e-9) {
@@ -3923,8 +3922,14 @@ finbench_scenario_response_to_json(
     json_object_object_add(json_resp, "downside_risk",
         json_object_new_double(response->downside_risk));
 
+    /* json-c would write a non-finite double as the bare token Infinity or
+     * NaN, which is not JSON (RFC 8259) and breaks strict parsers. null is
+     * written instead; upside_potential and downside_risk, alongside it,
+     * tell an all-upside result from one with no movement at all. */
     json_object_object_add(json_resp, "upside_downside_ratio",
-        json_object_new_double(response->upside_downside_ratio));
+        isfinite(response->upside_downside_ratio)
+            ? json_object_new_double(response->upside_downside_ratio)
+            : NULL);
 
     json_object_object_add(json_resp, "calc_time_us",
         json_object_new_int64(response->calc_time_us));
