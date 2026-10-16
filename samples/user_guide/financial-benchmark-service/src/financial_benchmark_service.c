@@ -3634,6 +3634,26 @@ finbench_calculate_scenarios(
             return response;
         }
 
+        /* Fail-fast: position_size must be positive. The parser leaves an
+         * absent one at 0, which zeroed every dollar figure and the
+         * portfolio expected return, and turned the upside/downside ratio
+         * into NaN, for a request that looked valid. The upside and
+         * downside formulas assume a long position, so a negative size is
+         * refused too rather than reported with the sides swapped. */
+        if (!isfinite(a->position_size) || a->position_size <= 0.0) {
+            snprintf(err_buf, sizeof(err_buf),
+                "Asset index %d (id=%" PRId64 "): position_size=%.8f is "
+                "missing or not positive. Give the units held, long only; "
+                "the dollar figures and the portfolio weighting scale by it.",
+                i, a->asset_id, a->position_size);
+            response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+            response->error_message = axutil_strdup(env, err_buf);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "ScenarioAnalysis: position_size validation failed - %s",
+                err_buf);
+            return response;
+        }
+
         /* Fail-fast: must supply at least one scenario — without scenarios
          * the asset contributes nothing to the weighted portfolio, which
          * is almost certainly a caller mistake (empty JSON array or
