@@ -212,7 +212,17 @@ ls -la /usr/local/axis2c/services/CameraControlService/
 
 ## Testing with Stub Implementation
 
-The service includes stub implementations that provide basic functionality for testing:
+Until a stub is replaced, its operation answers with an error naming the function
+to implement, so a deployment that forgot one cannot report success for work it
+never did:
+
+```json
+{"success":false,"error":"Not implemented: replace the stub camera_device_start_recording_impl() in camera_control_service.c"}
+```
+
+To exercise the HTTP/2 and JSON path before any camera code exists, build with
+`-DCAMERA_STUBS_SUCCEED` (for example `CFLAGS=-DCAMERA_STUBS_SUCCEED`); the stubs
+then succeed and return placeholder data:
 
 ```bash
 # Start Apache httpd
@@ -223,7 +233,7 @@ curl -k --http2 -H "Content-Type: application/json" \
      -d '{"action":"start_recording","clip_name":"test","quality":"1080p"}' \
      https://localhost:443/services/CameraControlService/startRecording
 
-# Expected response:
+# Expected response with -DCAMERA_STUBS_SUCCEED:
 # {"success":true,"message":"Recording started successfully"}
 
 # Check logs for stub warnings
@@ -311,6 +321,11 @@ STUB: camera_device_start_recording_impl() - Replace with camera-specific implem
 ```
 
 This is expected behavior until you implement camera-specific functions.
+
+When a stub runs an external program (`am`, `scp`), follow the examples in
+`camera_control_service.c`: pass arguments with `fork()`/`execvp()`, never a
+command line through `system()`, and check SSH host keys against a provisioned
+`known_hosts` file.
 
 ## Next Steps
 

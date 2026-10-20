@@ -59,6 +59,31 @@ static json_object* create_success_response(const axutil_env_t *env,
 static axis2_bool_t is_valid_clip_name(const axis2_char_t *clip_name);
 static axis2_bool_t is_valid_quality(const axis2_char_t *quality);
 
+/*
+ * Until a stub below is replaced it answers "not implemented": a function that
+ * returns a status returns CAMERA_NOT_IMPLEMENTED, getStatus and listFiles
+ * return the marker objects below, and the service turns either into an error
+ * naming the function to replace. A stub that reported success would let a
+ * deployment that forgot one claim to have recorded, transferred or deleted
+ * what it never touched.
+ *
+ * To exercise the HTTP/2 and JSON path before any camera code exists, build
+ * with -DCAMERA_STUBS_SUCCEED: the stubs then succeed with placeholder data.
+ */
+#define CAMERA_NOT_IMPLEMENTED (-1)
+static camera_status_t camera_status_not_implemented;
+static file_list_result_t camera_file_list_not_implemented;
+
+static json_object* not_implemented_response(const axutil_env_t *env,
+                                             const char *function)
+{
+    char message[256];
+    snprintf(message, sizeof(message),
+             "Not implemented: replace the stub %s() in camera_control_service.c",
+             function);
+    return create_error_response(env, message);
+}
+
 /**
  * Create Camera Recording Parameters from JSON string using pure json-c
  */
@@ -602,6 +627,32 @@ file_delete_params_free(file_delete_params_t *params,
  * - Custom camera hardware
  */
 
+/*
+ * Running an external program from a service
+ *
+ * Several examples below run a program (am, scp). Never build a command line
+ * with snprintf() and hand it to system() or popen(): the shell parses the
+ * caller's values, so a quote in a clip name or file pattern becomes shell
+ * syntax and runs whatever follows it. Pass each argument separately with
+ * fork() and execvp(), so no shell ever sees them:
+ *
+ *    static int run_without_shell(char *const argv[])
+ *    {
+ *        pid_t pid = fork();
+ *        if (pid < 0) return -1;
+ *        if (pid == 0) {
+ *            execvp(argv[0], argv);
+ *            _exit(127);                      // exec failed
+ *        }
+ *        int status;
+ *        if (waitpid(pid, &status, 0) < 0) return -1;
+ *        return WIFEXITED(status) ? WEXITSTATUS(status) : -1;
+ *    }
+ *
+ * Separate arguments stop shell injection, not path traversal: still reject
+ * "..", "/" and the like in names before using them.
+ */
+
 /**
  * STUB: Start camera recording implementation
  *
@@ -631,14 +682,18 @@ file_delete_params_free(file_delete_params_t *params,
  *    // Save to params->clip_name
  *    ```
  *
- * 3. IP Camera Integration:
+ * 3. IP Camera Integration, with libcurl and json-c so neither a shell nor
+ *    hand-built JSON sees the caller's values:
  *    ```c
- *    // Send HTTP/RTSP command to start recording
- *    char cmd[512];
- *    snprintf(cmd, sizeof(cmd),
- *        "curl -X POST http://camera-ip/api/record -d '{\"filename\":\"%s\",\"quality\":\"%s\"}'",
- *        params->clip_name, params->quality);
- *    system(cmd);
+ *    json_object *body = json_object_new_object();
+ *    json_object_object_add(body, "filename", json_object_new_string(params->clip_name));
+ *    json_object_object_add(body, "quality", json_object_new_string(params->quality));
+ *    CURL *curl = curl_easy_init();
+ *    curl_easy_setopt(curl, CURLOPT_URL, "http://camera-ip/api/record");
+ *    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_object_to_json_string(body));
+ *    CURLcode rc = curl_easy_perform(curl);
+ *    curl_easy_cleanup(curl);
+ *    json_object_put(body);
  *    ```
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -679,7 +734,11 @@ camera_device_start_recording_impl(
      * Replace this entire function with camera-specific code
      */
 
-    return AXIS2_SUCCESS; /* Stub always succeeds for testing */
+#ifdef CAMERA_STUBS_SUCCEED
+    return AXIS2_SUCCESS;
+#else
+    return CAMERA_NOT_IMPLEMENTED;
+#endif
 }
 
 /**
@@ -719,7 +778,11 @@ camera_device_stop_recording_impl(const axutil_env_t *env)
      * Replace this entire function with camera-specific code
      */
 
-    return AXIS2_SUCCESS; /* Stub always succeeds for testing */
+#ifdef CAMERA_STUBS_SUCCEED
+    return AXIS2_SUCCESS;
+#else
+    return CAMERA_NOT_IMPLEMENTED;
+#endif
 }
 
 /**
@@ -738,6 +801,12 @@ camera_device_get_status_impl(const axutil_env_t *env)
     {
         return NULL;
     }
+
+#ifndef CAMERA_STUBS_SUCCEED
+    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+        "STUB: camera_device_get_status_impl() is not implemented");
+    return &camera_status_not_implemented;
+#endif
 
     status = AXIS2_MALLOC(env->allocator, sizeof(camera_status_t));
     if (!status)
@@ -801,7 +870,11 @@ camera_device_configure_settings_impl(
      * Apply settings to actual camera device
      */
 
-    return AXIS2_SUCCESS; /* Stub always succeeds for testing */
+#ifdef CAMERA_STUBS_SUCCEED
+    return AXIS2_SUCCESS;
+#else
+    return CAMERA_NOT_IMPLEMENTED;
+#endif
 }
 
 /**
@@ -824,26 +897,25 @@ camera_device_configure_settings_impl(
  *    // Transfer file data
  *    ```
  *
- * 2. System sftp command (simpler but less control):
+ * 2. The scp command, run without a shell (run_without_shell() above):
  *    ```c
- *    char sftp_cmd[1024];
- *    snprintf(sftp_cmd, sizeof(sftp_cmd),
- *        "sftp -o PasswordAuthentication=no -o StrictHostKeyChecking=no "
- *        "-i %s -P %d %s@%s:%s <<< 'put %s'",
- *        params->private_key_path, params->port, params->username,
- *        params->hostname, params->remote_path, params->local_file_path);
- *    int result = system(sftp_cmd);
+ *    char port[8];
+ *    char target[1024];
+ *    snprintf(port, sizeof(port), "%d", params->port);
+ *    snprintf(target, sizeof(target), "%s@%s:%s",
+ *             params->username, params->hostname, params->remote_path);
+ *    char *const argv[] = {
+ *        "scp", "-o", "BatchMode=yes",
+ *        "-o", "StrictHostKeyChecking=yes",
+ *        "-o", "UserKnownHostsFile=/etc/camera/known_hosts",
+ *        "-i", (char *) params->private_key_path, "-P", port,
+ *        "--", (char *) params->local_file_path, target, NULL };
+ *    int result = run_without_shell(argv);
  *    ```
  *
- * 3. SSH with scp (alternative file transfer):
- *    ```c
- *    char scp_cmd[1024];
- *    snprintf(scp_cmd, sizeof(scp_cmd),
- *        "scp -o PasswordAuthentication=no -i %s -P %d %s %s@%s:%s",
- *        params->private_key_path, params->port, params->local_file_path,
- *        params->username, params->hostname, params->remote_path);
- *    int result = system(scp_cmd);
- *    ```
+ *    Check the server's host key against a known_hosts file you provision, and
+ *    fail when it is missing or does not match. StrictHostKeyChecking=no accepts
+ *    any key, so anyone on the network path could receive the recordings.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 camera_device_sftp_transfer_impl(
@@ -916,7 +988,11 @@ camera_device_sftp_transfer_impl(
      * 8. Clean up connections and return status
      */
 
-    return AXIS2_SUCCESS; /* Stub always succeeds for testing */
+#ifdef CAMERA_STUBS_SUCCEED
+    return AXIS2_SUCCESS;
+#else
+    return CAMERA_NOT_IMPLEMENTED;
+#endif
 }
 
 /**
@@ -926,20 +1002,20 @@ camera_device_sftp_transfer_impl(
  *
  * Example implementations (reference: Kanaha camera app):
  *
- * 1. Android Integration via Intent IPC:
+ * 1. Android Integration via Intent IPC (run_without_shell() above):
  *    ```c
- *    // Send broadcast to Java receiver
- *    char intent_command[1024];
- *    snprintf(intent_command, sizeof(intent_command),
- *        "am broadcast --user 0 "
- *        "-n org.myapp/org.myapp.CameraReceiver "
- *        "-a org.myapp.CAMERA_CONTROL "
- *        "--es action list_files "
- *        "--es pattern '%s'",
- *        params->pattern ? params->pattern : "");
- *    system(intent_command);
- *    // Read response from file written by Java receiver
+ *    char *const argv[] = {
+ *        "am", "broadcast", "--user", "0",
+ *        "-n", "org.myapp/org.myapp.CameraReceiver",
+ *        "-a", "org.myapp.CAMERA_CONTROL",
+ *        "--es", "action", "list_files",
+ *        "--es", "pattern", (char *) (params->pattern ? params->pattern : ""),
+ *        NULL };
+ *    run_without_shell(argv);
+ *    // Read the response file written by the Java receiver, then delete it
  *    ```
+ *    Protect the receiver with a signature-level permission, or any app on
+ *    the device can send it the same broadcast.
  *
  * 2. Linux filesystem integration:
  *    ```c
@@ -969,6 +1045,12 @@ camera_device_list_files_impl(
     {
         return NULL;
     }
+
+#ifndef CAMERA_STUBS_SUCCEED
+    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+        "STUB: camera_device_list_files_impl() is not implemented");
+    return &camera_file_list_not_implemented;
+#endif
 
     result = AXIS2_MALLOC(env->allocator, sizeof(file_list_result_t));
     if (!result)
@@ -1020,17 +1102,16 @@ camera_device_list_files_impl(
  *
  * Example implementations:
  *
- * 1. Android Integration via Intent IPC:
+ * 1. Android Integration via Intent IPC (run_without_shell() above):
  *    ```c
- *    char intent_command[1024];
- *    snprintf(intent_command, sizeof(intent_command),
- *        "am broadcast --user 0 "
- *        "-n org.myapp/org.myapp.CameraReceiver "
- *        "-a org.myapp.CAMERA_CONTROL "
- *        "--es action delete_files "
- *        "--es pattern '%s'",
- *        params->pattern);
- *    system(intent_command);
+ *    char *const argv[] = {
+ *        "am", "broadcast", "--user", "0",
+ *        "-n", "org.myapp/org.myapp.CameraReceiver",
+ *        "-a", "org.myapp.CAMERA_CONTROL",
+ *        "--es", "action", "delete_files",
+ *        "--es", "pattern", (char *) params->pattern,
+ *        NULL };
+ *    run_without_shell(argv);
  *    ```
  *
  * 2. Linux filesystem integration:
@@ -1103,7 +1184,11 @@ camera_device_delete_files_impl(
      * 4. Return AXIS2_SUCCESS if all deletions succeeded
      */
 
-    return AXIS2_SUCCESS; /* Stub always succeeds for testing */
+#ifdef CAMERA_STUBS_SUCCEED
+    return AXIS2_SUCCESS;
+#else
+    return CAMERA_NOT_IMPLEMENTED;
+#endif
 }
 
 /* ========================================================================
@@ -1184,6 +1269,10 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         {
             response = create_success_response(env, "Recording started successfully");
         }
+        else if (result == CAMERA_NOT_IMPLEMENTED)
+        {
+            response = not_implemented_response(env, "camera_device_start_recording_impl");
+        }
         else
         {
             response = create_error_response(env, "Failed to start recording");
@@ -1200,6 +1289,10 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         {
             response = create_success_response(env, "Recording stopped successfully");
         }
+        else if (result == CAMERA_NOT_IMPLEMENTED)
+        {
+            response = not_implemented_response(env, "camera_device_stop_recording_impl");
+        }
         else
         {
             response = create_error_response(env, "Failed to stop recording");
@@ -1210,7 +1303,11 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         /* Handle status request */
         camera_status_t *status = camera_device_get_status_impl(env);
 
-        if (status)
+        if (status == &camera_status_not_implemented)
+        {
+            response = not_implemented_response(env, "camera_device_get_status_impl");
+        }
+        else if (status)
         {
             response = json_object_new_object();
             json_object_object_add(response, "success", json_object_new_boolean(1));
@@ -1247,6 +1344,10 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         {
             response = create_success_response(env, "Settings configured successfully");
         }
+        else if (result == CAMERA_NOT_IMPLEMENTED)
+        {
+            response = not_implemented_response(env, "camera_device_configure_settings_impl");
+        }
         else
         {
             response = create_error_response(env, "Failed to configure settings");
@@ -1280,6 +1381,10 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         {
             response = create_success_response(env, "File transferred successfully via SFTP");
         }
+        else if (result == CAMERA_NOT_IMPLEMENTED)
+        {
+            response = not_implemented_response(env, "camera_device_sftp_transfer_impl");
+        }
         else
         {
             response = create_error_response(env, "Failed to transfer file via SFTP");
@@ -1296,7 +1401,11 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         /* Call user-implementable function */
         file_list_result_t *result = camera_device_list_files_impl(env, params);
 
-        if (result)
+        if (result == &camera_file_list_not_implemented)
+        {
+            response = not_implemented_response(env, "camera_device_list_files_impl");
+        }
+        else if (result)
         {
             /* Build JSON response with file list */
             response = json_object_new_object();
@@ -1350,6 +1459,10 @@ camera_control_service_invoke_json(const axutil_env_t *env,
         if (result == AXIS2_SUCCESS)
         {
             response = create_success_response(env, "Files deleted successfully");
+        }
+        else if (result == CAMERA_NOT_IMPLEMENTED)
+        {
+            response = not_implemented_response(env, "camera_device_delete_files_impl");
         }
         else
         {
