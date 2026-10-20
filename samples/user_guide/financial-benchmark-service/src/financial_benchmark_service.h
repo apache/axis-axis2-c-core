@@ -119,6 +119,9 @@ extern "C"
 #define FINBENCH_STATUS_SUCCESS     "SUCCESS"
 #define FINBENCH_STATUS_FAILED      "FAILED"
 
+/** Size of the input_error buffer each request struct carries. */
+#define FINBENCH_INPUT_ERROR_LEN    256
+
 /* ============================================================================
  * Portfolio Variance Calculation
  *
@@ -235,6 +238,13 @@ typedef struct finbench_portfolio_variance_request
 
     /** n_periods_per_year was present but not a positive whole number; refused. */
     axis2_bool_t n_periods_per_year_invalid;
+
+    /**
+     * First refused optional field, as the error_message to return; empty
+     * when the request parsed cleanly. A field present with the wrong type
+     * or an out-of-range value is refused rather than defaulted.
+     */
+    char input_error[FINBENCH_INPUT_ERROR_LEN];
 
 } finbench_portfolio_variance_request_t;
 
@@ -374,6 +384,13 @@ typedef struct finbench_compose_covariance_request
     /** Request identifier for tracing */
     char *request_id;
 
+    /**
+     * First refused optional field, as the error_message to return; empty
+     * when the request parsed cleanly. A field present with the wrong type
+     * or an out-of-range value is refused rather than defaulted.
+     */
+    char input_error[FINBENCH_INPUT_ERROR_LEN];
+
 } finbench_compose_covariance_request_t;
 
 /**
@@ -492,6 +509,13 @@ typedef struct finbench_covariance_from_returns_request
 
     /** Request identifier for tracing */
     char *request_id;
+
+    /**
+     * First refused optional field, as the error_message to return; empty
+     * when the request parsed cleanly. A field present with the wrong type
+     * or an out-of-range value is refused rather than defaulted.
+     */
+    char input_error[FINBENCH_INPUT_ERROR_LEN];
 
 } finbench_covariance_from_returns_request_t;
 
@@ -741,7 +765,8 @@ typedef struct finbench_monte_carlo_request
      * Percentile levels for VaR reporting, values strictly in (0, 1). The
      * service interprets p as a LOSS PROBABILITY, so 0.05 means "5% chance
      * of losing at least VaR_p" (i.e., a 95% VaR). Defaults: {0.01, 0.05}.
-     * Up to FINBENCH_MAX_PERCENTILES values; any beyond that are ignored.
+     * Up to FINBENCH_MAX_PERCENTILES values; the parser refuses more, and
+     * refuses a value that is not a number strictly inside (0, 1).
      *
      * Estimator: floor(p * n_sims). After ascending sort,
      *   VaR_p = initial_value - sorted_final_values[floor(p * n_sims)]
@@ -855,6 +880,13 @@ typedef struct finbench_monte_carlo_request
 
     /** Request identifier */
     char *request_id;
+
+    /**
+     * First refused optional field, as the error_message to return; empty
+     * when the request parsed cleanly. A field present with the wrong type
+     * or an out-of-range value is refused rather than defaulted.
+     */
+    char input_error[FINBENCH_INPUT_ERROR_LEN];
 
 } finbench_monte_carlo_request_t;
 
@@ -1026,22 +1058,26 @@ typedef struct finbench_scenario_request
     /** Array of asset scenarios */
     finbench_asset_scenario_t *assets;
 
-    /** Enable hash table optimization (for comparison) */
-    axis2_bool_t use_hash_lookup;
-
     /**
      * Tolerance for probability sum validation.
      * Each asset's scenario probabilities must sum to 1.0 within this
      * tolerance; the service rejects the whole request otherwise.
-     * Default: 1e-4 (0.01%). Passing 0.0 or any negative value falls back
-     * to this default. Values > 0.1 are capped at 0.1 to prevent an
-     * overly-loose tolerance from hiding real probability-sum bugs
-     * (e.g., three scenarios at 0.3 each summing to 0.9).
+     * Default: 1e-4 (0.01%). The parser refuses a value outside (0, 0.1]:
+     * a looser tolerance would hide real probability-sum bugs (e.g., three
+     * scenarios at 0.3 each summing to 0.9). A direct C caller that leaves
+     * it 0 gets the default.
      */
     double prob_tolerance;
 
     /** Request identifier */
     char *request_id;
+
+    /**
+     * First refused optional field, as the error_message to return; empty
+     * when the request parsed cleanly. A field present with the wrong type
+     * or an out-of-range value is refused rather than defaulted.
+     */
+    char input_error[FINBENCH_INPUT_ERROR_LEN];
 
 } finbench_scenario_request_t;
 

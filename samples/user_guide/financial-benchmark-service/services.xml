@@ -86,18 +86,20 @@
             <parameter name="mcpIdempotent">true</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
-                "required": ["n_assets", "weights", "covariance_matrix"],
+                "required": ["weights", "covariance_matrix"],
                 "properties": {
-                    "n_assets":          {"type": "integer",  "minimum": 2, "maximum": 2000,
-                                          "description": "Number of assets in the portfolio"},
+                    "n_assets":          {"type": "integer",  "minimum": 1, "maximum": 3000,
+                                          "description": "Number of assets in the portfolio. Inferred from weights if omitted; if given it must equal the weights length."},
                     "weights":           {"type": "array",    "items": {"type": "number"},
                                           "description": "Exactly n_assets values. If normalize_weights=true they are scaled to sum=1 before calculation; otherwise caller must ensure they already sum to 1."},
                     "covariance_matrix": {"type": "array",    "items": {"type": "number"},
                                           "description": "Exactly n_assets×n_assets values, row-major order (element [i*n+j] is cov(i,j))"},
                     "normalize_weights": {"type": "boolean",  "default": false,
                                           "description": "Scale weights to sum=1 before calculation. Default: false — caller must supply weights that already sum to 1."},
-                    "n_periods_per_year": {"type": "integer", "default": 1,
+                    "n_periods_per_year": {"type": "integer", "minimum": 1, "maximum": 10000000, "default": 1,
                                           "description": "Periods per year of the INPUT matrix. Default 1 = already annualised (any matrix from composeCovariance or covarianceFromReturns). Only for a per-period matrix: 252 daily, 52 weekly, 12 monthly."},
+                    "covariance_basis":  {"type": "string",   "enum": ["annualized", "per_period"],
+                                          "description": "Optional label for the matrix's basis, as the covariance producers echo it. \"annualized\" with n_periods_per_year other than 1 is refused; the value applied is always n_periods_per_year."},
                     "request_id":        {"type": "string",   "description": "Optional correlation ID echoed in the response"}
                 }
             }</parameter>
@@ -169,7 +171,7 @@
                     "check_positive_definite": {"type": "boolean", "default": true,
                                                 "description": "Cholesky check (O(n³)). Refuses a matrix that is not positive definite."},
                     "asset_ids":               {"type": "array",   "items": {"type": "string"},
-                                                "description": "Optional labels, one per asset, echoed back."},
+                                                "description": "Optional labels, exactly one string per asset, echoed back."},
                     "request_id":              {"type": "string",  "description": "Optional correlation ID echoed in the response"}
                 }
             }</parameter>
@@ -231,12 +233,12 @@
                                                 "description": "Number of assets (max 50: the request carries n_assets×n_obs numbers). Inferred from a nested returns array."},
                     "n_obs":                   {"type": "integer", "minimum": 2, "maximum": 5000,
                                                 "description": "Observations per asset (max 5000, about twenty years of daily data). Inferred from the first row."},
-                    "n_periods_per_year":      {"type": "number",  "default": 252,
+                    "n_periods_per_year":      {"type": "number",  "exclusiveMinimum": 0, "default": 252,
                                                 "description": "Annualisation factor: Σ is multiplied by it and the means with it. 252 daily, 12 monthly, 1 to keep the input's own basis."},
                     "check_positive_definite": {"type": "boolean", "default": true,
                                                 "description": "Cholesky check. Refuses a rank-deficient sample (fewer complete observations than assets, or duplicated series)."},
                     "asset_ids":               {"type": "array",   "items": {"type": "string"},
-                                                "description": "Optional labels, one per asset, echoed back."},
+                                                "description": "Optional labels, exactly one string per asset, echoed back."},
                     "request_id":              {"type": "string",  "description": "Optional correlation ID echoed in the response"}
                 }
             }</parameter>
@@ -298,20 +300,21 @@
             <parameter name="mcpIdempotent">false</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
-                "required": ["n_simulations", "n_periods", "initial_value", "expected_return", "volatility"],
+                "required": [],
+                "description": "All fields have defaults; an empty {} request body is valid.",
                 "properties": {
-                    "n_simulations":   {"type": "integer", "minimum": 100,  "maximum": 1000000,
+                    "n_simulations":   {"type": "integer", "minimum": 1,    "maximum": 1000000, "default": 10000,
                                         "description": "Number of simulation paths"},
-                    "n_periods":       {"type": "integer", "minimum": 1,    "maximum": 2520,
-                                        "description": "Number of time steps (252 = 1 trading year)"},
-                    "initial_value":   {"type": "number",  "description": "Initial portfolio value"},
-                    "expected_return": {"type": "number",  "description": "Annualised expected return (e.g. 0.08 for 8%)"},
-                    "volatility":      {"type": "number",  "description": "Annualised volatility (e.g. 0.20 for 20%)"},
+                    "n_periods":       {"type": "integer", "minimum": 1,    "maximum": 100000, "default": 252,
+                                        "description": "Number of time steps (252 = 1 trading year). n_simulations × n_periods (× n_assets for a book) may not exceed 1e9."},
+                    "initial_value":   {"type": "number",  "exclusiveMinimum": 0, "default": 1000000, "description": "Initial portfolio value"},
+                    "expected_return": {"type": "number",  "default": 0.08, "description": "Annualised expected return (e.g. 0.08 for 8%)"},
+                    "volatility":      {"type": "number",  "minimum": 0, "default": 0.20, "description": "Annualised volatility (e.g. 0.20 for 20%)"},
                     "random_seed":     {"type": "integer", "description": "Seed for reproducible results. When omitted, seeded from time() — results differ across calls."},
-                    "n_periods_per_year": {"type": "integer", "default": 252,
+                    "n_periods_per_year": {"type": "integer", "minimum": 1, "maximum": 10000000, "default": 252,
                                         "description": "Trading periods per year; dt = 1/n_periods_per_year. Must match the basis of expected_return and volatility."},
-                    "percentiles":     {"type": "array",   "items": {"type": "number"}, "maxItems": 8,
-                                        "description": "Tail levels for VaR, e.g. [0.01, 0.05] for 99% and 95%. Default [0.01, 0.05]."},
+                    "percentiles":     {"type": "array",   "items": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}, "maxItems": 8,
+                                        "description": "Tail levels for VaR, e.g. [0.01, 0.05] for 99% and 95%. Max 8 values, each strictly between 0 and 1. Default [0.01, 0.05]."},
                     "model":           {"type": "string",  "enum": ["gbm", "merton"], "default": "gbm"},
                     "jump_intensity":  {"type": "number",  "default": 1.0,  "description": "Merton: jumps per year (lambda*dt must be at most 0.1)."},
                     "jump_mean":       {"type": "number",  "default": -0.03, "description": "Merton: mean log-jump."},
@@ -320,7 +323,7 @@
                                         "description": "Correlated book: n_assets×n_assets annualized covariance matrix (flat row-major or nested), as composeCovariance returns it. Switches the run to a buy-and-hold multi-asset book; volatility is then ignored. Must be positive definite."},
                     "weights":         {"type": "array",   "items": {"type": "number"},
                                         "description": "Correlated book: n_assets weights ≥ 0 (long-only), summing to 1 unless normalize_weights."},
-                    "n_assets":        {"type": "integer", "maximum": 100, "description": "Correlated book: inferred from weights if omitted."},
+                    "n_assets":        {"type": "integer", "minimum": 1, "maximum": 100, "description": "Correlated book: inferred from weights if omitted."},
                     "expected_returns": {"type": "array",  "items": {"type": "number"},
                                         "description": "Correlated book: per-asset drifts. Default: expected_return for every asset."},
                     "normalize_weights": {"type": "boolean", "default": false},
@@ -391,20 +394,20 @@
             <parameter name="mcpIdempotent">true</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
-                "required": ["n_assets", "assets"],
+                "required": ["assets"],
                 "properties": {
-                    "n_assets":        {"type": "integer", "minimum": 1, "maximum": 2000,
-                                        "description": "Number of assets"},
+                    "n_assets":        {"type": "integer", "minimum": 1, "maximum": 3000,
+                                        "description": "Optional; if given it must equal the length of assets."},
                     "assets":          {"type": "array",
-                                        "minItems": 1, "maxItems": 2000,
-                                        "description": "Array of asset scenario objects. Length must equal n_assets.",
+                                        "minItems": 1, "maxItems": 3000,
+                                        "description": "Array of asset scenario objects.",
                                         "items": {
                                             "type": "object",
-                                            "required": ["asset_id", "current_price", "scenarios", "position_size"],
+                                            "required": ["current_price", "scenarios", "position_size"],
                                             "properties": {
-                                                "asset_id":       {"type": "integer"},
-                                                "current_price":  {"type": "number"},
-                                                "scenarios":      {"type": "array", "minItems": 2,
+                                                "asset_id":       {"type": "integer", "description": "Unique asset identifier. Default: 1-based position in assets."},
+                                                "current_price":  {"type": "number", "exclusiveMinimum": 0},
+                                                "scenarios":      {"type": "array", "minItems": 1, "maxItems": 10,
                                                                    "description": "One entry per scenario; probabilities must sum to 1.0.",
                                                                    "items": {"type": "object",
                                                                              "required": ["price", "probability"],
@@ -412,11 +415,11 @@
                                                                                  "price":       {"type": "number", "description": "Target price in this scenario"},
                                                                                  "probability": {"type": "number", "description": "Probability weight of this scenario"}
                                                                              }}},
-                                                "position_size":  {"type": "number", "description": "Shares held (integer positions; fractional positions not supported by C implementation)"}
+                                                "position_size":  {"type": "number", "exclusiveMinimum": 0, "description": "Units held, > 0 (long only)"}
                                             }
                                         }},
-                    "use_hash_lookup": {"type": "boolean", "default": true,
-                                        "description": "Use O(1) hash lookup instead of O(n) linear scan"},
+                    "prob_tolerance":  {"type": "number", "exclusiveMinimum": 0, "maximum": 0.1, "default": 0.0001,
+                                        "description": "Tolerance for probability sum validation per asset. Must be greater than 0 and at most 0.1."},
                     "request_id":      {"type": "string"}
                 }
             }</parameter>
@@ -445,7 +448,6 @@
                         },
                         ...
                     ],
-                    "use_hash_lookup": true,
                     "request_id": "scenario-001"
                 }
             </description>
@@ -486,7 +488,7 @@
                     "service_name": "FinancialBenchmarkService",
                     "version": "1.0.0",
                     "operations": ["portfolioVariance", "composeCovariance", "covarianceFromReturns", "monteCarlo", ...],
-                    "max_assets": 2000,
+                    "max_assets": 3000,
                     "max_simulations": 1000000,
                     "memory_constraint_mb": 512,
                     "current_memory_kb": 28456,
@@ -514,9 +516,8 @@
             <parameter name="mcpIdempotent">true</parameter>
             <parameter name="mcpInputSchema">{
                 "type": "object",
-                "required": ["n_assets"],
                 "properties": {
-                    "n_assets": {"type": "integer", "minimum": 2, "maximum": 2000,
+                    "n_assets": {"type": "integer", "minimum": 1, "maximum": 3000, "default": 100,
                                  "description": "Number of assets to generate"}
                 }
             }</parameter>

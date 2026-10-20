@@ -200,6 +200,79 @@ finbench_read_periods_per_year(json_object *json_obj, double def,
 #define FINBENCH_PERIODS_INVALID_MSG \
     "n_periods_per_year must be a number > 0%s; omit it for the default."
 
+/* Record a refused field in a request's input_error buffer. The first
+ * refusal is kept, so the caller sees the earliest problem in the request.
+ * The calculation returns it as the error_message before doing any work. */
+static void
+finbench_input_error(char *buf, const char *fmt, ...)
+{
+    va_list ap;
+
+    if (buf[0])
+        return;
+    va_start(ap, fmt);
+    vsnprintf(buf, FINBENCH_INPUT_ERROR_LEN, fmt, ap);
+    va_end(ap);
+}
+
+/* check_positive_definite: absent means true; otherwise it must be a JSON
+ * boolean. json_object_get_boolean would read the string "false" as true. */
+static axis2_bool_t
+finbench_read_check_pd(json_object *json_obj, char *err)
+{
+    json_object *v = NULL;
+
+    if (!json_object_object_get_ex(json_obj, "check_positive_definite", &v))
+        return AXIS2_TRUE;
+    if (!json_object_is_type(v, json_type_boolean)) {
+        finbench_input_error(err, "check_positive_definite must be true or false.");
+        return AXIS2_TRUE;
+    }
+    return json_object_get_boolean(v) ? AXIS2_TRUE : AXIS2_FALSE;
+}
+
+/* asset_ids: absent, or an array of exactly n strings. A wrong length or a
+ * non-string entry is refused rather than dropped or echoed as text. */
+static char **
+finbench_read_asset_ids(const axutil_env_t *env, json_object *json_obj,
+                        int n, char *err)
+{
+    json_object *arr = NULL;
+    char **ids;
+    int i, len;
+
+    if (!json_object_object_get_ex(json_obj, "asset_ids", &arr))
+        return NULL;
+    if (!json_object_is_type(arr, json_type_array)) {
+        finbench_input_error(err,
+            "asset_ids must be an array of %d strings, one per asset.", n);
+        return NULL;
+    }
+    len = (int)json_object_array_length(arr);
+    if (len != n) {
+        finbench_input_error(err,
+            "asset_ids has %d entries but n_assets is %d; give one string per asset.",
+            len, n);
+        return NULL;
+    }
+    for (i = 0; i < n; i++) {
+        if (!json_object_is_type(json_object_array_get_idx(arr, i), json_type_string)) {
+            finbench_input_error(err, "asset_ids[%d] must be a string.", i);
+            return NULL;
+        }
+    }
+    ids = AXIS2_MALLOC(env->allocator, (size_t)n * sizeof(char *));
+    if (!ids) {
+        finbench_input_error(err, "Memory allocation failed for asset_ids.");
+        return NULL;
+    }
+    for (i = 0; i < n; i++) {
+        ids[i] = axutil_strdup(env,
+            json_object_get_string(json_object_array_get_idx(arr, i)));
+    }
+    return ids;
+}
+
 /* ============================================================================
  * Portfolio Variance Implementation
  *
@@ -373,11 +446,17 @@ finbench_portfolio_variance_request_create_from_json(
      * n_periods_per_year beside covariance_basis "annualized". Taking that
      * echo as this matrix's basis would annualize it twice, so the pair is
      * flagged and refused in the calculation. */
-    if (request->n_periods_per_year != 1 &&
-        json_object_object_get_ex(json_obj, "covariance_basis", &value_obj) &&
-        json_object_is_type(value_obj, json_type_string) &&
-        strcmp(json_object_get_string(value_obj), "annualized") == 0) {
-        request->basis_conflict = AXIS2_TRUE;
+    if (json_object_object_get_ex(json_obj, "covariance_basis", &value_obj)) {
+        const char *basis = json_object_is_type(value_obj, json_type_string)
+            ? json_object_get_string(value_obj) : NULL;
+        if (!basis || (strcmp(basis, "annualized") != 0 &&
+                       strcmp(basis, "per_period") != 0)) {
+            finbench_input_error(request->input_error,
+                "covariance_basis must be \"annualized\" or \"per_period\".");
+        } else if (request->n_periods_per_year != 1 &&
+                   strcmp(basis, "annualized") == 0) {
+            request->basis_conflict = AXIS2_TRUE;
+        }
     }
 
     json_object_put(json_obj);
@@ -499,6 +578,14 @@ finbench_calculate_portfolio_variance(
     }
 
     n = request->n_assets;
+
+    if (request->input_error[0]) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, request->input_error);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "FinBench portfolioVariance: %s",
+            request->input_error);
+        return response;
+    }
 
     if (request->n_periods_per_year_invalid) {
         char err_buf[160];
@@ -1047,26 +1134,12 @@ finbench_compose_covariance_request_create_from_json(
     }
 
     /* check_positive_definite — default true */
-    if (json_object_object_get_ex(json_obj, "check_positive_definite", &value_obj)) {
-        request->check_positive_definite = json_object_get_boolean(value_obj)
-            ? AXIS2_TRUE : AXIS2_FALSE;
-    }
+    request->check_positive_definite =
+        finbench_read_check_pd(json_obj, request->input_error);
 
-    /* asset_ids (optional; only kept when the length matches) */
-    if (json_object_object_get_ex(json_obj, "asset_ids", &array_obj) &&
-        json_object_is_type(array_obj, json_type_array) &&
-        (int)json_object_array_length(array_obj) == request->n_assets) {
-        request->asset_ids = AXIS2_MALLOC(env->allocator,
-            (size_t)request->n_assets * sizeof(char *));
-        if (request->asset_ids) {
-            memset(request->asset_ids, 0, (size_t)request->n_assets * sizeof(char *));
-            for (i = 0; i < request->n_assets; i++) {
-                json_object *elem = json_object_array_get_idx(array_obj, i);
-                const char *id = elem ? json_object_get_string(elem) : NULL;
-                request->asset_ids[i] = id ? axutil_strdup(env, id) : NULL;
-            }
-        }
-    }
+    /* asset_ids (optional; exactly n_assets strings when present) */
+    request->asset_ids = finbench_read_asset_ids(env, json_obj,
+        request->n_assets, request->input_error);
 
     if (json_object_object_get_ex(json_obj, "request_id", &value_obj)) {
         const char *rid = json_object_get_string(value_obj);
@@ -1203,6 +1276,9 @@ finbench_compose_covariance(
 
     if (!request || !request->volatilities) {
         return compose_fail(env, response, "Invalid request parameters");
+    }
+    if (request->input_error[0]) {
+        return compose_fail(env, response, "%s", request->input_error);
     }
 
     n = request->n_assets;
@@ -1698,26 +1774,12 @@ finbench_covariance_from_returns_request_create_from_json(
                                         0, &request->n_periods_per_year))
         request->n_periods_per_year_invalid = AXIS2_TRUE;
 
-    if (json_object_object_get_ex(json_obj, "check_positive_definite", &value_obj)) {
-        request->check_positive_definite = json_object_get_boolean(value_obj)
-            ? AXIS2_TRUE : AXIS2_FALSE;
-    }
+    request->check_positive_definite =
+        finbench_read_check_pd(json_obj, request->input_error);
 
-    /* asset_ids (optional; only kept when the length matches) */
-    if (json_object_object_get_ex(json_obj, "asset_ids", &array_obj) &&
-        json_object_is_type(array_obj, json_type_array) &&
-        (int)json_object_array_length(array_obj) == request->n_assets) {
-        request->asset_ids = AXIS2_MALLOC(env->allocator,
-            (size_t)request->n_assets * sizeof(char *));
-        if (request->asset_ids) {
-            memset(request->asset_ids, 0, (size_t)request->n_assets * sizeof(char *));
-            for (i = 0; i < request->n_assets; i++) {
-                json_object *elem = json_object_array_get_idx(array_obj, i);
-                const char *id = elem ? json_object_get_string(elem) : NULL;
-                request->asset_ids[i] = id ? axutil_strdup(env, id) : NULL;
-            }
-        }
-    }
+    /* asset_ids (optional; exactly n_assets strings when present) */
+    request->asset_ids = finbench_read_asset_ids(env, json_obj,
+        request->n_assets, request->input_error);
 
     if (json_object_object_get_ex(json_obj, "request_id", &value_obj)) {
         const char *rid = json_object_get_string(value_obj);
@@ -1821,6 +1883,9 @@ finbench_covariance_from_returns(
 
     if (!request || !request->returns) {
         return cfr_fail(env, response, "Invalid request parameters");
+    }
+    if (request->input_error[0]) {
+        return cfr_fail(env, response, "%s", request->input_error);
     }
 
     n = request->n_assets;
@@ -2256,19 +2321,40 @@ finbench_monte_carlo_request_create_from_json(
         request->n_periods_per_year = (int)npy;
     }
 
-    /* percentiles — array of tail levels in (0,1); default {0.01, 0.05} */
+    /* percentiles — array of up to FINBENCH_MAX_PERCENTILES numbers, each
+     * strictly inside (0,1); default {0.01, 0.05}. An extra or out-of-range
+     * entry is refused: dropping it returned SUCCESS without the VaR asked for. */
     {
         json_object *pct_arr = NULL;
-        if (json_object_object_get_ex(json_obj, "percentiles", &pct_arr) &&
-            json_object_is_type(pct_arr, json_type_array)) {
-            int n_pct = json_object_array_length(pct_arr);
-            if (n_pct > FINBENCH_MAX_PERCENTILES) n_pct = FINBENCH_MAX_PERCENTILES;
+        if (json_object_object_get_ex(json_obj, "percentiles", &pct_arr)) {
+            int n_pct, pi;
             request->n_percentiles = 0;
-            int pi;
-            for (pi = 0; pi < n_pct; pi++) {
-                json_object *pct_elem = json_object_array_get_idx(pct_arr, pi);
-                double p = json_object_get_double(pct_elem);
-                if (p > 0.0 && p < 1.0) {
+            if (!json_object_is_type(pct_arr, json_type_array)) {
+                finbench_input_error(request->input_error,
+                    "percentiles must be an array of up to %d numbers in (0, 1).",
+                    FINBENCH_MAX_PERCENTILES);
+            } else if ((n_pct = (int)json_object_array_length(pct_arr)) >
+                       FINBENCH_MAX_PERCENTILES) {
+                finbench_input_error(request->input_error,
+                    "percentiles has %d entries; the maximum is %d.",
+                    n_pct, FINBENCH_MAX_PERCENTILES);
+            } else {
+                for (pi = 0; pi < n_pct; pi++) {
+                    json_object *pct_elem = json_object_array_get_idx(pct_arr, pi);
+                    double p;
+                    if (!json_object_is_type(pct_elem, json_type_double) &&
+                        !json_object_is_type(pct_elem, json_type_int)) {
+                        finbench_input_error(request->input_error,
+                            "percentiles[%d] must be a number in (0, 1).", pi);
+                        break;
+                    }
+                    p = json_object_get_double(pct_elem);
+                    if (!(p > 0.0 && p < 1.0)) {
+                        finbench_input_error(request->input_error,
+                            "percentiles[%d] = %g must be strictly between 0 and 1 "
+                            "(0.05 for a 95%% VaR).", pi, p);
+                        break;
+                    }
                     request->percentiles[request->n_percentiles++] = p;
                 }
             }
@@ -2280,17 +2366,18 @@ finbench_monte_carlo_request_create_from_json(
         }
     }
 
-    /* model — 0=GBM (default), 1=Merton jump-diffusion */
+    /* model — "gbm" (default) or "merton", exactly the schema's enum. Any
+     * other value is refused; it used to run GBM without saying so. */
+    request->model = FINBENCH_MODEL_GBM;
     if (json_object_object_get_ex(json_obj, "model", &value_obj)) {
-        const char *model_str = json_object_get_string(value_obj);
-        if (model_str && (strcmp(model_str, "merton") == 0 ||
-                          strcmp(model_str, "MERTON") == 0)) {
+        const char *model_str = json_object_is_type(value_obj, json_type_string)
+            ? json_object_get_string(value_obj) : NULL;
+        if (model_str && strcmp(model_str, "merton") == 0) {
             request->model = FINBENCH_MODEL_MERTON;
-        } else {
-            request->model = FINBENCH_MODEL_GBM;
+        } else if (!model_str || strcmp(model_str, "gbm") != 0) {
+            finbench_input_error(request->input_error,
+                "model must be \"gbm\" or \"merton\".");
         }
-    } else {
-        request->model = FINBENCH_MODEL_GBM;
     }
 
     /* Jump-diffusion parameters (Merton only; harmless defaults for GBM) */
@@ -2413,11 +2500,8 @@ finbench_monte_carlo_request_create_from_json(
         }
     }
 
-    /* Validate limits */
-    if (request->n_simulations > FINBENCH_MAX_SIMULATIONS) {
-        request->n_simulations = FINBENCH_MAX_SIMULATIONS;
-    }
-
+    /* n_simulations above FINBENCH_MAX_SIMULATIONS is refused by
+     * finbench_run_monte_carlo, not clamped here. */
     json_object_put(json_obj);
     return request;
 }
@@ -2954,6 +3038,12 @@ finbench_run_monte_carlo(
         return response;
     }
 
+    if (request->input_error[0]) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, request->input_error);
+        return response;
+    }
+
     if (request->n_periods_per_year_invalid) {
         char err_buf[160];
         snprintf(err_buf, sizeof(err_buf), FINBENCH_PERIODS_INVALID_MSG,
@@ -3328,7 +3418,7 @@ finbench_monte_carlo_json_only(
             "volatility (float, default 0.20), "
             "random_seed (int, default 0=random), "
             "n_periods_per_year (int, default 252), "
-            "percentiles (float[], default [0.01, 0.05]), "
+            "percentiles (up to 8 floats in (0, 1), default [0.01, 0.05]), "
             "model (string, 'gbm' or 'merton', default 'gbm'), "
             "correlated book: covariance_matrix (float[n*n] or float[n][n]) + weights (float[n] >= 0), "
             "optional expected_returns (float[n]), normalize_weights (bool); "
@@ -3389,25 +3479,33 @@ finbench_scenario_request_create_from_json(
     }
     memset(request, 0, sizeof(finbench_scenario_request_t));
 
-    /* use_hash_lookup flag (default: run both, report both) */
-    if (json_object_object_get_ex(json_obj, "use_hash_lookup", &value_obj)) {
-        request->use_hash_lookup = json_object_get_boolean(value_obj)
-            ? AXIS2_TRUE : AXIS2_FALSE;
-    } else {
-        request->use_hash_lookup = AXIS2_TRUE;
+    /* use_hash_lookup is refused: the operation always times both the
+     * linear scan and the hash lookup and reports both, so the flag could
+     * only be ignored. */
+    if (json_object_object_get_ex(json_obj, "use_hash_lookup", NULL)) {
+        finbench_input_error(request->input_error,
+            "use_hash_lookup is not supported: scenarioAnalysis always times "
+            "both the linear scan and the hash lookup. Remove the field.");
     }
 
     /*
-     * prob_tolerance — probability sum tolerance per asset.
-     * Default 1e-4; 0.0 → default; clamped to [1e-10, 0.1].
+     * prob_tolerance — probability sum tolerance per asset. Default 1e-4;
+     * otherwise a number in (0, 0.1], refused outside it rather than
+     * replaced, so the tolerance applied is always the one asked for.
      */
+    request->prob_tolerance = 1e-4;
     if (json_object_object_get_ex(json_obj, "prob_tolerance", &value_obj)) {
-        double tol = json_object_get_double(value_obj);
-        if (tol <= 0.0) tol = 1e-4;
-        if (tol > 0.1)  tol = 0.1;
-        request->prob_tolerance = tol;
-    } else {
-        request->prob_tolerance = 1e-4;
+        double tol;
+        if (!json_object_is_type(value_obj, json_type_double) &&
+            !json_object_is_type(value_obj, json_type_int)) {
+            finbench_input_error(request->input_error,
+                "prob_tolerance must be a number in (0, 0.1].");
+        } else if (!((tol = json_object_get_double(value_obj)) > 0.0 && tol <= 0.1)) {
+            finbench_input_error(request->input_error,
+                "prob_tolerance = %g must be > 0 and <= 0.1 (default 0.0001).", tol);
+        } else {
+            request->prob_tolerance = tol;
+        }
     }
 
     /* request_id */
@@ -3439,6 +3537,16 @@ finbench_scenario_request_create_from_json(
     }
 
     request->n_assets = n_assets;
+
+    /* n_assets is optional; when given it must match the assets array. */
+    if (json_object_object_get_ex(json_obj, "n_assets", &value_obj) &&
+        (!json_object_is_type(value_obj, json_type_int) ||
+         json_object_get_int64(value_obj) != n_assets)) {
+        finbench_input_error(request->input_error,
+            "n_assets must equal the number of entries in assets (%d); "
+            "omit it to use that count.", n_assets);
+    }
+
     request->assets = AXIS2_MALLOC(env->allocator,
         n_assets * sizeof(finbench_asset_scenario_t));
     if (!request->assets) {
@@ -3588,6 +3696,12 @@ finbench_calculate_scenarios(
         response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
         response->error_message = axutil_strdup(env,
             "Invalid request: no assets provided");
+        return response;
+    }
+
+    if (request->input_error[0]) {
+        response->status = axutil_strdup(env, FINBENCH_STATUS_FAILED);
+        response->error_message = axutil_strdup(env, request->input_error);
         return response;
     }
 
@@ -3981,8 +4095,8 @@ finbench_scenario_json_only(
             "\"Failed to parse scenarioAnalysis request. "
             "Required: assets (array of {asset_id, current_price, position_size, "
             "scenarios: [{price, probability}]}). "
-            "Optional: use_hash_lookup (bool, default true), "
-            "prob_tolerance (float, default 0.0001), "
+            "Optional: n_assets (int, must equal the assets count), "
+            "prob_tolerance (float in (0, 0.1], default 0.0001), "
             "request_id (string).\"}");
     }
 

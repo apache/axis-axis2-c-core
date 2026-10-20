@@ -512,8 +512,7 @@ curl -k --http2 -s \
               {"price": 180.0, "probability": 0.10}
           ]
         }
-      ],
-      "use_hash_lookup": true
+      ]
     }' \
     https://10.10.10.10/services/FinancialBenchmarkService/scenarioAnalysis
 ```
@@ -535,7 +534,7 @@ curl -k --http2 -s \
 
 **MCP stdio:**
 ```bash
-echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"scenarioAnalysis","arguments":{"n_assets":3,"assets":[{"asset_id":1,"current_price":150.0,"position_size":100,"scenarios":[{"price":165.0,"probability":0.15},{"price":157.5,"probability":0.25},{"price":150.0,"probability":0.30},{"price":142.5,"probability":0.20},{"price":135.0,"probability":0.10}]},{"asset_id":2,"current_price":75.0,"position_size":200,"scenarios":[{"price":82.5,"probability":0.15},{"price":78.75,"probability":0.25},{"price":75.0,"probability":0.30},{"price":71.25,"probability":0.20},{"price":67.5,"probability":0.10}]},{"asset_id":3,"current_price":200.0,"position_size":50,"scenarios":[{"price":220.0,"probability":0.15},{"price":210.0,"probability":0.25},{"price":200.0,"probability":0.30},{"price":190.0,"probability":0.20},{"price":180.0,"probability":0.10}]}],"use_hash_lookup":true}}}' \
+echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"scenarioAnalysis","arguments":{"n_assets":3,"assets":[{"asset_id":1,"current_price":150.0,"position_size":100,"scenarios":[{"price":165.0,"probability":0.15},{"price":157.5,"probability":0.25},{"price":150.0,"probability":0.30},{"price":142.5,"probability":0.20},{"price":135.0,"probability":0.10}]},{"asset_id":2,"current_price":75.0,"position_size":200,"scenarios":[{"price":82.5,"probability":0.15},{"price":78.75,"probability":0.25},{"price":75.0,"probability":0.30},{"price":71.25,"probability":0.20},{"price":67.5,"probability":0.10}]},{"asset_id":3,"current_price":200.0,"position_size":50,"scenarios":[{"price":220.0,"probability":0.15},{"price":210.0,"probability":0.25},{"price":200.0,"probability":0.30},{"price":190.0,"probability":0.20},{"price":180.0,"probability":0.10}]}]}}}' \
     | /usr/local/axis2c/bin/financial-benchmark-mcp
 ```
 
